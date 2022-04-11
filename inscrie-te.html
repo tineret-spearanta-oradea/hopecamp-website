@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>HopeCamp | Înscriere</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./signup.css">
+</head>
+
+<body>
+    <div id="card">
+        <div id="card-content">
+            <a href="#" id="about-us">
+                <legend >ABOUT US</legend>
+            </a>
+            <div id="card-title">
+                <h2>FORMULAR ÎNSCRIERE</h2>
+                <div class="underline-title"></div>
+            </div>
+            <div id="card-subtitle">
+                <h4>Hope camp 3 este o tabara crestina de tineret, organizata de Tineret Speranta Oradea. Mai multe
+                    detalii gasiti in <a href="#" id="aboutus-btn">about us</a>.</h4>
+            </div>
+
+            <legend id="announce"></legend>
+
+            <form method="post" class="form">
+                <h2 id = "category" >Date de conectare*:</h2>
+                <legend class="small-info">*Emailul si parola vor fi folosite pentru a te conecta.</legend>
+
+                <label for="user-email" style="padding-top:0.81rem">
+                    &nbsp;Email
+                </label>
+                <input id="user-email" class="form-content" type="email" name="email" autocomplete="on" onkeyup="stoppedTyping()" required />
+                <div class="form-border"></div>
+
+                <label for="user-password" style="padding-top:1.38rem">&nbsp;Parola 
+                </label>
+                <input id="user-password" class="form-content" type="password" name="password" required />
+                <div class="form-border"></div>
+
+                <label for="user-confirm-password" style="padding-top:1.38rem">&nbsp;Confirma parola
+                </label>
+                <input id="user-confirm-password" class="form-content" type="password" name="confirm-password"
+                    required />
+                <div class="form-border"></div>
+
+            
+                <h2 id = "category" >Ajuta-ne sa te cunoastem:</h2>
+                
+                <label for="name" style="padding-top: 1.38rem">&nbsp;Nume si prenume
+                </label>
+                <input id="name" class="form-content" type="text" name="text" required />
+                <div class="form-border"></div>
+
+                <label for="age" style="padding-top: 1.38rem">&nbsp;Varsta
+                </label>
+                <input id="age" class="form-content" type="number" name="number" required />
+                <div class="form-border"></div>
+
+                <label for="phone" style="padding-top: 1.38rem">&nbsp;Numar de telefon
+                </label>
+                <input id="phone" class="form-content" type="tel" name="tel" required />
+                <div class="form-border"></div>
+
+
+                <label for="church" style="padding-top: 1.38rem">&nbsp;Biserica din care faci parte
+                </label>
+                <input id="church" class="form-content" type="text" name="text" required />
+                <div class="form-border"></div>
+
+                <label for="pay" style="padding-top: 1.38rem">&nbsp;Taxa de inscriere  (X lei) o platesc la 
+                </label>
+                <input id="pay" class="form-content" type="text" name="text" required />
+                <div class="form-border" style="margin-bottom: 1.38rem;"></div>
+
+                <div class="period-side">
+                <label for="date" style="padding-top: 1.38rem">&nbsp;Data in care vii si in care pleci din tabara 
+                </label>
+                <input id="start-date" class="form-content" type="date" name="start-date" 
+                max="2022-08-04" min="2022-07-30" value="2022-07-30" required />
+                <input id="end-date" class="form-content" type="date" name="end-date" 
+                max="2022-08-04" min="2022-07-30" value="2022-08-04" required />
+                </div>
+                <div class="form-border"></div>
+
+
+                <label for="contribui" style="padding-top: 1.38rem">&nbsp;La ce contribui in tabara
+                </label>
+                <input id="contribui" class="form-content" type="text" name="text" required />
+                <div class="form-border"></div>
+
+
+                <label for="photo" style="padding-top: 1.38rem">&nbsp;Poza cu tine
+                </label>
+                <legend class="small-info" id="only-email-info" style = "text-align: left;">Intai, introdu email-ul</legend>
+                <input type="file" accept="image/*" class="photo" id="profile-photo" disabled>
+                <div class="form-border"></div>
+
+
+                <label for="person" style="padding-top: 1.38rem">&nbsp;Preferinte cazare
+                <legend class="small-info" style = "text-align: left;">
+                 Introdu numele persoanelor cu care doresti sa stai in camera, daca nu ai, lasa liber.</legend>
+
+                </label>
+                <input id="person" class="form-content" type="text" name="text" />
+                <div class="form-border"></div>
+
+                <label for="other" style="padding-top: 1.38rem">&nbsp;Alte observatii / sugestii
+                </label>
+                <input id="other" class="form-content" type="text" name="text" />
+                <div class="form-border"></div>  
+                <legend class="small-info" style = "margin-top: 3rem; text-align: center;">
+                    Apasă butonul doar după ce ai completat toate câmpurile.</legend>
+                <input id="signup-btn" type="button" name="signup" value="INSCRIE-TE" />
+
+                
+
+            </form>
+        </div>
+    </div>
+</body>
+
+<script src="./signup.js" type="module"></script>
+
+
+<script src="./signup_func.js" type="text/javascript"></script>
+
+</html>

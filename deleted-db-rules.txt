@@ -1,0 +1,13 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid"
+      }
+		}
+  }
+}
+
+
+i changed them cuz it wasn't working

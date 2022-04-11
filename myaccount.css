@@ -1,0 +1,113 @@
+:root {
+  --primary: #202336; /*sau: #336fa3*/
+  --secondary: #106fcf;
+  --third: #c272a0;
+  --white: #fbfbfb;
+  --try: #575a73;
+}
+
+
+body {
+  background: -webkit-linear-gradient(bottom, var(--white), var(--primary));
+  background-repeat: no-repeat;
+}
+label {
+  font-family: "Raleway", sans-serif;
+  font-size: 11pt;
+}
+p {
+  font-family: "Raleway SemiBold", sans-serif;
+}
+
+
+#announce {
+  color: #7b4664;
+  font-family: "Raleway SemiBold", sans-serif;
+  font-size: 11pt;
+  margin-top: 30px;
+  text-align: center;
+}
+
+#hello {
+  font-family: "Raleway SemiBold", sans-serif;
+  font-size: 10pt;
+  margin-top: 30px;
+}
+.list {
+  font-size: 10pt;
+}
+#card {
+  background: #fbfbfb;
+  border-radius: 8px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
+  height: 65rem;
+  margin: 3em auto 3em auto;
+  width: 24rem;
+  float: center;
+}
+#card-content {
+  padding: 12px 44px;
+}
+#card-title {
+  font-family: "Raleway Thin", sans-serif;
+  letter-spacing: 0.25rem;
+  padding-bottom: 1.43rem;
+  padding-top: 2.18rem;
+  text-align: center;
+}
+#card-subtitle {
+  font-family: "Raleway Thin", sans-serif;
+  letter-spacing: 1px;
+  padding-bottom: 23px;
+  padding-top: 13px;
+  text-align: center;
+}
+
+#pfp {
+  width: 50%;
+  height: 50%;
+}
+#logout {
+  float: left;
+}
+#about-us {
+  float: right;
+}
+#hello {
+  color: #000000;
+  font-family: "Raleway", sans-serif;
+  font-size: 10pt;
+}
+#qrcode {
+  display: flex;
+  justify-content: center;
+}
+#picture {
+  display: flex;
+  justify-content: center;
+}
+#id_text {
+  font-style: italic;
+  text-align: center;
+  font-size: 8pt;
+}
+.header-buttons {
+  color: var(--secondary);
+  background-color:rgba(255, 255, 255, 0);
+  border: 0px;
+  font-family: "Raleway", sans-serif;
+  font-size: 10pt;
+  cursor: pointer;
+}
+.underline-title {
+  background: -webkit-linear-gradient(right, var(--third), var(--secondary));
+  height: 0.2rem;
+  margin: -1.1rem auto 0 auto;
+  width: 100px;
+}
+.upperline-title {
+  background: -webkit-linear-gradient(right, var(--third), var(--secondary));
+  height: 0.2rem;
+  margin: -1.1rem auto 0 auto;
+  width: 100%;
+}

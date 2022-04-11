@@ -1,0 +1,18 @@
+For now:
+    - finalize inscrie-te.html
+        - generate QR.jpg, store it in Storage & database
+    - finalize myaccount.html
+    - finalize aboutus.html
+
+
+
+Final touches:
+    - not a bug cuz it works: auth tracking works but it’s kinda lame. only works after page loads.
+    - keyword: architecture
+    - back button - FORGOT
+    - signup -> required fields
+    - signup -> reguli
+    - MyAccount EDIT?
+
+    - integrate Attendance (the python proj should do the job, but i have to change some things; also see if scanner works)
+    - TEST different behaviour on signup/myacc...
