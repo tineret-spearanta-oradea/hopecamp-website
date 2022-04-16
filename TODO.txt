@@ -1,9 +1,5 @@
 For now:
-    - finalize inscrie-te.html
-        - generate QR.jpg, store it in Storage & database
-    - finalize myaccount.html
-    - finalize aboutus.html
-
+    - loading gif on all pages
 
 
 Final touches:
@@ -16,3 +12,6 @@ Final touches:
 
     - integrate Attendance (the python proj should do the job, but i have to change some things; also see if scanner works)
     - TEST different behaviour on signup/myacc...
+
+
+    ---currentURL variable is very wierd...

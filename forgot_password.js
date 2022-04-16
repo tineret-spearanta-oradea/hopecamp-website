@@ -15,10 +15,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const database = getDatabase();
-var currentURL = window.location.href;
-var currentURL = "http://127.0.0.1:5500";
-var currentURL = "";
 
+let currentURL = ""; 
 
 var reset_button = document.getElementById("reset-btn").addEventListener("click", function () {
     var email = document.getElementById('email').value;

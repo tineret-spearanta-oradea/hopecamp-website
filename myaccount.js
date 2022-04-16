@@ -15,15 +15,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const database = getDatabase();
-var currentURL = window.location.href;
-var currentURL = "http://127.0.0.1:5500";
-var currentURL = "";
-
 
 const dbRef = ref(getDatabase());
 
+let homeURL = "http://127.0.0.1:5500";
+let currentURL = "";
+
 var aboutus_button = document.getElementById("about-us").addEventListener("click", function () {
-  window.location.href = currentURL + "/aboutus.html";
+  window.location.href = homeURL + "/aboutus.html";
 });
 
 const handleData = (data) => {
@@ -79,9 +78,9 @@ const setupUI = (user) => {
     });
 
   }
-  else
+  else //user not logged
   {
-    window.location.href = currentURL;
+    window.location.href = homeURL;
   }
 }
 

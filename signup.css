@@ -27,7 +27,7 @@ label {
   background: #fbfbfb;
   border-radius: 8px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
-  height: 96rem;
+  height: 98rem;
   margin: 3em auto 3em auto;
   width: 24rem;
   float: center;
@@ -94,6 +94,7 @@ label {
   letter-spacing: 1px;
   margin: 0 auto;
   margin-top: 15px;
+  margin-bottom: 1rem;
   transition: 0.25s;
   width: 153px;
 }

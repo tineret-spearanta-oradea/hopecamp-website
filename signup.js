@@ -21,11 +21,7 @@ const storage = getStorage();
 const dbRef = ref(database);
 const pfpRef = storage_ref(storage, "profilepics");
 
-
-var currentURL = window.location.href;
-var currentURL = "http://127.0.0.1:5500";
-var currentURL = "";
-
+let currentURL = ""; 
 
 document.getElementById("profile-photo").addEventListener("change", function(e) {
   var file = e.target.files[0];

@@ -15,9 +15,30 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const database = getDatabase();
-var currentURL = window.location.href;
-var currentURL = "http://127.0.0.1:5500";
-var currentURL = "";
+
+let currentURL = ""; 
+
+function cardWidthAdjuster() {
+  let w = window.innerWidth;
+  console.log(w);
+  const cardUI = document.querySelector("#card");
+  if(w>1000) {
+    cardUI.style.width = "30%";
+  } else if(w>800) {
+    cardUI.style.width = "50%";
+  } else if(w>700) {
+    cardUI.style.width = "60%";
+  } else if(w>600) {
+    cardUI.style.width = "70%";
+  } else if(w>500) {
+    cardUI.style.width = "80%";
+  } else if(w<400) {
+    cardUI.style.width = "90%";
+  }
+}
+
+cardWidthAdjuster();
+window.addEventListener("resize", cardWidthAdjuster);
 
 var signup_button = document.getElementById("signup-btn").addEventListener("click", function () {
     window.location.href = currentURL + "/inscrie-te.html";

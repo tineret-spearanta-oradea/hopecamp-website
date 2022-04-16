@@ -49,7 +49,9 @@ label {
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
   height: 580px;
   margin: 3em auto 3em auto;
-  width: 24rem;
+  /* width: 24rem; */
+  /* width: 50vw; */
+  width: 400px;
   float: center;
 }
 #card-content {
