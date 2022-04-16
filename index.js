@@ -18,6 +18,14 @@ const database = getDatabase();
 
 let currentURL = ""; 
 
+/* 
+tought this would make a significant change but it's not really the case.
+I should try other ways to optimize for mobile/desktop.
+this is not the best way, but still better than before i think
+
+
+// TODO: do this for every html tho.
+
 function cardWidthAdjuster() {
   let w = window.innerWidth;
   console.log(w);
@@ -39,6 +47,8 @@ function cardWidthAdjuster() {
 
 cardWidthAdjuster();
 window.addEventListener("resize", cardWidthAdjuster);
+
+*/
 
 var signup_button = document.getElementById("signup-btn").addEventListener("click", function () {
     window.location.href = currentURL + "/inscrie-te.html";
