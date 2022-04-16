@@ -47,11 +47,11 @@ label {
   background: #fbfbfb;
   border-radius: 8px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
-  height: 580px;
+  height: 40rem;
   margin: 3em auto 3em auto;
-  /* width: 24rem; */
+  width: 24rem;
   /* width: 50vw; */
-  width: 96%;
+  /* width: 96%; */
   /* width: 400px; */
   float: center;
 }
