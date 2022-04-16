@@ -50,8 +50,8 @@ label {
   height: 580px;
   margin: 3em auto 3em auto;
   /* width: 24rem; */
-  /* width: 50vw; */
-  width: 400px;
+  width: 50vw;
+  /* width: 400px; */
   float: center;
 }
 #card-content {
