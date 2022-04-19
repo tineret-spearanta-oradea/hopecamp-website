@@ -1,3 +1,3 @@
 HopeCamp website
 ======
-<a> hopecamp.netlify.app </a>
+<a href="hopecamp.netlify.app"> hopecamp.netlify.app </a>
