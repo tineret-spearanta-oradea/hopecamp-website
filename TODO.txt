@@ -1,6 +1,6 @@
 For now:
-    - loading gif on all pages
-
+    - loading on all pages (done singup)
+    - card-adjuster for every html? or find a better way (actually iy's about zoom not about card width)
 
 Final touches:
     - not a bug cuz it works: auth tracking works but it’s kinda lame. only works after page loads.

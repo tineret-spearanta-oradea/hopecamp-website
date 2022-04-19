@@ -3,6 +3,7 @@
   --secondary: #106fcf;
   --third: #c272a0;
   --white: #ffffff;
+  --gray: #949494;
 }
 
 a {
@@ -83,10 +84,10 @@ label {
   box-shadow: 0px 1px 18px var(--secondary);
 }
 #signup-btn {
-  background: -webkit-linear-gradient(right, var(--third), var(--secondary));
+  background: -webkit-linear-gradient(right, #7b7b7b, #7b7b7b);
   border: none;
   border-radius: 21px;
-  box-shadow: 0px 1px 8px #0f63ca;
+  box-shadow: 0px 1px 8px #939393;
   cursor: pointer;
   color: white;
   font-family: "Raleway SemiBold", sans-serif;
@@ -98,9 +99,7 @@ label {
   transition: 0.25s;
   width: 153px;
 }
-#signup-btn:hover {
-  box-shadow: 0px 1px 18px #000000;
-}
+#signup-btn:hover { box-shadow: 0px 1px 14px #000000; }
 #announce {
   color: #7b4664;
   font-family: "Raleway SemiBold", sans-serif;
@@ -146,6 +145,7 @@ label {
 }
 .form-content {
   background: #b1b0ac0e;
+  border-radius: 7%;
   border: none;
   outline: none;
   padding-top: 0.875rem;
@@ -164,3 +164,19 @@ label {
   text-align: left;
 }
 
+#loader {
+  margin: 0.5rem auto 0 auto;
+  border: 10px solid #b3b3b3; /* Light grey */
+  border-top: 10px solid var(--secondary); /* Blue */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  box-shadow: 3px 1px 13px #d7d7d7;
+  visibility: hidden;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

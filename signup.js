@@ -24,6 +24,11 @@ const pfpRef = storage_ref(storage, "profilepics");
 let currentURL = ""; 
 
 document.getElementById("profile-photo").addEventListener("change", function(e) {
+  // UI setup (inscrie-te btn available) 
+  const UIsignupBtn = document.getElementById('signup-btn');
+  // UIsignupBtn.disable = false;
+  UIsignupBtn.style.backgroundImage = "-webkit-linear-gradient(right, #106fcf, #c272a0)"
+
   var file = e.target.files[0];
   var fileName = document.getElementById('user-email').value;
   
@@ -41,16 +46,36 @@ var aboutus_button = document.getElementById("about-us").addEventListener("click
 
 var signup_button = document.getElementById("signup-btn").addEventListener("click", function ()  {
   // Get all our input fields
-  var email = document.getElementById("user-email").value;
-  var password = document.getElementById("user-password").value;
-  var confirm_password = document.getElementById("user-confirm-password").value;
-  var announce = document.getElementById("announce");
+  let email = document.getElementById("user-email").value;
+  let password = document.getElementById("user-password").value;
+  let confirm_password = document.getElementById("user-confirm-password").value;
+  let announce = document.getElementById("announce");
+  const name = document.getElementById("name");
+  const age = document.getElementById("age");
+  const phone = document.getElementById("phone");
+  const pay = document.getElementById("pay");
+  let fields = [name, age, phone, pay];
+
+  let val = document.getElementById("profile-photo").files[0];
+  console.log(val);
   // Validate input fields
   if (validate_email(email) == false || validate_password(password) == false || password != confirm_password) {
     announce.innerHTML = 'Emailul sau parola sunt incorecte. Emailul trebuie sa aiba un format valid nume@exemplu.com iar parola trebuie sa aiba minim 6 caractere.';
-    return
-    // Don't continue running the code
+    return;
   }
+  fields.forEach(field => {
+    if(validate_field(field.value) === false) {
+      announce.innerHTML = 'Trebuie completate toate campurile obligatorii';
+      return;
+    }
+  });
+
+  // UI setup (loading)
+  document.getElementById("loader").style.visibility = 'visible';
+
+  const UIsignupBtn = document.getElementById("signup-btn");
+  // UIsignupBtn.disable = true;
+  UIsignupBtn.style.background = "#949494";
 
   // Move on with Auth
   createUserWithEmailAndPassword(auth, email, password)
@@ -139,8 +164,14 @@ const pushToDatabaseAndSetupUI = (user) => {
   var other = document.getElementById("other").value;
   var pfpURL;
 
-
+  var file = document.getElementById("profile-photo").files[0];
   
+  // const metadata = { contentType: 'image/jpeg' };
+
+  // upload image to firestore
+  uploadBytes(storage_ref(pfpRef, "new" + email), file);
+  // get link for the image
+
   getDownloadURL(storage_ref(pfpRef, email)).then((url) => {
     pfpURL = url;
     var unique_ID = 100;
@@ -156,6 +187,7 @@ const pushToDatabaseAndSetupUI = (user) => {
         email : email,
         qr_id: unique_ID,
         // password: password,
+        admin: false,
         name: name,
         age: age,
         phone: phone,
@@ -181,12 +213,13 @@ const pushToDatabaseAndSetupUI = (user) => {
 
 
     }).catch((error) => {
-      console.log(error);
+      alert(error.message);
     });
 
-   
-  })
-
+  
+  }).catch((error) => {
+    alert(error.message);
+  });
   
 }
 
@@ -195,3 +228,6 @@ onAuthStateChanged(auth, (user) => {
     pushToDatabaseAndSetupUI(user); // here it goes the setupUI
   }
 })
+
+
+//ceva nu ii place. credeam ca e linia 174 dar e altceva.
