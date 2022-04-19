@@ -17,13 +17,8 @@ label {
   font-size: 11pt;
 }
 
-#announce {
-  color: #7b4664;
-  font-family: "Raleway SemiBold", sans-serif;
-  font-size: 11pt;
-  margin-top: 30px;
-  text-align: center;
-}
+
+
 #forgot-pass {
   color: var(--secondary);
   font-family: "Raleway", sans-serif;
@@ -47,7 +42,7 @@ label {
   background: #fbfbfb;
   border-radius: 8px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
-  height: 40rem;
+  height: 44rem;
   margin: 3em auto 3em auto;
   width: 24rem;
   /* width: 50vw; */
@@ -72,11 +67,30 @@ label {
   padding-top: 13px;
   text-align: center;
 }
+#error {
+  background-color: #c79da6;
+  border-radius: 5px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
+  margin-top: 1rem;
+  transition: 1s;
+  visibility: hidden;
+  /* display: none; */
+}
+#announce {
+  color: #000000;
+  font-family: "Raleway SemiBold", sans-serif;
+  font-size: 11pt;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  text-align: center;
+  
+}
 #signup {
   color: #000000;
   font-family: "Raleway", sans-serif;
   font-size: 10pt;
-  margin-top: 16px;
+  margin-top: 3rem;
   text-align: center;
 }
 #submit-btn {
@@ -116,6 +130,18 @@ label {
 #signup-btn:hover {
   box-shadow: 0px 1px 18px #000000;
 }
+#loader {
+  margin: 0.5rem auto 0 auto;
+  border: 10px solid #b3b3b3; /* Light grey */
+  border-top: 10px solid var(--secondary); /* Blue */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  box-shadow: 3px 1px 13px #d7d7d7;
+  /* visibility: hidden; */
+  display: none;
+}
 
 .form {
   align-items: left;
@@ -138,4 +164,9 @@ label {
   height: 0.2rem;
   margin: -1.1rem auto 0 auto;
   width: 100px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

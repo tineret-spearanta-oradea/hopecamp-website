@@ -21,24 +21,51 @@
                 <h2>CONTUL MEU</h2>
                 <div class="underline-title"></div>
             </div>
-            <p id="hello"></p>
 
-            <div id="qrcode"></div>
+            <div id="initial-loader"></div>
+            <div id="initial-loading-msg">Loading data... Please wait</div>
 
-            <div>
-                <p id="id_text">ID: </p> 
-                <p class="list" id="phone">Numar telefon : </p>
-                <p class="list" id="age">Varsta : </p>
-                <p class="list" id="church">Biserica : </p>
-                <p class="list" id="cui-platesc">Cui platesc taxa de inscriere -X lei- : </p>
-                <p class="list" id="payed">Achitat: (checbox)</p>
-                <p class="list" id="contribui">Cu ce contribui : </p>
-                <p class="list" id="cazare-cu">Preferinte cazare : </p>
-                <p class="list" id="observatii-sugestii">Alte observatii/sugestii: : </p>
-            </div>
-            <p class="list" style="margin-top:3rem; text-align: center;">Poza:</p>
-            <div id="picture">
-                <img id="pfp" alt="">
+            <div id="all-data">
+                <h4 id="hello"></h4>
+
+                <div id="updatable-info">
+                    &nbsp Ne bucuram ca ai ales sa vii cu noi in tabara! Au mai ramas 
+                    <span id="days-left">x zile</span>
+                    pana la tabara! (Yayy!)
+                    <br>
+                    <div id="talk-to-us">
+                    &nbsp Intre timp ne poti spune ce abia astepti cel mai mult din tabara sau orice alte ganduri care le ai pentru noi.
+                    <textarea id="msg-text" name = "description" placeholder="Scrie-ne un mesaj..." ></textarea> 
+                    <input type="button" id="msg-submit" value="Trimite">
+                    </div>
+                </div>
+                <div id="info-expand-data">
+                    &nbsp De asemenea poti da click mai jos pentru a vedea datele cu care te-ai inscris in tabara.
+                    Daca ai gresit ceva si doresti sa modifici scrie-ne folosind campul butonul de mai sus.
+                </div>
+                <div id="expand-data">
+                    Afiseaza datele tale &#x25B6;
+                </div>
+                <div id="not-important-data">
+                    <div id="qrcode" style="margin-top: 1rem;"></div>
+                    <p style="text-align: center; font-size: 9pt; margin-bottom: 0rem;">
+                        Acest cod QR va fi folosit in tabara
+                    </p>
+                    <p id="id_text">ID: </p> 
+                    <p class="list" id="phone">Numar telefon : </p>
+                    <p class="list" id="age">Varsta : </p>
+                    <p class="list" id="church">Biserica : </p>
+                    <p class="list" id="cui-platesc">Cui platesc taxa de inscriere -X lei- : </p>
+                    <p class="list" id="payed">Achitat : (checbox)</p>
+                    <p class="list" id="contribui">Cu ce contribui : </p>
+                    <p class="list" id="cazare-cu">Preferinte cazare : </p>
+                    <p class="list" id="observatii-sugestii">Alte observatii/sugestii: : </p>
+                
+                    <p class="list" style="margin-top:3rem; text-align: center;">Poza:</p>
+                    <div id="picture">
+                        <img id="pfp" alt="">
+                    </div>
+                </div>
             </div>
         </div>
     </div>

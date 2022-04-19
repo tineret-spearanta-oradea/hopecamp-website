@@ -23,132 +23,100 @@ const pfpRef = storage_ref(storage, "profilepics");
 
 let currentURL = ""; 
 
-document.getElementById("profile-photo").addEventListener("change", function(e) {
-  // UI setup (inscrie-te btn available) 
-  const UIsignupBtn = document.getElementById('signup-btn');
-  // UIsignupBtn.disable = false;
-  UIsignupBtn.style.backgroundImage = "-webkit-linear-gradient(right, #106fcf, #c272a0)"
-
-  var file = e.target.files[0];
-  var fileName = document.getElementById('user-email').value;
-  
-  const metadata = {
-    contentType: 'image/jpeg',
-  };
-
-  uploadBytes(storage_ref(pfpRef, fileName), file, metadata);
-});
 
 
 var aboutus_button = document.getElementById("about-us").addEventListener("click", function () {
   window.location.href =  currentURL + "/aboutus.html";
 });
 
+const agree_checked = document.getElementById("agree").addEventListener("change", function() {
+  if (this.checked) {
+    const UIsignupBtn = document.getElementById('signup-btn');
+    UIsignupBtn.disable = false;
+    UIsignupBtn.style.backgroundImage = "-webkit-linear-gradient(right, #106fcf, #c272a0)";
+    UIsignupBtn.style.animation = "graytocolor 5s infinite"; //NOT working
+  } else {
+    const UIsignupBtn = document.getElementById('signup-btn');
+    UIsignupBtn.disable = true;
+    UIsignupBtn.style.backgroundImage = "-webkit-linear-gradient(left, #5a5a5a, #bdbdbd)";
+  }
+});
+
 var signup_button = document.getElementById("signup-btn").addEventListener("click", function ()  {
+  
+  // UI setup (loading)
+  startLoading();
+
   // Get all our input fields
   let email = document.getElementById("user-email").value;
   let password = document.getElementById("user-password").value;
   let confirm_password = document.getElementById("user-confirm-password").value;
   let announce = document.getElementById("announce");
-  const name = document.getElementById("name");
-  const age = document.getElementById("age");
-  const phone = document.getElementById("phone");
-  const pay = document.getElementById("pay");
-  let fields = [name, age, phone, pay];
 
-  let val = document.getElementById("profile-photo").files[0];
-  console.log(val);
+  const pfp = document.getElementById("profile-photo").files[0];
+  
+  let fields = [
+    document.getElementById("name"),
+    document.getElementById("age"),
+    document.getElementById("phone"),
+    document.getElementById("church"),
+    document.getElementById("pay"),
+    document.getElementById("contribui"),
+  ];
+
+  let somethingIsNotValid;
   // Validate input fields
   if (validate_email(email) == false || validate_password(password) == false || password != confirm_password) {
-    announce.innerHTML = 'Emailul sau parola sunt incorecte. Emailul trebuie sa aiba un format valid nume@exemplu.com iar parola trebuie sa aiba minim 6 caractere.';
-    return;
+    stopLoadingAndShowError('Emailul sau parola sunt incorecte. Emailul trebuie sa contina "@" iar parola trebuie sa aiba minim 6 caractere.');
+    somethingIsNotValid = true;
   }
+
   fields.forEach(field => {
-    if(validate_field(field.value) === false) {
-      announce.innerHTML = 'Trebuie completate toate campurile obligatorii';
-      return;
+    if(validate_field(field.value) === false && !somethingIsNotValid) {
+      stopLoadingAndShowError('Trebuie completate toate câmpurile obligatorii');
+      somethingIsNotValid = true;
     }
   });
 
-  // UI setup (loading)
-  document.getElementById("loader").style.visibility = 'visible';
+  if(typeof pfp === "undefined" && !somethingIsNotValid)
+  {
+    stopLoadingAndShowError("Introdu o poză cu tine.");
+    somethingIsNotValid = true;
+  }
 
-  const UIsignupBtn = document.getElementById("signup-btn");
-  // UIsignupBtn.disable = true;
-  UIsignupBtn.style.background = "#949494";
+  if(!(document.getElementById("agree").checked) && !somethingIsNotValid)
+  {
+    stopLoadingAndShowError("Trebuie sa fii de-acord cu regulamentul (apasa pe patratel)");
+    somethingIsNotValid = true;
+  }
+  // Move on with auth if every input is valid
+  if(!somethingIsNotValid){
+    createUserWithEmailAndPassword(auth, email, password)
+    .then(function() {
+      
+    })
+    .catch(function(error) {
 
-  // Move on with Auth
-  createUserWithEmailAndPassword(auth, email, password)
-  .then(function() {
-    
-  })
-  .catch(function(error) {
-    // Firebase will use this to alert of its errors
-    var error_code = error.code;
-    var error_message = error.message;
-
-    announce.innerHTML = error_message;
-  })
-
+      if(error.code === "auth/invalid-email"){
+        stopLoadingAndShowError("Email invalid.");
+      } else if(error.code === "auth/invalid-password"){
+        stopLoadingAndShowError("Parola invalidă.");
+      } else {
+        stopLoadingAndShowError(error.message);
+      }
+    })
+  }
 });
 
-
-// Validate Functions
-function validate_email(email) {
-  var expression = /^[^@]+@\w+(\.\w+)+\w$/
-  if (expression.test(email) == true) {
-    // Email is good
-    return true
-  } else {
-    // Email is not good
-    return false
-  }
-}
-
-function validate_password(password) {
-  // Firebase only accepts lengths greater than 6
-  if (password < 6) {
-    return false
-  } else {
-    return true
-  }
-}
-
-function validate_field(field) {
-  if (field == null) {
-    return false
-  }
-
-  if (field.length <= 0) {
-    return false
-  } else {
-    return true
-  }
-}
-
-
-const setupUI = (user) => {
+onAuthStateChanged(auth, (user) => {
   if(user) {
-    
-    window.location.href= currentURL + "/myaccount.html";
-  } else {
-    
+    pushToDatabaseAndSetupUI(user); // here it goes the setupUI
   }
-}
-
-
-function countProperties(obj) {
-    var count = 0;
-
-    for(var prop in obj) {
-        if(obj.hasOwnProperty(prop))
-            ++count;
-    }
-
-    return count;
-}
+});
 
 const pushToDatabaseAndSetupUI = (user) => {
+
+  let announce = document.getElementById("announce");
 
   var email = document.getElementById("user-email").value;
   var password = document.getElementById("user-password").value;
@@ -166,68 +134,134 @@ const pushToDatabaseAndSetupUI = (user) => {
 
   var file = document.getElementById("profile-photo").files[0];
   
-  // const metadata = { contentType: 'image/jpeg' };
+  const metadata = { contentType: 'image/jpeg' };
 
   // upload image to firestore
-  // uploadBytes(storage_ref(pfpRef, "new" + email), file).then((x) => {alert();});
-  // get link for the image
+  uploadBytes(storage_ref(pfpRef, user.uid), file, metadata).then(function()  {
+    // get link for the image
 
-  getDownloadURL(storage_ref(pfpRef, email)).then((url) => {
-    pfpURL = url;
-    var unique_ID = 100;
-    get(child(dbRef, `users/`)).then((snapshot) => {
-      if (snapshot.exists()) {
-        var numberOfExistingUsers = countProperties(snapshot.val())
-        unique_ID += numberOfExistingUsers;
-      } else {
-        // alert("No data available");
-      }
+    getDownloadURL(storage_ref(pfpRef, user.uid)).then((url) => {
+      pfpURL = url;
+      var unique_ID = 300;
+      get(child(dbRef, `users/`)).then((snapshot) => {
+        if (snapshot.exists()) {
+          var numberOfExistingUsers = countProperties(snapshot.val());
+          unique_ID += numberOfExistingUsers;
+        } else {
+          // alert("No data available");
+        }
 
-      var user_data = {
-        email : email,
-        qr_id: unique_ID,
-        // password: password,
-        admin: false,
-        name: name,
-        age: age,
-        phone: phone,
-        church: church,
-        cui_platesc: pay,
-        payed: 0,
-        start_date: start_date,
-        end_date: end_date,
-        contribui: contribui,
-        cazare_cu: person,
-        observatii_sugestii: other,
-        img_url: pfpURL,
-      };
+        var user_data = {
+          email : email,
+          qr_id: unique_ID,
+          // password: password,
+          admin: false,
+          name: name,
+          age: age,
+          phone: phone,
+          church: church,
+          cui_platesc: pay,
+          payed: 0,
+          start_date: start_date,
+          end_date: end_date,
+          contribui: contribui,
+          cazare_cu: person,
+          observatii_sugestii: other,
+          img_url: pfpURL,
+        };
 
-      set(ref(database, 'users/' + user.uid), user_data)
-      .then(function() {
-        setupUI(user);
-      })
-      .catch(function(error) {
-        console.log(error.message);
-        alert(error.message);
+        set(ref(database, 'users/' + user.uid), user_data)
+        .then(function() {
+          setupUI(user);
+        })
+        .catch(function(error) {
+          stopLoadingAndShowError(error.message);
+        });
+
+
+      }).catch((error) => {
+        stopLoadingAndShowError(error.message);
       });
 
-
+    
     }).catch((error) => {
-      alert(error.message);
+      stopLoadingAndShowError(error.message);
     });
-
-  
-  }).catch((error) => {
-    alert(error.message);
   });
   
 }
 
-onAuthStateChanged(auth, (user) => {
-  if(user) {
-    pushToDatabaseAndSetupUI(user); // here it goes the setupUI
+
+// Validate Functions
+function validate_email(email) {
+  var expression = /^[^@]+@\w+(\.\w+)+\w$/
+  if (expression.test(email) == true) {
+    // Email is good
+    return true
+  } else {
+    // Email is not good
+    return false
   }
-})
+}
+
+function validate_password(password) {
+  // Firebase only accepts lengths greater than 6
+  if (password < 6) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+function validate_field(field) {
+  if (field == null) {
+    return false;
+  }
+
+  if (field.length <= 0) {
+    return false;
+  } else {
+    return true;
+  }
+}
 
 
-//ceva nu ii place. credeam ca e linia 174 dar e altceva.
+const setupUI = (user) => {
+  if(user) {
+    window.location.href= currentURL + "/myaccount.html";
+  } else {
+    
+  }
+}
+
+function startLoading() {
+  document.getElementById("error").style.visibility = "hidden";
+  document.getElementById("loader").style.visibility = 'visible';
+  // document.getElementById("card").style.height = "108rem";
+}
+
+function stopLoadingAndShowError(err) {
+  document.getElementById("error").style.visibility = "visible";
+  document.getElementById("announce").innerHTML = err;
+  // document.getElementById('error').scrollIntoView();
+  document.getElementById("loader").style.visibility = 'hidden';
+  document.getElementById("last-small-info").style.visibility = "hidden";
+
+  setTimeout(hideError, 3400);
+}
+
+function hideError() {
+  document.getElementById('error').style.display = "none";
+}
+
+function countProperties(obj) {
+    var count = 0;
+
+    for(var prop in obj) {
+        if(obj.hasOwnProperty(prop))
+            ++count;
+    }
+
+    return count;
+}
+

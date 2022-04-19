@@ -23,9 +23,7 @@
                 <h4>Hope camp 3 este o tabara crestina de tineret, organizata de Tineret Speranta Oradea. Mai multe
                     detalii gasiti in <a href="#" id="aboutus-btn">about us</a>.</h4>
             </div>
-
-            <legend id="announce"></legend>
-
+            
             <form method="post" class="form">
                 <h2 id = "category" >Date de conectare*:</h2>
                 <legend class="small-info">*Emailul si parola vor fi folosite pentru a te conecta.</legend>
@@ -48,7 +46,7 @@
                 <div class="form-border"></div>
 
             
-                <h2 id = "category" >Ajuta-ne sa te cunoastem:</h2>
+                <h2 id = "category" style="padding-top: 2rem;">Ajuta-ne sa te cunoastem:</h2>
                 
                 <label for="name" style="padding-top: 1.38rem">&nbsp;Nume si prenume
                 </label>
@@ -95,7 +93,7 @@
 
                 <label for="photo" style="padding-top: 1.38rem">&nbsp;Poza cu tine
                 </label>
-                <legend class="small-info" id="only-email-info" style = "text-align: left;">Intai, introdu email-ul</legend>
+                <legend class="small-info" id="only-email-info" style = "text-align: left;">Întâi, introdu email-ul corect</legend>
                 <input type="file" accept="image/*" class="photo" id="profile-photo" disabled>
                 <div class="form-border"></div>
 
@@ -115,11 +113,24 @@
                 </label>
                 <input id="other" class="form-content" type="text" name="text" />
                 <div class="form-border"></div>  
-                <legend class="small-info" style = "margin-top: 3rem; text-align: center;">
+
+                <div>
+                    <input type="checkbox" id="agree" name="agree">
+                    <label for="agree">
+                        Sunt de acord cu 
+                        <a href="#card-title">regulamentul</a> <!---VA DUCE LA PAGINA DE REGUALMENT-->
+                        taberei.</label>
+                </div>
+
+                <div id="error">
+                    <legend id="announce"></legend>
+                </div>
+                <legend id="last-small-info" class="small-info" style = "margin-top: 0.4rem; margin-bottom: 0.4rem; text-align: center;">
                     Apasă butonul doar după ce ai completat toate câmpurile obligatorii.</legend>
-                <input id="signup-btn" type="submit" name="signup" value="Înscrie-te"  />
+                <input id="signup-btn" type="button" name="signup" value="Înscrie-te"  />
 
                 <div id="loader"></div>
+                
                 
 
             </form>

@@ -1,3 +1,4 @@
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
 import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
@@ -82,6 +83,7 @@ onAuthStateChanged(auth, (user) => {
 
 
 var submit_button = document.getElementById("submit-btn").addEventListener("click", function ()  {
+  startLoading();
   // Get all our input fields
   var email = document.getElementById('email').value;
   var password = document.getElementById('password').value;
@@ -93,7 +95,7 @@ var submit_button = document.getElementById("submit-btn").addEventListener("clic
 
   // Validate input fields
   if (validate_email(email) == false || validate_password(password) == false) {
-      announce.innerHTML = 'Nu ați introdus date corecte.' ;
+      stopLoadingAndShowError("Nu ați introdus date corecte.") ;
       return;
       // Don't continue running the code
   }
@@ -123,21 +125,21 @@ var submit_button = document.getElementById("submit-btn").addEventListener("clic
     
     if(error_code == "auth/wrong-password")
     {
-      announce.innerHTML = "Parola este greșită.";
+      stopLoadingAndShowError("Parola este greșită.");
       password_element.value = "";
     } else 
     if(error_code == "auth/too-many-requests")
     {
-      announce.innerHTML = "Ați încercat de prea multe ori sa va logați in acest cont. Vă rugăm încercați mai tarziu.";
+      stopLoadingAndShowError("Ați încercat de prea multe ori sa va logați in acest cont. Vă rugăm încercați mai tarziu.");
       password_element.value = "";
     } else 
     if(error_code == "auth/user-not-found")
     {
-      announce.innerHTML = "Datele de conectare sunt incorecte.";
+      stopLoadingAndShowError("Datele de conectare sunt incorecte.");
       email_element.value = "";
       password_element.value = "";
     } else {
-      announce.innerHTML = error_message;
+      stopLoadingAndShowError(error_message);
       email_element.value = "";
       password_element.value = "";
     }
@@ -146,6 +148,25 @@ var submit_button = document.getElementById("submit-btn").addEventListener("clic
 });
 
 
+function startLoading() {
+  document.getElementById("signup").style.display = "none";
+  document.getElementById("loader").style.display = 'inline';
+  // document.getElementById("loader").style.visibility = 'visible';
+  // document.getElementById("card").style.height = "44rem";
+}
+
+function stopLoadingAndShowError(err) {
+  document.getElementById("error").style.visibility = "visible";
+  document.getElementById("announce").innerHTML = err;
+  // document.getElementById('error').scrollIntoView();
+  document.getElementById("loader").style.display= 'none';
+
+  setTimeout(hideError, 3400);
+}
+
+function hideError() {
+  document.getElementById('error').style.display = "none";
+}
 
 // Validate Functions
 function validate_email(email) {

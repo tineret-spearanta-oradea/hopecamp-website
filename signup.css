@@ -28,7 +28,7 @@ label {
   background: #fbfbfb;
   border-radius: 8px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
-  height: 98rem;
+  height: 105rem;
   margin: 3em auto 3em auto;
   width: 24rem;
   float: center;
@@ -64,27 +64,9 @@ label {
   margin-top: 16px;
   text-align: center;
 }
-#submit-btn {
-  background: -webkit-linear-gradient(right, #d4d4d4, #a6a6a6);
-  border: none;
-  border-radius: 21px;
-  box-shadow: 0px 1px 8px #adaaaa;
-  cursor: pointer;
-  color: rgb(0, 0, 0);
-  font-family: "Raleway SemiBold", sans-serif;
-  letter-spacing: 1px;
-  height: 42.3px;
-  margin: 0 auto;
-  margin-top: 50px;
-  margin-bottom: 15px;
-  transition: 0.25s;
-  width: 153px;
-}
-#submit-btn:hover {
-  box-shadow: 0px 1px 18px var(--secondary);
-}
+
 #signup-btn {
-  background: -webkit-linear-gradient(right, #7b7b7b, #7b7b7b);
+  background: -webkit-linear-gradient(left, #5a5a5a, #bdbdbd);
   border: none;
   border-radius: 21px;
   box-shadow: 0px 1px 8px #939393;
@@ -94,27 +76,41 @@ label {
   height: 42.3px;
   letter-spacing: 1px;
   margin: 0 auto;
-  margin-top: 15px;
+  margin-top: 0rem;
   margin-bottom: 1rem;
-  transition: 0.25s;
+  /* transition: 1s; */
   width: 153px;
+
+  
 }
 #signup-btn:hover { box-shadow: 0px 1px 14px #000000; }
+#error {
+  background-color: #c79da6;
+  border-radius: 5px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
+  margin-top: 1rem;
+  transition: 1s;
+  visibility: hidden;
+}
 #announce {
-  color: #7b4664;
+  color: #000000;
   font-family: "Raleway SemiBold", sans-serif;
   font-size: 11pt;
   margin-top: 1rem;
   margin-bottom: 1rem;
+  padding: 0.5rem;
   text-align: center;
 }
 #category{
   color: #3f3f3f;
   font-family: "Raleway SemiBold", sans-serif;
   font-size: 14pt;
-  margin-top: 2rem;
+  margin-top: 0.1rem;
   margin-bottom: 0px;
   text-align: left;
+}
+#agree {
+  margin: 2rem 0rem 0rem 0rem;
 }
 #about-us {
   color: var(--secondary);
@@ -179,4 +175,9 @@ label {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+@keyframes graytocolor {
+  from {background-color: -webkit-linear-gradient(left, #5a5a5a, #bdbdbd);}
+  to {background-color: -webkit-linear-gradient(right, var(--third), var(--secondary));}
 }
