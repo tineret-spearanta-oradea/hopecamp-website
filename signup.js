@@ -169,7 +169,7 @@ const pushToDatabaseAndSetupUI = (user) => {
   // const metadata = { contentType: 'image/jpeg' };
 
   // upload image to firestore
-  uploadBytes(storage_ref(pfpRef, "new" + email), file).then((x) => {alert();});
+  // uploadBytes(storage_ref(pfpRef, "new" + email), file).then((x) => {alert();});
   // get link for the image
 
   getDownloadURL(storage_ref(pfpRef, email)).then((url) => {
