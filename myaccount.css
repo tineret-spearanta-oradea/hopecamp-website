@@ -133,6 +133,7 @@ textarea {
   outline: none;
   border-radius: 4px;
   font-family: "Raleway SemiBold", sans-serif;
+  font-size: 1em !important; 
 
 }
 #msg-submit {

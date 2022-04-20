@@ -1,12 +1,12 @@
 For now:
-    - loading on all pages (done singup)
     - signup 
         - color animation on button when checkbox checked
     - card-adjuster for every html? or find a better way (actually iy's about zoom not about card width)
-    - message from "myAccount"
-    - 'myAccount' update (forma de "in tabarA")
     - make card height dependent on last element.
     - after sending message, make it unavailable
+
+    - 'myAccount' update (forma de "in tabarA")
+
 
 Final touches:
     - not a bug cuz it works: auth tracking works but it’s kinda lame. only works after page loads.
@@ -20,4 +20,4 @@ Final touches:
     - TEST different behaviour on signup/myacc...
 
 
-    ---currentURL variable is very wierd...
+    ---currentURL variable is very wierd... but working so dont break it XD

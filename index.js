@@ -156,7 +156,9 @@ function startLoading() {
 }
 
 function stopLoadingAndShowError(err) {
+  document.getElementById("error").style.display = "grid";
   document.getElementById("error").style.visibility = "visible";
+
   document.getElementById("announce").innerHTML = err;
   // document.getElementById('error').scrollIntoView();
   document.getElementById("loader").style.display= 'none';

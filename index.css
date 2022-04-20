@@ -16,7 +16,7 @@ label {
   font-family: "Raleway", sans-serif;
   font-size: 11pt;
 }
-input {
+input.form-content {
   font-size: 1em !important; 
 }
 
@@ -73,17 +73,18 @@ input {
   background-color: #c79da6;
   border-radius: 5px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
-  margin-top: 1rem;
+  margin-top: 0.1rem;
+  margin-bottom: 1rem;
   transition: 1s;
-  visibility: hidden;
-  /* display: none; */
+  /* visibility: hidden; */
+  display: none;
 }
 #announce {
   color: #000000;
   font-family: "Raleway SemiBold", sans-serif;
   font-size: 11pt;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
   padding: 0.5rem;
   text-align: center;
   

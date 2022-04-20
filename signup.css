@@ -17,6 +17,10 @@ label {
   font-family: "Raleway", sans-serif;
   font-size: 11pt;
 }
+input.form-content {
+  font-size: 1em !important; 
+}
+
 #forgot-pass {
   color: var(--secondary);
   font-family: "Raleway", sans-serif;
