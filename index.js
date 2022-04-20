@@ -2,6 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
 import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+import { FIREBASE_SECRETS } from "config.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBoTIlt7j61N0p_HKz0Fqnr5l1ABOt-bcM",
@@ -13,7 +14,7 @@ const firebaseConfig = {
     appId: "1:954127886824:web:7f8cff00a8e663749a1c5d"
 };
 
-console.log(process.env.FIREBASE_SECRETS);
+console.log(FIREBASE_SECRETS);
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
