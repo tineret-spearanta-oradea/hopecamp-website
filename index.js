@@ -13,6 +13,8 @@ const firebaseConfig = {
     appId: "1:954127886824:web:7f8cff00a8e663749a1c5d"
 };
 
+console.log(process.env.FIREBASE_SECRETS);
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const database = getDatabase();
@@ -52,15 +54,15 @@ window.addEventListener("resize", cardWidthAdjuster);
 */
 
 var signup_button = document.getElementById("signup-btn").addEventListener("click", function () {
-    window.location.href = currentURL + "/inscrie-te.html";
+    window.location.href = currentURL + "/inscrie-te";
 });
 
 var aboutus_button = document.getElementById("about-us").addEventListener("click", function () {
-    window.location.href = currentURL + "/aboutus.html";
+    window.location.href = currentURL + "/aboutus";
 });
 
 var resetpass_button = document.getElementById("forgot-pass").addEventListener("click", function () {
-  window.location.href = currentURL + "/forgot_password.html";
+  window.location.href = currentURL + "/forgot_password";
 });
 
 // Ok so this is kind of wierd but this is how i managed user auth tracking. basically if user than redirect to another page.
@@ -71,7 +73,7 @@ var resetpass_button = document.getElementById("forgot-pass").addEventListener("
 const setupUI = (user) => {
   if(user) {
     
-    window.location.href = currentURL + "/myaccount.html";
+    window.location.href = currentURL + "/myaccount";
   } else {
     
   }
