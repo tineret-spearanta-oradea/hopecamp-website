@@ -16,7 +16,9 @@ label {
   font-family: "Raleway", sans-serif;
   font-size: 11pt;
 }
-
+input {
+  font-size: 10em !important; 
+}
 
 
 #forgot-pass {
