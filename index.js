@@ -4,7 +4,6 @@ import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/9.6
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 import { FIREBASE_SECRETS } from "config.js";
 
-
 const firebaseConfig = {
     apiKey: "AIzaSyBoTIlt7j61N0p_HKz0Fqnr5l1ABOt-bcM",
     authDomain: "hopecamp-10d0f.firebaseapp.com",
