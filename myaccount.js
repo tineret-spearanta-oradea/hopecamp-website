@@ -34,7 +34,7 @@ function stopLoading() {
 }
 
 var aboutus_button = document.getElementById("about-us").addEventListener("click", function () {
-  window.location.href = homeURL + "/aboutus.html";
+  window.location.href = currentURL + "/aboutus";
 });
 
 
