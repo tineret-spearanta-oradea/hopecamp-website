@@ -26,7 +26,7 @@ let currentURL = "";
 
 
 var aboutus_button = document.getElementById("about-us").addEventListener("click", function () {
-  window.location.href =  currentURL + "/aboutus.html";
+  window.location.href =  currentURL + "/aboutus";
 });
 
 const agree_checked = document.getElementById("agree").addEventListener("change", function() {
@@ -228,7 +228,7 @@ function validate_field(field) {
 
 const setupUI = (user) => {
   if(user) {
-    window.location.href= currentURL + "/myaccount.html";
+    window.location.href= currentURL + "/myaccount";
   } else {
     
   }

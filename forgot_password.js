@@ -49,7 +49,7 @@ function validate_email(email) {
 
 const setupUI = (user) => {
   if(user) {
-    window.location.href = currentURL + "/myaccount.html";
+    window.location.href = currentURL + "/myaccount";
   } else {
   }
 }
