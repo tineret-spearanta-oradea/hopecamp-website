@@ -102,7 +102,7 @@ const setupUI = (user) => {
   }
   else //user not logged
   {
-    window.location.href = homeURL;
+    window.location.href = "";
   }
 }
 
