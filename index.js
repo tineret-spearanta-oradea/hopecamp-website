@@ -2,19 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
 import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-import { TOKEN } from "./config.js";
-
-const firebaseConfig = {
-    apiKey: "AIzaSyBoTIlt7j61N0p_HKz0Fqnr5l1ABOt-bcM",
-    authDomain: "hopecamp-10d0f.firebaseapp.com",
-    databaseURL: "https://hopecamp-10d0f-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "hopecamp-10d0f",
-    storageBucket: "hopecamp-10d0f.appspot.com",
-    messagingSenderId: "954127886824",
-    appId: "1:954127886824:web:7f8cff00a8e663749a1c5d"
-};
-
-console.log(TOKEN);
+import { firebaseConfig } from "./fb_cfg.js";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
@@ -22,44 +10,12 @@ const database = getDatabase();
 
 let currentURL = ""; 
 
-/* 
-tought this would make a significant change but it's not really the case.
-I should try other ways to optimize for mobile/desktop.
-this is not the best way, but still better than before i think
-
-
-// TODO: do this for every html tho.
-
-function cardWidthAdjuster() {
-  let w = window.innerWidth;
-  console.log(w);
-  const cardUI = document.querySelector("#card");
-  if(w>1000) {
-    cardUI.style.width = "30%";
-  } else if(w>800) {
-    cardUI.style.width = "50%";
-  } else if(w>700) {
-    cardUI.style.width = "60%";
-  } else if(w>600) {
-    cardUI.style.width = "70%";
-  } else if(w>500) {
-    cardUI.style.width = "80%";
-  } else if(w<400) {
-    cardUI.style.width = "90%";
-  }
-}
-
-cardWidthAdjuster();
-window.addEventListener("resize", cardWidthAdjuster);
-
-*/
-
 var signup_button = document.getElementById("signup-btn").addEventListener("click", function () {
-    window.location.href = currentURL + "/inscrie-te";
+    window.location.href = currentURL + "/inscrie-te.html";
 });
 
 var aboutus_button = document.getElementById("about-us").addEventListener("click", function () {
-    window.location.href = currentURL + "/aboutus";
+    window.location.href = currentURL + "/aboutus.html";
 });
 
 var resetpass_button = document.getElementById("forgot-pass").addEventListener("click", function () {
@@ -74,7 +30,7 @@ var resetpass_button = document.getElementById("forgot-pass").addEventListener("
 const setupUI = (user) => {
   if(user) {
     
-    window.location.href = currentURL + "/myaccount";
+    window.location.href = currentURL + "/myaccount.html";
   } else {
     
   }

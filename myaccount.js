@@ -1,16 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
 import { getDatabase, ref, child, get, set  } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 import { getAuth, onAuthStateChanged, signOut} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-
-const firebaseConfig = {
-    apiKey: "AIzaSyBoTIlt7j61N0p_HKz0Fqnr5l1ABOt-bcM",
-    authDomain: "hopecamp-10d0f.firebaseapp.com",
-    databaseURL: "https://hopecamp-10d0f-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "hopecamp-10d0f",
-    storageBucket: "hopecamp-10d0f.appspot.com",
-    messagingSenderId: "954127886824",
-    appId: "1:954127886824:web:7f8cff00a8e663749a1c5d"
-};
+import { firebaseConfig } from "./fb_cfg.js";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
@@ -34,7 +25,7 @@ function stopLoading() {
 }
 
 var aboutus_button = document.getElementById("about-us").addEventListener("click", function () {
-  window.location.href = currentURL + "/aboutus";
+  window.location.href = currentURL + "/aboutus.html";
 });
 
 

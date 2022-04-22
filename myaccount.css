@@ -37,6 +37,9 @@ textarea {
   margin: 3em auto 3em auto;
   width: 24rem;
   float: center;
+  clear: left;
+  overflow: auto;
+  /* overflow:auto; // it adds extra scroll bar wich is not what i want */
 }
 #card-content {
   font-family: "Raleway Thin", sans-serif;
