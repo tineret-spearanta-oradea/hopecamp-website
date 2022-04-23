@@ -9,5 +9,3 @@
   }
 }
 
-
-i changed them cuz it wasn't working

@@ -22,13 +22,14 @@ let USERid;
 let NAMEid;
 let EMAILid;
 let PHONEid;
-let cardHeight = 0;
+let cardAdditionalHeight = 5;
+let messageID = 1;
 
 function stopLoading() {
   document.getElementById("initial-loader").style.display = 'none';
   document.getElementById("initial-loading-msg").style.display = 'none';
   document.getElementById("all-data").style.display = "inline";
-  document.getElementById("not-important-data").style.display="none";
+  // document.getElementById("not-important-data").style.display="none";
   
 }
 
@@ -69,24 +70,52 @@ const handleData = (data) => {
   });
 
   id_text.innerHTML = "ID: " + data["qr_id"].toString();
-  phone.innerHTML = "Numar telefon: <br>" + data["phone"].toString();
-  age.innerHTML = "Varsta: <br>" + data["age"].toString();
-  church.innerHTML = "Biserica: <br>" + data["church"];
-  cui_platesc.innerHTML = "Cui platesc: <br>" + data["cui_platesc"].toString();
-  payed.innerHTML = "Achitat: <br>" + data["payed"].toString();
-  contribui.innerHTML = "Cum contribui: <br>" + data["contribui"].toString();
-  cazare_cu.innerHTML = "Preferinte cazare: <br>" + data["cazare_cu"].toString();
-  observatii_sugestii.innerHTML = "Alte observatii/sugestii: <br>" + data["observatii_sugestii"].toString();
+  phone.innerHTML = "Numar telefon: " + data["phone"].toString();
+  age.innerHTML = "Varsta: " + data["age"].toString();
+  church.innerHTML = "Biserica: " + data["church"];
+  cui_platesc.innerHTML = "Cui platesc: " + data["cui_platesc"].toString();
+  payed.innerHTML = "Achitat: " + data["payed"].toString();
+  contribui.innerHTML = "Cum contribui: " + data["contribui"].toString();
+  cazare_cu.innerHTML = "Preferinte cazare: " + data["cazare_cu"].toString();
+  observatii_sugestii.innerHTML = "Alte obsv(MSJ TRIMISE): " + data["observatii_sugestii"].toString();
 
-  pfp.setAttribute('src', data["img_url"]);
+  // pfp.setAttribute('src', data["img_url"]);
 
   if(data["admin"]) {
     document.getElementById("admins-db").style.display = "flex";
-    document.getElementById("card").style.height = "42rem";
-    cardHeight += 2;
+    cardAdditionalHeight += 2;
+    document.getElementById("card").style.height = (40+cardAdditionalHeight).toString() + "rem";
   }
 
+  get(child(dbRef, `messages/${USERid}`)).then((snapshot) => {
+    let numberOfExistingMsg=0;
+
+    if (snapshot.exists()) {
+      numberOfExistingMsg = countProperties(snapshot.val());
+      messageID += numberOfExistingMsg;
+
+      const msg_data = snapshot.val();
+      let dateDiff = Date.now() - msg_data[numberOfExistingMsg]["time_of_send"];
+      dateDiff = new Date(dateDiff).getHours();
+
+      if(dateDiff<24) {
+        // disable submit button.
+        const msg_submit_btn = document.querySelector("#msg-submit");
+        msg_submit_btn.value = "Trimis";
+        msg_submit_btn.style.backgroundImage = "-webkit-linear-gradient(right, #c0c0c0, #838383)";
+        msg_submit_btn.disabled = true;
+        
+        const msg_textarea = document.querySelector("#msg-text");
+        msg_textarea.placeholder = `Ai trimis deja un mesaj. Reîncearcă în ${26-dateDiff}h.`;
+        msg_textarea.disabled = true;
+      }
+    }
+  });
+  // .catch((error) => {
+  //   console.log(error.);
+  // });
   stopLoading();
+
 }
 
 
@@ -100,9 +129,10 @@ const setupUI = (user) => {
       } else {
         console.log("No data available");
       }
-    }).catch((error) => {
-      console.error(error);
-    });
+    })
+    // .catch((error) => {
+    //   console.error(error.message);
+    // });
 
   }
   else //user not logged
@@ -122,7 +152,7 @@ const admins_db = document.getElementById("admins-db").addEventListener("click",
   window.location.href = adminsURL;
   // when getting there, i have to check if user has admin (someone might see go to /admins manually but they have to be signed in with admins priv.)
 });
-
+/*
 let clicksOnExpandData = 0;
 const expand_data = document.getElementById("expand-data").addEventListener("click", function() {
   clicksOnExpandData ++;
@@ -130,15 +160,15 @@ const expand_data = document.getElementById("expand-data").addEventListener("cli
     // Show data
     document.getElementById("not-important-data").style.display="inline";
     document.getElementById("expand-data").innerHTML = "Ascunde datele tale &#9660;";
-    document.getElementById("card").style.height = (85+cardHeight).toString() + "rem";
+    document.getElementById("card").style.height = (93+cardAdditionalHeight).toString() + "rem";
   } else {
     // Hide data
     document.getElementById("not-important-data").style.display="none";
-    document.getElementById("expand-data").innerHTML = "Afiseaza datele tale &#x25B6;";
-    document.getElementById("card").style.height = (40+cardHeight).toString + "rem";
+    document.getElementById("expand-data").innerHTML = "Afișează datele tale &#x25B6;";
+    document.getElementById("card").style.height = (40+cardAdditionalHeight).toString() + "rem";
   }
 });
-
+*/
 const submit_btn = document.getElementById('msg-submit').addEventListener("click", function () {
   const message_data = {
     time_of_send: Date.now(),
@@ -148,23 +178,20 @@ const submit_btn = document.getElementById('msg-submit').addEventListener("click
     sender_phone: PHONEid,
   };
   
-  get(child(dbRef, `messages/` + USERid)).then((snapshot) => {
-    let messageID = 1;
-    if (snapshot.exists()) {
-      var numberOfExistingMsg = countProperties(snapshot.val());
-      messageID += numberOfExistingMsg;
-    } else {
-      // alert("No data available");
-    }
-
-    set(ref(database, 'messages/' + USERid + '/' + messageID), message_data)
-    .then(function() {
-      
-    })
-    .catch(function(error) {
-      console.log(error.message);
-    });;
+  
+  set(ref(database, 'messages/' + USERid + '/' + messageID), message_data)
+  .then(function() {
+    // Restricting the user to send anymore messages.
+    const msg_submit_btn = document.querySelector("#msg-submit");
+    msg_submit_btn.value = "Trimis";
+    msg_submit_btn.style.backgroundImage = "-webkit-linear-gradient(right, #c0c0c0, #838383)";
+    msg_submit_btn.disabled = true;
+  })
+  .catch(function(error) {
+    alert("A apărut o eroare la trimiterea mesajului tău. Va rugam incercati mai tarziu. \n(error.msg): " + error.message);
   });
+  
+
   
 });
 
@@ -183,6 +210,18 @@ function otherUIStuff() {
   document.getElementById("days-left").innerHTML = diffDays.toString() + " zile";
 }
 
+// POPUP
+document.querySelector("#div-trigger-popup").addEventListener("click", function(){
+    document.querySelector('.hover_bg').style.display = 'block';
+});
+// document.querySelector('.hover_bg').addEventListener("click", function(){
+//     document.querySelector('.hover_bg').style.display = 'none';
+// });
+document.querySelector('.popupCloseButton').addEventListener("click", function(){
+    document.querySelector('.hover_bg').style.display = 'none';
+});
+
+
 
 function countProperties(obj) {
     var count = 0;
@@ -194,3 +233,4 @@ function countProperties(obj) {
 
     return count;
 }
+

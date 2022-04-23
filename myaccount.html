@@ -12,9 +12,10 @@
 <body>
     <div id="card">
         <div id="card-content">
-            <button type="button" class="header-buttons" id="logout">LOG OUT</button>
-            <button type="button" class="header-buttons" id="about-us">ABOUT US</button>
-
+            <div id="header">
+                <button type="button" class="header-buttons" id="logout">LOG OUT</button>
+                <button type="button" class="header-buttons" id="about-us">ABOUT US</button>
+            </div>
             
 
             <div id="card-title">
@@ -30,49 +31,64 @@
                 <input id="admins-db" type="button" name="admins-dashboard" value="ADMINS DASHBOARD"  />
 
                 <div id="updatable-info">
-                    &nbsp Ne bucuram ca ai ales sa vii cu noi in tabara! Au mai ramas 
+                    &nbsp Ne bucurăm că ai ales să vii cu noi in tabără! Au mai ramas 
                     <span id="days-left">x zile</span>
-                    pana la tabara! (Yayy🎉)
+                    până la tabară! (Yayy🎉)
                     <br>
                     <div id="talk-to-us">
-                    &nbsp Intre timp, daca vrei, ne poti spune ce abia astepti cel mai mult din tabara sau orice alte ganduri care le ai pentru noi.
+                    &nbsp Între timp, dacă vrei, ne poți spune ce aștepți cel mai mult din tabară sau orice alte gânduri care le ai pentru noi.
                     <textarea id="msg-text" name = "description" placeholder="Scrie-ne un mesaj..." ></textarea> 
                     <input type="button" id="msg-submit" value="Trimite">
                     </div>
                 </div>
                 <div id="info-expand-data">
-                    &nbsp De asemenea poti da click mai jos pentru a vedea datele cu care te-ai inscris in tabara.
-                    Daca ai gresit ceva si doresti sa modifici scrie-ne folosind campul butonul de mai sus.
+                    &nbsp De asemenea poți da click mai jos pentru a vedea datele cu care te-ai înscris in tabără.
+                    Dacă ai greșit ceva și dorești să modifici scrie-ne folosind câmpul și butonul de mai sus.
                 </div>
-                <div id="expand-data">
-                    Afiseaza datele tale &#9654;
+
+                <div id="div-trigger-popup" style = "text-align: center;">
+                    <a id="trigger_popup">Afișează datele tale</a>
                 </div>
-                <div id="not-important-data">
-                    <div id="qrcode" style="margin-top: 1rem;"></div>
-                    <p style="text-align: center; font-size: 9pt; margin-bottom: 0rem;">
-                        Acest cod QR va fi folosit in tabara
-                    </p>
-                    <p id="id_text">ID: </p> 
-                    <p class="list" id="phone">Numar telefon : </p>
-                    <p class="list" id="age">Varsta : </p>
-                    <p class="list" id="church">Biserica : </p>
+                <!-- <div id="expand-data">
+                    Afișează datele tale &#9654;
+                </div>
+
+                 <div id="not-important-data">
+                    
+                </div> -->
+            </div>
+        </div>
+    </div>
+    
+    <!--popup from https://html-online.com/articles/simple-popup-box/-->
+    <div class="hover_bg">
+        <span class="helper"></span>
+        <div>
+            <div id="qrcode" style="margin-top: 1rem;"></div>
+            <p style="text-align: center; font-size: 9pt; margin-bottom: 0rem;">
+                Acest cod QR va fi folosit in tabără
+            </p>
+            <div class="popupCloseButton">&times;</div>
+            <p id="id_text">ID: </p> 
+                    <p class="list" id="phone">Număr telefon : </p>
+                    <p class="list" id="age">Vârstă : </p>
+                    <p class="list" id="church">Biserică : </p>
                     <p class="list" id="cui-platesc">Cui platesc taxa de inscriere -X lei- : </p>
                     <p class="list" id="payed">Achitat : (checbox)</p>
                     <p class="list" id="contribui">Cu ce contribui : </p>
                     <p class="list" id="cazare-cu">Preferinte cazare : </p>
-                    <p class="list" id="observatii-sugestii">Alte observatii/sugestii: : </p>
-                
+                    <p class="list" id="observatii-sugestii">Alte obsv (MESAJE TRIMISE): </p>
+                <!--
                     <p class="list" style="margin-top:3rem; text-align: center;">Poza:</p>
-                    <div id="picture">
+                     <div id="picture">
                         <img id="pfp" alt="">
-                    </div>
-                </div>
-            </div>
+                    </div> -->
         </div>
     </div>
 
     <script src="./qrcode.js" defer></script>
     <script src="./myaccount.js" type="module"></script>
+
 
 </body>
 

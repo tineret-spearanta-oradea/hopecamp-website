@@ -10,13 +10,14 @@
 body {
   background: -webkit-linear-gradient(bottom, var(--white), var(--primary));
   background-repeat: no-repeat;
+  
 }
 label {
   font-family: "Raleway", sans-serif;
   font-size: 11pt;
 }
 p {
-  font-family: "Raleway SemiBold", sans-serif;
+  font-family: poppins-regular, sans-serif;
 }
 h4 {
   font-size: 20pt;
@@ -28,6 +29,7 @@ textarea {
 
 .list {
   font-size: 10pt;
+  font-family: poppins-regular, sans-serif;
 }
 #card {
   background: #fbfbfb;
@@ -60,8 +62,11 @@ textarea {
   padding-top: 13px;
   text-align: center;
 }
+#header {
+  margin-top: 0.5rem;
+}
 #initial-loading-msg {
-  font-family: "Raleway SemiBold", sans-serif;
+  font-family: roboto-light, sans-serif;
   font-size: 10pt;
   margin-top: 2rem;
   margin-bottom: 3rem;
@@ -83,17 +88,27 @@ textarea {
 }
 #expand-data {
   cursor: pointer;
-  font-family: "Raleway SemiBold", sans-serif;
+  color:rgba(27, 46, 133, 0.76);
+  font-family: poppins-regular, sans-serif;
+  font-size: 11pt;
 }
 #pfp {
   width: 50%;
   height: 50%;
 }
+
 #logout {
   float: left;
+  /* background-color: #e6e6e6; */
+  background: -webkit-linear-gradient(right, #ffffff,  #e7e7e7);
+  border-radius: 2px;
 }
 #about-us {
   float: right;
+   /* background-color: #e6e6e6; */
+  background: -webkit-linear-gradient(left, #ffffff,  #e7e7e7);
+
+  border-radius: 2px;
 }
 #hello {
   color: #000000;
@@ -133,8 +148,10 @@ textarea {
   justify-content: center;
 }
 #id_text {
-  font-style: italic;
+  /* font-style: italic; */
+  font-family: roboto-light, sans-serif;
   text-align: center;
+  margin: 0 auto;
   font-size: 8pt;
 }
 #days-left {
@@ -168,33 +185,34 @@ textarea {
   background: -webkit-linear-gradient(right, var(--third), var(--secondary));
   border: none;
   border-radius: 7px;
-  box-shadow: 0px 1px 8px #0f63ca;
   cursor: pointer;
   color: white;
-  font-family: "Raleway SemiBold", sans-serif;
-  letter-spacing: 1px;
+  font-family: poppins-regular, sans-serif;
+  letter-spacing: 0px;
   margin: 0 auto;
   margin-top: 15px;
   display: flex;
   float: right;
   margin: 0rem auto 0rem auto;
 }
-#msg-submit:hover {
+#msg-submit:disabled {
+  cursor:default;
+}
+#msg-submit:hover:enabled {
   box-shadow: 0px 1px 18px var(--secondary);
 }
 
 #info-expand-data {
   margin-top: 2.5rem;
   font-size: 11pt;
+  font-family: poppins-regular, sans-serif;
   margin-bottom: 2rem;
 }
 
-
 .header-buttons {
   color: var(--secondary);
-  background-color:rgba(255, 255, 255, 0);
   border: 0px;
-  font-family: "Raleway", sans-serif;
+  font-family: poppins-regular, sans-serif;
   font-size: 10pt;
   cursor: pointer;
 }
@@ -211,6 +229,66 @@ textarea {
   width: 100%;
 }
 
+#trigger_popup {
+  cursor: pointer;
+  color:rgba(27, 46, 133, 0.76);
+  font-family: poppins-regular, sans-serif;
+  font-size: 11pt;
+  border-radius: 2px;
+  background-color: #e7e7e715;
+  padding: 2%;
+  box-shadow: 1px 1px 7px #0000009a;
+}
+.hover_bg{
+    background:rgba(0,0,0,.4);
+    /* cursor:pointer; */
+    display:none;
+    height:100%;
+    position:fixed;
+    text-align:center;
+    top:0;
+    width:100%;
+    z-index:10000;
+}
+.hover_bg .helper{
+    display:inline-block;
+    height:100%;
+    vertical-align:middle;
+}
+.hover_bg > div {
+    background-color: #fff;
+    box-shadow: 10px 10px 60px #555;
+    display: inline-block;
+    height: auto;
+    max-width: 24rem;
+    min-height: 100px;
+    vertical-align: middle;
+    width: 16rem;
+    position: relative;
+    border-radius: 8px;
+    padding: 3px 1%;
+}
+.popupCloseButton {
+    background-color: #fff;
+    border: 3px solid #999;
+    border-radius: 50px;
+    cursor: pointer;
+    display: inline-block;
+    font-family: arial;
+    font-weight: bold;
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    font-size: 25px;
+    line-height: 30px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+}
+.popupCloseButton:hover {
+    background-color: #ccc;
+}
+
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
@@ -219,6 +297,10 @@ textarea {
 @font-face {
   font-family: poppins-regular;
   src: url(fonts/Poppins-Regular.ttf);
+}
+@font-face {
+  font-family: poppins-bold;
+  src: url(fonts/Poppins-Bold.ttf);
 }
 @font-face {
   font-family: roboto-light;

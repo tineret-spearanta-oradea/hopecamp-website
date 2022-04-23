@@ -1,23 +1,42 @@
 For now:
-    - signup 
-        - color animation on button when checkbox checked
-    - card-adjuster for every html? or find a better way (actually iy's about zoom not about card width)
+    - myaccount.js: line 123
+    - hopecamp LOGO in page's title
+
+    - scoatem "alte obsv" pentru ca avem measjul din contul meu
+
+BUGS:
+    - end-date (signup.css) nu arata cum trebuie
+
     - make card height dependent on last element.
-    - after sending message, make it unavailable
+        - overflow auto? sau ajustare manuala (schimb heightul pe click)
+
+    - Safari doesn't limit date input
+
+    - data popup has right margin 
+
+Final touches:
+    - DIACRITICE
+
+    - EDIT DATABASE RULES (hide firebase secrets! - nu e problema ca api_key e public. Should edit rules)
+
+    - reorganize files (login-index)
+
+    - back button - FORGOT pass
+
+    - signup -> reguli
+    
+    - Report a bug? https://docs.netlify.com/forms/setup/?_ga=2.27953532.176706261.1650608804-665670374.1649185265
+
+    - signup - color animation on button when checkbox checked
+
+    - remove .html from URL
 
     - 'myAccount' update (forma de "in tabarA")
 
+    - versetul zilei? in myaccount/login screen
 
-Final touches:
-    - not a bug cuz it works: auth tracking works but it’s kinda lame. only works after page loads.
-    - keyword: architecture
-    - back button - FORGOT
-    - signup -> required fields
-    - signup -> reguli
-    - MyAccount EDIT?
+    - countdown timer in login?
 
     - integrate Attendance (the python proj should do the job, but i have to change some things; also see if scanner works)
+    
     - TEST different behaviour on signup/myacc...
-
-
-    ---currentURL variable is very wierd... but working so dont break it XD
