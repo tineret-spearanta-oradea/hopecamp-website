@@ -3,6 +3,13 @@ import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/9.6
 import { getAuth, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 import { firebaseConfig } from "./fb_cfg.js";
 
+
+const signupURL = "/inscrie-te.html";
+const aboutusURL = "/aboutus.html";
+const forgotPassURL = "/fogot_pass.html";
+const myAccountURL = "/myaccount.html";
+const indexURL = "/index.html";
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const database = getDatabase();
@@ -40,7 +47,7 @@ function validate_email(email) {
 
 const setupUI = (user) => {
   if(user) {
-    window.location.href = currentURL + "/myaccount";
+    window.location.href = myAccountURL;
   } else {
   }
 }

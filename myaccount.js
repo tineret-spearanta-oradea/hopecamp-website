@@ -3,6 +3,13 @@ import { getDatabase, ref, child, get, set  } from "https://www.gstatic.com/fire
 import { getAuth, onAuthStateChanged, signOut} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 import { firebaseConfig } from "./fb_cfg.js";
 
+
+const signupURL = "/inscrie-te.html";
+const aboutusURL = "/aboutus.html";
+const forgotPassURL = "/fogot_pass.html";
+const adminsURL = "/admins.html";
+const indexURL = "/index.html";
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const database = getDatabase();
@@ -15,6 +22,7 @@ let USERid;
 let NAMEid;
 let EMAILid;
 let PHONEid;
+let cardHeight = 0;
 
 function stopLoading() {
   document.getElementById("initial-loader").style.display = 'none';
@@ -25,7 +33,7 @@ function stopLoading() {
 }
 
 var aboutus_button = document.getElementById("about-us").addEventListener("click", function () {
-  window.location.href = currentURL + "/aboutus.html";
+  window.location.href = aboutusURL;
 });
 
 
@@ -45,9 +53,9 @@ const handleData = (data) => {
   var cazare_cu = document.getElementById("cazare-cu");
   var observatii_sugestii = document.getElementById("observatii-sugestii");
 
-  NAMEid = name;
-  EMAILid = email;
-  PHONEid = phone;
+  NAMEid = data["name"];
+  EMAILid = data["email"];
+  PHONEid = data["phone"];
 
   name.innerHTML = "Hello, " + data["name"];
 
@@ -72,6 +80,12 @@ const handleData = (data) => {
 
   pfp.setAttribute('src', data["img_url"]);
 
+  if(data["admin"]) {
+    document.getElementById("admins-db").style.display = "flex";
+    document.getElementById("card").style.height = "42rem";
+    cardHeight += 2;
+  }
+
   stopLoading();
 }
 
@@ -93,7 +107,7 @@ const setupUI = (user) => {
   }
   else //user not logged
   {
-    window.location.href = "";
+    window.location.href = indexURL;
   }
 }
 
@@ -104,6 +118,11 @@ onAuthStateChanged(auth, (user) => {
   
 });
 
+const admins_db = document.getElementById("admins-db").addEventListener("click", function () {
+  window.location.href = adminsURL;
+  // when getting there, i have to check if user has admin (someone might see go to /admins manually but they have to be signed in with admins priv.)
+});
+
 let clicksOnExpandData = 0;
 const expand_data = document.getElementById("expand-data").addEventListener("click", function() {
   clicksOnExpandData ++;
@@ -111,20 +130,22 @@ const expand_data = document.getElementById("expand-data").addEventListener("cli
     // Show data
     document.getElementById("not-important-data").style.display="inline";
     document.getElementById("expand-data").innerHTML = "Ascunde datele tale &#9660;";
-    document.getElementById("card").style.height = "75rem";
+    document.getElementById("card").style.height = (85+cardHeight).toString() + "rem";
   } else {
     // Hide data
     document.getElementById("not-important-data").style.display="none";
     document.getElementById("expand-data").innerHTML = "Afiseaza datele tale &#x25B6;";
-    document.getElementById("card").style.height = "50rem";
+    document.getElementById("card").style.height = (40+cardHeight).toString + "rem";
   }
 });
 
 const submit_btn = document.getElementById('msg-submit').addEventListener("click", function () {
-  const datenow = new Date();
-  let message_data = {
-    timestamp: datenow,
+  const message_data = {
+    time_of_send: Date.now(),
     message: document.getElementById("msg-text").value,
+    sender_name: NAMEid,
+    sender_email: EMAILid,
+    sender_phone: PHONEid,
   };
   
   get(child(dbRef, `messages/` + USERid)).then((snapshot) => {

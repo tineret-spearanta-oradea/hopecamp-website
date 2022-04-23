@@ -4,22 +4,31 @@ import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/9.6
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 import { firebaseConfig } from "./fb_cfg.js";
 
+const signupURL = "/inscrie-te.html";
+const aboutusURL = "/aboutus.html";
+const forgotPassURL = "/fogot_pass.html";
+const myAccountURL = "/myaccount.html";
+const indexURL = "/index.html";
+
+
+const currentURL = "";  // ? 
+
+// Firebase things
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const database = getDatabase();
 
-let currentURL = ""; 
 
 var signup_button = document.getElementById("signup-btn").addEventListener("click", function () {
-    window.location.href = currentURL + "/inscrie-te.html";
+    window.location.href = signupURL;
 });
 
 var aboutus_button = document.getElementById("about-us").addEventListener("click", function () {
-    window.location.href = currentURL + "/aboutus.html";
+    window.location.href = aboutusURL;
 });
 
 var resetpass_button = document.getElementById("forgot-pass").addEventListener("click", function () {
-  window.location.href = currentURL + "/forgot_password";
+  window.location.href = forgotPassURL;
 });
 
 // Ok so this is kind of wierd but this is how i managed user auth tracking. basically if user than redirect to another page.
@@ -30,7 +39,7 @@ var resetpass_button = document.getElementById("forgot-pass").addEventListener("
 const setupUI = (user) => {
   if(user) {
     
-    window.location.href = currentURL + "/myaccount.html";
+    window.location.href = myAccountURL;
   } else {
     
   }

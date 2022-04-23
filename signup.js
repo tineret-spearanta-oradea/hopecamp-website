@@ -4,6 +4,13 @@ import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "htt
 import { getDownloadURL, uploadBytes, getStorage, ref as storage_ref } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-storage.js";
 import { firebaseConfig } from "./fb_cfg.js";
 
+
+const signupURL = "/inscrie-te.html";
+const aboutusURL = "/aboutus.html";
+const forgotPassURL = "/fogot_pass.html";
+const myAccountURL = "/myaccount.html";
+const indexURL = "/index.html";
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const database = getDatabase();
@@ -17,7 +24,7 @@ let currentURL = "";
 
 
 var aboutus_button = document.getElementById("about-us").addEventListener("click", function () {
-  window.location.href =  currentURL + "/aboutus.html";
+  window.location.href =  aboutusURL;
 });
 
 const agree_checked = document.getElementById("agree").addEventListener("change", function() {
@@ -57,8 +64,13 @@ var signup_button = document.getElementById("signup-btn").addEventListener("clic
 
   let somethingIsNotValid;
   // Validate input fields
-  if (validate_email(email) == false || validate_password(password) == false || password != confirm_password) {
-    stopLoadingAndShowError('Emailul sau parola sunt incorecte. Emailul trebuie sa contina "@" iar parola trebuie sa aiba minim 6 caractere.');
+  if (validate_email(email) == false || validate_password(password) == false) {
+    stopLoadingAndShowError('Emailul sau parola sunt incorecte. Emailul trebuie sa contina "@" iar parola trebuie sa aibă minim 6 caractere.');
+    somethingIsNotValid = true;
+  }
+
+  if (password != confirm_password) {
+    stopLoadingAndShowError("Parola nu corespunde cu confirmarea parolei.");
     somethingIsNotValid = true;
   }
 
@@ -101,7 +113,10 @@ var signup_button = document.getElementById("signup-btn").addEventListener("clic
 
 onAuthStateChanged(auth, (user) => {
   if(user) {
+    console.log("logged in");
     pushToDatabaseAndSetupUI(user); // here it goes the setupUI
+  } else {
+    console.log("NOT logged in.");
   }
 });
 
@@ -219,7 +234,7 @@ function validate_field(field) {
 
 const setupUI = (user) => {
   if(user) {
-    window.location.href= currentURL + "/myaccount.html";
+    window.location.href= myAccountURL;
   } else {
     
   }
@@ -232,6 +247,8 @@ function startLoading() {
 }
 
 function stopLoadingAndShowError(err) {
+  // console.log(err);
+  document.getElementById("error").style.display = "inline";
   document.getElementById("error").style.visibility = "visible";
   document.getElementById("announce").innerHTML = err;
   // document.getElementById('error').scrollIntoView();

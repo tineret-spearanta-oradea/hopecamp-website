@@ -21,13 +21,6 @@ input.form-content {
   font-size: 1em !important; 
 }
 
-#forgot-pass {
-  color: var(--secondary);
-  font-family: "Raleway", sans-serif;
-  font-size: 10pt;
-  margin-top: 3px;
-  text-align: right;
-}
 #card {
   background: #fbfbfb;
   border-radius: 8px;
@@ -126,12 +119,14 @@ input.form-content {
   float: right;
 }
 #start-date{
-  width:45%;
+  width:40%;
   float: left;
 }
-#stop-date{
-  width:45%;
-  float:right
+#stop-date{     /* this doesn't look right*/
+  width:40%;
+  /* display: flex;
+  align-items: right; */
+  float:right;
 }
 .form {
   align-items: left;
