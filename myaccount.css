@@ -100,13 +100,13 @@ textarea {
 #logout {
   float: left;
   /* background-color: #e6e6e6; */
-  background: -webkit-linear-gradient(right, #ffffff,  #e7e7e7);
+  background: -webkit-linear-gradient(left,#e7e7e7, var(--white));
   border-radius: 2px;
 }
 #about-us {
   float: right;
    /* background-color: #e6e6e6; */
-  background: -webkit-linear-gradient(left, #ffffff,  #e7e7e7);
+  background: -webkit-linear-gradient(left, var(--white),  #e7e7e7);
 
   border-radius: 2px;
 }
@@ -114,8 +114,8 @@ textarea {
   color: #000000;
   font-family: poppins-regular;
   font-size: 15pt;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
 }
 #admins-db {
   background: #7a9679;

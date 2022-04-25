@@ -8,7 +8,8 @@
     <title>Hope Camp | Log in</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="index.css">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+    <link rel="icon" href="./media/hope_camp_logo_rotund.png">
 
 </head>
 
@@ -35,18 +36,25 @@
                 <label for="email" style="padding-top:13px">
                     &nbsp;Email
                 </label>
-                <input id="email" class="form-content" type="email" name="email" autocomplete="on" required />
-                <div class="form-border"></div>
-                <label for="password" style="padding-top:22px">&nbsp;Parola
-                </label>
-                <input id="password" class="form-content" type="password" name="password" required />
-                <div class="form-border"></div>
 
+            
+                    <input id="email" class="form-content" type="email" name="email" autocomplete="on" required />
+                    <div class="form-border"></div>
+                    <label for="password" style="padding-top:22px">&nbsp;Parola
+                    </label>
+           
+
+                <div>
+                    <input id="password" class="form-content" type="password" name="password" required />
+                    <i class="bi bi-eye-slash" id="togglePassword"></i>
+                    
+                    <div class="form-border"></div>
+                </div>
+                
                 <a href="#" id="forgot-pass">
                     <legend >Ai uitat parola?</legend>
                 </a>
 
-                
                 <input id="submit-btn" type="button" name="submit" value="LOG IN" />
                 <div id="loader"></div>
                 <a  id="signup" >Nu ai un cont? Inscrie-te in tabara folosind butonul de mai jos.</a>
@@ -64,6 +72,7 @@
 src="https://code.jquery.com/jquery-3.2.1.js"
 integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
 crossorigin="anonymous"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 
 <script src="./fb_cfg.js" type="module"></script>

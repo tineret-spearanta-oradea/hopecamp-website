@@ -63,7 +63,8 @@ input.form-content {
 }
 
 #signup-btn {
-  background: -webkit-linear-gradient(left, #5a5a5a, #bdbdbd);
+  /* background-color: #5a5a5a; */
+  background-image: linear-gradient(#5a5a5a, #bdbdbd);
   border: none;
   border-radius: 21px;
   box-shadow: 0px 1px 8px #939393;
@@ -78,10 +79,13 @@ input.form-content {
   /* transition: 1s; */
   width: 153px;
 
+  transition-property: background-image;
+  transition-duration: 0.5s;
   
 }
 #signup-btn:hover { box-shadow: 0px 1px 14px #000000; }
 #error {
+  display: none;
   background-color: #c79da6;
   border-radius: 5px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);

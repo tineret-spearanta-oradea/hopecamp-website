@@ -1,10 +1,8 @@
 For now:
-    - myaccount.js: line 123
-    - hopecamp LOGO in page's title
-
-    - scoatem "alte obsv" pentru ca avem measjul din contul meu
+    - everywhere > hopecamp LOGO in page's title
 
 BUGS:
+    - it automatically signs me out (phone)
     - end-date (signup.css) nu arata cum trebuie
 
     - make card height dependent on last element.
@@ -12,9 +10,13 @@ BUGS:
 
     - Safari doesn't limit date input
 
-    - data popup has right margin 
+    - data popup has left margin  
 
 Final touches:
+    - myaccount (v. tabara) > if !payed show. 
+
+    - when getting to admins, i have to check if user has admin (someone might see go to /admins manually but they have to be signed in with admins priv.)
+
     - DIACRITICE
 
     - EDIT DATABASE RULES (hide firebase secrets! - nu e problema ca api_key e public. Should edit rules)
@@ -31,12 +33,13 @@ Final touches:
 
     - remove .html from URL
 
-    - 'myAccount' update (forma de "in tabarA")
-
     - versetul zilei? in myaccount/login screen
 
     - countdown timer in login?
 
+    - card width on desktop bigger
+
     - integrate Attendance (the python proj should do the job, but i have to change some things; also see if scanner works)
-    
+    nope. make it in admins. with js
+
     - TEST different behaviour on signup/myacc...

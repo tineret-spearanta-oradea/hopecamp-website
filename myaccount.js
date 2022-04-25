@@ -70,13 +70,13 @@ const handleData = (data) => {
   });
 
   id_text.innerHTML = "ID: " + data["qr_id"].toString();
-  phone.innerHTML = "Numar telefon: " + data["phone"].toString();
-  age.innerHTML = "Varsta: " + data["age"].toString();
+  phone.innerHTML = "Nr. tel.: " + data["phone"].toString();
+  age.innerHTML = "Vârsta: " + data["age"].toString();
   church.innerHTML = "Biserica: " + data["church"];
-  cui_platesc.innerHTML = "Cui platesc: " + data["cui_platesc"].toString();
+  cui_platesc.innerHTML = "Cui plătesc: " + data["cui_platesc"].toString();
   payed.innerHTML = "Achitat: " + data["payed"].toString();
   contribui.innerHTML = "Cum contribui: " + data["contribui"].toString();
-  cazare_cu.innerHTML = "Preferinte cazare: " + data["cazare_cu"].toString();
+  cazare_cu.innerHTML = "Preferințe cazare: " + data["cazare_cu"].toString();
   observatii_sugestii.innerHTML = "Alte obsv(MSJ TRIMISE): " + data["observatii_sugestii"].toString();
 
   // pfp.setAttribute('src', data["img_url"]);
@@ -101,12 +101,12 @@ const handleData = (data) => {
       if(dateDiff<24) {
         // disable submit button.
         const msg_submit_btn = document.querySelector("#msg-submit");
-        msg_submit_btn.value = "Trimis";
+        msg_submit_btn.value = " Trimis";
         msg_submit_btn.style.backgroundImage = "-webkit-linear-gradient(right, #c0c0c0, #838383)";
         msg_submit_btn.disabled = true;
         
         const msg_textarea = document.querySelector("#msg-text");
-        msg_textarea.placeholder = `Ai trimis deja un mesaj. Reîncearcă în ${26-dateDiff}h.`;
+        msg_textarea.placeholder = `Ai trimis deja un mesaj. Reîncearcă în ${26-dateDiff}h. (mesajul trimis: '${msg_data[numberOfExistingMsg]['message']}')`;
         msg_textarea.disabled = true;
       }
     }
@@ -150,7 +150,7 @@ onAuthStateChanged(auth, (user) => {
 
 const admins_db = document.getElementById("admins-db").addEventListener("click", function () {
   window.location.href = adminsURL;
-  // when getting there, i have to check if user has admin (someone might see go to /admins manually but they have to be signed in with admins priv.)
+  
 });
 /*
 let clicksOnExpandData = 0;
@@ -183,9 +183,10 @@ const submit_btn = document.getElementById('msg-submit').addEventListener("click
   .then(function() {
     // Restricting the user to send anymore messages.
     const msg_submit_btn = document.querySelector("#msg-submit");
-    msg_submit_btn.value = "Trimis";
+    msg_submit_btn.value = " Trimis";
     msg_submit_btn.style.backgroundImage = "-webkit-linear-gradient(right, #c0c0c0, #838383)";
     msg_submit_btn.disabled = true;
+    document.querySelector("#msg-text").disabled = true;
   })
   .catch(function(error) {
     alert("A apărut o eroare la trimiterea mesajului tău. Va rugam incercati mai tarziu. \n(error.msg): " + error.message);
@@ -208,29 +209,42 @@ function otherUIStuff() {
   const diffTime = Math.abs(date2 - date1);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   document.getElementById("days-left").innerHTML = diffDays.toString() + " zile";
+
+  // POPUP
+  document.querySelector("#div-trigger-popup").addEventListener("click", function(){
+      document.querySelector('.hover_bg').style.display = 'block';
+  });
+
+  let isMouseOverHover = false;
+  document.querySelector(".hover_bg>div").addEventListener("mouseover", function () {
+    isMouseOverHover = true;
+  });
+  document.querySelector(".hover_bg>div").addEventListener("mouseleave", function () {
+    isMouseOverHover = false;
+  });
+  document.querySelector('.hover_bg').addEventListener("click", function(){
+    if(!isMouseOverHover) {
+      document.querySelector('.hover_bg').style.display = 'none';
+    }
+  });
+
+  document.querySelector('.popupCloseButton').addEventListener("click", function(){
+      document.querySelector('.hover_bg').style.display = 'none';
+  });
 }
 
-// POPUP
-document.querySelector("#div-trigger-popup").addEventListener("click", function(){
-    document.querySelector('.hover_bg').style.display = 'block';
-});
-// document.querySelector('.hover_bg').addEventListener("click", function(){
-//     document.querySelector('.hover_bg').style.display = 'none';
-// });
-document.querySelector('.popupCloseButton').addEventListener("click", function(){
-    document.querySelector('.hover_bg').style.display = 'none';
-});
+
 
 
 
 function countProperties(obj) {
-    var count = 0;
+  var count = 0;
 
-    for(var prop in obj) {
-        if(obj.hasOwnProperty(prop))
-            ++count;
-    }
+  for(var prop in obj) {
+    if(obj.hasOwnProperty(prop))
+      ++count;
+  }
 
-    return count;
+  return count;
 }
 

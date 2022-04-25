@@ -31,6 +31,18 @@ var resetpass_button = document.getElementById("forgot-pass").addEventListener("
   window.location.href = forgotPassURL;
 });
 
+const togglePassword = document.querySelector('#togglePassword').addEventListener('click', function () {
+  const password = document.querySelector('#password');
+  const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+  password.setAttribute('type', type);
+  this.classList.toggle('bi-eye');  
+});
+
+const pass_clr = document.querySelector("#password").addEventListener("keypress", function() {
+  if(document.querySelector("#email").value) {
+    document.querySelector('#submit-btn').style.background = "#9ddd8d";
+  }
+})
 // Ok so this is kind of wierd but this is how i managed user auth tracking. basically if user than redirect to another page.
 // there is probably a better way, but it works for now.
 // If u wanna look for a better way of handling this go to https://youtube.com/playlist?list=PL4cUxeGkcC9jUPIes_B8vRjn1_GaplOPQ

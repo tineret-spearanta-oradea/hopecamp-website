@@ -19,9 +19,6 @@ const storage = getStorage();
 const dbRef = ref(database);
 const pfpRef = storage_ref(storage, "profilepics");
 
-let currentURL = ""; 
-
-
 
 var aboutus_button = document.getElementById("about-us").addEventListener("click", function () {
   window.location.href =  aboutusURL;

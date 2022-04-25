@@ -19,6 +19,13 @@ label {
 input.form-content {
   font-size: 1em !important; 
 }
+form i {
+  margin-left: 4.35rem;
+  cursor: pointer;
+  /* display: flex; */
+  /* float: right; */
+}
+
 
 
 #forgot-pass {
@@ -98,6 +105,7 @@ input.form-content {
 }
 #submit-btn {
   background: -webkit-linear-gradient(right, #d4d4d4, #a6a6a6);
+  background-color: #a6a6a6;
   border: none;
   border-radius: 21px;
   box-shadow: 0px 1px 8px #adaaaa;
@@ -111,7 +119,12 @@ input.form-content {
   margin-bottom: 15px;
   transition: 0.25s;
   width: 153px;
+
+  transition-property: background-color;
+  transition-duration: 0.5s;
+
 }
+
 #submit-btn:hover {
   box-shadow: 0px 1px 18px var(--secondary);
 }
@@ -127,8 +140,8 @@ input.form-content {
   letter-spacing: 1px;
   margin: 0 auto;
   margin-top: 15px;
-  transition: 0.25s;
   width: 153px;
+
 }
 #signup-btn:hover {
   box-shadow: 0px 1px 18px #000000;
