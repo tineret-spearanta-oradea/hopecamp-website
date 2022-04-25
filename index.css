@@ -10,9 +10,9 @@ a {
 }
 body {
   /* background: -webkit-linear-gradient(bottom, var(--white), var(--primary)); */
-  background: url(./media/Modern_Contours_10_-_16x9.jpg);
-  background-repeat: no-repeat;
-  background-size: auto;
+  background: url(./media/stellar.gif);
+  background-repeat: repeat;
+  background-size: 100%;
 }
 label {
   font-family: ptserif, sans-serif;
