@@ -14,7 +14,7 @@ body {
   background-repeat: no-repeat;
 }
 label {
-  font-family: "Raleway", sans-serif;
+  font-family: ptserif, sans-serif;
   font-size: 11pt;
 }
 input.form-content {
@@ -34,8 +34,8 @@ input.form-content {
   padding: 12px 44px;
 }
 #card-title {
-  font-family: "Raleway Thin", sans-serif;
-  letter-spacing: 0.25rem;
+  font-family: poppins-regular, sans-serif;
+  letter-spacing: 0.1rem;
   padding-bottom: 1.43rem;
   padding-top: 2.18rem;
   text-align: center;
@@ -56,7 +56,7 @@ input.form-content {
 }
 #signup {
   color: #000000;
-  font-family: "Raleway", sans-serif;
+  font-family: poppins-regular, sans-serif;
   font-size: 10pt;
   margin-top: 16px;
   text-align: center;
@@ -74,8 +74,7 @@ input.form-content {
 }
 
 #signup-btn {
-  /* background-image: linear-gradient(#5a5a5a, #bdbdbd); */
-  /* background-color: #5a5a5a; */
+
   --c1: #5a5a5a;
   --c2: #bdbdbd;
   border: none;
@@ -168,7 +167,8 @@ input.form-content {
   background: -webkit-linear-gradient(right, var(--third), var(--secondary));
   height: 0.2rem;
   margin: -1.1rem auto 0 auto;
-  width: 100px;
+  width: 9rem;
+  border-radius: 20px;
 }
 .small-info {
   color: #7a7a7a;
@@ -198,4 +198,14 @@ input.form-content {
 @keyframes graytocolor {
   from {background-color: -webkit-linear-gradient(left, #5a5a5a, #bdbdbd);}
   to {background-color: -webkit-linear-gradient(right, var(--third), var(--secondary));}
+}
+
+
+@font-face {
+  font-family: poppins-regular;
+  src: url(fonts/Poppins-Regular.ttf);
+}
+@font-face {
+  font-family: ptserif;
+  src: url(fonts/PTSerif-Regular.ttf);
 }

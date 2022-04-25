@@ -9,11 +9,13 @@ a {
   text-decoration: none;
 }
 body {
-  background: -webkit-linear-gradient(bottom, var(--white), var(--primary));
+  /* background: -webkit-linear-gradient(bottom, var(--white), var(--primary)); */
+  background: url(./media/Modern_Contours_10_-_16x9.jpg);
   background-repeat: no-repeat;
+  background-size: auto;
 }
 label {
-  font-family: "Raleway", sans-serif;
+  font-family: ptserif, sans-serif;
   font-size: 11pt;
 }
 input.form-content {
@@ -21,6 +23,7 @@ input.form-content {
 }
 form i {
   margin-left: 0.5em;
+  margin-top: -2rem;
   cursor: pointer;
   /* display: flex; */
   /* float: right; */
@@ -30,8 +33,8 @@ form i {
 
 #forgot-pass {
   color: var(--secondary);
-  font-family: "Raleway", sans-serif;
-  font-size: 10pt;
+  font-family: poppins-regular, sans-serif;
+  font-size: 9pt;
   margin-top: 3px;
   margin-left: 200px;
   text-align: right;
@@ -63,14 +66,14 @@ form i {
   padding: 12px 44px;
 }
 #card-title {
-  font-family: "Raleway Thin", sans-serif;
+  font-family: poppins-regular, sans-serif;
   letter-spacing: 0.25rem;
   padding-bottom: 1.43rem;
-  padding-top: 2.18rem;
+  padding-top: 4rem;
   text-align: center;
 }
 #card-subtitle {
-  font-family: "Raleway Thin", sans-serif;
+  font-family: poppins-regular, sans-serif;
   letter-spacing: 1px;
   padding-bottom: 23px;
   padding-top: 13px;
@@ -88,7 +91,7 @@ form i {
 }
 #announce {
   color: #000000;
-  font-family: "Raleway SemiBold", sans-serif;
+  font-family: poppins-regular, sans-serif;
   font-size: 11pt;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
@@ -98,7 +101,7 @@ form i {
 }
 #signup {
   color: #000000;
-  font-family: "Raleway", sans-serif;
+  font-family: poppins-regular, sans-serif;
   font-size: 10pt;
   margin-top: 3rem;
   text-align: center;
@@ -111,7 +114,7 @@ form i {
   box-shadow: 0px 1px 8px #adaaaa;
   cursor: pointer;
   color: rgb(0, 0, 0);
-  font-family: "Raleway SemiBold", sans-serif;
+  font-family: poppins-regular, sans-serif;
   letter-spacing: 1px;
   height: 42.3px;
   margin: 0 auto;
@@ -135,7 +138,7 @@ form i {
   box-shadow: 0px 1px 8px #0f63ca;
   cursor: pointer;
   color: white;
-  font-family: "Raleway SemiBold", sans-serif;
+  font-family: poppins-regular, sans-serif;
   height: 42.3px;
   letter-spacing: 1px;
   margin: 0 auto;
@@ -144,7 +147,7 @@ form i {
 
 }
 #signup-btn:hover {
-  box-shadow: 0px 1px 18px #000000;
+  box-shadow: 0px 1px 18px var(--secondary);
 }
 #loader {
   margin: 0.5rem auto 0 auto;
@@ -178,11 +181,21 @@ form i {
 .underline-title {
   background: -webkit-linear-gradient(right, var(--third), var(--secondary));
   height: 0.2rem;
-  margin: -1.1rem auto 0 auto;
+  margin: -1.1rem auto 0rem auto;
   width: 100px;
+  border-radius: 20px;
 }
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+@font-face {
+  font-family: poppins-regular;
+  src: url(fonts/Poppins-Regular.ttf);
+}
+@font-face {
+  font-family: ptserif;
+  src: url(fonts/PTSerif-Regular.ttf);
 }
