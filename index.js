@@ -18,22 +18,35 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const database = getDatabase();
 
-window.addEventListener("orientationchange", function() {
-  // Announce the new orientation number
-  alert(window.orientation);
-}, false);
+let isMobile = false;
 
-// if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-//   // if portrait ONLY WORKS IF REFRESHED
-//   if (window.matchMedia("(orientation: portrait)").matches) {
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+  isMobile = true;
+}
+
+// if(isMobile) {
+//   if(window.orientation == 0) {
 //     document.querySelector("#card").style.width = "96%";
-
-//   }
-//   if (window.matchMedia("(orientation: landscape)").matches) {
+//   } else {
 //     document.querySelector("#card").style.width = "70%";
-
 //   }
 // }
+
+window.addEventListener("orientationchange", function() {
+  // Announce the new orientation number
+  if(isMobile) {
+    if(window.orientation == 0) {
+      document.querySelector("#card").style.width = "96%";
+
+    } else {
+      document.querySelector("#card").style.width = "70%";
+
+    }
+  }
+
+}, false);
+
+
 
 var signup_button = document.getElementById("signup-btn").addEventListener("click", function () {
     window.location.href = signupURL;
