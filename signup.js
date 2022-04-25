@@ -28,12 +28,14 @@ const agree_checked = document.getElementById("agree").addEventListener("change"
   if (this.checked) {
     const UIsignupBtn = document.getElementById('signup-btn');
     UIsignupBtn.disable = false;
-    UIsignupBtn.style.backgroundImage = "-webkit-linear-gradient(right, #106fcf, #c272a0)";
+    UIsignupBtn.style.setProperty("--c1", "#106fcf");
+    UIsignupBtn.style.setProperty("--c2", "#c272a0");
     UIsignupBtn.style.animation = "graytocolor 5s infinite"; //NOT working
   } else {
     const UIsignupBtn = document.getElementById('signup-btn');
     UIsignupBtn.disable = true;
-    UIsignupBtn.style.backgroundImage = "-webkit-linear-gradient(left, #5a5a5a, #bdbdbd)";
+    UIsignupBtn.style.setProperty("--c1", "#5a5a5a");
+    UIsignupBtn.style.setProperty("--c2", "#bdbdbd");
   }
 });
 

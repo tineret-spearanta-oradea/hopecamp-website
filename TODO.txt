@@ -1,5 +1,4 @@
 For now:
-    - everywhere > hopecamp LOGO in page's title
 
 BUGS:
     - it automatically signs me out (phone)
@@ -13,6 +12,10 @@ BUGS:
     - data popup has left margin  
 
 Final touches:
+    - OPTIONAL banner (logo, aboutus) 
+
+    - everywhere > logo in tab icon
+
     - myaccount (v. tabara) > if !payed show. 
 
     - when getting to admins, i have to check if user has admin (someone might see go to /admins manually but they have to be signed in with admins priv.)
@@ -28,8 +31,6 @@ Final touches:
     - signup -> reguli
     
     - Report a bug? https://docs.netlify.com/forms/setup/?_ga=2.27953532.176706261.1650608804-665670374.1649185265
-
-    - signup - color animation on button when checkbox checked
 
     - remove .html from URL
 

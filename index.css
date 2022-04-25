@@ -20,7 +20,7 @@ input.form-content {
   font-size: 1em !important; 
 }
 form i {
-  margin-left: 4.35rem;
+  margin-left: 4.35em;
   cursor: pointer;
   /* display: flex; */
   /* float: right; */
@@ -121,7 +121,7 @@ form i {
   width: 153px;
 
   transition-property: background-color;
-  transition-duration: 0.5s;
+  transition-duration: 0.75s;
 
 }
 
