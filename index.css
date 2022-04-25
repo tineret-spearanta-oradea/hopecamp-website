@@ -56,7 +56,7 @@ form i {
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
   height: 44rem;
   margin: 3em auto 3em auto;
-  width: 24rem;
+  width: 24rem; /*change to 23 or smaller*/
   /* width: 50vw; */
   /* width: 96%; */
   /* width: 400px; */
