@@ -19,7 +19,17 @@ const auth = getAuth();
 const database = getDatabase();
 
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-  document.querySelector("#card").style.width = "96%";
+  // if portrait
+  if (window.matchMedia("(orientation: portrait)").matches) {
+   // you're in PORTRAIT mode
+    document.querySelector("#card").style.width = "96%";
+
+  }
+  if (window.matchMedia("(orientation: landscape)").matches) {
+   // you're in LANDSCAPE mode
+    document.querySelector("#card").style.width = "70%";
+
+  }
 }
 
 var signup_button = document.getElementById("signup-btn").addEventListener("click", function () {
