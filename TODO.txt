@@ -1,4 +1,8 @@
 For now:
+    - #card not centered...
+        - centered on index, copy that to the others
+
+    - index> enter.keypress=login btn
 
 BUGS:
     - it automatically signs me out (phone)
@@ -10,8 +14,13 @@ BUGS:
     - Safari doesn't limit date input
 
     - data popup has left margin  
+    
 
 Final touches:
+    - NETOPIA Payments (nu)
+
+    - font!
+
     - OPTIONAL banner (logo, aboutus) 
 
     - everywhere > logo in tab icon

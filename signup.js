@@ -19,6 +19,30 @@ const storage = getStorage();
 const dbRef = ref(database);
 const pfpRef = storage_ref(storage, "profilepics");
 
+let isMobile = false;
+
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+  isMobile = true;
+}
+
+// initial card width setup
+function cardWidthSetup() {
+  if(isMobile) {
+    if(window.orientation == 0) {
+      document.querySelector("#card").style.width = "96%";
+    } else {
+      document.querySelector("#card").style.width = "55%";
+    }
+  }
+}
+
+cardWidthSetup();
+
+window.addEventListener("orientationchange", function() {
+  // Announce the new orientation number
+  cardWidthSetup();
+
+}, false);
 
 var aboutus_button = document.getElementById("about-us").addEventListener("click", function () {
   window.location.href =  aboutusURL;
@@ -30,7 +54,7 @@ const agree_checked = document.getElementById("agree").addEventListener("change"
     UIsignupBtn.disable = false;
     UIsignupBtn.style.setProperty("--c1", "#106fcf");
     UIsignupBtn.style.setProperty("--c2", "#c272a0");
-    UIsignupBtn.style.animation = "graytocolor 5s infinite"; //NOT working
+    // UIsignupBtn.style.animation = "graytocolor 5s infinite"; //NOT working
   } else {
     const UIsignupBtn = document.getElementById('signup-btn');
     UIsignupBtn.disable = true;
@@ -39,7 +63,19 @@ const agree_checked = document.getElementById("agree").addEventListener("change"
   }
 });
 
-var signup_button = document.getElementById("signup-btn").addEventListener("click", function ()  {
+// Make enter button equivalent with Submit button
+const UIEmailAndPass = document.querySelectorAll(".form-content");
+for(let i=0; i<UIEmailAndPass.length; i++)
+{
+  UIEmailAndPass[i].addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      document.querySelector("#signup-btn").click();
+    }
+  });
+}
+
+const signup_button = document.getElementById("signup-btn").addEventListener("click", function ()  {
   
   // UI setup (loading)
   startLoading();
@@ -250,7 +286,7 @@ function stopLoadingAndShowError(err) {
   document.getElementById("error").style.display = "inline";
   document.getElementById("error").style.visibility = "visible";
   document.getElementById("announce").innerHTML = err;
-  // document.getElementById('error').scrollIntoView();
+  document.getElementById('error').scrollIntoView();
   document.getElementById("loader").style.visibility = 'hidden';
   document.getElementById("last-small-info").style.visibility = "hidden";
 

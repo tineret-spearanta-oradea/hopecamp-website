@@ -15,7 +15,7 @@ body {
   background-size: 100%;
 }
 label {
-  font-family: ptserif, sans-serif;
+  font-family: jakarta, sans-serif;
   font-size: 11pt;
 }
 input.form-content {
@@ -34,7 +34,7 @@ form i {
 #forgot-pass {
   color: var(--secondary);
   font-family: poppins-regular, sans-serif;
-  font-size: 9pt;
+  font-size: 8pt;
   margin-top: 3px;
   margin-left: 200px;
   text-align: right;
@@ -56,7 +56,7 @@ form i {
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
   height: 44rem;
   margin: 3em auto 3em auto;
-  width: 24rem; /*change to 23 or smaller*/
+  width: 27rem; /*change to 23 or smaller*/
   /* width: 50vw; */
   /* width: 96%; */
   /* width: 400px; */
@@ -100,15 +100,30 @@ form i {
   
 }
 #signup {
+  
   color: #000000;
   font-family: poppins-regular, sans-serif;
   font-size: 10pt;
   margin-top: 3rem;
   text-align: center;
 }
+
+
+@property --c1{
+  syntax: '<color>';
+  inherits: false;
+  initial-value: gray;
+}
+@property --c2{
+  
+  syntax: '<color>';
+  inherits: false;
+  initial-value: gray;
+}
 #submit-btn {
-  background: -webkit-linear-gradient(right, #d4d4d4, #a6a6a6);
-  background-color: #a6a6a6;
+  --c1: #d4d4d4;
+  --c2: #a6a6a6;
+  
   border: none;
   border-radius: 21px;
   box-shadow: 0px 1px 8px #adaaaa;
@@ -123,8 +138,10 @@ form i {
   transition: 0.25s;
   width: 153px;
 
-  transition-property: background-color;
-  transition-duration: 0.75s;
+  transition:--c1 0.75s;
+  transition:--c2 0.75s;
+
+  background: -webkit-linear-gradient(right, var(--c1), var(--c2));
 
 }
 
@@ -196,6 +213,6 @@ form i {
   src: url(fonts/Poppins-Regular.ttf);
 }
 @font-face {
-  font-family: ptserif;
-  src: url(fonts/PTSerif-Regular.ttf);
+  font-family: jakarta;
+  src: url(fonts/PlusJakartaSans-Regular.ttf);
 }

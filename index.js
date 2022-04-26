@@ -6,7 +6,7 @@ import { firebaseConfig } from "./fb_cfg.js";
 
 const signupURL = "/inscrie-te.html";
 const aboutusURL = "/aboutus.html";
-const forgotPassURL = "/fogot_pass.html";
+const forgotPassURL = "/forgot_password.html";
 const myAccountURL = "/myaccount.html";
 const indexURL = "/index.html";
 
@@ -24,29 +24,24 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
   isMobile = true;
 }
 
-// if(isMobile) {
-//   if(window.orientation == 0) {
-//     document.querySelector("#card").style.width = "96%";
-//   } else {
-//     document.querySelector("#card").style.width = "70%";
-//   }
-// }
-
-window.addEventListener("orientationchange", function() {
-  // Announce the new orientation number
+// initial card width setup
+function cardWidthSetup() {
   if(isMobile) {
     if(window.orientation == 0) {
       document.querySelector("#card").style.width = "96%";
-
     } else {
-      document.querySelector("#card").style.width = "70%";
-
+      document.querySelector("#card").style.width = "55%";
     }
   }
+}
+
+cardWidthSetup();
+
+window.addEventListener("orientationchange", function() {
+  // Announce the new orientation number
+  cardWidthSetup();
 
 }, false);
-
-
 
 var signup_button = document.getElementById("signup-btn").addEventListener("click", function () {
     window.location.href = signupURL;
@@ -69,9 +64,23 @@ const togglePassword = document.querySelector('#togglePassword').addEventListene
 
 const pass_clr = document.querySelector("#password").addEventListener("keypress", function() {
   if(document.querySelector("#email").value) {
-    document.querySelector('#submit-btn').style.background = "#9ddd8d";
+    const UISubmitBtn = document.querySelector('#submit-btn');
+    UISubmitBtn.style.setProperty("--c1", "#c7dfc3");
+    UISubmitBtn.style.setProperty("--c2", "#81d461");
   }
 })
+
+// Make enter button equivalent with Submit button
+const UIEmailAndPass = document.querySelectorAll(".form-content");
+for(let i=0; i<UIEmailAndPass.length; i++)
+{
+  UIEmailAndPass[i].addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      document.querySelector("#submit-btn").click();
+    }
+  });
+}
 // Ok so this is kind of wierd but this is how i managed user auth tracking. basically if user than redirect to another page.
 // there is probably a better way, but it works for now.
 // If u wanna look for a better way of handling this go to https://youtube.com/playlist?list=PL4cUxeGkcC9jUPIes_B8vRjn1_GaplOPQ

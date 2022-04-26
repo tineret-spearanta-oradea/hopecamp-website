@@ -25,6 +25,32 @@ let PHONEid;
 let cardAdditionalHeight = 5;
 let messageID = 1;
 
+let isMobile = false;
+
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+  isMobile = true;
+}
+
+// initial card width setup
+function cardWidthSetup() {
+  if(isMobile) {
+    if(window.orientation == 0) {
+      document.querySelector("#card").style.width = "96%";
+    } else {
+      document.querySelector("#card").style.width = "55%";
+    }
+  }
+}
+
+cardWidthSetup();
+
+window.addEventListener("orientationchange", function() {
+  // Announce the new orientation number
+  cardWidthSetup();
+
+}, false);
+
+
 function stopLoading() {
   document.getElementById("initial-loader").style.display = 'none';
   document.getElementById("initial-loading-msg").style.display = 'none';
