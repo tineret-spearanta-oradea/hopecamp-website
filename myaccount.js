@@ -122,7 +122,7 @@ const handleData = (data) => {
 
       const msg_data = snapshot.val();
       let dateDiff = Date.now() - msg_data[numberOfExistingMsg]["time_of_send"];
-      dateDiff = new Date(dateDiff).getHours();
+      dateDiff = (dateDiff /  (1000 * 3600)).toFixed();
 
       if(dateDiff<24) {
         // disable submit button.
@@ -132,7 +132,7 @@ const handleData = (data) => {
         msg_submit_btn.disabled = true;
         
         const msg_textarea = document.querySelector("#msg-text");
-        msg_textarea.placeholder = `Ai trimis deja un mesaj. Reîncearcă în ${26-dateDiff}h. (mesajul trimis: '${msg_data[numberOfExistingMsg]['message']}')`;
+        msg_textarea.placeholder = `Ai trimis deja un mesaj. Reîncearcă în ${24-dateDiff}h. (mesajul trimis: '${msg_data[numberOfExistingMsg]['message']}')`;
         msg_textarea.disabled = true;
       }
     }

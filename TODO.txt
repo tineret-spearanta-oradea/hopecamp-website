@@ -1,9 +1,5 @@
 For now:
-    - #card not centered...
-        - centered on index, copy that to the others
-
-    - index> enter.keypress=login btn
-
+    -
 BUGS:
     - it automatically signs me out (phone)
     - end-date (signup.css) nu arata cum trebuie
@@ -13,12 +9,9 @@ BUGS:
 
     - Safari doesn't limit date input
 
-    - data popup has left margin  
-    
+    - get nr of site visitors!    
 
 Final touches:
-    - NETOPIA Payments (nu)
-
     - font!
 
     - OPTIONAL banner (logo, aboutus) 
@@ -53,3 +46,13 @@ Final touches:
     nope. make it in admins. with js
 
     - TEST different behaviour on signup/myacc...
+
+
+
+- singup > transport
+- index > inscrie-te
+- signup > bo\iserica preset
+- confirma regulament (majori si minori)
+
+
+

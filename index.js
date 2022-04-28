@@ -37,6 +37,11 @@ function cardWidthSetup() {
 
 cardWidthSetup();
 
+$(".menu-toggle-btn").click(function(){
+  $(this).toggleClass("fa-times");
+  $(".navigation-menu").toggleClass("active");
+});
+
 window.addEventListener("orientationchange", function() {
   // Announce the new orientation number
   cardWidthSetup();
@@ -65,7 +70,7 @@ const togglePassword = document.querySelector('#togglePassword').addEventListene
 const pass_clr = document.querySelector("#password").addEventListener("keypress", function() {
   if(document.querySelector("#email").value) {
     const UISubmitBtn = document.querySelector('#submit-btn');
-    UISubmitBtn.style.setProperty("--c1", "#c7dfc3");
+    UISubmitBtn.style.setProperty("--c1", "#5b814c");
     UISubmitBtn.style.setProperty("--c2", "#81d461");
   }
 })

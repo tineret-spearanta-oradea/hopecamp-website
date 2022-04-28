@@ -1,7 +1,13 @@
 :root {
-  --primary: #202336; /*sau: #336fa3*/
+  /* --primary: #202336; /*sau: #336fa3*
   --secondary: #106fcf;
-  --third: #c272a0;
+  --third: #c272a0; */
+  --color1: #ffbb19;
+  --color2: #ff9000;
+  --color3: #463015;
+  --color4: #386329;
+  --color5: #292963;
+
   --white: #ffffff;
   --gray: #949494;
 }
@@ -13,9 +19,12 @@ body {
   /* background: -webkit-linear-gradient(bottom, var(--white), var(--primary));
   background-repeat: no-repeat; */
 
-  background: url(./media/sparks1.gif);
-  background-repeat: repeat;
-  background-size: 100%;
+  background: url(./media/camp_bg_long.png);
+  background-repeat: no-repeat;
+  /* background-attachment: fixed; */
+  background-position: center;
+  background-size: cover;
+
 }
 label {
   font-family: jakarta, sans-serif;
@@ -29,7 +38,7 @@ input.form-content {
   background: #fbfbfb;
   border-radius: 8px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
-  height: 110rem;
+  height: 99rem;
   margin: 3em auto 3em auto;
   width: 27rem;
   float: center;
@@ -66,6 +75,10 @@ input.form-content {
   margin-top: 16px;
   text-align: center;
 }
+#period-side {
+  width: 40%;
+  display:grid;
+}
 
 @property --c1{
   syntax: '<color>';
@@ -77,16 +90,21 @@ input.form-content {
   inherits: false;
   initial-value: gray;
 }
+@property --c3{
+  syntax: '<color>';
+  inherits: false;
+  initial-value: gray;
+}
 
 #signup-btn {
 
   --c1: #5a5a5a;
   --c2: #bdbdbd;
+  --c3: #fff;
   border: none;
   border-radius: 21px;
   box-shadow: 0px 1px 8px #939393;
   cursor: pointer;
-  color: white;
   font-family: poppins-regular, sans-serif;
   height: 42.3px;
   letter-spacing: 1px;
@@ -95,17 +113,19 @@ input.form-content {
   margin-bottom: 1rem;
   /* transition: 1s; */
   width: 153px;
-
+  
   transition:--c1 1s;
   transition:--c2 1s;
+  transition:--c3 1s;
+  color: var(--c3);
   background-image: -webkit-linear-gradient(left, var(--c1), var(--c2));
 }
-#signup-btn:hover { 
+#signup-btn:hover{ 
   box-shadow: 0px 1px 14px #000000;
 }
 #error {
   display: none;
-  background-color: #c79da6;
+  background-color: #fdb16a;
   border-radius: 5px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
   margin-top: 1rem;
@@ -113,7 +133,7 @@ input.form-content {
   visibility: hidden;
 }
 #announce {
-  color: #000000;
+  color: #790000;
   font-family: poppins-regular, sans-serif;
   font-size: 11pt;
   margin-top: 1rem;
@@ -133,13 +153,16 @@ input.form-content {
   margin: 2rem 0rem 0rem 0rem;
 }
 #about-us {
-  color: var(--secondary);
+  color: var(--color4);
   background-color:rgba(255, 255, 255, 0);
   border: 0px;
   font-family: poppins-regular, sans-serif;
   font-size: 10pt;
   cursor: pointer;
   float: right;
+}
+#intext-ref {
+  color:var(--color4);
 }
 #start-date{
   width:40%;
@@ -157,8 +180,11 @@ input.form-content {
   flex-direction: column;
 }
 .form-border {
-  background: -webkit-linear-gradient(right, var(--third), var(--secondary));
-  height: 0.06rem;
+  /* background: -webkit-linear-gradient(right, col, var(--secondary)); */
+  background: -webkit-linear-gradient(left, #ffba194d, var(--color2), #ffba194d);
+
+  /* background-color: var(--color2); */
+  height: 0.05em;
   width: 100%;
 }
 .form-content {
@@ -166,10 +192,17 @@ input.form-content {
   border-radius: 7%;
   border: none;
   outline: none;
-  padding-top: 0.875rem;
+  display: inline;
+  padding-top:7px;
 }
+
+#end-date {
+  width: 40%;
+  float: right;
+}
+
 .underline-title {
-  background: -webkit-linear-gradient(right, var(--third), var(--secondary));
+  background: -webkit-linear-gradient(left, #e9c8a2, var(--color2), #e9c8a2);
   height: 0.2rem;
   margin: -1.1rem auto 0 auto;
   width: 9rem;
@@ -186,7 +219,7 @@ input.form-content {
 #loader {
   margin: 0.5rem auto 0 auto;
   border: 10px solid #b3b3b3; /* Light grey */
-  border-top: 10px solid var(--secondary); /* Blue */
+  border-top: 10px solid var(--color5); /* Blue */
   border-radius: 50%;
   width: 50px;
   height: 50px;
@@ -204,10 +237,10 @@ input.form-content {
   100% { transform: rotate(360deg); }
 }
 
-@keyframes graytocolor {
+/* @keyframes graytocolor {
   from {background-color: -webkit-linear-gradient(left, #5a5a5a, #bdbdbd);}
   to {background-color: -webkit-linear-gradient(right, var(--third), var(--secondary));}
-}
+} */
 
 
 @font-face {

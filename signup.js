@@ -21,6 +21,7 @@ const pfpRef = storage_ref(storage, "profilepics");
 
 let isMobile = false;
 
+// checking if user is accessing from mobile
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
   isMobile = true;
 }
@@ -44,6 +45,7 @@ window.addEventListener("orientationchange", function() {
 
 }, false);
 
+
 var aboutus_button = document.getElementById("about-us").addEventListener("click", function () {
   window.location.href =  aboutusURL;
 });
@@ -52,14 +54,18 @@ const agree_checked = document.getElementById("agree").addEventListener("change"
   if (this.checked) {
     const UIsignupBtn = document.getElementById('signup-btn');
     UIsignupBtn.disable = false;
-    UIsignupBtn.style.setProperty("--c1", "#106fcf");
-    UIsignupBtn.style.setProperty("--c2", "#c272a0");
+    UIsignupBtn.style.setProperty("--c1", "#ff9000");
+    UIsignupBtn.style.setProperty("--c2", "#ffbb19");
+    UIsignupBtn.style.setProperty("--c3", "#463015");
+
     // UIsignupBtn.style.animation = "graytocolor 5s infinite"; //NOT working
   } else {
     const UIsignupBtn = document.getElementById('signup-btn');
     UIsignupBtn.disable = true;
     UIsignupBtn.style.setProperty("--c1", "#5a5a5a");
     UIsignupBtn.style.setProperty("--c2", "#bdbdbd");
+    UIsignupBtn.style.setProperty("--c3", "#fff");
+
   }
 });
 
