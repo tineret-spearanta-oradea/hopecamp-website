@@ -94,7 +94,7 @@ qrcode.callback = res => {
 
             });
 
-            document.querySelector("body").style.backgroundColor = "#2d5c3f";
+            document.querySelector("body").style.setProperty("--c1", "#205a14");
             current_log.parentElement.classList.add("show-result");
             current_log.innerHTML = `&#x2713; ${user_name} ID=${res}`;
 
@@ -128,7 +128,7 @@ qrcode.callback = res => {
 function backToReadingUI(){
     scanAgain();
 
-    document.querySelector("body").style.backgroundColor = "#353a36";
+    document.querySelector("body").style.setProperty("--c1", "#353a36");
     let current_log = document.querySelector("#current-log p");
     current_log.parentElement.classList.remove("show-result");
     current_log.parentElement.classList.remove("loading-database");

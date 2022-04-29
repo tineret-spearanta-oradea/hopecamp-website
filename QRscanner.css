@@ -1,15 +1,21 @@
 html {
-  height: 90%;
+  height: 100%;
 }
-
+@property --c1{
+  syntax: '<color>';
+  inherits: false;
+  initial-value: gray;
+}
 body {
+  --c1:#2d3b3f;
   font-family: sans-serif;
   padding: 0 10px;
   height: 100%;
   background-color: #2d3b3f;
-  /* background-color: #2d5c3f; */
 
-  transition: color 0.25s;
+  transition:--c1 0.25s;
+  background-image: -webkit-linear-gradient(90deg,#535353, var(--c1));
+
   margin: 0;
 }
 h2 {
