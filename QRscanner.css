@@ -1,31 +1,68 @@
+html {
+  height: 100%;
+}
+
 body {
-    background-color: #201f14;
+  font-family: sans-serif;
+  padding: 0 10px;
+  height: 100%;
+  background-color: #2d3b3f;
+  /* background-color: #2d5c3f; */
+
+  transition: color 0.25s;
+  margin: 0;
 }
 h2 {
     font-family: jakarta, sans-serif;
-    color: beige;
+    color: rgb(255, 255, 255);
+}
+p{
+    color:rgb(180, 180, 180);
 }
 #title {
     margin: 1rem auto 0rem auto;
     text-align: center;
 }
-video{
-    display: block;
-    float: center;
-    margin: 1rem auto 1rem auto;
-    max-width: 90%;
-    max-height: 30em;
-    background-color: #353a36;
 
+#container {
+  text-align: center;
+  font-family: jakarta, sans-serif;
+  margin: 0;
 }
-p {
-    font-family: jakarta, sans-serif;
+#loader {
+  margin: 0.5rem auto 0 auto;
+  border: 10px solid #ffffff; /* Light grey */
+  border-top: 10px solid #7e2eb3; /* Blue */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  /* box-shadow: 3px 1px 13px #d7d7d7; */
 }
-#switch-btn{
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    /* transition: 1s; */
+#qr-canvas {
+  margin: auto;
+  width: calc(100% - 20px);
+  max-width: 500px;
+}
+
+#btn-scan-qr p{
+  color:rgb(212, 121, 121);
+  font-size: large;
+}
+
+#btn-scan-qr img {
+  height: 10em;
+  padding: 15px;
+  margin: 15px;
+  background: white;
+}
+
+#qr-result {
+  font-size: 1.2em;
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 700px;
+  background-color: white;
 }
 #current-log {
     display: flex;
@@ -34,10 +71,10 @@ p {
     color: #ffffff;
 }
 .reading p{
-    padding: 2px 15px;
+    padding: 4px 20px;
     border-radius: 10px;
     letter-spacing: 1px;
-    background-color: #8f8c8c;
+    background-color: #6e6e6e;
     color: #ffffff;
 
 }
@@ -52,7 +89,7 @@ p {
     letter-spacing: 1px;
     border-radius: 10px;
     padding: 2px 15px;
-    background-color: #129138;
+    background-color: #074419;
     color: #ffffff;
 }
 #title-logs {
@@ -72,13 +109,14 @@ p {
 #logs p{
     font-family: roboto, sans-serif;
     border-radius: 10px;
-    background-color: #353a36;
+    text-align: left;
+    background-color: #1a1a1a;
     padding: 10px 20px;
 }
 
-@font-face {
-  font-family: poppins-regular;
-  src: url(fonts/Poppins-Regular.ttf);
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 @font-face {
   font-family: jakarta;

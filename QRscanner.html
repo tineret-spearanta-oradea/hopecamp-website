@@ -1,43 +1,29 @@
-<!doctype html>
-<html lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:addthis="https://www.addthis.com/help/api-spec"  prefix="og: http://ogp.me/ns#" class="no-js">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>QR Scanner | HopeCamp</title>
-    <!-- icon  -->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-	<link rel="stylesheet" href="./QRscanner.css" >
-	
-    
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-	<!--[if lt IE 9]>
-	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-	<![endif]-->
-</head>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>QR Code Scanner</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+    <link rel="stylesheet" href="./QRscanner.css" />
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/qr_packed.js"></script>
+  </head>
 
-<body>
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-	
-	<div class="container-fluid">
+  <body>
+    <div id="container">
         <div id="title">
             <h2>QR Scanner - HopeCamp Attendance</h2>
         </div>
-        <div id="switch-btn">
-            <div class="btn-group btn-group-toggle mb-10" data-toggle="buttons">
-                <label class="btn btn-primary active">
-                    <input type="radio" name="options" value="1" autocomplete="off" checked> Front Camera
-                </label>
-                <label class="btn btn-secondary">
-                    <input type="radio" name="options" value="2" autocomplete="off"> Back Camera
-                </label>
-            </div>
+
+        <a id="btn-scan-qr">
+            <div id="loader"></div>
+            <p>Loading <br> If you haven't, please give access to camera</p>
+        </a>
+
+        <canvas hidden="" id="qr-canvas"></canvas>
+
+        <div id="qr-result" hidden="">
+        <b>Data:</b> <span id="outputData"></span>
         </div>
-
-        <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
-        <video id="preview" class="p-1 border" style="width:100%;"></video>
-
         <div id="current-log" class="reading">
             <!-- <p>&#x2713; Adelin Duca (ID: 100)</p> -->
             <p>Reading...</p>
@@ -49,12 +35,10 @@
                 18:01:32 - Ghiurau Efraim (ID: 101) <br>
                 18:01:50 - Adelin Duca (ID: 102) <br>
                 18:02:12 - George Gangos (ID: 100) <br>
-
             </p>
         </div>
-        
-	</div>
-	
-</body>
-<script src="./QRscanner.js" type="module"></script>
+    </div>
+
+    <script src="./QRscanner.js" type="module"></script>
+  </body>
 </html>
