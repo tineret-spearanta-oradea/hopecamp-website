@@ -56,6 +56,7 @@ qrcode.callback = res => {
 
             // Push prezent to database
             update(ref(database, `users/${user_uid}`), { prezent:true });
+            alert("pushed to database");
 
             document.querySelector("body").style.backgroundColor = "#2d5c3f";
             current_log.parentElement.classList.add("show-result");
@@ -91,31 +92,35 @@ qrcode.callback = res => {
 
 
 function backToReadingUI(){
+    scanAgain();
+
     document.querySelector("body").style.backgroundColor = "#353a36";
     let current_log = document.querySelector("#current-log p");
     current_log.parentElement.classList.remove("show-result");
     current_log.parentElement.classList.remove("loading-database");
     current_log.innerHTML = "Reading...";
     // scanning = true;
-
 }
 
 
 // btnScanQR.onclick = () => {
-navigator.mediaDevices
-    .getUserMedia({ video: { facingMode: "environment" } })
-    .then(function(stream) {
-    //   scanning = true;
-        qrResult.hidden = true;
-        btnScanQR.hidden = true;
-        canvasElement.hidden = false;
-        video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
-        video.srcObject = stream;
-        video.play();
-        tick();
-        scan();
-    });
+function scanAgain() {
+    navigator.mediaDevices
+        .getUserMedia({ video: { facingMode: "environment" } })
+        .then(function(stream) {
+        //   scanning = true;
+            qrResult.hidden = true;
+            btnScanQR.hidden = true;
+            canvasElement.hidden = false;
+            video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+            video.srcObject = stream;
+            video.play();
+            tick();
+            scan();
+        });
+}
 // };
+scanAgain()
 
 function tick() {
   canvasElement.height = video.videoHeight;
