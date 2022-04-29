@@ -1,0 +1,90 @@
+body {
+    background-color: #201f14;
+}
+h2 {
+    font-family: jakarta, sans-serif;
+    color: beige;
+}
+#title {
+    margin: 1rem auto 0rem auto;
+    text-align: center;
+}
+video{
+    display: block;
+    float: center;
+    margin: 1rem auto 1rem auto;
+    max-width: 90%;
+    max-height: 30em;
+    background-color: #353a36;
+
+}
+p {
+    font-family: jakarta, sans-serif;
+}
+#switch-btn{
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    /* transition: 1s; */
+}
+#current-log {
+    display: flex;
+    justify-content: center;
+    font-family: jakarta, sans-serif;
+    color: #ffffff;
+}
+.reading p{
+    padding: 2px 15px;
+    border-radius: 10px;
+    letter-spacing: 1px;
+    background-color: #8f8c8c;
+    color: #ffffff;
+
+}
+.loading-database p{
+    letter-spacing: 1px;
+    border-radius: 10px;
+    padding: 2px 15px;
+    background-color: #968e27;
+    color: #ffffff;
+}
+.show-result p{
+    letter-spacing: 1px;
+    border-radius: 10px;
+    padding: 2px 15px;
+    background-color: #129138;
+    color: #ffffff;
+}
+#title-logs {
+    margin-top: 1rem;
+    margin-bottom: 1rem; 
+
+    text-align: center;
+    font-size: 15pt;
+    color: #d4ca6ddc;
+}
+#logs {
+    display: flex;
+    justify-content: center;
+    font-family: jakarta, sans-serif;
+    color: #acacac;
+}
+#logs p{
+    font-family: roboto, sans-serif;
+    border-radius: 10px;
+    background-color: #353a36;
+    padding: 10px 20px;
+}
+
+@font-face {
+  font-family: poppins-regular;
+  src: url(fonts/Poppins-Regular.ttf);
+}
+@font-face {
+  font-family: jakarta;
+  src: url(fonts/PlusJakartaSans-Regular.ttf);
+}
+@font-face {
+  font-family: roboto;
+  src: url(fonts/RobotoMono-Regular.ttf);
+}

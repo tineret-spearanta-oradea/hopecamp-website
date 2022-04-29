@@ -24,7 +24,29 @@ menuBar.addEventListener('click', function () {
 
 
 
+document.querySelector("#div-trigger-popup").addEventListener("click", function(){
+  document.querySelector('.hover_bg').style.display = 'block';
+});
 
+let isMouseOverHover = false;
+document.querySelector(".hover_bg>div").addEventListener("mouseover", function () {
+  isMouseOverHover = true;
+});
+document.querySelector(".hover_bg>div").addEventListener("mouseleave", function () {
+  isMouseOverHover = false;
+});
+document.querySelector('.hover_bg').addEventListener("click", function(){
+  if(!isMouseOverHover) {
+    document.querySelector('.hover_bg').style.display = 'none';
+  }
+});
+
+document.querySelector('.popupCloseButton').addEventListener("click", function(){
+    document.querySelector('.hover_bg').style.display = 'none';
+});
+document.querySelector('.popup-btn').addEventListener("click", function(){
+    document.querySelector('.hover_bg').style.display = 'none';
+});
 
 
 

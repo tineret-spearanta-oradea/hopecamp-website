@@ -1,7 +1,7 @@
 // '/admins.html' database handling file
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-import { getDatabase, ref, child, get, set  } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+import { getDatabase, ref, child, get, set, update  } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 import { getAuth, onAuthStateChanged, signOut} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 import { firebaseConfig } from "./fb_cfg.js";
 
@@ -57,7 +57,9 @@ const setupUI = (user) => {
   }
 }
 
+let allUsersData;
 const handleData = (usersData) => {
+    allUsersData = usersData;
     // num of inscrisis
     $("#nr-inscrisi").html(countProperties(usersData));
 
@@ -119,7 +121,6 @@ const handleData = (usersData) => {
 
         Object.keys(msgData).forEach(msguid => {
             let messages = msgData[msguid];
-            console.log(messages);
 
             Object.keys(messages).forEach(message => {
                 let msg = messages[message];
@@ -155,6 +156,11 @@ const handleData = (usersData) => {
     //STOP LOADING ANIMATION
 }
 
+const reset_attendance = document.getElementById("yes-delete").addEventListener("click", function () {
+  Object.keys(allUsersData).forEach(uid => {
+    update(ref(database, `users/${uid}`), { prezent:false });
+  });
+});
 
 function countProperties(obj) {
   var count = 0;

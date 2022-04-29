@@ -10,6 +10,7 @@ const aboutusURL = "/aboutus.html";
 const forgotPassURL = "/fogot_pass.html";
 const myAccountURL = "/myaccount.html";
 const indexURL = "/index.html";
+const loginURL = "/login.html";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
@@ -76,80 +77,129 @@ for(let i=0; i<UIEmailAndPass.length; i++)
   UIEmailAndPass[i].addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
       event.preventDefault();
-      document.querySelector("#signup-btn").click();
+      document.querySelector("#continue-btn").click();
     }
   });
 }
+// const test_button = document.getElementById("test-btn").addEventListener("click", function ()  { 
+//   let church = document.querySelector('input[name="church_choice"]:checked');
+//   if(church) {
+//     console.log(church);
+//   }
+//   else {
+//     console.log("no value");
+//   }
+// });
 
-const signup_button = document.getElementById("signup-btn").addEventListener("click", function ()  {
+const continue_button = document.getElementById("continue-btn").addEventListener("click", function ()  {
   
   // UI setup (loading)
-  startLoading();
+  startLoading(0);
 
   // Get all our input fields
+
   let email = document.getElementById("user-email").value;
   let password = document.getElementById("user-password").value;
   let confirm_password = document.getElementById("user-confirm-password").value;
+  let age = document.getElementById("age").value;
   let announce = document.getElementById("announce");
-
+  let church = document.querySelector('input[name="church_choice"]:checked');
+  if(church && church.value==="Alta"){
+    church = document.getElementById("other-church").value;
+  } else if(church){
+    church = church.value;
+  } 
+  let pay = document.querySelector('input[name="pay_choice"]:checked');    
+  let transport = document.querySelector('input[name="transport_choice"]:checked');     
   const pfp = document.getElementById("profile-photo").files[0];
   
   let fields = [
     document.getElementById("name"),
     document.getElementById("age"),
     document.getElementById("phone"),
-    document.getElementById("church"),
-    document.getElementById("pay"),
     document.getElementById("contribui"),
   ];
 
   let somethingIsNotValid;
   // Validate input fields
   if (validate_email(email) == false || validate_password(password) == false) {
-    stopLoadingAndShowError('Emailul sau parola sunt incorecte. Emailul trebuie sa contina "@" iar parola trebuie sa aibă minim 6 caractere.');
+    stopLoadingAndShowError(0, 'Emailul sau parola sunt incorecte. Emailul trebuie sa contina "@" iar parola trebuie sa aibă minim 6 caractere.');
     somethingIsNotValid = true;
   }
 
   if (password != confirm_password) {
-    stopLoadingAndShowError("Parola nu corespunde cu confirmarea parolei.");
+    stopLoadingAndShowError(0, "Parola nu corespunde cu confirmarea parolei.");
     somethingIsNotValid = true;
   }
 
   fields.forEach(field => {
     if(validate_field(field.value) === false && !somethingIsNotValid) {
-      stopLoadingAndShowError('Trebuie completate toate câmpurile obligatorii');
+      stopLoadingAndShowError(0, 'Trebuie completate toate câmpurile obligatorii');
       somethingIsNotValid = true;
     }
   });
 
-  if(typeof pfp === "undefined" && !somethingIsNotValid)
-  {
-    stopLoadingAndShowError("Introdu o poză cu tine.");
+  if(!church && !somethingIsNotValid) {
+    stopLoadingAndShowError(0, "Alege biserica din care faci parte.");
     somethingIsNotValid = true;
   }
 
-  if(!(document.getElementById("agree").checked) && !somethingIsNotValid)
-  {
-    stopLoadingAndShowError("Trebuie sa fii de-acord cu regulamentul (apasa pe patratel)");
+  if(!pay && !somethingIsNotValid) {
+    stopLoadingAndShowError(0, "Alege cui plătești.");
     somethingIsNotValid = true;
   }
+
+  if(!transport && !somethingIsNotValid){
+    stopLoadingAndShowError(0, "Alege modalitatea de transport.");
+    somethingIsNotValid = true;
+  }
+  
+  if(typeof pfp === "undefined" && !somethingIsNotValid)
+  {
+    stopLoadingAndShowError(0, "Introdu o poză cu tine.");
+    somethingIsNotValid = true;
+  }
+
+  // if(!(document.getElementById("agree").checked) && !somethingIsNotValid)
+  // {
+  //   stopLoadingAndShowError(0, "Trebuie sa fii de-acord cu regulamentul (apasa pe patratel)");
+  //   somethingIsNotValid = true;
+  // }
+
+  // if(age<18){
+  //   alert("Semnez faptul ca parintii mei au citit regulamentul si sunt de-acord cu acesta");
+  // }
+
   // Move on with auth if every input is valid
   if(!somethingIsNotValid){
-    createUserWithEmailAndPassword(auth, email, password)
+    document.getElementById("changeable-content-0").style.display = "none";
+    document.getElementById("changeable-content-1").style.display = "block";
+    
+    if(age<18) {
+      document.getElementById("under18-agree").style.display = "block";
+    }
+  }
+});
+
+const signup_button = document.getElementById("signup-btn").addEventListener("click", function ()  { 
+  let email = document.getElementById("user-email").value;
+  let password = document.getElementById("user-password").value;
+  startLoading(1);
+
+  createUserWithEmailAndPassword(auth, email, password)
     .then(function() {
       
     })
     .catch(function(error) {
 
       if(error.code === "auth/invalid-email"){
-        stopLoadingAndShowError("Email invalid.");
+        stopLoadingAndShowError(1, "Email invalid.");
       } else if(error.code === "auth/invalid-password"){
-        stopLoadingAndShowError("Parola invalidă.");
+        stopLoadingAndShowError(1, "Parola invalidă.");
       } else {
-        stopLoadingAndShowError(error.message);
+        stopLoadingAndShowError(1, error.message);
       }
     })
-  }
 });
 
 onAuthStateChanged(auth, (user) => {
@@ -170,15 +220,19 @@ const pushToDatabaseAndSetupUI = (user) => {
   var name = document.getElementById("name").value;
   var age = document.getElementById("age").value;
   var phone = document.getElementById("phone").value;
-  var church = document.getElementById("church").value;
-  var pay = document.getElementById("pay").value;
+  let church = document.querySelector('input[name="church_choice"]:checked').value;
+  if(church==="Alta"){
+    church = document.getElementById("other-church").value;
+  }
+  let pay = document.querySelector('input[name="pay_choice"]:checked').value;   
+  let transport = document.querySelector('input[name="transport_choice"]:checked').value;   
   var start_date = document.getElementById("start-date").value;
   var end_date = document.getElementById("end-date").value;
   var contribui = document.getElementById("contribui").value;
   var person = document.getElementById("person").value;
-  var other = document.getElementById("other").value;
   var pfpURL;
 
+  
   var file = document.getElementById("profile-photo").files[0];
   
   const metadata = { contentType: 'image/jpeg' };
@@ -213,7 +267,8 @@ const pushToDatabaseAndSetupUI = (user) => {
           end_date: end_date,
           contribui: contribui,
           cazare_cu: person,
-          observatii_sugestii: other,
+          transport: transport,
+          prezent: false,
           img_url: pfpURL,
         };
 
@@ -222,17 +277,17 @@ const pushToDatabaseAndSetupUI = (user) => {
           setupUI(user);
         })
         .catch(function(error) {
-          stopLoadingAndShowError(error.message);
+          stopLoadingAndShowError(0, error.message);
         });
 
 
       }).catch((error) => {
-        stopLoadingAndShowError(error.message);
+        stopLoadingAndShowError(0, error.message);
       });
 
     
     }).catch((error) => {
-      stopLoadingAndShowError(error.message);
+      stopLoadingAndShowError(0, error.message);
     });
   });
   
@@ -281,26 +336,45 @@ const setupUI = (user) => {
   }
 }
 
-function startLoading() {
-  document.getElementById("error").style.visibility = "hidden";
-  document.getElementById("loader").style.visibility = 'visible';
+function startLoading(changeable) {
+  if(changeable===0){
+    document.getElementById("error").style.visibility = "hidden";
+    document.getElementById("loader").style.visibility = 'visible';
+  } else if(changeable===1) {
+    document.getElementById("error-1").style.visibility = "hidden";
+    document.getElementById("loader-1").style.visibility = 'visible';
+  }
   // document.getElementById("card").style.height = "108rem";
 }
 
-function stopLoadingAndShowError(err) {
+function stopLoadingAndShowError(changeable, err) {
   // console.log(err);
-  document.getElementById("error").style.display = "inline";
-  document.getElementById("error").style.visibility = "visible";
-  document.getElementById("announce").innerHTML = err;
-  document.getElementById('error').scrollIntoView();
-  document.getElementById("loader").style.visibility = 'hidden';
-  document.getElementById("last-small-info").style.visibility = "hidden";
+  if(changeable===0) {
+    document.getElementById("error").style.display = "inline";
+    document.getElementById("error").style.visibility = "visible";
+    document.getElementById("announce").innerHTML = err;
+    document.getElementById('error').scrollIntoView();
+    document.getElementById("loader").style.visibility = 'hidden';
+    document.getElementById("last-small-info").style.visibility = "hidden";
 
-  setTimeout(hideError, 3400);
+    setTimeout(hideError0, 3400);
+  } else if(changeable===1) {
+    document.getElementById("error-1").style.display = "block";
+    document.getElementById("error-1").style.visibility = "visible";
+    document.getElementById("announce-1").innerHTML = err;
+    document.getElementById('error-1').scrollIntoView();
+    document.getElementById("loader-1").style.display = 'block';
+    document.getElementById("loader-1").style.visibility = 'hidden';
+
+    setTimeout(hideError1, 3400);
+  }
 }
 
-function hideError() {
+function hideError0() {
   document.getElementById('error').style.display = "none";
+}
+function hideError1() {
+  document.getElementById('error-1').style.display = "none";
 }
 
 function countProperties(obj) {

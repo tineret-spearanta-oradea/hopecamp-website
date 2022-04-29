@@ -15,10 +15,14 @@
 body {
   /* background: -webkit-linear-gradient(bottom, var(--white), var(--primary)); */
   background: url(./media/camp_bg.png);
+  background-color: var(--color4);
+
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   
+  opacity: 0;
+  transition: opacity 0.25s;
 }
 label {
   font-family: "Raleway", sans-serif;
@@ -44,8 +48,13 @@ textarea {
   border-radius: 8px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
   margin: 3em auto 3em auto;
-  height: 40rem;
-  width: 27rem;
+  height: auto;
+  min-height: 42rem;
+
+  width: 20rem;
+  transition: width 0.75s;
+  transition: height 1s;
+
   float: center;
   clear: left;
   overflow: auto;
@@ -54,7 +63,10 @@ textarea {
 #card-content {
   font-family: "Raleway Thin", sans-serif;
   padding: 12px 44px;
-  
+
+  /* opacity: 0;
+  transition: opacity 0.75s;
+   */
 }
 #card-title {
   font-family: poppins-regular, sans-serif;
@@ -237,6 +249,9 @@ textarea {
   height: 0.2rem;
   margin: 1.1rem auto -1rem auto;
   width: 100px;
+}
+#div-trigger-popup {
+  margin-bottom: 4rem;
 }
 
 #trigger_popup {

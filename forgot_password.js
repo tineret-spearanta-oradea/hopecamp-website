@@ -9,6 +9,7 @@ const aboutusURL = "/aboutus.html";
 const forgotPassURL = "/fogot_pass.html";
 const myAccountURL = "/myaccount.html";
 const indexURL = "/index.html";
+const loginURL = "/login.html";
 
 let isMobile = false;
 
@@ -46,7 +47,7 @@ const aboutus_button = document.getElementById("about-us").addEventListener("cli
 });
 
 const back_button = document.getElementById("back-btn").addEventListener("click", function () {
-  window.location.href = indexURL;
+  window.location.href = loginURL;
 });
 
 

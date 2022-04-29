@@ -24,7 +24,7 @@
 
 <body  onload="getPics()">
 	<!-- SIDEBAR -->
-	<section id="sidebar">
+	<section id="sidebar" class="hide">
 		<a href="#" class="brand">
 			<i class='bx bxs-smile'></i>
 			<span class="text">Admin</span>
@@ -55,12 +55,12 @@
 			</li>
 		</ul> -->
 		<ul class="side-menu">
-			<!-- <li>
-				<a href="#">
-					<i class='bx bxs-cog' ></i>
-					<span class="text">Setări</span>
+			<li>
+				<a href="/QRscanner.html">
+					<i class='bx bxs-camera' ></i>
+					<span class="text">QR Scanner</span>
 				</a>
-			</li> -->
+			</li>
 			<li>
 				<a href="#" class="logout">
 					<i class='bx bxs-log-out-circle' ></i>
@@ -152,16 +152,19 @@
 				</li>
 			</ul>
 
-    
-
 
 			<div class="table-data">
 				<div class="order">
 					<div class="head">
 						<h3 id="Statistica">Listă participanți</h3>
 						<!-- <i class='bx bx-search' ></i> -->
+						<script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
 
-					
+						<button id="btnExport" class='bx bxs-download'onclick="exportReportToExcel(this)"></button>
+
+						<div id="div-trigger-popup" >
+							<a id="reset-attendance">Resetare prezență</a>
+						</div>
 						<!--<script type="text/javascript">
 							function link() {
 							  var link_s = document.getElementById('sortable').value;
@@ -176,13 +179,11 @@
 					<!-- <a href='/path/to/excel/file.xls' target="_blank" style="float: right; padding: 10px;">Download Excel</a> -->
 
 					<!-- Search -->
+					<i id="searchIcon" class="bx bxs-search-alt-2"></i>
 					<input id="search-user" type="text" 
 					placeholder="Caută">
 					<!-- Excel -->
-					<script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
-
-					<button id="btnExport" onclick="exportReportToExcel(this)">Download Excel</button>
-
+					
 
 
 					</div>
@@ -406,7 +407,18 @@
 	</section>
 
 	<!-- CONTENT -->
-	
+	<!-- TRIGGER POPPUP -->
+    <div class="hover_bg">
+        <span class="helper"></span>
+        <div>
+            <div class="popupCloseButton">&times;</div>
+            <p class="popup-title popup-title-delete">Ești sigur că vrei sa ștergi prezența?</p> 
+            <p class="popup-text popup-text-delete">Această acțiune este ireversibilă si va șterge datele curente referitoare la prezență</p> 
+			<input class="popup-btn" id="yes-delete" type="button" value="Da">
+			<input class="popup-btn" id="no-delete" type="button" value="Nu">
+
+		</div>
+    </div>
 
 	<script src="admins.js"></script>
 	<script src="admins_db.js" type="module"></script>

@@ -8,6 +8,7 @@ const signupURL = "/inscrie-te.html";
 const aboutusURL = "/aboutus.html";
 const forgotPassURL = "/fogot_pass.html";
 const adminsURL = "/admins.html";
+const loginURL = "/login.html";
 const indexURL = "/index.html";
 
 const app = initializeApp(firebaseConfig);
@@ -103,7 +104,6 @@ const handleData = (data) => {
   payed.innerHTML = "Achitat: " + data["payed"].toString();
   contribui.innerHTML = "Cum contribui: " + data["contribui"].toString();
   cazare_cu.innerHTML = "Preferințe cazare: " + data["cazare_cu"].toString();
-  observatii_sugestii.innerHTML = "Alte obsv(MSJ TRIMISE): " + data["observatii_sugestii"].toString();
 
   // pfp.setAttribute('src', data["img_url"]);
 
@@ -163,7 +163,7 @@ const setupUI = (user) => {
   }
   else //user not logged
   {
-    window.location.href = indexURL;
+    window.location.href = loginURL;
   }
 }
 

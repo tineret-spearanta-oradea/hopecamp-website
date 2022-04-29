@@ -11,8 +11,8 @@
 
 </head>
 
-<body>
-    <div id="card">
+<body onload="entryTransition()">
+    <div id="card" >
         <div id="card-content">
             <div id="mini-header">
                 <button type="button" class="header-buttons" id="logout">LOG OUT</button>
@@ -21,8 +21,6 @@
             
 
             <div id="card-title">
-                <!-- <div class="upperline-title"></div> -->
-
                 <h2>CONTUL MEU</h2>
                 <div class="underline-title"></div>
             </div>
@@ -30,7 +28,7 @@
             <div id="initial-loader"></div>
             <div id="initial-loading-msg">Loading data... Please wait</div>
 
-            <div id="all-data">
+            <div id="all-data" >
                 <h4 id="hello"></h4>
                 <input id="admins-db" type="button" name="admins-dashboard" value="ADMINS DASHBOARD"  />
 
@@ -40,7 +38,7 @@
                     până la tabară! (Yayy🎉)
                     <br>
                     <div id="talk-to-us">
-                    &nbsp Între timp, dacă vrei, ne poți lasa aici un gand sau o sugestie referitoare la tabara: 
+                    &nbsp Între timp, dacă vrei, ne poți lăsa aici un gând sau o sugestie referitoare la tabără: 
                     <textarea id="msg-text" name = "description" placeholder="Scrie-ne un mesaj..." ></textarea> 
                     <input type="button" id="msg-submit" value="Trimite">
                     </div>
@@ -90,9 +88,31 @@
         </div>
     </div>
 
+
     <script src="./qrcode.js" defer></script>
     <script src="./myaccount.js" type="module"></script>
+    <script>
+        function entryTransition() {
+        document.body.style.opacity='1';
+        let isMobile = false;
 
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        isMobile = true;
+        }
+
+        // initial card width setup
+        if(isMobile) {
+            if(window.orientation == 0) {
+            document.querySelector("#card").style.width = "96%";
+            } else {
+            document.querySelector("#card").style.width = "55%";
+            }
+        } else {
+            document.getElementById('card').style.width='27rem';
+        }
+
+    }
+    </script>
 
 </body>
 

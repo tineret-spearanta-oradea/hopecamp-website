@@ -1,5 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap');
 
+:root {
+  --color1: #ffbb19;
+  --color2: #ff9000;
+  --color3: #463015;
+  --color4: #386329;
+  --color5: #292963;
+
+  --white: #ffffff;
+}
+
 * {
 	margin: 0;
 	padding: 0;
@@ -444,7 +454,7 @@ tfoot input {
 #content main {
 	width: 100%;
 	padding: 36px 24px;
-	font-family: var(--poppins);
+	font-family: poppins-regular, sans-serif;
 	max-height: calc(100vh - 56px);
 	overflow-y: auto;
 }
@@ -489,8 +499,44 @@ tfoot input {
 	grid-gap: 10px;
 	font-weight: 500;
 }
-
-
+#btnExport {
+	background-color: #85ad77;
+	border: none;
+	border-radius: 15px;
+	box-shadow: 0px 1px 8px #adaaaa;
+	color: var(--light);
+	font-family: poppins-regular, sans-serif;
+	letter-spacing: 1px;
+	height: 25px;
+	margin-top: 13px;
+	margin-bottom: 15px;
+	margin-left: 0.5rem;
+	transition: 0.25s;
+	width: 25px;
+	display: inline;
+	float: left;
+}
+#reset-attendance {
+	color: rgb(202, 5, 5);
+	margin: 0 2rem;
+	cursor: pointer;
+}
+#searchIcon {
+	margin-left: auto;
+	margin-right: 0px;
+	color: var(--color2);
+	opacity: 0.8;
+}
+#search-user {
+	font-family: jakarta, sans-serif;
+	width: 15em;
+	height: 2rem;
+	text-indent: 10px ;
+	/* text-align: center; */
+	border-width: 1px;
+	border-radius: 6px;
+	/* margin-right: auto; */
+}
 
 
 #content main .box-info {
@@ -562,7 +608,9 @@ tfoot input {
 	margin-bottom: 24px;
 }
 #content main .table-data .head h3 {
-	margin-right: auto;
+	font-family: poppins-regular, sans-serif;
+
+	margin-right: 10px;
 	font-size: 24px;
 	font-weight: 600;
 }
@@ -747,4 +795,101 @@ tfoot input {
 	#content main .table-data .todo .todo-list {
 		min-width: 420px;
 	}
+}
+
+.popup-title {
+	margin: 1rem auto;
+	font-family: poppins-regular, sans-serif;
+	font-size: 15pt;
+}
+.popup-text {
+	font-family: poppins-regular, sans-serif;
+	font-size: 10pt;
+}
+.popup-btn {
+	border: none;
+	border-radius: 21px;
+	box-shadow: 0px 1px 8px #adaaaa;
+	cursor: pointer;
+	color: var(--color3);
+	font-family: poppins-regular, sans-serif;
+	letter-spacing: 1px;
+	height: 2rem;
+	margin: 1rem auto;
+	transition: 0.25s;
+	width: 4rem;
+}
+#yes-delete {
+	background-color: rgb(255, 139, 139);
+}
+#trigger_popup {
+  cursor: pointer;
+  color:rgba(27, 46, 133, 0.76);
+  font-family: poppins-regular, sans-serif;
+  font-size: 11pt;
+  border-radius: 10px;
+  background-color: #e7e7e715;
+  padding: 2%;
+  box-shadow: 1px 1px 7px #0000009a;
+}
+.hover_bg{
+  background:rgba(0,0,0,.4);
+  /* cursor:pointer; */
+  display:none;
+  height:100%;
+  position:fixed;
+  text-align:center;
+  top:0;
+  left:0;
+  width:100%;
+  z-index:10000;
+}
+.hover_bg .helper{
+  display:inline-block;
+  height:100%;
+  vertical-align:middle;
+}
+.hover_bg > div {
+  background-color: #fff;
+  box-shadow: 10px 10px 60px #555;
+  display: inline-block;
+  height: auto;
+  max-width: 24rem;
+  min-height: 100px;
+  vertical-align: middle;
+  width: 16rem;
+  position: relative;
+  border-radius: 8px;
+  padding: 3px 1%;
+}
+.popupCloseButton {
+  background-color: #fff;
+  border: 3px solid #999;
+  border-radius: 50px;
+  cursor: pointer;
+  display: inline-block;
+  font-family: arial;
+  font-weight: bold;
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  font-size: 25px;
+  line-height: 30px;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+}
+.popupCloseButton:hover {
+  background-color: #ccc;
+}
+
+
+
+@font-face {
+  font-family: poppins-regular;
+  src: url(fonts/Poppins-Regular.ttf);
+}
+@font-face {
+  font-family: jakarta;
+  src: url(fonts/PlusJakartaSans-Regular.ttf);
 }
