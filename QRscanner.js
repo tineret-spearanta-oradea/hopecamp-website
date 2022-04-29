@@ -55,8 +55,12 @@ qrcode.callback = res => {
             });
 
             // Push prezent to database
-            update(ref(database, `users/${user_uid}`), { prezent:true });
-            alert("pushed to database");
+            update(ref(database, `users/${user_uid}`), { prezent:true }).then(function() {
+
+            })
+            .catch(error => {
+                alert(`${error.code} ${error.message}`);
+            });
 
             document.querySelector("body").style.backgroundColor = "#2d5c3f";
             current_log.parentElement.classList.add("show-result");
