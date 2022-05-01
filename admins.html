@@ -165,7 +165,7 @@
 						<div id="div-trigger-popup" >
 							<a id="reset-attendance">Resetare prezență</a>
 						</div>
-						<!--<script type="text/javascript">
+						<!-- <script type="text/javascript">
 							function link() {
 							  var link_s = document.getElementById('sortable').value;
 							  document.getElementById('th').innerHTML = link_s.link()
@@ -174,12 +174,12 @@
 						
 						  <h2> Search box </h2>
 						  <input type='text' id='link_id'>
-						  <input type='button' id='link_str' value='Search' onClick='link()'>-->
+						  <input type='button' id='link_str' value='Search' onClick='link()'> -->
 					<!--	<i class='bx bx-filter' ></i> -->
 					<!-- <a href='/path/to/excel/file.xls' target="_blank" style="float: right; padding: 10px;">Download Excel</a> -->
 
 					<!-- Search -->
-					<i id="searchIcon" class="bx bxs-search-alt-2"></i>
+					<!-- <i id="searchIcon" class="bx bxs-search-alt-2"></i> -->
 					<input id="search-user" type="text" 
 					placeholder="Caută">
 					<!-- Excel -->
@@ -278,6 +278,24 @@
 							    <td><input type="button" value="X" onclick="SomeDeleteRowFunction(this);"></td>
 							</tr>
 
+							<tr>
+								<td>
+									<!-- <img src=""> -->
+									<p>Zfi ghiurau</p>
+								</td>
+								<td>21</td>
+								<td><span class="status completed">5</span></td>
+								<td>w@f</td>
+								<td>Speranta</td>
+								<td>Dorotea</td>
+								<td><span class="status completed">500</span></td>
+								<td>0722342222</td>
+								<td>Rane</td>
+							<!--<td>Sa fie bine</td> -->
+								<td>Nu vreau</td>
+							    <td><input type="button" value="X" onclick="SomeDeleteRowFunction(this);"></td>
+							</tr>
+
 						</tbody>
 					</table>
 
@@ -285,7 +303,7 @@
 						$(document).ready(function() {
 							$("#search-user").on("keyup", function() {
 								var value = $(this).val().toLowerCase();
-								$("#table tr").filter(function() {
+								$("#table-body tr").filter(function() {
 									$(this).toggle($(this).text()
 									.toLowerCase().indexOf(value) > -1)
 								});
