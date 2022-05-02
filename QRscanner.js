@@ -87,7 +87,7 @@ qrcode.callback = res => {
             });
 
             // Push prezent to database
-            update(ref(database, `users/${user_uid}`), { prezent:true }).then(function() {
+            update(ref(database, `users/${user_uid}`), { prezent:1 }).then(function() {
 
             })
             .catch(error => {
