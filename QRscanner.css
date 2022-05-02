@@ -15,7 +15,10 @@ body {
 
   transition:--c1 0.25s;
   background-image: -webkit-linear-gradient(90deg,#535353, var(--c1));
-
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   margin: 0;
 }
 h2 {

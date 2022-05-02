@@ -5,11 +5,12 @@
   --color4: #386329;
   --color5: #292963;
 
+  --card_bg: #3f3f3f;
   --white: #ffffff;
 }
 body {
-  background: url(./media/camp_bg.png);
-  background-color: var(--color4);
+  background: url(./media/portal_bg.jpg);
+  background-color: var(--card_bg);
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center; 

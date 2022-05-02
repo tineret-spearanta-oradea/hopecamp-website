@@ -1,11 +1,12 @@
 :root {
-  --color1: #ffbb19;
-  --color2: #ff9000;
+  --color1: #ce9716;
+  --color2: #9e5a00;
   --color3: #463015;
   --color4: #386329;
   --color5: #292963;
 
-  --white: #ffffff;
+  --cardbg: #3f3f3f;
+  --white: #ebebeb;
 }
 
 a {
@@ -13,12 +14,11 @@ a {
 }
 body {
   /* background: -webkit-linear-gradient(bottom, var(--white), var(--primary)); */
-  background: url(./media/camp_bg.png);
-  background-color: var(--color4);
+  background: url(./media/portal_bg.jpg);
+  background-color: var(--cardbg);
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center; 
-
   opacity: 0;
   transition: opacity 0.25s;
   /* -webkit-background-size: cover;
@@ -33,7 +33,16 @@ label {
   font-size: 11pt;
 }
 input.form-content {
+  color: var(--white);
   font-size: 1em !important; 
+}
+/* Change the white to any color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+  -webkit-box-shadow: 0 0 0 30px #3f3f3f inset !important;
+  -webkit-text-fill-color: var(--white) !important;
 }
 form i {
   margin-left: 0.5em;
@@ -46,7 +55,7 @@ form i {
 
 
 #forgot-pass {
-  color: var(--color4);
+  color: var(--white);
   font-family: poppins-regular, sans-serif;
   font-size: 8pt;
   margin-top: 3px;
@@ -54,7 +63,7 @@ form i {
   text-align: right;
 }
 #about-us {
-  color: var(--color4);
+  color: var(--white);
   background-color:rgba(255, 255, 255, 0);
   border: 0px;
   font-family: "Raleway", sans-serif;
@@ -65,13 +74,14 @@ form i {
 }
 
 #card {
-  background: #fbfbfb;
+  background: #3f3f3f;
   border-radius: 8px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
   height: auto;
   margin: 3em auto 3em auto;
   width: 20rem; 
   transition: width 0.75s;
+  color: var(--white);
   /* width: 50vw; */
   /* width: 96%; */
   /* width: 400px; */
@@ -118,13 +128,15 @@ form i {
   
 }
 #signup {
-  color: var(--color3);
+  color: var(--white);
   font-family: poppins-regular, sans-serif;
   font-size: 10pt;
   margin-top: 3rem;
   text-align: center;
 }
-
+#password {
+  width: 98%;
+}
 
 @property --c1{
   syntax: '<color>';
@@ -140,12 +152,13 @@ form i {
 #submit-btn {
   --c1: #a6a6a6;
   --c2: #d4d4d4;
+
   
   border: none;
   border-radius: 21px;
-  box-shadow: 0px 1px 8px #adaaaa;
+  box-shadow: 0px 1px 8px #141414;
   cursor: pointer;
-  color: var(--color3);
+  color: var(--white);
   font-family: poppins-regular, sans-serif;
   letter-spacing: 1px;
   height: 42.3px;
@@ -163,15 +176,15 @@ form i {
 }
 
 #submit-btn:hover {
-  box-shadow: 0px 1px 18px var(--color5);
+  box-shadow: 0px 1px 18px #acacac;
 }
 #signup-btn {
   background: -webkit-linear-gradient(45deg, var(--color2), var(--color1));
   border: none;
   border-radius: 21px;
-  box-shadow: 0px 1px 8px #0f63ca;
+  box-shadow: 0px 1px 8px #000000;
   cursor: pointer;
-  color: var(--color3);
+  color: var(--white);
   font-family: poppins-regular, sans-serif;
   height: 42.3px;
   letter-spacing: 1px;
@@ -181,17 +194,17 @@ form i {
 
 }
 #signup-btn:hover {
-  box-shadow: 0px 1px 18px var(--color5);
+  box-shadow: 0px 1px 18px #acacac;
 }
 #loader {
   margin: 0.5rem auto 0 auto;
-  border: 10px solid #b3b3b3; /* Light grey */
-  border-top: 10px solid var(--color5); /* Blue */
+  border: 10px solid #dbdbdb; /* Light grey */
+  border-top: 10px solid #6a6aaa; /* Blue */
   border-radius: 50%;
   width: 50px;
   height: 50px;
   animation: spin 1s linear infinite;
-  box-shadow: 3px 1px 13px #d7d7d7;
+  box-shadow: 3px 1px 13px #1b1b1b;
   /* visibility: hidden; */
   display: none;
 }
@@ -204,7 +217,7 @@ form i {
 .form-border {
   /* background: -webkit-linear-gradient(right, var(--third), var(--secondary)); */
   /* background-color: var(--color2); */
-  background: -webkit-linear-gradient(left, #ffba194d, var(--color2), #ffba194d);
+  background: -webkit-linear-gradient(left, #ffba194d, var(--color1), #ffba194d);
 
   height: 0.06rem;
   width: 100%;
@@ -220,7 +233,7 @@ form i {
   padding-top:7px;
 }
 .underline-title {
-  background: -webkit-linear-gradient(left, #e9c8a200, var(--color2), #e9c8a200);
+  background: -webkit-linear-gradient(left, #e9c8a200, var(--color1), #e9c8a200);
 
 
   /* background-color: #ffbb19; */

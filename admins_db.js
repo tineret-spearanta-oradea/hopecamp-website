@@ -10,6 +10,7 @@ const aboutusURL = "/aboutus.html";
 const forgotPassURL = "/fogot_pass.html";
 const myaccountURL = "/myaccount.html";
 const indexURL = "/index.html";
+const loginURL = "/login.html";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
@@ -53,7 +54,7 @@ const setupUI = (user) => {
   }
   else {
     //user not logged
-    window.location.href = indexURL;
+    window.location.href = loginURL;
   }
 }
 

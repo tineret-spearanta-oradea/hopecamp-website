@@ -3,9 +3,10 @@
   --color2: #ff9000;
   --color3: #463015;
   --color4: #386329;
-  --color5: #292963;
+  --color5: #7e7ede;
 
-  --white: #ffffff;
+  --cardbg: #3f3f3f;
+  --white: #ebebeb;
   --gray: #949494;
 }
 
@@ -20,11 +21,13 @@ body {
   /* background: -webkit-linear-gradient(bottom, var(--white), var(--primary));
   background-repeat: no-repeat; */
 
-  background: url(./media/camp_bg_long.png);
-  background-color: var(--color4);
+  /* background: url(./media/camp_bg_long.png); */
+  background: url(./media/portal_bg.jpg);
+
+  background-color: var(--cardbg);
 
   background-repeat: no-repeat;
-  /* background-attachment: fixed; */
+  background-attachment: fixed;
   background-position: center;
   background-size: cover;
   margin: 100px auto 100px auto;
@@ -35,14 +38,24 @@ label {
   font-size: 11pt;
 }
 input.form-content {
+  color: var(--white);
   font-size: 1em !important; 
 }
 h2 {
   font-family: poppins-regular, sans-serif;
+  /* color: var(--white); */
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+  -webkit-box-shadow: 0 0 0 30px #3f3f3f inset !important;
+  -webkit-text-fill-color: var(--white) !important;
 }
 
 #card {
-  background: #fbfbfb;
+  background: #3f3f3f;
+  color: var(--white);
   border-radius: 8px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
   height: auto;
@@ -102,7 +115,7 @@ h2 {
 
   border: none;
   border-radius: 21px;
-  box-shadow: 0px 1px 8px #939393;
+  box-shadow: 0px 1px 8px #000000;
   cursor: pointer;
   font-family: poppins-regular, sans-serif;
   height: 42.3px;
@@ -148,7 +161,7 @@ h2 {
 
   border: none;
   border-radius: 21px;
-  box-shadow: 0px 1px 8px #939393;
+  box-shadow: 0px 1px 8px #000000;
   cursor: pointer;
   font-family: poppins-regular, sans-serif;
   height: 42.3px;
@@ -204,7 +217,7 @@ h2 {
   text-align: center;
 }
 #category{
-  color: #3f3f3f;
+  color: var(--white);
   font-family: jakarta, sans-serif;
   font-size: 14pt;
   margin-top: 0.1rem;
@@ -218,7 +231,7 @@ h2 {
   margin: 0.7rem 0rem 0rem 0rem;
 }
 #about-us {
-  color: var(--color4);
+  color: var(--white);
   background-color:rgba(255, 255, 255, 0);
   border: 0px;
   font-family: poppins-regular, sans-serif;
@@ -227,7 +240,7 @@ h2 {
   float: right;
 }
 #intext-ref {
-  color:var(--color4);
+  color:var(--color5);
 }
 #start-date{
   width:40%;
