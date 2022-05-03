@@ -312,7 +312,7 @@ input:-webkit-autofill:active{
 }
 #loader {
   margin: 0.5rem auto 1rem auto;
-  border: 10px solid #b3b3b3; /* Light grey */
+  border: 10px solid #000000; /* Light grey */
   border-top: 10px solid var(--color5); /* Blue */
   border-radius: 50%;
   width: 50px;
@@ -323,7 +323,7 @@ input:-webkit-autofill:active{
 }
 #loader-1 {
   margin: 0.5rem auto 1rem auto;
-  border: 10px solid #b3b3b3; /* Light grey */
+  border: 10px solid #000000; /* Light grey */
   border-top: 10px solid var(--color5); /* Blue */
   border-radius: 50%;
   width: 50px;

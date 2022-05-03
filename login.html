@@ -11,11 +11,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="icon" href="./media/hope_camp_logo_final.png">
+    <!-- <link rel="stylesheet" href="./navbar.css" /> -->
 
 </head>
 
 <body onload="entryTransition()">
-    <!-- 
+
+    <!-- STICKY NAVBAR FROM W3S
     <div id="navbar" class="topnav">
         <a class="active" href="javascript:void(0)">Home</a>
         <a href="javascript:void(0)">News</a>
@@ -24,7 +26,30 @@
             <i class="fa fa-bars"></i>
         </a>
     </div> 
+
     -->
+    <!-- NAVBAR FROM GEO
+    <div id="navbar" class="header">
+      <div id="brand"><a href="/">HopeCamp#3</a></div>
+      <nav>
+        <ul>
+          <li><a href="/home">Abut us</a></li>
+          <li id="login"><a href="/login" >Înscrie-te</a></li>
+          <li id="signup"><a href="/signup">Contul meu</a></li>
+
+        </ul>
+      </nav>
+      <div id="hamburger-icon" onclick="toggleMobileMenu(this)">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+        <ul class="mobile-menu">
+          <li><a href="/home">About us</a></li>
+          <li id="login"><a href="/login" >Înscrie-te</a></li>
+          <li id="signup"><a href="/signup">Contul meu</a></li>
+        </ul>
+      </div>
+    </div> -->
 
     <div  id="card">
         <div id="card-content">
@@ -115,6 +140,9 @@
         function contentVisibile() {
            document.querySelector("#card-content").style.opacity = '1';
         }
+    }
+    function toggleMobileMenu(menu) {
+        menu.classList.toggle('open');
     }
 </script>
 

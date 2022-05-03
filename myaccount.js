@@ -222,7 +222,7 @@ const submit_btn = document.getElementById('msg-submit').addEventListener("click
   
 });
 
-var logout_button = document.getElementById("logout").addEventListener("click", function () {
+const logout_button = document.getElementById("logout").addEventListener("click", function () {
   signOut(auth).then(() => {
     console.log("logged out");
   })

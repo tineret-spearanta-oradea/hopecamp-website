@@ -39,6 +39,27 @@ const setupUI = (user) => {
         let data = snapshot.val();
         if(data){
 
+          //make current user (admin) prezent.
+          update(ref(database, `users/${USERid}`), { prezent:1 })
+          .then(function() {            
+            let logs = document.querySelector("#logs p");
+            let logs_text = logs.innerHTML;
+            let now = new Date();
+            if(now.getMinutes()<10 && now.getSeconds()>=10) {
+              logs.innerHTML = `${now.getHours()}:0${now.getMinutes()}:${now.getSeconds()} - Current admin<br>${logs_text}`;
+            } 
+            else if(now.getMinutes()>=10 && now.getSeconds()<10) {
+              logs.innerHTML = `${now.getHours()}:${now.getMinutes()}:0${now.getSeconds()} - Current admin<br>${logs_text}`;
+            } 
+            else if(now.getMinutes()<10 && now.getSeconds()<10) {
+              logs.innerHTML = `${now.getHours()}:0${now.getMinutes()}:0${now.getSeconds()} - Current admin<br>${user_name} (ID: ${res})<br>${logs_text}`;
+            } 
+            else {
+              logs.innerHTML = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()} - Current admin<br>${user_name} (ID: ${res})<br>${logs_text}`;
+            }
+          })
+          .catch(error => {});
+
         } else {
             window.location.href = myaccountURL;
         }
@@ -113,30 +134,31 @@ qrcode.callback = res => {
             else {
               logs.innerHTML = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()} - ${user_name} (ID: ${res})<br>${logs_text}`;
             }
-            setTimeout(backToReadingUI, 2500);
-            
+            setTimeout(scanAgain, 500);
+            // scanAgain();
         } else {
             current_log.parentElement.classList.add("loading-database");
             current_log.innerHTML = `QR CODE NOT VALID`;
-
-            setTimeout(backToReadingUI, 2500);
+            
+            // scanAgain();
+            setTimeout(scanAgain, 500); //just for ux
         }
     }
 };
 
 
 function backToReadingUI(){
-    scanAgain();
-
-    document.querySelector("body").style.setProperty("--c1", "#353a36");
-    let current_log = document.querySelector("#current-log p");
-    current_log.parentElement.classList.remove("show-result");
-    current_log.parentElement.classList.remove("loading-database");
-    current_log.innerHTML = "Reading...";
+   // back to reading ui
+  document.querySelector("body").style.setProperty("--c1", "#353a36");
+  let current_log = document.querySelector("#current-log p");
+  current_log.parentElement.classList.remove("show-result");
+  current_log.parentElement.classList.remove("loading-database");
+  current_log.innerHTML = "Reading...";
 }
 
 
 function scanAgain() {
+  
     navigator.mediaDevices
         .getUserMedia({ video: { facingMode: "environment" } })
         .then(function(stream) {
@@ -149,6 +171,8 @@ function scanAgain() {
             tick();
             scan();
         });
+
+  setTimeout(backToReadingUI, 1500);
 }
 
 scanAgain()

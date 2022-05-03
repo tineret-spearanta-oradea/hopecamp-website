@@ -132,7 +132,7 @@ const handleData = (usersData) => {
 
                 let time = row.insertCell(1);
                 let T = new Date(msg.time_of_send);
-                time.innerHTML = `${T.getDate()}/${T.getMonth()+1}  ${T.getHours()}:${T.getMinutes()}`;
+                time.innerHTML = `${T.getDate()}/0${T.getMonth()+1} &nbsp;&nbsp; ${T.getHours()}:${T.getMinutes()}`;
 
                 let email = row.insertCell(2);
                 email.innerHTML = msg.sender_email;
@@ -156,6 +156,12 @@ const handleData = (usersData) => {
     });
     //STOP LOADING ANIMATION
 }
+
+const logout_button = document.getElementById("logout-btn").addEventListener("click", function () {
+  signOut(auth).then(() => {
+    console.log("logged out");
+  })
+});
 
 const reset_attendance = document.getElementById("yes-delete").addEventListener("click", function () {
   Object.keys(allUsersData).forEach(uid => {

@@ -1,15 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap');
 
-:root {
-  --color1: #ffbb19;
-  --color2: #ff9000;
-  --color3: #463015;
-  --color4: #386329;
-  --color5: #292963;
-
-  --white: #ffffff;
-}
-
 * {
 	margin: 0;
 	padding: 0;
@@ -28,12 +18,13 @@ li {
 	--poppins: 'Poppins', sans-serif;
 	--lato: 'Lato', sans-serif;
 
-	--light: #F9F9F9;
+	--light: #535353;
 	--blue: #3C91E6;
 	--light-blue: #CFE8FF;
-	--grey: #eee;
-	--dark-grey: #AAAAAA;
-	--dark: #342E37;
+	--grey: #d3d0c3;
+	--dark-grey: #cecece;
+	--dark: #f0f0f0;
+	--dark2: rgb(159, 179, 216);
 	--red: #DB504A;
 	--yellow: #FFCE26;
 	--light-yellow: #FFF2C6;
@@ -190,6 +181,10 @@ body {
 
 
 /* NAVBAR */
+#nav-title {
+	color: var(--dark);
+	cursor: pointer;
+}
 #content nav {
 	height: 56px;
 	background: var(--light);
@@ -220,12 +215,11 @@ body {
 	cursor: pointer;
 	color: var(--dark);
 }
-#content nav .nav-link {
+#menu-btn {
 	font-size: 16px;
 	transition: .3s ease;
-}
-#content nav .nav-link:hover {
-	color: var(--blue);
+	font-family: poppins-regular, sans-serif;
+	cursor: pointer;
 }
 #content nav form {
 	max-width: 400px;
@@ -331,6 +325,10 @@ body {
 
 
 /*stai o țâră */
+#messages-table > tbody > tr:hover,
+#table-body > tr:hover {
+	color: #000000;
+}
 
 .sr-only {
 	position: absolute;
@@ -345,6 +343,8 @@ body {
   
   table.sortable th {
 	font-weight: bold;
+	font-family: jakarta, sans-serif;
+
 	/*border-bottom: thin solid #888;*/
 	position: relative;
   }
@@ -357,8 +357,11 @@ body {
   table.sortable th:nth-child(5) {
 	width: 10em;
   }
+
   
   table.sortable th button {
+	  font-family: jakarta, sans-serif;
+	color:var(--dark2);
 	position: absolute;
 	padding: 4px;
 	margin: 1px;
@@ -419,7 +422,7 @@ body {
   table.sortable th button:hover {
 	padding: 2px;
 	border: 2px solid currentColor;
-	background-color: #e5f4ff;
+	background-color: #697d8b;
 
   }
   
@@ -480,7 +483,7 @@ tfoot input {
 	color: var(--dark);
 }
 #content main .head-title .left .breadcrumb li a {
-	color: var(--dark-grey);
+	color: #4747479a;
 	pointer-events: none;
 }
 #content main .head-title .left .breadcrumb li a.active {
@@ -503,7 +506,7 @@ tfoot input {
 	background-color: #85ad77;
 	border: none;
 	border-radius: 15px;
-	box-shadow: 0px 1px 8px #adaaaa;
+	box-shadow: 0px 1px 2px #000000;
 	color: var(--light);
 	font-family: poppins-regular, sans-serif;
 	letter-spacing: 1px;
@@ -511,6 +514,7 @@ tfoot input {
 	margin-top: 13px;
 	margin-bottom: 15px;
 	margin-left: 0.5rem;
+	margin-right: auto;
 	transition: 0.25s;
 	width: 25px;
 	display: inline;
@@ -518,7 +522,8 @@ tfoot input {
 }
 #reset-attendance {
 	color: rgb(202, 5, 5);
-	margin: 0 2rem;
+	/* margin: 0 2rem; */
+	margin-left: auto;
 	cursor: pointer;
 }
 #searchIcon {
@@ -532,12 +537,26 @@ tfoot input {
 	width: 15em;
 	height: 2rem;
 	text-indent: 10px ;
-	/* text-align: center; */
-	border-width: 1px;
-	border-radius: 6px;
-	/* margin-right: auto; */
-}
+	border-width: 0px;
+	border-radius: 16px;
+	background-color: #ffffff;
 
+}
+#search-user-div{
+	margin: 1.5rem auto;
+}
+#logo {
+	margin-left: auto;
+	background-color: var(--grey);
+;
+	border-radius: 6px;
+	box-shadow: 0px 1px 16px #d3d0c391;
+
+}
+#logo img{
+	height: 2.5rem;
+	width: auto;
+}
 
 #content main .box-info {
 	display: grid;
@@ -594,11 +613,13 @@ tfoot input {
 	margin-top: 24px;
 	width: 100%;
 	color: var(--dark);
+	font-family: poppins-regular, sans-serif;
+	letter-spacing: 0px;
 }
 #content main .table-data > div {
 	border-radius: 20px;
 	background: var(--light);
-	padding: 24px;
+	padding: 20px;
 	overflow-x: auto;
 }
 #content main .table-data .head {
@@ -628,6 +649,8 @@ tfoot input {
 }
 #content main .table-data .order table th {
 	padding-bottom: 12px;
+	/* padding: 0.125em 0.25em; */
+
 	font-size: 13px;
 	text-align: center;
 	border-bottom: 1px solid var(--grey);
@@ -643,7 +666,6 @@ tfoot input {
 	background-color: #DB504A;
 	border-radius: 50%;
 }
-
 
 #content main .table-data .order table tr td:first-child {
 	display: flex;
@@ -683,12 +705,17 @@ tfoot input {
 }
 #content main .table-data .order table tr td .status.completed {
 	background: var(--blue);
+	color: #ffffff;
 }
 #content main .table-data .order table tr td .status.process {
 	background: var(--yellow);
+	color: #ffffff;
+
 }
 #content main .table-data .order table tr td .status.pending {
 	background: var(--orange);
+	color: #ffffff;
+
 }
 
 
@@ -751,13 +778,12 @@ tfoot input {
 
 
 
-
 @media screen and (max-width: 576px) {
-	#content nav form .form-input input {
+	.form-input input {
 		display: none;
 	}
 
-	#content nav form .form-input button {
+	.form-input button {
 		width: auto;
 		height: auto;
 		background: transparent;
@@ -765,11 +791,11 @@ tfoot input {
 		color: var(--dark);
 	}
 
-	#content nav form.show .form-input input {
+	.form-input input {
 		display: block;
 		width: 100%;
 	}
-	#content nav form.show .form-input button {
+	.form-input button {
 		width: 36px;
 		height: 100%;
 		border-radius: 0 36px 36px 0;

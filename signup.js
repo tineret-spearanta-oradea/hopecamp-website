@@ -82,13 +82,6 @@ for(let i=0; i<UIEmailAndPass.length; i++)
   });
 }
 // const test_button = document.getElementById("test-btn").addEventListener("click", function ()  { 
-//   let church = document.querySelector('input[name="church_choice"]:checked');
-//   if(church) {
-//     console.log(church);
-//   }
-//   else {
-//     console.log("no value");
-//   }
 // });
 
 const continue_button = document.getElementById("continue-btn").addEventListener("click", function ()  {
@@ -228,7 +221,19 @@ const pushToDatabaseAndSetupUI = (user) => {
   let transport = document.querySelector('input[name="transport_choice"]:checked').value;   
   var start_date = document.getElementById("start-date").value;
   var end_date = document.getElementById("end-date").value;
-  var contribui = document.getElementById("contribui").value;
+  const contribui_options = [ 
+    document.getElementById("contribui1"),
+    document.getElementById("contribui2"),
+    document.getElementById("contribui3"),
+    document.getElementById("contribui4"),
+  ];
+  let finalContribuiOptions = "";
+  contribui_options.forEach(option => {
+    if(option.checked) { 
+      finalOptions += `${option.value} / `;
+    }
+  });
+
   var person = document.getElementById("person").value;
   var pfpURL;
 
@@ -265,10 +270,10 @@ const pushToDatabaseAndSetupUI = (user) => {
           payed: 0,
           start_date: start_date,
           end_date: end_date,
-          contribui: contribui,
+          contribui: finalContribuiOptions,
           cazare_cu: person,
           transport: transport,
-          prezent: false,
+          prezent: 0,
           img_url: pfpURL,
         };
 
