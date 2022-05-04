@@ -208,7 +208,7 @@
 								</th>
 								<th class="num">
 									<button>
-										Varstă
+										Vârstă
 										<span aria-hidden="true"></span>
 									  </button>
 									</th>	
@@ -242,16 +242,13 @@
 								<th class="no-sort">Telefon</th>
 								<th>
 									<button>
-										Dorm cu
+										Transport
 										<span aria-hidden="true"></span>
-									  </button>
-									</th>	
-								<th>
-									<button>
-										Mă implic
-										<span aria-hidden="true"></span>
-									  </button>
-									</th>
+									</button>
+								</th>	
+								<th class="no-sort">Info</th>
+
+								
 
 						<!--    <th>Vârstă</th>
 								<th>Email</th>
@@ -425,11 +422,14 @@
             <p class="popup-title popup-title-delete">Ești sigur că vrei sa ștergi prezența?</p> 
             <p class="popup-text popup-text-delete">Această acțiune este ireversibilă si va șterge datele curente referitoare la prezență</p> 
 			
+			<input class="popup-btn" id="save-edits" type="button" value="Save">
+
 			<input class="popup-btn" id="yes-delete" type="button" value="Da">
 			<input class="popup-btn" id="no-delete" type="button" value="Nu">
 
 			<input class="popup-btn" id="yes-start-attendance" type="button" value="Ok">
 			<input class="popup-btn" id="no-start-attendance" type="button" value="Close">
+
 
 			<input id="email-add-admin" type="email" name="email" placeholder="email" />
 			<input id="add-admin-submit" type="button" name="add-btn" value="ADD" />
@@ -441,5 +441,10 @@
 	<script src="admins.js"></script>
 	<script src="admins_db.js" type="module"></script>
 
+	<script>
+	function moreinfo(nume, data_sosirii, data_plecarii, contribui, cazare) { 
+		alert(nume + contribui);
+	}
+	</script>
 </body>
 </html>
