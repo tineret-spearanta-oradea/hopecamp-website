@@ -113,8 +113,7 @@ const continue_button = document.getElementById("continue-btn").addEventListener
     document.getElementById("name"),
     document.getElementById("age"),
     document.getElementById("phone"),
-    document.getElementById("contribui"),
-  ];
+    ];
 
   let somethingIsNotValid;
   // Validate input fields
@@ -233,7 +232,7 @@ const pushToDatabaseAndSetupUI = (user) => {
   let finalContribuiOptions = "";
   contribui_options.forEach(option => {
     if(option.checked) { 
-      finalOptions += `${option.value} / `;
+      finalContribuiOptions += `${option.value} / `;
     }
   });
 
@@ -395,4 +394,3 @@ function countProperties(obj) {
 
     return count;
 }
-
