@@ -15,7 +15,7 @@ a {
 body {
   /* background: -webkit-linear-gradient(bottom, var(--white), var(--primary)); */
   background: url(./media/portal_bg.jpg);
-  background-color: var(--cardbg);
+  background-color: #364155;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center; 
@@ -63,14 +63,16 @@ form i {
   text-align: right;
 }
 #about-us {
-  color: var(--white);
-  background-color:rgba(255, 255, 255, 0);
-  border: 0px;
+  color: #97c1ecbb;
+  background: -webkit-linear-gradient(right,#707070, #00000000);
+  border-radius: 8px;
+
   font-family: "Raleway", sans-serif;
   font-size: 10pt;
   cursor: pointer;
   float: right;
-  padding-top: 10px;
+  margin-top: 19px;
+  padding: 4px;
 }
 
 #card {
@@ -102,9 +104,10 @@ form i {
 }
 #card-subtitle {
   font-family: poppins-regular, sans-serif;
-  letter-spacing: 1px;
-  padding-bottom: 23px;
-  padding-top: 13px;
+  letter-spacing: 0px;
+  font-size: 11pt;
+  padding-top: 1px;
+  padding-bottom: 14px;
   text-align: center;
 }
 #error {

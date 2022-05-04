@@ -40,7 +40,7 @@ const setupUI = (user) => {
         if(data){
 
           //make current user (admin) prezent.
-          update(ref(database, `users/${USERid}`), { prezent:1 })
+          update(ref(database, `users/${USERid}`), { prezent:true })
           .then(function() {            
             let logs = document.querySelector("#logs p");
             let logs_text = logs.innerHTML;
@@ -108,7 +108,7 @@ qrcode.callback = res => {
             });
 
             // Push prezent to database
-            update(ref(database, `users/${user_uid}`), { prezent:1 }).then(function() {
+            update(ref(database, `users/${user_uid}`), { prezent:true }).then(function() {
 
             })
             .catch(error => {

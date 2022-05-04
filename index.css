@@ -10,7 +10,8 @@
 }
 body {
   background: url(./media/portal_bg.jpg);
-  background-color: var(--card_bg);
+  background-color: #364155;
+
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center; 

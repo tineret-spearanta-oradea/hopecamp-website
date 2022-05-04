@@ -24,7 +24,7 @@ body {
   /* background: url(./media/camp_bg_long.png); */
   background: url(./media/portal_bg.jpg);
 
-  background-color: var(--cardbg);
+  background-color: #364155;
 
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -69,6 +69,32 @@ input:-webkit-autofill:active{
 
   opacity: 0;
   transition: opacity 0.5s;
+}
+#mini-header {
+  margin-top: 0.5rem;
+}
+.header-buttons {
+  margin-top: 15px;
+  margin-bottom: 17px;
+  color: #97b1ec;
+  border: 0px;
+  font-family: poppins-regular, sans-serif;
+  font-size: 10pt;
+  cursor: pointer;
+}
+#login {
+  float: left;
+  /* background-color: #e6e6e6; */
+  background: -webkit-linear-gradient(left,#707070, #00000000);
+  border-radius: 8px;
+}
+#about-us {
+  float: right;
+   /* background-color: #e6e6e6; */
+  background: -webkit-linear-gradient(right,#707070, #00000000);
+
+
+  border-radius: 8px;
 }
 #card-title {
   font-family: poppins-regular, sans-serif;
@@ -230,15 +256,7 @@ input:-webkit-autofill:active{
 #u18-agree {
   margin: 0.7rem 0rem 0rem 0rem;
 }
-#about-us {
-  color: var(--white);
-  background-color:rgba(255, 255, 255, 0);
-  border: 0px;
-  font-family: poppins-regular, sans-serif;
-  font-size: 10pt;
-  cursor: pointer;
-  float: right;
-}
+
 #intext-ref {
   color:var(--color5);
 }

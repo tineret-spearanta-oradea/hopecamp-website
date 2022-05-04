@@ -60,6 +60,10 @@ var resetpass_button = document.getElementById("forgot-pass").addEventListener("
   window.location.href = forgotPassURL;
 });
 
+const homepage_btn = document.querySelector("#card-title h2").addEventListener("click", function (){ 
+  window.location.href = indexURL;
+});
+
 const togglePassword = document.querySelector('#togglePassword').addEventListener('click', function () {
   const password = document.querySelector('#password');
   const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -172,7 +176,7 @@ var submit_button = document.getElementById("submit-btn").addEventListener("clic
 
 
 function startLoading() {
-  document.getElementById("signup").style.display = "none";
+  // document.getElementById("signup").style.display = "none";
   document.getElementById("loader").style.display = 'inline';
   // document.getElementById("loader").style.visibility = 'visible';
   // document.getElementById("card").style.height = "44rem";

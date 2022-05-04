@@ -18,7 +18,7 @@
 body {
   /* background: -webkit-linear-gradient(bottom, var(--white), var(--primary)); */
   background: url(./media/portal_bg.jpg);
-  background-color: var(--cardbg);
+  background-color: #364155;
 
   background-attachment: fixed;
   background-repeat: no-repeat;
@@ -126,13 +126,14 @@ textarea {
 #logout {
   float: left;
   /* background-color: #e6e6e6; */
-  background: -webkit-linear-gradient(left,#e7e7e7, var(--white));
+  background: -webkit-linear-gradient(left,#707070, #00000000);
   border-radius: 8px;
 }
 #about-us {
   float: right;
    /* background-color: #e6e6e6; */
-  background: -webkit-linear-gradient(left, var(--white),  #e7e7e7);
+  background: -webkit-linear-gradient(right,#707070, #00000000);
+
 
   border-radius: 8px;
 }
@@ -204,8 +205,11 @@ textarea {
   font-family: roboto-light;
   font-size: 0.9em !important; 
 }
+#trimite-btn {
+  text-align: center;
+}
 #msg-submit {
-  width: 20%;
+  width: 22%;
   height: 2rem;
   text-align: center; /*why not work man*/
   background: -webkit-linear-gradient(right, var(--color1), var(--color2));
@@ -219,7 +223,7 @@ textarea {
   margin-top: 15px;
   display: flex;
   float: right;
-  margin: 0rem auto 0rem auto;
+  margin: 0 auto;
 }
 #msg-submit:disabled {
   cursor:default;
@@ -236,7 +240,9 @@ textarea {
 }
 
 .header-buttons {
-  color: var(--color4);
+  margin-top: 15px;
+  margin-bottom: 17px;
+  color: #97b1ec;
   border: 0px;
   font-family: poppins-regular, sans-serif;
   font-size: 10pt;
@@ -262,11 +268,11 @@ textarea {
 
 #trigger_popup {
   cursor: pointer;
-  color:rgba(27, 46, 133, 0.76);
+  color:#c0caf4c2;
   font-family: poppins-regular, sans-serif;
   font-size: 11pt;
   border-radius: 10px;
-  background-color: #d5d5d564;
+  background-color: #0000006d;
   padding: 2%;
   box-shadow: 1px 1px 7px #0000009a;
 }

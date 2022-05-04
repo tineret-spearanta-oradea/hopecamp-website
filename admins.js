@@ -3,12 +3,15 @@ const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
 allSideMenu.forEach(item=> {
 	const li = item.parentElement;
 
-	item.addEventListener('click', function () {
-		allSideMenu.forEach(i=> {
-			i.parentElement.classList.remove('active');
-		})
-		li.classList.add('active');
-	})
+  if(li.parentElement.classList[1] === "top") {
+    
+    item.addEventListener('click', function () {
+      allSideMenu.forEach(i=> {
+        i.parentElement.classList.remove('active');
+      })
+      li.classList.add('active');
+    });
+  }
 });
 
 
@@ -24,8 +27,53 @@ menuBar.addEventListener('click', function () {
 
 
 
-document.querySelector("#div-trigger-popup").addEventListener("click", function(){
+document.querySelector("#div-trigger-popup-delete").addEventListener("click", function(){
   document.querySelector('.hover_bg').style.display = 'block';
+  document.querySelector('.popup-title').innerHTML = "Ești sigur că vrei sa ștergi prezența?";
+  document.querySelector('.popup-text').innerHTML = "Această acțiune este ireversibilă si va șterge datele curente referitoare la prezență";
+  document.querySelector('.popup-text').style.color = "black";
+
+  document.querySelector("#add-admin-submit").style.display = 'none';
+  document.querySelector("#email-add-admin").style.display = "none";
+  document.querySelector("#yes-start-attendance").style.display = 'none';
+  document.querySelector("#no-start-attendance").style.display = 'none';
+
+  document.querySelector("#yes-delete").style.display = 'inline';
+  document.querySelector("#no-delete").style.display = 'inline';
+
+});
+document.querySelector("#div-start-attendance").addEventListener("click", function(){
+  document.querySelector('.hover_bg').style.display = 'block';
+  document.querySelector('.popup-title').innerHTML = "Începe prezența";
+  document.querySelector('.popup-text').innerHTML = "Vei iniția sesiunea de prezență (făcută prin sistemul QR).";
+  document.querySelector('.popup-text').style.color = "black";
+
+  document.querySelector("#add-admin-submit").style.display = 'none';
+  document.querySelector("#email-add-admin").style.display = "none";
+  document.querySelector("#yes-delete").style.display = 'none';
+  document.querySelector("#no-delete").style.display = 'none';
+
+  document.querySelector("#yes-start-attendance").style.display = 'inline';
+  document.querySelector("#no-start-attendance").style.display = 'inline';
+
+});
+
+document.querySelector("#add-admin").addEventListener("click", function(){
+  document.querySelector('.hover_bg').style.display = 'block';
+  document.querySelector('.popup-title').innerHTML = "Add admin";
+  
+                  
+  let content = document.querySelector('.popup-text');
+  content.innerHTML = 'Introdu emailul persoanei care va avea drepturi de admin';
+  content.style.color = "black";
+  
+  document.querySelector("#yes-delete").style.display = 'none';
+  document.querySelector("#no-delete").style.display = 'none';
+  document.querySelector("#yes-start-attendance").style.display = 'none';
+  document.querySelector("#no-start-attendance").style.display = 'none';
+  
+  document.querySelector("#add-admin-submit").style.display = "inline";
+  document.querySelector("#email-add-admin").style.display = "inline";
 });
 
 let isMouseOverHover = false;
@@ -35,7 +83,7 @@ document.querySelector(".hover_bg>div").addEventListener("mouseover", function (
 document.querySelector(".hover_bg>div").addEventListener("mouseleave", function () {
   isMouseOverHover = false;
 });
-document.querySelector('.hover_bg').addEventListener("click", function(){
+document.querySelector('.hover_bg').addEventListener("mousedown", function(){
   if(!isMouseOverHover) {
     document.querySelector('.hover_bg').style.display = 'none';
   }
@@ -44,20 +92,26 @@ document.querySelector('.hover_bg').addEventListener("click", function(){
 document.querySelector('.popupCloseButton').addEventListener("click", function(){
     document.querySelector('.hover_bg').style.display = 'none';
 });
-document.querySelector('.popup-btn').addEventListener("click", function(){
-    document.querySelector('.hover_bg').style.display = 'none';
+
+const popup_btns = document.querySelectorAll('.popup-btn')
+popup_btns.forEach(btn=> {
+  btn.addEventListener("click", function(){
+      document.querySelector('.hover_bg').style.display = 'none';
+  });
 });
+// document.querySelector('#add-admin-submit').addEventListener("click", function(){
+//     document.querySelector('.hover_bg').style.display = 'none';
+// });
 
 
 
 
-
-window.addEventListener('resize', function () {
-	if(this.innerWidth > 576) {
-		searchButtonIcon.classList.replace('bx-x', 'bx-search');
-		searchForm.classList.remove('show');
-	}
-})
+// window.addEventListener('resize', function () {
+// 	if(this.innerWidth > 576) {
+// 		searchButtonIcon.classList.replace('bx-x', 'bx-search');
+// 		searchForm.classList.remove('show');
+// 	}
+// })
 
 
 

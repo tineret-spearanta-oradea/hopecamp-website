@@ -47,8 +47,11 @@ window.addEventListener("orientationchange", function() {
 }, false);
 
 
-var aboutus_button = document.getElementById("about-us").addEventListener("click", function () {
+const aboutus_button = document.getElementById("about-us").addEventListener("click", function () {
   window.location.href =  aboutusURL;
+});
+const login_button = document.getElementById("login").addEventListener("click", function () {
+  window.location.href =  loginURL;
 });
 
 const agree_checked = document.getElementById("agree").addEventListener("change", function() {

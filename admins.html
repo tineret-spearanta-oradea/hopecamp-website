@@ -63,6 +63,12 @@
 				</a>
 			</li>
 			<li>
+				<a id="add-admin">
+					<i class='bx bx-user-plus' ></i>
+					<span class="text">Add admin</span>
+				</a>
+			</li>
+			<li>
 				<a id="logout-btn" class="logout">
 					<i class='bx bxs-log-out-circle' ></i>
 					<span class="text">Logout</span>
@@ -116,7 +122,7 @@
 
 			<ul id="Date"class="box-info">
 				<li>
-					<i class='bx bxs-calendar-check' ></i>
+					<i class='bx bxs-user-check' ></i>
 					<span class="text">
 						<h3 id="nr-inscrisi"></h3>
 						<p>Înscriși</p>
@@ -155,7 +161,11 @@
 
 						<button id="btnExport" class='bx bxs-download'onclick="exportReportToExcel(this)"></button>
 
-						<div id="div-trigger-popup" >
+						<div id="attendance-on"> <a href="./QRscanner.html">QR Attendance</a>  is ON!</div>
+						<div id="div-start-attendance" >
+							<a id="start-attendance">Începe prezența</a>
+						</div>
+						<div id="div-trigger-popup-delete" >
 							<a id="reset-attendance">Reset prezență</a>
 						</div>
 						<!--<script type="text/javascript">
@@ -187,12 +197,15 @@
 					<table id="users-table" class="sortable">
 						<thead>
 							<tr>
+								<th class="no-sort" id="attendance-ongoing" style="display: none;">
+									Prezență
+								</th>
 								<th>
 									<button>
 										Nume
 										<span aria-hidden="true"></span>
-									  </button>
-									</th>
+									</button>
+								</th>
 								<th class="num">
 									<button>
 										Varstă
@@ -254,21 +267,21 @@
 							</tr>
 						</thead>
 						<tbody id="table-body">
-							<tr>
+							<tr class="hidethispls">
 								<td>
 									<!-- <img src=""> -->
-									<p>Efi ghiurau</p>
+									<p></p>
 								</td>
-								<td>21</td>
-								<td><span class="status completed">5</span></td>
 								<td></td>
-								<td>Speranta</td>
-								<td>Dorotea</td>
-								<td><span class="status completed">500</span></td>
-								<td>0722342222</td>
-								<td>Rane</td>
+								<td><span class="status completed"></span></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td><span class="status completed"></span></td>
+								<td></td>
+								<td></td>
 							<!--<td>Sa fie bine</td> -->
-								<td>Nu vreau</td>
+								<td></td>
 							    <td><input type="button" value="X" onclick="SomeDeleteRowFunction(this);"></td>
 							</tr>
 
@@ -346,15 +359,15 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
+							<tr class="hidethispls">
 								<td>
 									<!-- <img src="img/profile.png"> -->
-									<p>Efi Ghiurau</p>
+									<p></p>
 								</td>
-								<td>21</td>
-								<td>w@f</td>
-								<td>0722342222</td>
-								<td>Sugestia mea este...bla bla bsgatsknasx</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
 	
 							</tr>
 							
@@ -362,6 +375,9 @@
 					</table>
 			</div>
 
+			
+
+			
 			<!-- <div class="table-data">
 
 				<h3 id="Echipe">Echipe</h3>
@@ -408,8 +424,16 @@
             <div class="popupCloseButton">&times;</div>
             <p class="popup-title popup-title-delete">Ești sigur că vrei sa ștergi prezența?</p> 
             <p class="popup-text popup-text-delete">Această acțiune este ireversibilă si va șterge datele curente referitoare la prezență</p> 
+			
 			<input class="popup-btn" id="yes-delete" type="button" value="Da">
 			<input class="popup-btn" id="no-delete" type="button" value="Nu">
+
+			<input class="popup-btn" id="yes-start-attendance" type="button" value="Ok">
+			<input class="popup-btn" id="no-start-attendance" type="button" value="Close">
+
+			<input id="email-add-admin" type="email" name="email" placeholder="email" />
+			<input id="add-admin-submit" type="button" name="add-btn" value="ADD" />
+
 
 		</div>
     </div>
