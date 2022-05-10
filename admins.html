@@ -8,7 +8,7 @@
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <link rel="icon" href="./media/hope_camp_logo_final.png">
 	<!-- My CSS -->
-	<link rel="stylesheet" href="admins.css">
+	<link rel="stylesheet" href="./admins.css">
 
 	<title>Admins | Hope Camp</title>
 </head>
@@ -24,6 +24,8 @@
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 
 <body  onload="getPics()">
+	<div id="loader"></div>
+
 	<!-- SIDEBAR -->
 	<section id="sidebar" class="hide">
 		<a href="#" class="brand">
@@ -48,13 +50,13 @@
 					<span class="text">Mesaje</span>
 				</a>
 			</li>
-			<!-- <li>
-				<a href="#Echipe">
-					<i class='bx bxs-group' ></i>
-					<span class="text">Echipe</span>
+			 <li>
+				<a href="#Calendar">
+					<i class='bx bxs-calendar' ></i>
+					<span class="text">Calendar</span>
 				</a>
 			</li>
-		</ul> -->
+		</ul> 
 		<ul class="side-menu">
 			<li>
 				<a href="/QRscanner.html">
@@ -197,9 +199,7 @@
 					<table id="users-table" class="sortable">
 						<thead>
 							<tr>
-								<th class="no-sort" id="attendance-ongoing" style="display: none;">
-									Prezență
-								</th>
+
 								<th>
 									<button>
 										Nume
@@ -370,10 +370,41 @@
 							
 						</tbody>
 					</table>
+				</div>
 			</div>
 
-			
-
+			<div id="Calendar">
+				<div class="head">
+					<h3>Calendar cu număr de participanți</h3>
+				</div>
+				<div id="week1" class="week">
+					
+					<div data-date="2022-07-30">
+						<p class="small-day">SÂM<br></p><p class="big-day">30<br></p><p class="small-day">JUL</p>
+						<div> <p>120</p></div>
+					</div>
+					<div data-date="2022-07-31">
+						<p class="small-day" >DUM<br></p><p class="big-day">31<br></p><p class="small-day">JUL</p>
+						<div> <p>120</p></div>
+					</div>
+					<div data-date="2022-08-01">
+						<p class="small-day">LUN<br></p><p class="big-day">1<br></p><p class="small-day">AUG</p>
+						<div> <p>103</p></div>
+					</div>
+					<div data-date="2022-08-02">
+						<p class="small-day">MAR<br></p><p class="big-day">2<br></p><p class="small-day">AUG</p>
+						<div> <p>110</p></div>
+					</div>
+					<div data-date="2022-08-03">
+						<p class="small-day">MIE<br></p><p class="big-day">3<br></p><p class="small-day">AUG</p>
+						<div> <p>109</p></div>
+					</div>
+					<div data-date="2022-08-04">
+						<p class="small-day">JOI<br></p><p class="big-day">4<br></p><p class="small-day">AUG</p>
+						<div> <p>99</p></div>
+					</div>		
+				</div>
+			</div>
 			
 			<!-- <div class="table-data">
 
@@ -441,10 +472,5 @@
 	<script src="admins.js"></script>
 	<script src="admins_db.js" type="module"></script>
 
-	<script>
-	function moreinfo(nume, data_sosirii, data_plecarii, contribui, cazare) { 
-		alert(nume + contribui);
-	}
-	</script>
 </body>
 </html>

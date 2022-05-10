@@ -40,26 +40,29 @@ const setupUI = (user) => {
         if(data){
 
           //make current user (admin) prezent.
-          update(ref(database, `users/${USERid}`), { prezent:true })
-          .then(function() {            
-            let logs = document.querySelector("#logs p");
-            let logs_text = logs.innerHTML;
-            let now = new Date();
-            if(now.getMinutes()<10 && now.getSeconds()>=10) {
-              logs.innerHTML = `${now.getHours()}:0${now.getMinutes()}:${now.getSeconds()} - Current admin<br>${logs_text}`;
-            } 
-            else if(now.getMinutes()>=10 && now.getSeconds()<10) {
-              logs.innerHTML = `${now.getHours()}:${now.getMinutes()}:0${now.getSeconds()} - Current admin<br>${logs_text}`;
-            } 
-            else if(now.getMinutes()<10 && now.getSeconds()<10) {
-              logs.innerHTML = `${now.getHours()}:0${now.getMinutes()}:0${now.getSeconds()} - Current admin<br>${user_name} (ID: ${res})<br>${logs_text}`;
-            } 
-            else {
-              logs.innerHTML = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()} - Current admin<br>${user_name} (ID: ${res})<br>${logs_text}`;
-            }
-          })
-          .catch(error => {});
+    
+          if(USERid !== "") {
 
+            update(ref(database, `users/${USERid}`), { prezent:true })
+            .then(function() {            
+              let logs = document.querySelector("#logs p");
+              let logs_text = logs.innerHTML;
+              let now = new Date();
+              if(now.getMinutes()<10 && now.getSeconds()>=10) {
+                logs.innerHTML = `${now.getHours()}:0${now.getMinutes()}:${now.getSeconds()} - Current admin<br>${logs_text}`;
+              } 
+              else if(now.getMinutes()>=10 && now.getSeconds()<10) {
+                logs.innerHTML = `${now.getHours()}:${now.getMinutes()}:0${now.getSeconds()} - Current admin<br>${logs_text}`;
+              } 
+              else if(now.getMinutes()<10 && now.getSeconds()<10) {
+                logs.innerHTML = `${now.getHours()}:0${now.getMinutes()}:0${now.getSeconds()} - Current admin<br>${user_name} (ID: ${res})<br>${logs_text}`;
+              } 
+              else {
+                logs.innerHTML = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()} - Current admin<br>${user_name} (ID: ${res})<br>${logs_text}`;
+              }
+            })
+            .catch(error => {});
+          }
         } else {
             window.location.href = myaccountURL;
         }
@@ -108,13 +111,14 @@ qrcode.callback = res => {
             });
 
             // Push prezent to database
-            update(ref(database, `users/${user_uid}`), { prezent:true }).then(function() {
+            if(user_uid !== "") {
+              update(ref(database, `users/${user_uid}`), { prezent:true }).then(function() {
 
-            })
-            .catch(error => {
+              })
+              .catch(error => {
 
-            });
-
+              });
+            }
             document.querySelector("body").style.setProperty("--c1", "#205a14");
             current_log.parentElement.classList.add("show-result");
             current_log.innerHTML = `&#x2713; ${user_name} ID=${res}`;

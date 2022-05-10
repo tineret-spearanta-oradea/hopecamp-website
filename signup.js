@@ -46,6 +46,25 @@ window.addEventListener("orientationchange", function() {
 
 }, false);
 
+const select_days_w1 = document.querySelectorAll('#week1 div')
+select_days_w1.forEach(day => {
+  day.addEventListener("click", function (){
+    select_days_w1.forEach(day_grey => {
+      day_grey.classList.remove("selected-day");
+    });
+    day.classList.add("selected-day");
+  })
+});
+
+const select_days_w2 = document.querySelectorAll('#week2 div')
+select_days_w2.forEach(day => {
+  day.addEventListener("click", function (){
+    select_days_w2.forEach(day_grey => {
+      day_grey.classList.remove("selected-day");
+    });
+    day.classList.add("selected-day");
+  })
+});
 
 const aboutus_button = document.getElementById("about-us").addEventListener("click", function () {
   window.location.href =  aboutusURL;
@@ -115,6 +134,19 @@ const continue_button = document.getElementById("continue-btn").addEventListener
     document.getElementById("phone"),
     ];
 
+  let start_date, end_date;
+
+  select_days_w1.forEach(day => {
+    if(day.classList.contains("selected-day")) {
+      start_date = day.dataset['date'];
+    }
+  });
+  select_days_w2.forEach(day => {
+    if(day.classList.contains("selected-day")) {
+      end_date = day.dataset['date'];
+    }
+  });
+
   let somethingIsNotValid;
   // Validate input fields
   if (validate_email(email) == false || validate_password(password) == false) {
@@ -169,6 +201,18 @@ const continue_button = document.getElementById("continue-btn").addEventListener
   if(!somethingIsNotValid){
     document.getElementById("changeable-content-0").style.display = "none";
     document.getElementById("changeable-content-1").style.display = "block";
+
+    let date1 = new Date(start_date);
+    let date2 = new Date(end_date);
+    let diffTime = Math.abs(date2 - date1);
+    let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if(diffDays===5) {
+      document.querySelector("#taxa-inscriere-suma").innerHTML = `500 lei.`;
+    } else {
+      document.querySelector("#taxa-inscriere-suma").innerHTML = `${(diffDays*120)} lei.`;
+    }
+
     
     if(age<18) {
       document.getElementById("under18-agree").style.display = "block";
@@ -220,9 +264,23 @@ const pushToDatabaseAndSetupUI = (user) => {
     church = document.getElementById("other-church").value;
   }
   let pay = document.querySelector('input[name="pay_choice"]:checked').value;   
-  let transport = document.querySelector('input[name="transport_choice"]:checked').value;   
-  var start_date = document.getElementById("start-date").value;
-  var end_date = document.getElementById("end-date").value;
+  let transport = document.querySelector('input[name="transport_choice"]:checked').value;  
+
+  // let start_date = document.getElementById("start-date").value;
+  // let end_date = document.getElementById("end-date").value;
+  let start_date, end_date;
+
+  select_days_w1.forEach(day => {
+    if(day.classList.contains("selected-day")) {
+      start_date = day.dataset['date'];
+    }
+  });
+  select_days_w2.forEach(day => {
+    if(day.classList.contains("selected-day")) {
+      end_date = day.dataset['date'];
+    }
+  });
+
   const contribui_options = [ 
     document.getElementById("contribui1"),
     document.getElementById("contribui2"),
@@ -257,7 +315,7 @@ const pushToDatabaseAndSetupUI = (user) => {
           unique_ID += numberOfExistingUsers;
         } else {
           // alert("No data available");
-        }
+        } 
 
         var user_data = {
           email : email,

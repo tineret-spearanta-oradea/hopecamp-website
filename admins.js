@@ -142,7 +142,9 @@ function exportReportToExcel() {
 
 //Photo
 
-function getPics() {} //just for this demo
+function getPics() {
+
+} //just for this demo
 const imgs = document.querySelectorAll('.gallery img');
 const fullPage = document.querySelector('#fullpage');
 

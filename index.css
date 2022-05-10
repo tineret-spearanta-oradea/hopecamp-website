@@ -1,16 +1,16 @@
 :root {
-  --color1: #ffbb19;
-  --color2: #ff9000;
+  --color1: #b69e4d;
+  --color2: #9e5a00;
   --color3: #463015;
   --color4: #386329;
-  --color5: #292963;
+  --color5: #323a4a;
 
   --card_bg: #3f3f3f;
   --white: #ffffff;
 }
 body {
   background: url(./media/portal_bg.jpg);
-  background-color: #364155;
+  background-color: var(--color5);
 
   background-repeat: no-repeat;
   background-attachment: fixed;

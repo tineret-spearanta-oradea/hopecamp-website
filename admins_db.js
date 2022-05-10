@@ -27,6 +27,7 @@ onAuthStateChanged(auth, (user) => {
 
 const setupUI = (user) => {
     // START LOADING ANIMATION
+
     
   if(user) {
     // console.log(user.uid);
@@ -39,9 +40,9 @@ const setupUI = (user) => {
             get(child(dbRef, `users`)).then((snapshot_all) => {
               handleData(snapshot_all.val());
             })
-            .catch((error) => {
-                console.error(error.message);
-            });
+            // .catch((error) => {
+            //     console.error(error.message);
+            // });
 
             
 
@@ -98,6 +99,7 @@ const handleData = (usersData) => {
         document.querySelector("#attendance-on").style.display="inline";
         document.querySelector("#reset-attendance").style.display="inline";
         document.querySelector("#start-attendance").style.display="none";
+        document.querySelector("#save-edits").style.display = 'none';
 
 
         Object.keys(allUsersData).forEach(uid => {
@@ -111,6 +113,7 @@ const handleData = (usersData) => {
 
       } else {
 
+        document.querySelector("#save-edits").style.display = 'none';
         document.querySelector("#start-attendance").style.display="inline";
         document.querySelector("#attendance-on").style.display="none";
         document.querySelector("#reset-attendance").style.display="none";
@@ -160,12 +163,16 @@ const handleData = (usersData) => {
         let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
         let status="";
-        if(diffDays<5){
+
+        let daysAmount = diffDays;
+        daysAmount = parseInt(daysAmount);
+
+        if(daysAmount<5){
           status = "process";
-        } else if(diffDays===5){
+        } else if(daysAmount===5){
           status = "completed";
         } 
-        zile.innerHTML = `<span class="status ${status}">${diffDays}</span>`;
+        zile.innerHTML = `<span class="status ${status}">${daysAmount}</span>`;
 
         let email = row.insertCell(++num);
         email.innerHTML = `<span class="user-email">${user.email}</span>`;
@@ -177,15 +184,19 @@ const handleData = (usersData) => {
         plata.innerHTML = user.cui_platesc;
 
         let platit = row.insertCell(++num);
+
         status="";
-        if(user.payed===0) {
+        let payedAmount = user.payed;
+        daysAmount = parseInt(daysAmount);
+
+        if(payedAmount===0) {
           status = "pending";
-        } else if(user.payed<500){
+        } else if(payedAmount<500 && payedAmount>0){
           status = "process";
-        } else if(user.payed===500){
+        } else if(payedAmount===500){
           status = "completed";
         } 
-        platit.innerHTML = `<span class="status ${status}">${user.payed}</span>`;
+        platit.innerHTML = `<span class="status ${status}">${payedAmount}</span>`;
         
         let telefon = row.insertCell(++num);
         telefon.innerHTML = user.phone;
@@ -197,7 +208,7 @@ const handleData = (usersData) => {
         more_info.innerHTML = `<div class="more-info-btn">More info</div>`;
 
         let edit = row.insertCell(++num);
-        edit.innerHTML = `<div class="edit-btn">Edit Info</div>`;
+        edit.innerHTML = `<div class="edit-btn">Edit info</div>`;
 
         let invisible1 = row.insertCell(++num); //invisible for search
         invisible1.innerHTML = user.cazare_cu;
@@ -206,7 +217,7 @@ const handleData = (usersData) => {
         invisible2.innerHTML = user.contribui;
         invisible2.style.display = "none";
         let invisible3 = row.insertCell(++num); //invisible for search
-        invisible3.innerHTML = `${uid} + ${user.qr_id} + ${user.date1} + ${user.date2}`;
+        invisible3.innerHTML = `UID:${uid} + QRID${user.qr_id} + D1:${user.date1} + D2:${user.date2} PIC:${user.img_url}`;
         invisible3.style.display = "none";
 
     });
@@ -241,7 +252,7 @@ const handleData = (usersData) => {
                 mesaj.innerHTML = msg.message;
 
                 let deleteuser = row.insertCell(5);
-                deleteuser.innerHTML = `<input type="button" value="Delete" onclick="SomeDeleteRowFunction(this);">`;
+                deleteuser.innerHTML = `<input type="button" value="Delete not working" onclick="SomeDeleteRowFunction(this);">`;
                 
             });
 
@@ -285,7 +296,8 @@ const handleData = (usersData) => {
             popup_text.innerHTML = 
               `<span style="font-size: 6pt">${uid}</span><br>QR ID: ${user.qr_id}<br>
               Data sosirii: ${date1}<br>Data plecarii: ${date2}<br>Contribui: ${user.contribui}<br>
-              <img src="${user.img_url}" alt="pfp" height="100rem" width="auto">`;
+                <img src="${user.img_url}" alt="pfp" height="100rem" width="auto">
+              `;
 
             if(user.cazare_cu)
               popup_text += `<br>Cazare: ${user.cazare_cu}`;
@@ -293,6 +305,7 @@ const handleData = (usersData) => {
 
             document.querySelector('.popup-text').style.color = "black";
 
+            document.querySelector("#save-edits").style.display = 'none';
             document.querySelector("#add-admin-submit").style.display = 'none';
             document.querySelector("#email-add-admin").style.display = "none";
             document.querySelector("#yes-start-attendance").style.display = 'none';
@@ -342,6 +355,11 @@ const handleData = (usersData) => {
                 </div>
 
                 <label class="edit-label" style="padding-top:0.81rem">
+                    Telefon:
+                </label>
+                <input id="phone-edit" class="inputs-edit" type="phone" value="${user.phone}"/>
+
+                <label class="edit-label" style="padding-top:0.81rem">
                     Cui achit:
                 </label>
                 <input id="cui-platesc-edit" class="inputs-edit" type="text" value="${user.cui_platesc}"/>
@@ -378,12 +396,41 @@ const handleData = (usersData) => {
             document.querySelector("#save-edits").style.display = 'inline';
             document.querySelector("#yes-delete").style.display = 'none';
             document.querySelector("#no-delete").style.display = 'none';
+
+
+            const save_edits = document.getElementById("save-edits").addEventListener("click", function (){ 
+              let phoneUpdate = document.querySelector("#phone-edit").value;
+              let cuiAchitUpdate = document.querySelector("#cui-platesc-edit").value;
+              let payedUpdate = parseInt(document.querySelector("#payed-edit").value);
+              let transportUpdate = document.querySelector("#transport-edit").value;
+              let contribuiUpdate = document.querySelector("#contribui-edit").value;
+              let cazareUpdate = document.querySelector("#cazare-edit").value;
+
+
+              let data_to_update = {
+                phone: phoneUpdate,
+                cui_platesc: cuiAchitUpdate,
+                payed: payedUpdate,
+                transport: transportUpdate,
+                contribui: contribuiUpdate,
+                cazare_cu: cazareUpdate,
+              };
+
+              update(ref(database, `users/${uid}`), data_to_update).then(function(){
+                location.reload();
+                document.getElementById('Statistica').scrollIntoView();
+
+              });
+            });
           }
         });
       });
     });
 
     //STOP LOADING ANIMATION
+    document.querySelector("#loader").style.display = "none";
+    document.querySelector("#sidebar").style.display = "block";
+    document.querySelector("#content").style.display = "block";
 }
 
 const logout_button = document.getElementById("logout-btn").addEventListener("click", function () {
@@ -395,6 +442,8 @@ const logout_button = document.getElementById("logout-btn").addEventListener("cl
 const start_attendance = document.getElementById("yes-start-attendance").addEventListener("click", function () {
   update(ref(database), { attendance_ongoing : true });
 });
+
+
 
 const reset_attendance = document.getElementById("yes-delete").addEventListener("click", function () {
   Object.keys(allUsersData).forEach(uid => {

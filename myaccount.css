@@ -7,18 +7,18 @@
   --gray: #949494;
 
 
-  --color1: #ffbb19;
-  --color2: #ff9000;
+  --color1: #b69e4d;
+  --color2: #9e5a00;
   --color3: #463015;
   --color4: #386329;
-  --color5: #292963;
+  --color5: #323a4a;
 }
 
 
 body {
   /* background: -webkit-linear-gradient(bottom, var(--white), var(--primary)); */
   background: url(./media/portal_bg.jpg);
-  background-color: #364155;
+  background-color: var(--color5);
 
   background-attachment: fixed;
   background-repeat: no-repeat;
@@ -48,7 +48,7 @@ textarea {
   font-family: poppins-regular, sans-serif;
 }
 #card {
-  background: var(--cardbg);
+  background: var(--color5);
   color: var(--white);
 
   border-radius: 8px;

@@ -26,7 +26,7 @@ li {
 	--dark: #f0f0f0;
 	--dark2: rgb(159, 179, 216);
 	--red: #DB504A;
-	--yellow: #FFCE26;
+	--yellow: #b49e55;
 	--light-yellow: #FFF2C6;
 	--orange: #FD7238;
 	--light-orange: #FFE0D3;
@@ -1002,12 +1002,75 @@ tfoot input {
 }
 #messages-table > tbody > tr > td:nth-child(6) input{
 	border-radius: 2px;
-		background-color: #a57d7d;
+	/* background-color: #a57d7d; */
+	background-color: #8c8a8a;
+
 
 	color: #fff;
 	border-width: 0px;
 	padding: 2px;
 	font-family: jakarta, sans-serif;
+}
+#loader {
+  margin: 10rem auto 1rem auto;
+  border: 10px solid #000000;
+  border-top: 10px solid #3C91E6; 
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  box-shadow: 3px 1px 13px #d7d7d7;
+}
+#sidebar {
+	display: none;
+}
+#content {
+	display: none;
+}
+.week {
+  text-align: center;
+  /* margin: 1rem; */
+}
+.week div{
+  display: inline-block;
+  margin: 1rem 0.1rem;
+  cursor: pointer;
+  padding: 2%;
+  width: 4rem;
+  height: 4rem;
+  box-shadow: 0px 1px 8px #000000;
+  line-height: 0.8;
+
+  background-color: var(--grey);
+  color: var(--light);
+}
+.week div div{
+  display: inline-block;
+  margin: 1rem 0.1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  width: 2.5rem;
+  height: 1rem;
+  box-shadow: 0px 1px 8px #000000;
+  line-height: 0.8;
+}
+.week p{
+  display: inline;
+  
+}
+.small-day{
+  font-family: jakarta, sans-serif;
+  
+  margin: 0;
+  font-size: 7pt;
+}
+.big-day {
+  font-family: jakarta, sans-serif;
+  padding-top: 10px;
+  font-size: 20pt;
+}
+.selected-day{
+  background: #41708a;
 }
 @font-face {
   font-family: poppins-regular;

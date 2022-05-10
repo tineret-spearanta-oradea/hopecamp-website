@@ -92,15 +92,39 @@
                     
                     <div class="form-border" style="margin-bottom: 1.38rem;"></div>
 
-                    <div class="period-side">
-                    <label for="date" style="padding-top: 1.38rem">&nbsp;Data în care vii și în care pleci din tabară 
+                    <!-- <div class="period-side"> -->
+                    <label for="date" style="padding-top: 1.38rem">&nbsp;Data în care vii în tabară 
                     </label>
-                    <input id="start-date" class="form-content" type="date" name="start-date" 
+
+                    <div id="week1" class="week">
+                        <div data-date="2022-07-30" class="selected-day"><p class="small-day">SÂM<br></p><p class="big-day">30<br></p><p class="small-day">JUL</p></div>
+                        <div data-date="2022-07-31"><p class="small-day" >DUM<br></p><p class="big-day">31<br></p><p class="small-day">JUL</p></div>
+                        <div data-date="2022-08-01"><p class="small-day">LUN<br></p><p class="big-day">1<br></p><p class="small-day">AUG</p></div>
+                        <div data-date="2022-08-02"><p class="small-day">MAR<br></p><p class="big-day">2<br></p><p class="small-day">AUG</p></div>
+                        <div data-date="2022-08-03"><p class="small-day">MIE<br></p><p class="big-day">3<br></p><p class="small-day">AUG</p></div>
+                        <div data-date="2022-08-04"><p class="small-day">JOI<br></p><p class="big-day">4<br></p><p class="small-day">AUG</p></div>
+                        
+                    </div>
+                    <div class="form-border"></div>
+
+                    <label for="date" style="padding-top: 1.38rem">&nbsp;Data în care pleci din tabară 
+                    </label>
+
+                    <div id="week2" class="week">
+                        <div data-date="2022-07-30"><p class="small-day">SÂM<br></p><p class="big-day">30<br></p><p class="small-day">JUL</p></div>
+                        <div data-date="2022-07-31"><p class="small-day">DUM<br></p><p class="big-day">31<br></p><p class="small-day">JUL</p></div>
+                        <div data-date="2022-08-01"><p class="small-day">LUN<br></p><p class="big-day">1<br></p><p class="small-day">AUG</p></div>
+                        <div data-date="2022-08-02"><p class="small-day">MAR<br></p><p class="big-day">2<br></p><p class="small-day">AUG</p></div>
+                        <div data-date="2022-08-03"><p class="small-day">MIE<br></p><p class="big-day">3<br></p><p class="small-day">AUG</p></div>
+                        <div data-date="2022-08-04" class="selected-day"><p class="small-day">JOI<br></p><p class="big-day">4<br></p><p class="small-day">AUG</p></div>
+                        
+                    </div>
+                    <!-- <input id="start-date" class="form-content" type="date" name="start-date" 
                     max="2022-08-04" min="2022-07-30" value="2022-07-30" required />
                     <span id="linie-ciudata">-</span>
                     <input id="end-date" class="form-content" type="date" name="end-date" 
-                    max="2022-08-04" min="2022-07-30" value="2022-08-04" required/>
-                    </div>
+                    max="2022-08-04" min="2022-07-30" value="2022-08-04" required/> -->
+                    <!-- </div> -->
                     <div class="form-border"></div>
 
                     <label for="church" style="padding-top: 1.38rem">&nbsp;Transport
@@ -163,8 +187,11 @@
             </div>
 
             <div id="changeable-content-1">
+                <h2>Taxa de inscriere: <span id="taxa-inscriere-suma"></span></h1>
+                <p id="taxa-inscriere">&nbsp; Taxa de înscriere pentru persoanele care vin full-time (5 zile) este de 500 lei (cazare + mâncare). Taxa de înscriere pentru persoanele care NU vin full-time este de 120 lei/zi (cazare + mâncare).</p>
+
                 <h2>Regulament:</h1>
-                <p id="regulament"> <br> Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem quod voluptatum labore aperiam illum dolorem nostrum voluptatibus nihil quos voluptate! Veritatis quae corrupti tempore architecto maxime, impedit, voluptatum eligendi natus quo omnis repellat possimus, maiores dignissimos? Nisi facilis est dicta sint temporibus, quia, ab quisquam exercitationem nesciunt hic libero? Impedit?</p>
+                <p id="regulament"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem quod voluptatum labore aperiam illum dolorem nostrum voluptatibus nihil quos voluptate! Veritatis quae corrupti tempore architecto maxime, impedit, voluptatum eligendi natus quo omnis repellat possimus, maiores dignissimos? Nisi facilis est dicta sint temporibus, quia, ab quisquam exercitationem nesciunt hic libero? Impedit?</p>
                
                 <div id="under18-agree">
                     <input type="checkbox" id="u18-agree" name="u18-agree">
