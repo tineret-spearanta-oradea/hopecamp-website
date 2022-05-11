@@ -59,10 +59,23 @@ select_days_w1.forEach(day => {
 const select_days_w2 = document.querySelectorAll('#week2 div')
 select_days_w2.forEach(day => {
   day.addEventListener("click", function (){
-    select_days_w2.forEach(day_grey => {
-      day_grey.classList.remove("selected-day");
+    let previousDate;
+    select_days_w1.forEach(day => {
+      if(day.classList.contains("selected-day")) {
+        previousDate = day.dataset['date'];
+      }
     });
-    day.classList.add("selected-day");
+
+    let date01, date02;
+    date01 = new Date(day.dataset['date']);
+    date02 = new Date(previousDate);
+
+    if(date01 >= date02) {
+      select_days_w2.forEach(day_grey => {
+        day_grey.classList.remove("selected-day");
+      });
+      day.classList.add("selected-day");
+    }
   })
 });
 
@@ -74,21 +87,41 @@ const login_button = document.getElementById("login").addEventListener("click", 
 });
 
 const agree_checked = document.getElementById("agree").addEventListener("change", function() {
-  if (this.checked) {
-    const UIsignupBtn = document.getElementById('signup-btn');
-    UIsignupBtn.disable = false;
-    UIsignupBtn.style.setProperty("--c1", "#ff9000");
-    UIsignupBtn.style.setProperty("--c2", "#ffbb19");
-    UIsignupBtn.style.setProperty("--c3", "#463015");
+  let age = document.getElementById("age").value;
+  if(age>=18) {
+    if (this.checked) {
+      const UIsignupBtn = document.getElementById('signup-btn');
+      UIsignupBtn.disable = false;
+      UIsignupBtn.style.setProperty("--c1", "#ff9000");
+      UIsignupBtn.style.setProperty("--c2", "#ffbb19");
+      UIsignupBtn.style.setProperty("--c3", "#463015");
 
-    // UIsignupBtn.style.animation = "graytocolor 5s infinite"; //NOT working
+      // UIsignupBtn.style.animation = "graytocolor 5s infinite"; //NOT working
+    } else {
+      const UIsignupBtn = document.getElementById('signup-btn');
+      UIsignupBtn.disable = true;
+      UIsignupBtn.style.setProperty("--c1", "#5a5a5a");
+      UIsignupBtn.style.setProperty("--c2", "#bdbdbd");
+      UIsignupBtn.style.setProperty("--c3", "#fff");
+
+    }
   } else {
-    const UIsignupBtn = document.getElementById('signup-btn');
-    UIsignupBtn.disable = true;
-    UIsignupBtn.style.setProperty("--c1", "#5a5a5a");
-    UIsignupBtn.style.setProperty("--c2", "#bdbdbd");
-    UIsignupBtn.style.setProperty("--c3", "#fff");
+    if (this.checked && document.getElementById("u18-agree").checked) {
+      const UIsignupBtn = document.getElementById('signup-btn');
+      UIsignupBtn.disable = false;
+      UIsignupBtn.style.setProperty("--c1", "#ff9000");
+      UIsignupBtn.style.setProperty("--c2", "#ffbb19");
+      UIsignupBtn.style.setProperty("--c3", "#463015");
 
+      // UIsignupBtn.style.animation = "graytocolor 5s infinite"; //NOT working
+    } else {
+      const UIsignupBtn = document.getElementById('signup-btn');
+      UIsignupBtn.disable = true;
+      UIsignupBtn.style.setProperty("--c1", "#5a5a5a");
+      UIsignupBtn.style.setProperty("--c2", "#bdbdbd");
+      UIsignupBtn.style.setProperty("--c3", "#fff");
+
+    }
   }
 });
 

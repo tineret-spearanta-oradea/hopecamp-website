@@ -42,7 +42,7 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus, 
 input:-webkit-autofill:active{
-  -webkit-box-shadow: 0 0 0 30px #3f3f3f inset !important;
+  -webkit-box-shadow: 0 0 0 30px var(--color5) inset !important;
   -webkit-text-fill-color: var(--white) !important;
 }
 form i {
@@ -64,11 +64,11 @@ form i {
   text-align: right;
 }
 #about-us {
-  color: #97c1ecbb;
+  color: #ffffffbb;
   background: -webkit-linear-gradient(right,#707070, #00000000);
   border-radius: 8px;
 
-  font-family: "Raleway", sans-serif;
+  font-family: poppins-regular, sans-serif;
   font-size: 10pt;
   cursor: pointer;
   float: right;

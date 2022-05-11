@@ -242,14 +242,14 @@ textarea {
 .header-buttons {
   margin-top: 15px;
   margin-bottom: 17px;
-  color: #97b1ec;
+  color: #ffffff;
   border: 0px;
   font-family: poppins-regular, sans-serif;
   font-size: 10pt;
   cursor: pointer;
 }
 .underline-title {
-  background: -webkit-linear-gradient(left, #e9c8a200, var(--color2), #e9c8a200);
+  background: -webkit-linear-gradient(left, #e9c8a200, var(--color1), #e9c8a200);
 
   height: 0.2rem;
   margin: -1.1rem auto 0 auto;

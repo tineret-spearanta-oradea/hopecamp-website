@@ -49,7 +49,7 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus, 
 input:-webkit-autofill:active{
-  -webkit-box-shadow: 0 0 0 30px #3f3f3f inset !important;
+  -webkit-box-shadow: 0 0 0 30px var(--color5) inset !important;
   -webkit-text-fill-color: var(--white) !important;
 }
 
@@ -76,7 +76,7 @@ input:-webkit-autofill:active{
 .header-buttons {
   margin-top: 15px;
   margin-bottom: 17px;
-  color: #97b1ec;
+  color: #ffffff;
   border: 0px;
   font-family: poppins-regular, sans-serif;
   font-size: 10pt;
@@ -260,16 +260,7 @@ input:-webkit-autofill:active{
 #intext-ref {
   color:var(--color5);
 }
-#start-date{
-  width:40%;
-  float: left;
-}
-#stop-date{     /* this doesn't look right*/
-  width:40%;
-  /* display: flex;
-  align-items: right; */
-  float:right;
-}
+
 .form {
   align-items: left;
   display: flex;
@@ -277,7 +268,7 @@ input:-webkit-autofill:active{
 }
 .form-border {
   /* background: -webkit-linear-gradient(right, col, var(--secondary)); */
-  background: -webkit-linear-gradient(left, #ffba194d, var(--color2), #ffba194d);
+  background: -webkit-linear-gradient(left, #ffba194d, var(--color1), #ffba194d);
 
   /* background-color: var(--color2); */
   height: 0.05em;
@@ -316,7 +307,7 @@ input:-webkit-autofill:active{
   font-size: 10pt;
 }
 .underline-title {
-  background: -webkit-linear-gradient(left, #e9c8a200, var(--color2), #e9c8a200);
+  background: -webkit-linear-gradient(left, #e9c8a200, var(--color1), #e9c8a200);
   height: 0.2rem;
   margin: -1.1rem auto 0 auto;
   width: 14rem;

@@ -19,7 +19,15 @@ const dbRef = ref(getDatabase());
 let USERid;
 
 let attendanceOngoing = false;
+let calendarDaysCounter = {
+  '2022/7/30': 0,
+  '2022/7/31': 0,
+  '2022/8/1': 0,
+  '2022/8/2': 0,
+  '2022/8/3': 0,
+  '2022/8/4': 0,
 
+};
 
 onAuthStateChanged(auth, (user) => {
     setupUI(user);
@@ -39,6 +47,7 @@ const setupUI = (user) => {
             
             get(child(dbRef, `users`)).then((snapshot_all) => {
               handleData(snapshot_all.val());
+
             })
             // .catch((error) => {
             //     console.error(error.message);
@@ -161,6 +170,19 @@ const handleData = (usersData) => {
         let date2 = new Date((user.end_date).toString());
         let diffTime = Math.abs(date2 - date1);
         let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        let nextDate = date1;
+
+        while (nextDate <= date2) {
+          let cDay = nextDate.getDate();
+          let cMonth = nextDate.getMonth() + 1;
+          let cYear = nextDate.getFullYear();
+
+          calendarDaysCounter[`${cYear}/${cMonth}/${cDay}`] ++;
+          // console.log(`${nextDate} vs ${date2}`);
+
+          nextDate.setDate(nextDate.getDate() + 1);
+        }
 
         let status="";
 
@@ -427,10 +449,17 @@ const handleData = (usersData) => {
       });
     });
 
+    // Calendar data
+   
+
     //STOP LOADING ANIMATION
     document.querySelector("#loader").style.display = "none";
     document.querySelector("#sidebar").style.display = "block";
     document.querySelector("#content").style.display = "block";
+     Object.keys(calendarDaysCounter).forEach(dt => {
+      document.getElementById(dt).innerHTML = calendarDaysCounter[dt];
+
+    });
 }
 
 const logout_button = document.getElementById("logout-btn").addEventListener("click", function () {
@@ -499,4 +528,6 @@ function countProperties(obj) {
 
   return count;
 }
+
+
 
