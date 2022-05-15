@@ -12,9 +12,12 @@
 </head>
 <body>
     <div id="navbar">
-        <a href="javascript:void(0)">ceva</a>
-        <a href="javascript:void(0)">ceva2</a>
-        <a href="javascript:void(0)">ceva3</a>
+        <a href="#despre">Despre</a>
+        <a href="#galerie">Galerie</a>
+        <a href="#cine-suntem">TSO</a>
+        <a href="#intrebari">Întrebări</a>
+        <a onclick="onClickReg()" href="javascript:void(0);" id="reg-nav">Regulament</a>
+
         <div id="portal-btn">
             <a href="/login.html" class='bx bxs-user'></a>
         </div>
@@ -45,27 +48,10 @@
         </div>
         <!-- <h1 style="text-align: center;">Coming soon...<a href="/login.html">(login)</a></h1> -->
 
-        <div id="despre" class="centered-text">
-            <h2>Despre HOPE CAMP #3</h2>
+        <div class="centered-text">
+            <h2 id="despre">HOPE CAMP #3</h2>
             <p>
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eveniet obcaecati omnis sequi ratione praesentium unde maiores architecto id consectetur repellat, molestiae recusandae fuga numquam explicabo accusantium? Molestias dolore minus molestiae impedit cum sunt officiis dolorem, atque non in numquam quaerat explicabo repellendus odio nam nostrum ad repudiandae eos aspernatur animi?
-            </p>
-        </div>
-
-        <div id="cine-suntem" class="centered-text">
-            <h2>Cine suntem noi</h2>
-            <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dolore sapiente ducimus iste eos non voluptates doloremque sunt reprehenderit dolorem officiis, possimus laboriosam corporis omnis?
-            </p>
-            <p id="contact-us">
-                <br><img src="media/bxl-instagram.svg" alt="ig"> 
-                <a href="https://www.instagram.com/tineret_speranta_oradea/">Tineret Speranța Oradea</a>
-
-                <br><img src="media/bxl-facebook-circle.svg" alt="fb"> 
-                <a href="https://www.facebook.com/tineretsperantaoradea/">Tineret Speranța Oradea</a> 
-
-                <br><img src="media/bxl-whatsapp.svg" alt="phone">
-                <a href="tel:+40774984594">0774 984 594</a>
             </p>
         </div>
 
@@ -117,17 +103,35 @@
             </div>
         </div>
 
+        <div id="cine-suntem" class="centered-text">
+            <h2>Cine suntem noi</h2>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dolore sapiente ducimus iste eos non voluptates doloremque sunt reprehenderit dolorem officiis, possimus laboriosam corporis omnis?
+            </p>
+            <p id="contact-us">
+                <br><img src="media/bxl-instagram.svg" alt="ig"> 
+                <a href="https://www.instagram.com/tineret_speranta_oradea/">Tineret Speranța Oradea</a>
+
+                <br><img src="media/bxl-facebook-circle.svg" alt="fb"> 
+                <a href="https://www.facebook.com/tineretsperantaoradea/">Tineret Speranța Oradea</a> 
+
+                <br><img src="media/bxl-whatsapp.svg" alt="phone">
+                <a href="tel:+40774984594">0774 984 594</a>
+            </p>
+        </div>
+
         <div id="intrebari" class="centered-text">
             
         </div>
 
-        <div id="intrebare1">
+        <h2>Întrebări frecvente</h2>
+        <div id="intrebare1" class="intrebare">
             <h3>Cât este taxa de înscriere?</h3>
             <p>Taxa de inscriere pentru persoanele care vin full-time (5 zile) este de 500 de lei. Pentru persoanele care NU vin full-time, taxa este de 120 lei/zi (incluse fiind cazarea si mâncarea).
             <br><span style="font-family:poppins-bold, sans-serif;">Au prioritate la cazare persoanele care vin full-time!</span> </p>
         </div>
 
-        <div id="intrebare2">
+        <div id="intrebare2" class="intrebare"  >
             <h3>Cum achit? / Transport? / Cazare?</h3>
             <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Perferendis voluptas totam adipisci saepe laudantium esse cumque! Numquam corrupti non iusto!</p>
         </div>
@@ -138,9 +142,25 @@
                 <p>
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magnam dignissimos ullam, repudiandae alias eligendi amet quis fuga architecto explicabo natus minus maiores dolore quas laudantium laboriosam iure doloribus maxime excepturi. Laudantium nostrum eos est magnam quis, id veritatis aliquid consequuntur ducimus praesentium deserunt tempora eum! Voluptate modi id facilis magni aperiam voluptatem commodi minima praesentium deserunt adipisci vel, impedit consequuntur expedita suscipit alias, perspiciatis eius, dicta maxime. Cum aliquid consequatur eius velit animi. Vitae cupiditate, laudantium officiis ea sapiente a enim explicabo alias cum mollitia voluptatibus inventore magnam nobis nesciunt ipsum nostrum laboriosam? Sapiente hic quia magni non! Neque mollitia sed perferendis nesciunt exercitationem quam ipsum tenetur, id architecto blanditiis? Voluptates voluptate adipisci natus blanditiis? Voluptates dignissimos suscipit odio officiis voluptas laborum. Repellendus rerum ducimus excepturi odio laborum voluptas dignissimos, sapiente est expedita obcaecati saepe totam eaque, necessitatibus quibusdam quaerat quod inventore culpa voluptatum illum repudiandae qui. Repellendus, assumenda dignissimos?
                 </p>
+        
             </div>
         </div>
 </body>
 <script src="index.js" type="module"></script>
 <script src="index_navbar.js"></script>
+<script>
+    function onClickReg() {
+        let acc = document.querySelector(".accordion");
+        acc.classList.toggle("active");
+        let panel = acc.nextElementSibling;
+        if (panel.style.maxHeight) {
+            panel.style.maxHeight = null;
+        } else {
+            panel.style.maxHeight = panel.scrollHeight + "px";
+        } 
+        
+        document.getElementById('regulament').scrollIntoView();
+        
+    }
+</script>
 </html>

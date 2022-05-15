@@ -27,6 +27,17 @@ const accordion = document.querySelector(".accordion").addEventListener("click",
     } 
 });
 
+// const regulament_from_navbar = document.querySelector("#reg-nav").addEventListener("click", function() {
+//     let acc = document.querySelector(".accordion");
+//     acc.classList.toggle("active");
+//     let panel = acc.nextElementSibling;
+//     if (panel.style.maxHeight) {
+//         panel.style.maxHeight = null;
+//     } else {
+//         panel.style.maxHeight = panel.scrollHeight + "px";
+//     } 
+// });
+
 
 
 if(isMobile) {
