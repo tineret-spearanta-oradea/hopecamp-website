@@ -11,7 +11,9 @@
     <title>Hope Camp #3</title>
 </head>
 <body>
-    <div id="navbar">
+    <div id="navbar" class="topnav">
+        <a href="javascript:void(0);" class="icon" onclick="menuExtend()"><i class="bx bx-menu"></i></a>
+
         <a href="#despre">Despre</a>
         <a href="#galerie">Galerie</a>
         <a href="#cine-suntem">TSO</a>
@@ -24,11 +26,12 @@
     </div>
     <div id="content">
         <div>
-            <video id="background-video" autoplay loop muted src="https://firebasestorage.googleapis.com/v0/b/hopecamp-10d0f.appspot.com/o/media%2Fbgclip.mp4?alt=media&token=68722267-8d59-4fc4-90e6-7eddd6d2114d"></video>
+            <video id="background-video" autoplay loop muted src="media/bgclip.mp4"></video>
             <div class="centered">
-                <h2>HOPE CAMP #3</h2>
+                <!-- <h2>HOPE CAMP #3</h2>
                 <h4>titlu temă</h4>
-                <p>by Tineret Speranța Oradea</p>
+                <p>by Tineret Speranța Oradea</p> -->
+                <img style="zoom:70%" src="media/slazzer-edit-image.png" alt="HOPE CAMP #3">
             </div>
         </div>
 
@@ -168,5 +171,13 @@
         
     }
     
+    function menuExtend() {
+        let navbar = document.getElementById("navbar");
+        if (navbar.className === "topnav") {
+            navbar.className += " responsive";
+        } else {
+            navbar.className = "topnav";
+        }
+    }
 </script>
 </html>

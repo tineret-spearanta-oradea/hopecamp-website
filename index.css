@@ -67,6 +67,45 @@ body {
   float: right;
 }
 
+.topnav {overflow: hidden;
+}
+.topnav .icon {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .topnav a:not(:first-child) {display: none;}
+  .topnav a.icon {
+    float: right;
+    display: block;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .topnav.responsive {position: relative;}
+  .topnav.responsive .icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .topnav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+}
+
+#menu-btn {
+  color: white;
+  cursor: pointer;
+  zoom:170%;
+  margin: 3px;
+  margin-top: 4px;
+}
+
+
+
+
 #despre::before { 
   display: block; 
   content: " "; 
@@ -381,7 +420,9 @@ body {
 
 /* DESIGN FOR MOBILE */
 .centered.mobile h2{
-  font-size: 18pt;
+  font-size: 18pt; 
+  /* text-shadow: 1px 2px #c0880f; */
+  -webkit-text-stroke: 1px black;
 }
 .centered.mobile h4{
   font-size: 11pt;

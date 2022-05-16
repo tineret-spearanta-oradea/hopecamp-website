@@ -53,7 +53,7 @@ const accordion = document.querySelector(".accordion").addEventListener("click",
     }, 150);
 });
 
-
+const menu_btn = document.querySelector("#menu-btn");
 
 if(isMobile) {
     document.querySelectorAll(".centered-text p").forEach(p => {
@@ -62,4 +62,8 @@ if(isMobile) {
 
     document.querySelector(".grid").classList.add("mobile");
     document.querySelector(".centered").classList.add("mobile");
+
+    
+} else {
+    // menu_btn.style.display = "none";
 }
