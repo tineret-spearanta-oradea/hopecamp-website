@@ -109,6 +109,7 @@ body {
 }
 
 .centered {
+
   position: absolute;
   color: #f3f3f3;
 
@@ -122,6 +123,9 @@ body {
   text-shadow: 2px 2px #c0880f;
   -webkit-text-stroke: 2px black;
   font-family: poppins-bold, sans-serif;
+
+  white-space: normal;
+
 
   margin: 0px;
 }
@@ -377,13 +381,13 @@ body {
 
 /* DESIGN FOR MOBILE */
 .centered.mobile h2{
-  font-size: 20pt;
+  font-size: 18pt;
 }
 .centered.mobile h4{
-  font-size: 12pt;
+  font-size: 11pt;
 }
 .centered.mobile p{
-  font-size: 9pt;
+  font-size: 10pt;
 }
 
 .centered-text .mobile {

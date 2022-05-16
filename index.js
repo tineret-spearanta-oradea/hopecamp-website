@@ -12,6 +12,9 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 }
 
 document.querySelector("#inscrie-te-div").classList.add("active-scroll");
+document.querySelector("#cand").classList.add("active-scroll");
+document.querySelector("#unde").classList.add("active-scroll");
+
 
 function reveal() {
     var reveals = document.querySelectorAll(".reveal");
