@@ -338,11 +338,54 @@ body {
   content: "\2796"; /* Unicode character for "minus" sign (-) */
 }
 
+/* SCROLLBAR */
+/* width */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--white);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #2c3147;
+  border-radius: 10px;
+
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 
 
+/* SCROLLING DOWN FADE IN EFFECT */
+.reveal{
+  position: relative;
+  transform: translateY(40px);
+  opacity: 0;
+  transition: 1s all ease;
+}
+.reveal.active-scroll{
+  transform: translateY(0);
+  opacity: 1;
+}
 
 
 /* DESIGN FOR MOBILE */
+.centered.mobile h2{
+  font-size: 20pt;
+}
+.centered.mobile h4{
+  font-size: 12pt;
+}
+.centered.mobile p{
+  font-size: 9pt;
+}
+
 .centered-text .mobile {
   margin: 0 1rem;
 }

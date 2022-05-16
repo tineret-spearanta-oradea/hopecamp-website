@@ -16,7 +16,7 @@
         <a href="#galerie">Galerie</a>
         <a href="#cine-suntem">TSO</a>
         <a href="#intrebari">Întrebări</a>
-        <a onclick="onClickReg()" href="javascript:void(0);" id="reg-nav">Regulament</a>
+        <a onclick="onClickRegNav()" href="javascript:void(0);" id="reg-nav">Regulament</a>
 
         <div id="portal-btn">
             <a href="/login.html" class='bx bxs-user'></a>
@@ -32,30 +32,30 @@
             </div>
         </div>
 
-        <div style="width: 49%; float:left">
+        <div class="reveal" style="width: 49%; float:left">
             <div id="unde"><h3>Unde?</h3><p>Lacul Surduc, jud. Timiș</p></div>
         </div>
 
         <div id="center-border"></div>
-        <div style="width: 49%; float:right">
+        <div class="reveal" style="width: 49%; float:right">
             <div id="cand"><h3>Când?</h3><p>30 iulie - 4 august 2022</p></div>
         </div>
 
-        <div id="inscrie-te-div">
+        <div id="inscrie-te-div" class="reveal">
             <button class="inscrie-te-btn" role="button">ÎNSCRIE-TE!</button>
             <p>Folosește butonul de mai sus pentru<br>a te înscrie în tabără</p>
 
         </div>
         <!-- <h1 style="text-align: center;">Coming soon...<a href="/login.html">(login)</a></h1> -->
 
-        <div class="centered-text">
+        <div class="centered-text reveal">
             <h2 id="despre">HOPE CAMP #3</h2>
             <p>
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eveniet obcaecati omnis sequi ratione praesentium unde maiores architecto id consectetur repellat, molestiae recusandae fuga numquam explicabo accusantium? Molestias dolore minus molestiae impedit cum sunt officiis dolorem, atque non in numquam quaerat explicabo repellendus odio nam nostrum ad repudiandae eos aspernatur animi?
             </p>
         </div>
 
-        <div id="galerie" class="centered-text">
+        <div id="galerie" class="centered-text reveal">
             <!-- <h2>Galerie</h2> -->
             <div class="grid">
                 <div >
@@ -103,7 +103,7 @@
             </div>
         </div>
 
-        <div id="cine-suntem" class="centered-text">
+        <div id="cine-suntem" class="centered-text reveal">
             <h2>Cine suntem noi</h2>
             <p>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dolore sapiente ducimus iste eos non voluptates doloremque sunt reprehenderit dolorem officiis, possimus laboriosam corporis omnis?
@@ -120,23 +120,22 @@
             </p>
         </div>
 
-        <div id="intrebari" class="centered-text">
-            
-        </div>
+        <div id="intrebari" class="centered-text reveal">
 
         <h2>Întrebări frecvente</h2>
-        <div id="intrebare1" class="intrebare">
+        <div id="intrebare1" class="intrebare reveal">
             <h3>Cât este taxa de înscriere?</h3>
             <p>Taxa de inscriere pentru persoanele care vin full-time (5 zile) este de 500 de lei. Pentru persoanele care NU vin full-time, taxa este de 120 lei/zi (incluse fiind cazarea si mâncarea).
             <br><span style="font-family:poppins-bold, sans-serif;">Au prioritate la cazare persoanele care vin full-time!</span> </p>
         </div>
 
-        <div id="intrebare2" class="intrebare"  >
+        <div id="intrebare2" class="intrebare reveal"  >
             <h3>Cum achit? / Transport? / Cazare?</h3>
             <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Perferendis voluptas totam adipisci saepe laudantium esse cumque! Numquam corrupti non iusto!</p>
         </div>
+        </div>
 
-        <div id="regulament" class="centered-text">
+        <div id="regulament" class="centered-text reveal">
             <h2 class="accordion">Regulament</h2>
             <div class="panel">
                 <p>
@@ -145,11 +144,14 @@
         
             </div>
         </div>
+        <div id="regulament-bottom"></div>
+    </div>
 </body>
 <script src="index.js" type="module"></script>
 <script src="index_navbar.js"></script>
 <script>
-    function onClickReg() {
+
+    function onClickRegNav() {
         let acc = document.querySelector(".accordion");
         acc.classList.toggle("active");
         let panel = acc.nextElementSibling;
@@ -160,7 +162,11 @@
         } 
         
         document.getElementById('regulament').scrollIntoView();
+        setTimeout(function() {
+            document.querySelector("#regulament-bottom").scrollIntoView();
+        }, 150);
         
     }
+    
 </script>
 </html>
