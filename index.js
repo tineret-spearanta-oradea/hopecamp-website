@@ -93,6 +93,8 @@ window.addEventListener('resize', function(event){
 });
 
 if(isMobile) {
+    document.querySelector("#background-video").style.height = "15em";
+
     portraitMode();
     
 } else {
