@@ -88,6 +88,7 @@ body {
   left:0;
   width:100%;
   z-index:10000;
+
 }
 .hover_bg .helper{
   display:inline-block;
@@ -108,6 +109,8 @@ body {
   position: relative;
   border-radius: 8px;
   padding: 3px 1%;
+
+  
 }
 .hover_bg > div > a,
 .hover_bg > div > div> a{
@@ -512,7 +515,9 @@ body {
 .grid .mobile{
   grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
 }
-
+.centered-text p{
+font-size: 11pt;
+}
 #value-prop{
   margin: 1rem;
   font-size: 11pt;

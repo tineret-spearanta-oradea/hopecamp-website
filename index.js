@@ -27,6 +27,8 @@ onAuthStateChanged(auth, (user) => {
 document.querySelector("#inscrie-te-div").classList.add("active-scroll");
 document.querySelector("#cand").classList.add("active-scroll");
 document.querySelector("#unde").classList.add("active-scroll");
+document.querySelector("#value-prop").classList.add("active-scroll");
+
 
 
 function reveal() {
@@ -121,6 +123,7 @@ function portraitMode() {
     document.querySelector("#trigger-popup").addEventListener("click", function(){
         let popup = document.querySelector('.hover_bg');
         popup.style.display === 'block' ? popup.style.display = 'none' : popup.style.display = 'block';
+        
     });
 
     let isMouseOverHover = false;
