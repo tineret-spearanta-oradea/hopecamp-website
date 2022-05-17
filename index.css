@@ -109,7 +109,8 @@ body {
   border-radius: 8px;
   padding: 3px 1%;
 }
-.hover_bg > div > a {
+.hover_bg > div > a,
+.hover_bg > div > div> a{
   color: #fff;
   text-decoration: none;
 
@@ -516,7 +517,12 @@ body {
   margin: 1rem;
   font-size: 11pt;
 }
-
+#inscrie-te-a {
+  display: none;
+}
+#contul-meu-a {
+  display: none;
+}
 
 @font-face {
   font-family: poppins-regular;

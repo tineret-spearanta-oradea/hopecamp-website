@@ -106,16 +106,15 @@ function portraitMode() {
     document.querySelector(".centered").classList.add("mobile");
 
     document.querySelector("#navbar").innerHTML = 
-        `<a id="trigger-popup" href="javascript:void(0);" class="icon"><i class="bx bx-menu"></i></a>`;
+        `<a id="trigger-popup" href="javascript:void(0);" class="icon"><i class="bx bx-menu"></i></a>\
+        <div id="portal-btn">
+            <a href="/login.html" class='bx bxs-user'></a>
+        </div>`;
 
     if(userLoggedIn) {
-        document.querySelector(".hover_bg div").innerHTML = 
-        `<a href="/myaccount.html">Contul meu</a>
-        <br> <div id="underline-popup"></div>` + document.querySelector(".hover_bg div").innerHTML;
+        document.querySelector("#contul-meu-a").style.display = "inline";
     } else {
-        document.querySelector(".hover_bg div").innerHTML = 
-        `<a href="/inscrie-te.html">Înscrie-te</a>
-        <br> <div id="underline-popup"></div>` + document.querySelector(".hover_bg div").innerHTML;
+        document.querySelector("#inscrie-te-a").style.display = "inline";
     }
 
     // POPUP setup

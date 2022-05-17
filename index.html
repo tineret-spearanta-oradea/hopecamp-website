@@ -224,6 +224,7 @@
             </div>
         
         </div>
+        </div>
 
         <div id="regulament" class="centered-text reveal">
             <h2 class="accordion">Regulament</h2>
@@ -241,11 +242,17 @@
         <span class="helper"></span>
         <div>
             <!-- <div class="popupCloseButton">&times;</div> -->
+            <div id="contul-meu-a">
+                <a href="/myaccount.html">Contul meu</a> <br> <div id="underline-popup"></div>
+            </div>
+            <div id="inscrie-te-a">
+                <a href="/myaccount.html">Înscrie-te</a> <br> <div id="underline-popup"></div>
+            </div>
             <a href="#despre">Despre</a> <br> <div id="underline-popup"></div>
             <a href="#galerie">Galerie</a> <br> <div id="underline-popup"></div>
             <a href="#cine-suntem">TSO</a> <br> <div id="underline-popup"></div>
             <a href="#intrebari">Întrebări</a> <br> <div id="underline-popup"></div>
-            <a onclick="onClickRegNav()" href="javascript:void(0);" id="reg-nav">Regulament</a> <br> <div id="underline-popup"></div>
+            <a onclick="onClickRegNav()" href="javascript:void(0);" id="reg-nav">Regulament</a>
         </div>
     </div>
 </body>
@@ -270,13 +277,5 @@
         
     }
     
-    function menuExtend() {
-        let navbar = document.getElementById("navbar");
-        if (navbar.className === "topnav") {
-            navbar.className += " responsive";
-        } else {
-            navbar.className = "topnav";
-        }
-    }
 </script>
 </html>
