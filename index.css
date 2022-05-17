@@ -438,6 +438,8 @@ body {
   outline: none;
   font-size: 1.5em;
   transition: 0.4s;
+  margin-bottom: 0rem;
+
 }
 
 .panel {
@@ -528,7 +530,18 @@ font-size: 11pt;
 #contul-meu-a {
   display: none;
 }
-
+.pbold {
+  font-family: poppins-bold,sans-serif;
+}
+#myInput {
+  font-family: jakarta, sans-serif;
+	width: 15em;
+	height: 2rem;
+	text-indent: 10px ;
+	border-width: 0px;
+	border-radius: 16px;
+	background-color: #ffffff;
+}
 @font-face {
   font-family: poppins-regular;
   src: url(fonts/Poppins-Regular.ttf);

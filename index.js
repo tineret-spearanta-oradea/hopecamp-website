@@ -70,7 +70,7 @@ if(userLoggedIn) {
 
 const accordion = document.querySelector(".accordion").addEventListener("click", function() {
     this.classList.toggle("active");
-    var panel = this.nextElementSibling;
+    var panel = document.querySelector(".panel");
     if (panel.style.maxHeight) {
         panel.style.maxHeight = null;
     } else {
