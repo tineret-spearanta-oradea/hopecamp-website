@@ -209,7 +209,7 @@ textarea {
   text-align: center;
 }
 #msg-submit {
-  width: 22%;
+  /* width: 22%; */
   height: 2rem;
   text-align: center; /*why not work man*/
   background: -webkit-linear-gradient(right, var(--color1), var(--color2));
@@ -224,6 +224,10 @@ textarea {
   display: flex;
   float: right;
   margin: 0 auto;
+}
+#msg-submit p{
+  padding: 0%;
+  margin: auto;
 }
 #msg-submit:disabled {
   cursor:default;

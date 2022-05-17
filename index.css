@@ -67,11 +67,83 @@ body {
   float: right;
 }
 
-.topnav {overflow: hidden;
+.topnav {
+  overflow: hidden;
+  background-color: #333;
 }
 .topnav .icon {
   display: none;
 }
+
+
+/* POPUP */
+.hover_bg{
+  background:rgba(0,0,0,.4);
+  /* cursor:pointer; */
+  display:none;
+  height:100%;
+  position:fixed;
+  text-align:center;
+  top:53px;
+  left:0;
+  width:100%;
+  z-index:10000;
+}
+.hover_bg .helper{
+  display:inline-block;
+  height:100%;
+  vertical-align:middle;
+}
+.hover_bg > div {
+  background: -webkit-linear-gradient(left, #ffffff00, #2c3147, #ffffff00);
+  /* background: linear-gradient(to left,
+       #ffffff00 20%, #2c3147 30%, #2c3147 45%, #2c3147 55%, #2c3147 70%, #ffffff00 80% ); */
+  background: linear-gradient(to left,#ffffff00 5%, #2c3147 30% 45%, #2c3147 55% 70%, #ffffff00 95% );
+  display: inline-block;
+  height: auto;
+  max-width: 24rem;
+  min-height: 100px;
+  vertical-align: top;
+  width: 100%;
+  position: relative;
+  border-radius: 8px;
+  padding: 3px 1%;
+}
+.hover_bg > div > a {
+  color: #fff;
+  text-decoration: none;
+
+  line-height: 3;
+  /* border-bottom: 2px  solid #000000; */
+  /* border-bottom-: 100%; */
+}
+#underline-popup {
+  background: -webkit-linear-gradient(left, #ffffff00, #f8f8f8, #ffffff00);
+  height: 0.05em;
+  width: 100%;
+}
+.popupCloseButton {
+  background-color: #fff;
+  border: 3px solid #999;
+  border-radius: 50px;
+  cursor: pointer;
+  display: inline-block;
+  font-family: arial;
+  font-weight: bold;
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  font-size: 25px;
+  line-height: 30px;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+}
+.popupCloseButton:hover {
+  background-color: #ccc;
+}
+
+
 
 @media screen and (max-width: 600px) {
   .topnav a:not(:first-child) {display: none;}
@@ -342,8 +414,10 @@ body {
 }
 .intrebare p{ 
   margin: 1rem 1rem;
+  font-size: 10pt;
 }
 .intrebare h3{
+  font-size: 14pt;
   line-height: 1;
   padding-bottom: .5em;
   margin: 0 0 0.142857143em;
@@ -437,6 +511,12 @@ body {
 .grid .mobile{
   grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
 }
+
+#value-prop{
+  margin: 1rem;
+  font-size: 11pt;
+}
+
 
 @font-face {
   font-family: poppins-regular;

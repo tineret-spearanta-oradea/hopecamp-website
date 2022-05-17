@@ -29,6 +29,8 @@ function cardWidthSetup() {
   if(isMobile) {
     if(window.orientation == 0) {
       document.querySelector("#card").style.width = "96%";
+      document.querySelector("#card-content").style.padding = "12px 25px";
+
     } else {
       document.querySelector("#card").style.width = "55%";
     }

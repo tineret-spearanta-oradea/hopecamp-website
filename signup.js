@@ -6,7 +6,6 @@ import { firebaseConfig } from "./fb_cfg.js";
 
 
 const signupURL = "/inscrie-te.html";
-const aboutusURL = "/aboutus.html";
 const forgotPassURL = "/fogot_pass.html";
 const myAccountURL = "/myaccount.html";
 const indexURL = "/index.html";
@@ -31,7 +30,8 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 function cardWidthSetup() {
   if(isMobile) {
     if(window.orientation == 0) {
-      document.querySelector("#card").style.width = "96%";
+      document.querySelector("#card").style.width = "97%";
+      document.querySelector("#card-content").style.padding = "12px 25px";
     } else {
       document.querySelector("#card").style.width = "55%";
     }
@@ -80,7 +80,7 @@ select_days_w2.forEach(day => {
 });
 
 const aboutus_button = document.getElementById("about-us").addEventListener("click", function () {
-  window.location.href =  aboutusURL;
+  window.location.href =  indexURL;
 });
 const login_button = document.getElementById("login").addEventListener("click", function () {
   window.location.href =  loginURL;

@@ -37,6 +37,8 @@ function cardWidthSetup() {
   if(isMobile) {
     if(window.orientation == 0) {
       document.querySelector("#card").style.width = "96%";
+      document.querySelector("#card-content").style.padding = "12px 25px";
+
     } else {
       document.querySelector("#card").style.width = "55%";
     }
@@ -127,7 +129,7 @@ const handleData = (data) => {
       if(dateDiff<24) {
         // disable submit button.
         const msg_submit_btn = document.querySelector("#msg-submit");
-        msg_submit_btn.value = " Trimis";
+        msg_submit_btn.innerHTML = "<p>Trimis</p>";
         msg_submit_btn.style.backgroundImage = "-webkit-linear-gradient(right, #c0c0c0, #838383)";
         msg_submit_btn.disabled = true;
         
@@ -219,7 +221,7 @@ const submit_btn = document.getElementById('msg-submit').addEventListener("click
   });
   
 
-  
+  this.innerHTML = `<p>Trimis</p>`
 });
 
 const logout_button = document.getElementById("logout").addEventListener("click", function () {

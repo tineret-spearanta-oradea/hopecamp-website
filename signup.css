@@ -14,21 +14,17 @@ a {
   text-decoration: none;
 }
 body {
-  opacity: 0;
-  transition: opacity 0.25s;
-}
-body {
-  /* background: -webkit-linear-gradient(bottom, var(--white), var(--primary));
-  background-repeat: no-repeat; */
-
-  /* background: url(./media/camp_bg_long.png); */
+  /* background: -webkit-linear-gradient(bottom, var(--white), var(--primary)); */
   background: url(./media/portal_bg.jpg);
-
   background-color: var(--color5);
-
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-position: center;
+  background-position: center; 
+  opacity: 0;
+  transition: opacity 0.25s;
+  /* -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover; */
   background-size: cover;
   margin: 100px auto 100px auto;
 
@@ -70,6 +66,7 @@ input:-webkit-autofill:active{
   opacity: 0;
   transition: opacity 0.5s;
 }
+
 #mini-header {
   margin-top: 0.5rem;
 }
@@ -107,7 +104,6 @@ input:-webkit-autofill:active{
   font-family: poppins-regular, sans-serif;
   letter-spacing: 0px;
   font-size: 11pt;
-  padding-top: 1px;
   padding-bottom: 14px;
   text-align: center;
 }
@@ -258,7 +254,7 @@ input:-webkit-autofill:active{
 }
 
 #intext-ref {
-  color:var(--color5);
+  color:#dfbb57;
 }
 
 .form {
@@ -362,6 +358,7 @@ input:-webkit-autofill:active{
 
 .week {
   text-align: center;
+  margin: 0;
   margin-top: 1rem;
 }
 
