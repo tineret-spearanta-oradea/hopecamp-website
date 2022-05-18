@@ -1,6 +1,9 @@
+
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 import { firebaseConfig } from "./fb_cfg.js";
+
 
 const signupURL = "/inscrie-te.html";
 const aboutusURL = "/aboutus.html";
@@ -94,7 +97,7 @@ window.addEventListener('resize', function(event){
 
 if(isMobile) {
     document.querySelector("#background-video").style.height = "15em";
-    document.querySelector(".centered").style.zoom = "3.5%";
+    document.querySelector(".centered").style.zoom = "4%";
     document.querySelector(".centered").style.top = "30%";
 
     portraitMode();

@@ -5,7 +5,6 @@ import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https:/
 import { firebaseConfig } from "./fb_cfg.js";
 
 const signupURL = "/inscrie-te.html";
-const aboutusURL = "/aboutus.html";
 const forgotPassURL = "/forgot_password.html";
 const myAccountURL = "/myaccount.html";
 const indexURL = "/index.html";
@@ -55,7 +54,7 @@ var signup_button = document.getElementById("signup-btn").addEventListener("clic
 });
 
 var aboutus_button = document.getElementById("about-us").addEventListener("click", function () {
-    window.location.href = aboutusURL;
+    window.location.href = indexURL;
 });
 
 var resetpass_button = document.getElementById("forgot-pass").addEventListener("click", function () {

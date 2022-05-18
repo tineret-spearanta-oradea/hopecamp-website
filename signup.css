@@ -391,6 +391,7 @@ input:-webkit-autofill:active{
 .selected-day{
   background: #41708a;
 }
+
 @font-face {
   font-family: poppins-regular;
   src: url(fonts/Poppins-Regular.ttf);

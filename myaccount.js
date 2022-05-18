@@ -1,3 +1,4 @@
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
 import { getDatabase, ref, child, get, set  } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 import { getAuth, onAuthStateChanged, signOut} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
@@ -79,7 +80,6 @@ const handleData = (data) => {
   var church = document.getElementById("church");
   var cui_platesc = document.getElementById("cui-platesc");
   var payed = document.getElementById("payed");
-  var contribui = document.getElementById("contribui");
   var cazare_cu = document.getElementById("cazare-cu");
   var observatii_sugestii = document.getElementById("observatii-sugestii");
 
@@ -104,7 +104,6 @@ const handleData = (data) => {
   church.innerHTML = "Biserica: " + data["church"];
   cui_platesc.innerHTML = "Cui plătesc: " + data["cui_platesc"].toString();
   payed.innerHTML = "Achitat: " + data["payed"].toString();
-  contribui.innerHTML = "Cum contribui: " + data["contribui"].toString();
   cazare_cu.innerHTML = "Preferințe cazare: " + data["cazare_cu"].toString();
 
   // pfp.setAttribute('src', data["img_url"]);

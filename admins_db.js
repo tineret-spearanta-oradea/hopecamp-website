@@ -158,7 +158,7 @@ const handleData = (usersData) => {
         }
 
         let varsta = row.insertCell(++num);
-        if(user.age <= 18) {
+        if(user.age < 18) {
           varsta.innerHTML = `<span style="color:#d182ffb6">${user.age}</span>`;
         } else {
           varsta.innerHTML = user.age;
@@ -235,9 +235,7 @@ const handleData = (usersData) => {
         let invisible1 = row.insertCell(++num); //invisible for search
         invisible1.innerHTML = user.cazare_cu;
         invisible1.style.display = "none";
-        let invisible2 = row.insertCell(++num); //invisible for search
-        invisible2.innerHTML = user.contribui;
-        invisible2.style.display = "none";
+
         let invisible3 = row.insertCell(++num); //invisible for search
         invisible3.innerHTML = `UID:${uid} + QRID${user.qr_id} + D1:${user.date1} + D2:${user.date2} PIC:${user.img_url}`;
         invisible3.style.display = "none";
@@ -317,7 +315,7 @@ const handleData = (usersData) => {
             let popup_text = document.querySelector('.popup-text');
             popup_text.innerHTML = 
               `<span style="font-size: 6pt">${uid}</span><br>QR ID: ${user.qr_id}<br>
-              Data sosirii: ${date1}<br>Data plecarii: ${date2}<br>Contribui: ${user.contribui}<br>
+              Data sosirii: ${date1}<br>Data plecarii: ${date2}<br>
                 <img src="${user.img_url}" alt="pfp" height="100rem" width="auto">
               `;
 
@@ -397,11 +395,6 @@ const handleData = (usersData) => {
                 <input id="transport-edit" class="inputs-edit" type="text" value="${user.transport}"/>
 
                 <label class="edit-label" style="padding-top:0.81rem">
-                    Contribui
-                </label>
-                <input id="contribui-edit" class="inputs-edit" type="text" value="${user.contribui}"/>
-
-                <label class="edit-label" style="padding-top:0.81rem">
                     Preferinte cazare:
                 </label>
                 <input id="cazare-edit" class="inputs-edit" type="text" value="${user.cazare_cu}"/>
@@ -425,7 +418,6 @@ const handleData = (usersData) => {
               let cuiAchitUpdate = document.querySelector("#cui-platesc-edit").value;
               let payedUpdate = parseInt(document.querySelector("#payed-edit").value);
               let transportUpdate = document.querySelector("#transport-edit").value;
-              let contribuiUpdate = document.querySelector("#contribui-edit").value;
               let cazareUpdate = document.querySelector("#cazare-edit").value;
 
 
@@ -434,7 +426,6 @@ const handleData = (usersData) => {
                 cui_platesc: cuiAchitUpdate,
                 payed: payedUpdate,
                 transport: transportUpdate,
-                contribui: contribuiUpdate,
                 cazare_cu: cazareUpdate,
               };
 

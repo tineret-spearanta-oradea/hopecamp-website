@@ -314,19 +314,6 @@ const pushToDatabaseAndSetupUI = (user) => {
     }
   });
 
-  const contribui_options = [ 
-    document.getElementById("contribui1"),
-    document.getElementById("contribui2"),
-    document.getElementById("contribui3"),
-    document.getElementById("contribui4"),
-  ];
-  let finalContribuiOptions = "";
-  contribui_options.forEach(option => {
-    if(option.checked) { 
-      finalContribuiOptions += `${option.value} / `;
-    }
-  });
-
   var person = document.getElementById("person").value;
   var pfpURL;
 
@@ -363,7 +350,6 @@ const pushToDatabaseAndSetupUI = (user) => {
           payed: 0,
           start_date: start_date,
           end_date: end_date,
-          contribui: finalContribuiOptions,
           cazare_cu: person,
           transport: transport,
           prezent: 0,
