@@ -95,7 +95,7 @@ window.addEventListener('resize', function(event){
 if(isMobile) {
     document.querySelector("#background-video").style.height = "15em";
     document.querySelector(".centered").style.zoom = "3%";
-    document.querySelector(".centered").style.top = "0%";
+    document.querySelector(".centered").style.top = "20%";
 
     portraitMode();
     
