@@ -94,7 +94,7 @@ window.addEventListener('resize', function(event){
 
 if(isMobile) {
     document.querySelector("#background-video").style.height = "15em";
-    document.querySelector(".centered").style.zoom = "7%";
+    document.querySelector(".centered").style.zoom = "3%";
     portraitMode();
     
 } else {
