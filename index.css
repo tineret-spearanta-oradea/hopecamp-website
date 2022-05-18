@@ -232,6 +232,12 @@ body {
   left: 50%;
   transform: translate(-50%, -80%);
 
+  zoom: 7%;
+
+}
+
+.centered .mobile {
+  zoom:4%;
 }
 
 
