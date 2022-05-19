@@ -30,6 +30,28 @@ onAuthStateChanged(auth, (user) => {
     } else {
         userLoggedIn = false;
     }
+    
+    let inscrie_te_btn = document.querySelector(".inscrie-te-btn");
+    if(userLoggedIn) {
+        console.log("logged in");
+        
+        document.querySelector("#portal-btn a").href = "/myaccount.html";
+        inscrie_te_btn.innerHTML = "Înscris!";
+        inscrie_te_btn.style.backgroundColor = "#5d5d5d";
+        inscrie_te_btn.addEventListener("click", function() {
+            window.location.href = myAccountURL;
+        });
+        document.querySelector("#inscrie-te-div p").innerHTML = `Te-ai înscris deja. 
+        Apasă butonul pentru a merge la <span style="font-family:poppins-bold;">contul meu</span>.`;
+
+    } else {
+        console.log("NOT logged in");
+
+        inscrie_te_btn.addEventListener("click", function() {
+            window.location.href = signupURL;
+        });
+    }
+
 });
 
 document.querySelector("#inscrie-te-div").classList.add("active-scroll");
@@ -58,27 +80,6 @@ window.addEventListener("scroll", reveal);
 // To check the scroll position on page load
 reveal();
 
-
-let inscrie_te_btn = document.querySelector(".inscrie-te-btn");
-if(userLoggedIn) {
-    console.log("logged in");
-    
-    document.querySelector("#portal-btn a").href = "/myaccount.html";
-    inscrie_te_btn.innerHTML = "Înscris!";
-    inscrie_te_btn.style.backgroundColor = "#5d5d5d";
-    inscrie_te_btn.addEventListener("click", function() {
-        window.location.href = myAccountURL;
-    });
-    document.querySelector("#inscrie-te-div p").innerHTML = `Te-ai înscris deja. 
-    Apasă butonul pentru a merge la <span style="font-family:poppins-bold;">contul meu</span>.`;
-
-} else {
-    console.log("NOT logged in");
-
-    inscrie_te_btn.addEventListener("click", function() {
-        window.location.href = signupURL;
-    });
-}
 
 const accordion = document.querySelector(".accordion").addEventListener("click", function() {
     this.classList.toggle("active");
