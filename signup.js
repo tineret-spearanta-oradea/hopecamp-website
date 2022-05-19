@@ -292,10 +292,12 @@ const signup_button = document.getElementById("signup-btn").addEventListener("cl
 
 onAuthStateChanged(auth, (user) => {
   if(user) {
+     window.location.href = myAccountURL;
     console.log("logged in");
     pushToDatabaseAndSetupUI(user); // here it goes the setupUI
   } else {
     console.log("NOT logged in.");
+    //  window.location.href = myAccountURL;
   }
 });
 
