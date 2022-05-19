@@ -120,6 +120,7 @@ function portraitMode() {
         p.classList.add("mobile");
     });
 
+    document.querySelector(".grid").style.gridTemplateColumns = "repeat(auto-fill, minmax(60px, 1fr))";
     document.querySelector(".grid").classList.add("mobile");
     document.querySelector(".centered").classList.add("mobile");
 
