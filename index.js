@@ -128,7 +128,7 @@ function portraitMode() {
     document.querySelector(".grid").style.gridTemplateColumns = "repeat(auto-fill, minmax(160px, 1fr))";
     document.querySelector(".grid").classList.add("mobile");
     document.querySelector(".centered").classList.add("mobile");
-    document.querySelector("#cine-suntem iframe").style.width = "95%";
+    document.querySelector("#cine-suntem iframe").style.width = "90%";
     document.querySelector("#cine-suntem iframe").style.height = "auto";
 
     document.querySelector("#navbar").innerHTML = 
