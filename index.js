@@ -129,6 +129,7 @@ function portraitMode() {
     document.querySelector(".grid").classList.add("mobile");
     document.querySelector(".centered").classList.add("mobile");
     document.querySelector("#cine-suntem iframe").style.width = "95%";
+    document.querySelector("#cine-suntem iframe").style.height = "auto";
 
     document.querySelector("#navbar").innerHTML = 
         `<a id="trigger-popup" href="javascript:void(0);" class="icon"><i class="bx bx-menu"></i></a>\
