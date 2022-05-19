@@ -5,11 +5,17 @@ import { getDownloadURL, uploadBytes, getStorage, ref as storage_ref } from "htt
 import { firebaseConfig } from "./fb_cfg.js";
 
 
-const signupURL = "/inscrie-te.html";
-const forgotPassURL = "/fogot_pass.html";
-const myAccountURL = "/myaccount.html";
-const indexURL = "/index.html";
-const loginURL = "/login.html";
+const signupURL = "/inscrie-te";
+const forgotPassURL = "/fogot_pass";
+const myAccountURL = "/myaccount";
+const indexURL = "/";
+const loginURL = "/login";
+
+// const signupURL = "/inscrie-te.html";
+// const forgotPassURL = "/fogot_pass.html";
+// const myAccountURL = "/myaccount.html";
+// const indexURL = "/index.html";
+// const loginURL = "/login.html";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();

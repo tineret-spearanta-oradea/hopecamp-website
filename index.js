@@ -5,10 +5,15 @@ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
 import { firebaseConfig } from "./fb_cfg.js";
 
 
-const signupURL = "/inscrie-te.html";
-const aboutusURL = "/aboutus.html";
-const myAccountURL = "/myaccount.html";
-const loginURL = "/login.html";
+const signupURL = "/inscrie-te";
+const aboutusURL = "/aboutus";
+const myAccountURL = "/myaccount";
+const loginURL = "/login";
+
+// const signupURL = "/inscrie-te.html";
+// const aboutusURL = "/aboutus.html";
+// const myAccountURL = "/myaccount.html";
+// const loginURL = "/login.html";
 
 let isMobile = false;
 let userLoggedIn = false;

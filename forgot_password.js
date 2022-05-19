@@ -4,12 +4,19 @@ import { getAuth, sendPasswordResetEmail, onAuthStateChanged } from "https://www
 import { firebaseConfig } from "./fb_cfg.js";
 
 
-const signupURL = "/inscrie-te.html";
-const aboutusURL = "/aboutus.html";
-const forgotPassURL = "/fogot_pass.html";
-const myAccountURL = "/myaccount.html";
-const indexURL = "/index.html";
-const loginURL = "/login.html";
+const signupURL = "/inscrie-te";
+const aboutusURL = "/aboutus";
+const forgotPassURL = "/fogot_pass";
+const myAccountURL = "/myaccount";
+const indexURL = "/";
+const loginURL = "/login";
+
+// const signupURL = "/inscrie-te.html";
+// const aboutusURL = "/aboutus.html";
+// const forgotPassURL = "/fogot_pass.html";
+// const myAccountURL = "/myaccount.html";
+// const indexURL = "/index.html";
+// const loginURL = "/login.html";
 
 let isMobile = false;
 

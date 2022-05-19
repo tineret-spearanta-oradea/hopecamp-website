@@ -371,6 +371,6 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 
 //Click on title = go to  main page
 const homePage = document.getElementById("nav-title").addEventListener("click", function () {
-  const indexURL = "/index.html";
+  const indexURL = "/";
   window.location.href = indexURL;
 });

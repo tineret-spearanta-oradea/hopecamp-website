@@ -5,12 +5,19 @@ import { getAuth, onAuthStateChanged, signOut} from "https://www.gstatic.com/fir
 import { firebaseConfig } from "./fb_cfg.js";
 
 
-const signupURL = "/inscrie-te.html";
-const aboutusURL = "/aboutus.html";
-const forgotPassURL = "/fogot_pass.html";
-const adminsURL = "/admins.html";
-const loginURL = "/login.html";
-const indexURL = "/index.html";
+const signupURL = "/inscrie-te";
+const aboutusURL = "/aboutus";
+const forgotPassURL = "/fogot_pass";
+const adminsURL = "/admins";
+const loginURL = "/login";
+const indexURL = "/";
+
+// const signupURL = "/inscrie-te.html";
+// const aboutusURL = "/aboutus.html";
+// const forgotPassURL = "/fogot_pass.html";
+// const adminsURL = "/admins.html";
+// const loginURL = "/login.html";
+// const indexURL = "/index.html";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();

@@ -3,9 +3,13 @@ import { getDatabase, ref, child, get, set, update  } from "https://www.gstatic.
 import { getAuth, onAuthStateChanged, signOut} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 import { firebaseConfig } from "./fb_cfg.js";
 
-const adminsURL = "/admins.html";
-const loginURL = "/login.html";
-const myaccountURL = "/myaccount.html";
+const adminsURL = "/admins";
+const loginURL = "/login";
+const myaccountURL = "/myaccount";
+
+// const adminsURL = "/admins.html";
+// const loginURL = "/login.html";
+// const myaccountURL = "/myaccount.html";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();

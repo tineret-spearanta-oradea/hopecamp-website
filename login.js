@@ -4,13 +4,16 @@ import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/9.6
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 import { firebaseConfig } from "./fb_cfg.js";
 
-const signupURL = "/inscrie-te.html";
-const forgotPassURL = "/forgot_password.html";
-const myAccountURL = "/myaccount.html";
-const indexURL = "/index.html";
+const signupURL = "/inscrie-te";
+const forgotPassURL = "/forgot_password";
+const myAccountURL = "/myaccount";
+const indexURL = "/";
 
+// const signupURL = "/inscrie-te.html";
+// const forgotPassURL = "/forgot_password.html";
+// const myAccountURL = "/myaccount.html";
+// const indexURL = "/index.html";
 
-const currentURL = "";  // ? 
 
 // Firebase things
 const app = initializeApp(firebaseConfig);
