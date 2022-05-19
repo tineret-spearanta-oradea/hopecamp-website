@@ -162,6 +162,7 @@ input:-webkit-autofill:active{
 }
 #under18-agree {
   display: none;
+  letter-spacing: 0.5pt;
 }
 @property --c1{
   syntax: '<color>';
