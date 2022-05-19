@@ -89,6 +89,8 @@ form i {
   /* width: 96%; */
   /* width: 400px; */
   float: center;
+
+  margin-bottom: 0;
 }
 #card-content {
   padding: 12px 44px;
@@ -130,6 +132,16 @@ form i {
   padding: 0.5rem;
   text-align: center;
   
+}
+#report-bug {
+  font-family: poppins-regular, sans-serif;
+  font-size: 9pt;
+  color: rgb(106, 106, 106);
+  text-align: center;
+}
+#report-btn {
+ color: rgb(83, 83, 189);
+ cursor: pointer;
 }
 #signup {
   color: var(--white);

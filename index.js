@@ -84,6 +84,15 @@ const accordion = document.querySelector(".accordion").addEventListener("click",
     }, 150);
 });
 
+const report_btn = document.querySelector("#report-btn").addEventListener("click", function() {
+  if (confirm("Vei fi redirecționat către pagina lui Efraim Ghiurau de instagram, unde poti să îi scrii în privat ce nu functionează")) {
+    window.open("https://www.instagram.com/efi.ghiurau/", '_blank').focus();
+  } else {
+    
+  }
+  
+});
+
 const menu_btn = document.querySelector("#menu-btn");
 
 window.addEventListener('resize', function(event){

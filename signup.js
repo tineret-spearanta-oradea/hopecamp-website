@@ -106,7 +106,7 @@ const agree_checked = document.getElementById("agree").addEventListener("change"
 
     }
   } else {
-    if (this.checked && document.getElementById("u18-agree").checked) {
+    if (this.checked) {
       const UIsignupBtn = document.getElementById('signup-btn');
       UIsignupBtn.disable = false;
       UIsignupBtn.style.setProperty("--c1", "#ff9000");
@@ -138,6 +138,15 @@ for(let i=0; i<UIEmailAndPass.length; i++)
 }
 // const test_button = document.getElementById("test-btn").addEventListener("click", function ()  { 
 // });
+
+const report_btn = document.querySelector("#report-btn").addEventListener("click", function() {
+  if (confirm("Ceva nu functionează? Vei fi redirecționat către pagina lui Efraim Ghiurau de instagram, unde poti să îi scrii în privat ce nu functionează")) {
+    window.open("https://www.instagram.com/efi.ghiurau/", '_blank').focus();
+  } else {
+    
+  }
+  
+});
 
 const continue_button = document.getElementById("continue-btn").addEventListener("click", function ()  {
   
@@ -248,6 +257,7 @@ const continue_button = document.getElementById("continue-btn").addEventListener
 
     
     if(age<18) {
+      document.getElementById("regulament").style.display = "none";
       document.getElementById("under18-agree").style.display = "block";
     }
   }
@@ -337,6 +347,9 @@ const pushToDatabaseAndSetupUI = (user) => {
           // alert("No data available");
         } 
 
+        let now = new Date();
+        let nowString = `${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}-${now.getHours()}-${now.getMinutes()}`;
+
         var user_data = {
           email : email,
           qr_id: unique_ID,
@@ -354,6 +367,7 @@ const pushToDatabaseAndSetupUI = (user) => {
           transport: transport,
           prezent: 0,
           img_url: pfpURL,
+          date_of_signup: nowString,
         };
 
         set(ref(database, 'users/' + user.uid), user_data)

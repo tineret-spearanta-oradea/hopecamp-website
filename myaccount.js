@@ -179,6 +179,15 @@ const admins_db = document.getElementById("admins-db").addEventListener("click",
   window.location.href = adminsURL;
   
 });
+
+const report_btn = document.querySelector("#report-btn").addEventListener("click", function() {
+  if (confirm("Ceva nu functionează? Vei fi redirecționat către pagina lui Efraim Ghiurau de instagram, unde poti să îi scrii în privat ce nu functionează")) {
+    window.open("https://www.instagram.com/efi.ghiurau/", '_blank').focus();
+  } else {
+    
+  }
+  
+});
 /*
 let clicksOnExpandData = 0;
 const expand_data = document.getElementById("expand-data").addEventListener("click", function() {

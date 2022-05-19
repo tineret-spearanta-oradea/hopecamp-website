@@ -236,6 +236,10 @@ body {
 
 }
 
+#report-btn {
+ color: rgb(83, 83, 189);
+ cursor: pointer;
+}
 
 #unde {
   text-align: right;

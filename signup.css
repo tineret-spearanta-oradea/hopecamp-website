@@ -59,6 +59,8 @@ input:-webkit-autofill:active{
   width: 20rem; 
   transition: width 0.75s;
   float: center;
+
+  margin-bottom: 0;
 }
 #card-content {
   padding: 12px 44px;
@@ -148,7 +150,7 @@ input:-webkit-autofill:active{
   /* transition: 1s; */
   width: 153px;
   
-  color: var(--color3);
+  color: white;
   background-image: -webkit-linear-gradient(45deg, var(--color2), var(--color1));
 }
 #continue-btn:hover{ 
@@ -246,6 +248,16 @@ input:-webkit-autofill:active{
   margin-bottom: 0px;
   text-align: left;
 }
+#report-bug {
+  font-family: poppins-regular, sans-serif;
+  font-size: 9pt;
+  color: rgb(106, 106, 106);
+  text-align: center;
+}
+#report-btn {
+ color: rgb(83, 83, 189);
+ cursor: pointer;
+}
 #agree {
   margin: 0.7rem 0rem 0rem 0rem;
 }
@@ -300,7 +312,8 @@ input:-webkit-autofill:active{
 }
 #regulament {
   font-family: jakarta, sans-serif;
-  font-size: 10pt;
+  font-size: 12pt;
+  color: #9fbcd0;
 }
 .underline-title {
   background: -webkit-linear-gradient(left, #e9c8a200, var(--color1), #e9c8a200);
