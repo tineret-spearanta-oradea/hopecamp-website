@@ -6,7 +6,7 @@ import { firebaseConfig } from "./fb_cfg.js";
 
 
 const signupURL = "/inscrie-te";
-const aboutusURL = "/aboutus";
+const aboutusURL = "/";
 const forgotPassURL = "/fogot_pass";
 const adminsURL = "/admins";
 const loginURL = "/login";
