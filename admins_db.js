@@ -328,7 +328,7 @@ const handleData = (usersData) => {
 
             if(user.cazare_cu)
               popup_text += `<br>Cazare: ${user.cazare_cu}`;
-            popup_text.style.margin = "0 0 2rem 0";
+            // popup_text.style.margin = "0 0 2rem 0";
 
             document.querySelector('.popup-text').style.color = "black";
 

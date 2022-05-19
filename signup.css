@@ -346,13 +346,13 @@ input:-webkit-autofill:active{
 }
 #loader-1 {
   margin: 0.5rem auto 1rem auto;
-  border: 10px solid #000000; /* Light grey */
-  border-top: 10px solid var(--color5); /* Blue */
+  border: 10px solid #dbdbdb; /* Light grey */
+  border-top: 10px solid #6a6aaa; /* Blue */
   border-radius: 50%;
   width: 50px;
   height: 50px;
   animation: spin 1s linear infinite;
-  box-shadow: 3px 1px 13px #d7d7d7;
+  box-shadow: 3px 1px 13px #1b1b1b;
   visibility: hidden;
 }
 
