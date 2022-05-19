@@ -61,6 +61,8 @@ reveal();
 
 let inscrie_te_btn = document.querySelector(".inscrie-te-btn");
 if(userLoggedIn) {
+    console.log("logged in");
+    
     document.querySelector("#portal-btn a").href = "/myaccount.html";
     inscrie_te_btn.innerHTML = "Înscris!";
     inscrie_te_btn.style.backgroundColor = "#5d5d5d";
@@ -71,6 +73,8 @@ if(userLoggedIn) {
     Apasă butonul pentru a merge la <span style="font-family:poppins-bold;">contul meu</span>.`;
 
 } else {
+    console.log("NOT logged in");
+
     inscrie_te_btn.addEventListener("click", function() {
         window.location.href = signupURL;
     });
