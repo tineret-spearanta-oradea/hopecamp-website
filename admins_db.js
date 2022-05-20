@@ -54,7 +54,7 @@ const setupUI = (user) => {
             
             get(child(dbRef, `users`)).then((snapshot_all) => {
               handleData(snapshot_all.val());
-
+              
             })
             // .catch((error) => {
             //     console.error(error.message);
