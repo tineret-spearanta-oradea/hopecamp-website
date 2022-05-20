@@ -329,11 +329,13 @@ body {
 #table-body > tr:hover {
 	color: #000000;
 }
+  
+
 
 .sr-only {
 	position: absolute;
 	top: -30em;
-  }
+}
   
   table.sortable td,
   table.sortable th {
@@ -357,6 +359,8 @@ body {
   table.sortable th:nth-child(5) {
 	width: 10em;
   }
+
+
 
   
   table.sortable th button {
@@ -1072,6 +1076,12 @@ tfoot input {
 .selected-day{
   background: #41708a;
 }
+
+#users-table th:nth-child(n) {
+	color: red;
+	width: 10rem;
+}
+
 @font-face {
   font-family: poppins-regular;
   src: url(fonts/Poppins-Regular.ttf);

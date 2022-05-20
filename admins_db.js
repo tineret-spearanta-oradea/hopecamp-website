@@ -158,6 +158,11 @@ const handleData = (usersData) => {
         let row = table.insertRow();
         let num = -1;
 
+        let noid = row.insertCell(++num);
+        noid.style.width = "0rem";
+        noid.style.margin = "0";
+        noid.innerHTML = user.qr_id - 200;
+
         let nume = row.insertCell(++num);
         nume.innerHTML = user.name;
         if(user.admin) {
@@ -322,7 +327,7 @@ const handleData = (usersData) => {
             let popup_text = document.querySelector('.popup-text');
             popup_text.innerHTML = 
               `<span style="font-size: 6pt">${uid}</span><br>QR ID: ${user.qr_id}<br>
-              Data sosirii: ${date1}<br>Data plecarii: ${date2}<br>
+              Data sosirii: ${date1}<br>Data plecarii: ${date2}<br>Preferințe cazare:${user.cazare_cu}<br>
                 <img src="${user.img_url}" alt="pfp" height="100rem" width="auto">
               `;
 
