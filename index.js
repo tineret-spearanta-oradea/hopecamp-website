@@ -119,6 +119,9 @@ if(isMobile) {
     document.querySelector(".centered").style.zoom = "4%";
     document.querySelector(".centered").style.top = "40%";
     document.querySelector(".invitati").classList.add("mobile-invitati");
+    document.querySelectorAll(".card-invitati").forEach(p => {
+        p.classList.add("mobile-card-invitati");
+    });
     portraitMode();
     
 } else {
