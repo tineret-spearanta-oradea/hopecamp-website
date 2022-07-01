@@ -363,9 +363,10 @@ body {
 .mobile-card-invitati {
   max-width: 22em;
   min-height: 5rem; 
-  max-height: 5rem;
 }
-
+.mobile-card-invitati img {
+  width: 22em;
+}
 .nume{
   display: inline;
 }
