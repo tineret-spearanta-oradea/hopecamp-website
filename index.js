@@ -118,7 +118,7 @@ if(isMobile) {
     document.querySelector("#background-video").style.height = "17em";
     document.querySelector(".centered").style.zoom = "4%";
     document.querySelector(".centered").style.top = "40%";
-
+    document.querySelector(".invitati").classList.add("mobile-invitati");
     portraitMode();
     
 } else {
