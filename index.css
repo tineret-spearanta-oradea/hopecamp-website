@@ -67,6 +67,7 @@ body {
 
 .content {
   padding: 16px;
+  width: 100%;
 }
 
 .sticky {
@@ -174,7 +175,7 @@ body {
   }
 } */
 
-@media screen and (max-width: 600px) {
+/* @media screen and (max-width: 600px) {
   .topnav a:not(:first-child) {display: none;}
   .topnav a.icon {
     float: right;
@@ -194,7 +195,7 @@ body {
     display: block;
     text-align: left;
   }
-}
+} */
 
 #menu-btn {
   color: white;
@@ -365,15 +366,15 @@ body {
   left: 2px;
 }
 
-@media (min-width: 800px) {
+/* @media (min-width: 800px) {
   .inscrie-te-btn {
     padding: 1rem 5rem;
     font-size: 1.25rem;
   }
-}
+} */
 
 .centered-text {
-  margin-top: 5rem;
+  margin-top: 3rem;
   text-align: center;
   padding: auto;
   /* background-color: var(--thirdcolor); */
@@ -489,6 +490,11 @@ body {
   grid-area: 1 / 1 / 2 / 2;
 }
 
+/* .video-YT{
+  width:100%; 
+  height:400px; 
+  padding: 2em; 
+} */
 
 /* INTREBARI */
 /* #intrebare1 {
@@ -549,15 +555,17 @@ body {
   font-size: 1.5em;
   transition: 0.4s;
   margin-bottom: 0rem;
+  color:rgb(255, 250, 234)
 
 }
 
 .panel {
   padding: 0 18px;
-  background-color: #fff;
+  background-color: black;
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
+  color: wheat;
 }
 .accordion:after {
   content: '\02795'; /* Unicode character for "plus" sign (+) */
@@ -674,34 +682,133 @@ font-size: 11pt;
 
 /* Small devices (landscape phones, 576px and up) */
 
-@media only screen and (min-width: 350px) and (max-width: 768px) {
+@media only screen and (min-width: 286px) and (max-width: 865px) {
   html {
     scroll-behavior: smooth;
     overflow-x: hidden;
     overflow-y: scroll; /* has to be scroll, not auto */
-  -webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body{
+    overflow-x: hidden;
+    position: relative
   }
   
+  /* body::-webkit-scrollbar {
+    display: none;
+  } */
+
+
   #navbar{
-    width: 30%;
+    width: 100%;
    
   }
 
   #navbar a {
-    font-size: 10px;
+    font-size: 9px;
   }
 
   .content{
     width: 50%;
   }
+
+  #background-video {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    padding: 3px;
+  }
+
+  .centered {
+
+    position: absolute;
+    color: #f3f3f3;
+  
+    top: 3%;
+    left: 50%;
+    transform: translate(-50%, -100%);
+  
+    zoom: 4%;
+  
+  }
+
+  
+  
+
+  .col {
+    align-items: center;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    opacity: 1.0;
+    font-size: 12px;
+  }
+
+  .invitati {
+    display: grid;
+    grid-template-columns: repeat(1, 5fr);
+    grid-gap: 2px;
+  
+    margin: 2rem;
+    
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 7fr);
+    grid-gap: 2px;
+    padding: 20px;
+    background-color: white;
+    margin-left: 0rem;
+    
+  }
+
+  
+
+ 
+
+
  }
-/* Medium devices (tablets, 768px and up) */
+/* Medium devices (tablets, 768px and up)
 
-@media (min-width: 768px) {
+!!!!!!!!!!!  cand o sa avem chef  !!!!!!!!!!!!!!!
 
-#wrapper {width:90%;  margin: 0 auto; }
+*/
 
-#content {width:70%; float:left; }
+@media (min-width: 865px) and (max-width: 1240px) {
 
-#sidebar {width:30%; float:right; }
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    overflow-y: scroll; /* has to be scroll, not auto */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body{
+    overflow-x: hidden;
+    position: relative
+  }
+
+  .centered {
+
+    position: absolute;
+    color: #f3f3f3;
+  
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, -100%);
+  
+    zoom: 5%;
+  
+  }
+
+  .invitati {
+    display: grid;
+    grid-template-columns: repeat(1, 5fr);
+    grid-gap: 2px;
+  
+    margin: 2rem;
+    
+  }
 }
