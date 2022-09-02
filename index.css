@@ -717,7 +717,7 @@ font-size: 11pt;
     width: 100%;
     height: 300px;
     object-fit: cover;
-    padding: 3px;
+    padding: 0px;
   }
 
   .centered {
