@@ -16,44 +16,44 @@ const loginURL = "/login";
 // const myAccountURL = "/myaccount.html";
 // const loginURL = "/login.html";
 
-// let isMobile = false;
-// let userLoggedIn = false;
+let isMobile = false;
+let userLoggedIn = false;
 
-// if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-//   isMobile = true;
-// }
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+  isMobile = true;
+}
 
-// const app = initializeApp(firebaseConfig);
-// const auth = getAuth();
-// onAuthStateChanged(auth, (user) => {
-//     if(user) {
-//         userLoggedIn = true;
-//     } else {
-//         userLoggedIn = false;
-//     }
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+onAuthStateChanged(auth, (user) => {
+    // if(user) {
+    //     userLoggedIn = true;
+    // } else {
+    //     userLoggedIn = false;
+    // }
     
-//     let inscrie_te_btn = document.querySelector(".inscrie-te-btn");
-//     if(userLoggedIn) {
-//         console.log("logged in");
+    let inscrie_te_btn = document.querySelector(".inscrie-te-btn");
+    if(userLoggedIn) {
+        console.log("logged in");
         
-//         document.querySelector("#portal-btn a").href = "/myaccount.html";
-//         inscrie_te_btn.innerHTML = "Înscris!";
-//         inscrie_te_btn.style.backgroundColor = "#5d5d5d";
-//         inscrie_te_btn.addEventListener("click", function() {
-//             window.location.href = myAccountURL;
-//         });
-//         document.querySelector("#inscrie-te-div p").innerHTML = `Te-ai înscris deja. 
-//         Apasă butonul pentru a merge la <span style="font-family:poppins-bold;">contul meu</span>.`;
+        document.querySelector("#portal-btn a").href = "/myaccount.html";
+        inscrie_te_btn.innerHTML = "Înscris!";
+        inscrie_te_btn.style.backgroundColor = "#5d5d5d";
+        inscrie_te_btn.addEventListener("click", function() {
+            window.location.href = myAccountURL;
+        });
+        document.querySelector("#inscrie-te-div p").innerHTML = `Te-ai înscris deja. 
+        Apasă butonul pentru a merge la <span style="font-family:poppins-bold;">contul meu</span>.`;
 
-//     } else {
-//         console.log("NOT logged in");
+    } else {
+        console.log("NOT logged in");
 
-//         inscrie_te_btn.addEventListener("click", function() {
-//             window.location.href = signupURL;
-//         });
-//     }
+        inscrie_te_btn.addEventListener("click", function() {
+            window.location.href = signupURL;
+        });
+    }
 
-// });
+});
 
 document.querySelector("#inscrie-te-div").classList.add("active-scroll");
 document.querySelector("#cand").classList.add("active-scroll");
