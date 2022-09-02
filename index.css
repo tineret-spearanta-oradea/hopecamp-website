@@ -255,6 +255,7 @@ body {
   height: 70px;
   width: 50%;
   margin-left: 24%;
+  margin-right: 24%;
   align-items: center;
   padding: 20px;
   background-color: rgb(255, 250, 234);
@@ -733,7 +734,10 @@ font-size: 11pt;
   
   }
 
-  
+  .containergg{
+    margin-left: 20%;
+
+  }
   
 
   .col {
