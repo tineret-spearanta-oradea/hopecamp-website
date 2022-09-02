@@ -5,7 +5,8 @@ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
 import { firebaseConfig } from "./fb_cfg.js";
 
 
-const signupURL = "/inscrie-te";
+const signupURL = "https://tineret-speranta-oradea.pixieset.com/hopecamp3/";
+// const signupURL = "/inscrie-te";
 const aboutusURL = "/aboutus";
 const myAccountURL = "/myaccount";
 const loginURL = "/login";
