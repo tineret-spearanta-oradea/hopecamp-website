@@ -33,7 +33,7 @@ body {
   background-size: cover;
   /* margin: 0px 0px 0px 0px;
   padding: 0px; */
-  height: 100%;
+  /* height: 100%; */
   width: 100%;
   margin: 0;
 
@@ -404,16 +404,17 @@ body {
   
 }
 
-.mobile-invitati {
+/* .mobile-invitati {
   grid-template-columns: repeat(1, 1fr);
-}
+} */
 
 .card-invitati {
   margin: 1rem auto;
   display: flex;
   flex-direction: column;
   max-width: 15em;
-  min-height: 5rem;
+  /* min-height: 5rem; */
+  height: 20%;
   /* overflow: hidden; */
   border-radius: .3em;
   text-decoration: none;
@@ -425,15 +426,19 @@ body {
   margin-top: 0rem;
 }
 
-.mobile-card-invitati {
+/* .mobile-card-invitati {
   max-width: 22em;
   min-height: 5rem; 
 }
 .mobile-card-invitati img {
   width: 16em;
-}
+} */
 .nume{
   display: inline;
+}
+
+.card-invitati img{
+  height: 10rem;
 }
 .card-invitati p1{ 
   margin: 10px 0px 10px;
