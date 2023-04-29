@@ -1,7 +1,8 @@
 body {
-    font-family: poppins-bold, sans-serif;
+    margin: 0;
+    font-family: poppins-regular, sans-serif;
+    background-color: #ecdda5;
 }
-
 
 @font-face {
     font-family: poppins-regular;
@@ -17,3 +18,118 @@ body {
     font-family: jakarta;
     src: url(./fonts/PlusJakartaSans-Regular.ttf);
 }
+
+/* #region navbar */
+
+.navbar {
+    overflow: hidden;
+    background-color: var(--secondcolor);
+    width: 100%;
+    z-index: 9;
+    /* position: fixed; */
+    background-color: #fbf3dc;
+}
+
+.navbar a {
+    float: left;
+    display: block;
+    color: #000000;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    font-family: poppins-bold, sans-serif;
+}
+
+.navbar a:hover {
+    background-color: #ecdda5;
+}
+
+#portal-btn {
+    float: right;
+    align-items: center;
+    margin-top: 0.25%;
+}
+#portal-btn > a > img{
+    height: 30px;
+}
+/* #endregion navbar */
+
+.flex-container {
+    display: flex;
+    flex-wrap: nowrap;
+    background-color: #fbf3dc;
+}
+
+.flex-container > div {
+    text-align: center;
+    margin-bottom:300px;
+}
+
+.hero-left {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+}
+.hero-left > .container {
+    width: 80%;
+    text-align: left;
+    align-items: baseline;
+}
+.hero-left>.container>.hero-location {
+    width: 50%;
+}
+.hero-right{
+    width: 50%;
+}
+.hero-right > img {
+    object-fit: contain;
+    width: 100%;
+}
+
+/*#region InscrieTeButton */
+#inscrie-te-div {
+    margin-top: 2rem;
+    text-align: center;
+}
+#inscrie-te-div p {
+    font-size: 12pt;
+}
+.inscrie-te-btn {
+    background-color: #1a1a1a;
+    border: 0 solid #E5E7EB;
+    box-sizing: border-box;
+    color: #dfdfdf;
+    white-space: nowrap;
+    display: flex;
+    font-family: poppins-bold, sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    justify-content: center;
+    line-height: 1.75rem;
+    padding: .75rem 1.65rem;
+    position: relative;
+    text-align: center;
+    text-decoration: none #000000 solid;
+    width: 200px;
+    cursor: pointer;
+    transform: rotate(-2deg);
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    /* margin: 1rem auto; */
+}
+.inscrie-te-btn:after {
+    content: '';
+    position: absolute;
+    border: 1px solid #da7500;
+    bottom: 4px;
+    left: 4px;
+    width: calc(100% - 1px);
+    height: calc(100% - 1px);
+}
+.inscrie-te-btn:hover:after {
+    bottom: 2px;
+    left: 2px;
+}
+/*#endregion InscrieTeButton */
+
