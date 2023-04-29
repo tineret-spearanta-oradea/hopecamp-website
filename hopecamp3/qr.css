@@ -1,0 +1,221 @@
+:root {
+  --primary: #202336; /*sau: #336fa3*/
+  --secondary: #106fcf;
+  --white: #fbfbfb;
+  --cardbg: #3f3f3f;
+  --gray: #949494;
+
+  --color1: #b69e4d;
+  --color2: #9e5a00;
+  --color3: #463015;
+  --color4: #386329;
+  --color5: #323a4a;
+}
+
+
+body {
+  background: -webkit-linear-gradient(bottom, var(--white), var(--primary));
+  background-repeat: no-repeat;
+  
+}
+label {
+  font-family: "Raleway", sans-serif;
+  font-size: 11pt;
+}
+p {
+  font-family: poppins-regular, sans-serif;
+}
+h4 {
+  font-size: 20pt;
+}
+
+textarea {
+  resize: none;
+}
+
+.list {
+  font-size: 10pt;
+  font-family: poppins-regular, sans-serif;
+}
+#card {
+  background: var(--white);
+  color: var(--white);
+
+  border-radius: 8px;   
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
+  margin: 3em auto 3em auto;
+  height: 37rem;
+  width: 27rem;
+  float: center;
+  clear: left;
+  overflow: auto;
+
+  
+  /* overflow:auto; // it adds extra scroll bar wich is not what i want */
+}
+#card-content {
+  font-family: "Raleway Thin", sans-serif;
+  padding: 12px 44px;
+  
+}
+#card-title {
+  font-family: poppins-regular, sans-serif;
+  letter-spacing: 0.25rem;
+  padding-bottom: 1.43rem;
+  padding-top: 2.18rem;
+  text-align: center;
+}
+#card-subtitle {
+  font-family: "Raleway Thin", sans-serif;
+  letter-spacing: 1px;
+  padding-bottom: 23px;
+  padding-top: 13px;
+  text-align: center;
+}
+#header {
+  margin-top: 0.5rem;
+}
+#initial-loading-msg {
+  font-family: roboto-light, sans-serif;
+  font-size: 10pt;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+  text-align: center;
+}
+#initial-loader {
+  margin: 0.5rem auto 0 auto;
+  border: 10px solid #b3b3b3; /* Light grey */
+  border-top: 10px solid var(--secondary); /* Blue */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  box-shadow: 3px 1px 13px #d7d7d7;
+}
+#all-data {
+  margin-top: 2rem;
+  display: none;
+}
+#expand-data {
+  cursor: pointer;
+  color:rgba(27, 46, 133, 0.76);
+  font-family: poppins-regular, sans-serif;
+  font-size: 11pt;
+}
+#pfp {
+  width: 50%;
+  height: 50%;
+}
+
+#logout {
+  float: left;
+  /* background-color: #e6e6e6; */
+  background: -webkit-linear-gradient(right, #ffffff,  #e7e7e7);
+  border-radius: 2px;
+}
+#about-us {
+  float: right;
+   /* background-color: #e6e6e6; */
+  background: -webkit-linear-gradient(left, #ffffff,  #e7e7e7);
+
+  border-radius: 2px;
+}
+#hello {
+  color: #000000;
+  font-family: poppins-regular;
+  font-size: 15pt;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+#admins-db {
+  background: #7a9679;
+  border: none;
+  border-radius: 21px;
+  box-shadow: 0px 1px 8px #adaaaa;
+  cursor: pointer;
+  color: rgb(255, 255, 255);
+  font-family: poppins-regular;
+  letter-spacing: 1px;
+  margin: 0 auto;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  transition: 0.25s;
+  height: 2.5em;
+  width: 15em;
+  display: none;
+  justify-content:center;
+}
+#admins-db:hover {
+  box-shadow: 0px 1px 18px #3876b4;
+
+}
+#qrcode {
+  display: flex;
+  justify-content: center;
+}
+
+#id_text {
+  /* font-style: italic; */
+  font-family: roboto-light, sans-serif;
+  text-align: center;
+  margin: 0 auto;
+  font-size: 8pt;
+}
+#days-left {
+  color: #c272a0;
+  font-weight: bold;
+}
+#updatable-info{
+  font-family: poppins-regular;  /*candara, geneva,*/
+  font-size: 11pt;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+
+
+#info-expand-data {
+  margin-top: 2.5rem;
+  font-size: 11pt;
+  font-family: poppins-regular, sans-serif;
+  margin-bottom: 2rem;
+}
+
+.header-buttons {
+  color: var(--secondary);
+  border: 0px;
+  font-family: poppins-regular, sans-serif;
+  font-size: 10pt;
+  cursor: pointer;
+}
+.underline-title {
+  background: -webkit-linear-gradient(right, var(--third), var(--secondary));
+  height: 0.2rem;
+  margin: -1.1rem auto 0 auto;
+  width: 100px;
+}
+.upperline-title {
+  background: -webkit-linear-gradient(right, var(--third), var(--secondary));
+  height: 0.2rem;
+  margin: -1.1rem auto 0 auto;
+  width: 100%;
+}
+
+
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@font-face {
+  font-family: poppins-regular;
+  src: url(fonts/Poppins-Regular.ttf);
+}
+@font-face {
+  font-family: poppins-bold;
+  src: url(fonts/Poppins-Bold.ttf);
+}
+@font-face {
+  font-family: roboto-light;
+  src: url(fonts/RobotoMono-Light.ttf);
+}
