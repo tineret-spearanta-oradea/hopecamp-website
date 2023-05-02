@@ -18,6 +18,10 @@ body {
     font-family: freigeist-bold;
     src: url(./fonts/freigeist/FreigeistXWide-Bold.ttf);
 }
+@font-face {
+    font-family: freigeist-black;
+    src: url(./fonts/freigeist/FreigeistXWide-Black.ttf);
+}
 
 @font-face {
     font-family: south-montana;
@@ -57,6 +61,71 @@ body {
 #portal-btn > a > img{
     height: 30px;
 }
+.burger-menu{
+    display: none;
+    position: absolute;
+}
+.burger-menu > img {
+    height: 30px;
+    margin: 10px;
+}
+.popup-nav {
+    display: flex;
+    backdrop-filter: blur(4px);
+    /* background-color: rgba(206, 203, 178, 0.945); */
+    background-color: #fbf3dcd7;
+    position: absolute;
+    justify-content: center;
+    width: 100%;
+    z-index: 100;
+    opacity: 0;
+    transition: .2s ease;
+}
+
+.popup-nav ul {
+    margin: 0;
+    list-style-type: none;
+    text-align: center;
+    font-size: 17pt;
+    padding: 25px;
+    line-height: 50px;
+}
+
+.popup-nav ul li a {
+    font-family: freigeist-bold, poppins, sans-serif;
+    text-decoration: none;
+    font-weight: 600;
+    opacity: .85;
+    color: #000000;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    -webkit-text-fill-color: inherit;
+    mix-blend-mode: normal;
+    background-clip: border-box;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 50px;
+    transition: opacity .2s;
+}
+
+.popup-nav ul span {
+    width: 250px;
+    height: 2px;
+    display: flex;
+    margin: 0 auto;
+    background: linear-gradient(to right, #522A0500, #522A05, #522A0500);
+}
+
+@media only screen and (max-width: 768px) {
+    .navbar > a {
+        display: none;
+    }
+    .burger-menu {
+        display: block;
+    }
+}
 /* #endregion navbar */
 
 /* #region hero */
@@ -88,6 +157,35 @@ body {
 }
 .over-slider{
     position: absolute;
+}
+.over-slider> h1 {
+    font-family: freigeist-black;
+    color: #fbf3dc;
+    font-size: 20pt;
+    margin: 0;
+}
+@media only screen and (min-width: 2300px) {
+    .over-slider>h1 {
+        font-size: 90pt;
+    }
+}
+
+@media only screen and (max-width: 2300px) {
+    .over-slider>h1 {
+        font-size: 60pt;
+    }
+}
+
+@media only screen and (max-width: 1550px) {
+    .over-slider>h1 {
+        font-size: 40pt;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    .over-slider>h1 {
+        font-size: 30pt;
+    }
 }
 .over-slider > img {
     width: 70px;

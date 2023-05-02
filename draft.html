@@ -10,6 +10,9 @@
 </head>
 <body>
     <div class="navbar">
+        <div class="burger-menu">
+            <img src="./media/burger-menu.svg" alt="=">
+        </div>
         <a href="#despre">DESPRE</a>
         <a href="#galerie">GALERIE</a>
         <a href="#intrebari">ÎNTREBĂRI</a>
@@ -17,12 +20,18 @@
         <a href="./login.html">PORTAL</a>
         
         <div id="portal-btn" style="align-items: center;">
-            <a href="/login.html">
+            <a href="./">
                 <img src="./media/tineret_logo_bw.svg" alt="">
             </a>
         </div>
-
-        
+    </div>
+    <div class="popup-nav" style="/*display: flex; opacity: 0; top: -1000px;*/">
+        <ul>
+            <li><a href="./departamente" class="navigation-item">DEPARTAMENTE</a></li>
+            <li><a href="./contact" class="navigation-item">CONTACT</a></li>
+            <li><a href="./galerie" class="navigation-item">GALERIE</a></li>
+            <li><a href="./sustine-ne" class="navigation-item">SUSȚINE-NE</a></li>
+        </ul>
     </div>
 
 
@@ -33,7 +42,6 @@
                     <img src="./media/hopecamp_logo.svg" alt="Hope Camp" class="hero-logo">
                     <img src="./media/arieseni.svg" alt="Arieseni" class="hero-location">
                     <p>☑ Tabără creștină unde distracția și prezența lui Dumnezeu sunt îmbinate perfect!</p>
-                    <!-- <p>☑ Tabără creștină, plină de energie, creativă în abordare și vibrantă pentru lucrarea lui Dumnezeu.</p> -->
                     <p>☑ închinare, rugăciune, activități, mesaje... totul la superlativ!</p>
                     <div id="inscrie-te-div" class="reveal">
                         <button class="inscrie-te-btn" role="button">ÎNSCRIE-TE</button>
@@ -43,8 +51,9 @@
             </div>
             <div class="hero-right">
                 <div class="over-slider">
-                    <img src="./media/4.svg" alt="#4">
-                    <p class="bytso">by Tineret Speranta Oradea</p>
+                    <!-- <img src="./media/4.svg" alt="#4"> -->
+                    <!-- <p class="bytso">by Tineret Speranta Oradea</p> -->
+                    <h1>#4</h1>
                 </div>
                 <div class="slider">
                     <img src="./hopecamp3/media/edit-18.jpg" alt="">
@@ -61,4 +70,5 @@
         <img src="./media/rope_desktop.svg" alt="galerie">
     </div>
 </body>
+<script src="./index.js"></script>
 </html>
