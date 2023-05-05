@@ -8,7 +8,14 @@ body {
     font-family: poppins-regular;
     src: url(./fonts/Poppins-Regular.ttf);
 }
-
+@font-face {
+    font-family: twcen;
+    src: url(./fonts/TwCenClassMTStd-Regular.otf);
+}
+@font-face {
+    font-family: freigeist-light;
+    src: url(./fonts/freigeist/FreigeistXWide-Light.ttf);
+}
 @font-face {
     font-family: freigeist-regular;
     src: url(./fonts/freigeist/FreigeistXWide-Regular.ttf);
@@ -149,9 +156,7 @@ body {
     text-align: left;
     align-items: baseline;
 }
-.hero-left>.container>.hero-location {
-    width: 50%;
-}
+
 .hero-right{
     width: 50%;
 }
@@ -191,14 +196,30 @@ body {
     width: 70px;
     /* padding-left: 10px; */
 }
-.bytso {
-    font-family: south-montana, poppins, serif;
-    position: absolute;
-    width: 50vw;
+.under-title {
+    display: flex;
     text-align: right;
+    justify-content: space-between;
+}
+.under-title>.hero-location {
+    width: 50%;
+}
+.bytso {
+    font-family: freigeist-regular, poppins, serif;
+    font-size: 8pt;
+    display: flex;
     margin: 0;
-    color: #fbf3dc;
-    top: 3px;
+    max-width: 50%;
+}
+@media only screen and (max-width: 480px) {
+    .bytso {
+        font-size: 6pt;
+    }
+}
+@media only screen and (max-width: 360px) {
+    .bytso {
+        font-size: 5pt;
+    }
 }
 .slider > img {
     object-fit: contain;
@@ -279,32 +300,54 @@ body {
 
 /* #region gallery */
 .trees {
-    width: 110%;
+    width: 100%;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
     top: 200px;
 }
+.section-gallery-desktop {
+    width: 100%;
+    position: absolute;
+    z-index: 11;
+}
 
+.section-gallery-mobile {
+    width: 100%;
+    position: absolute;
+    z-index: 11;
+}
 @media only screen and (min-width: 2500px) {
     .trees {
         top: 500px;
+    }
+    .section-gallery-desktop {
+        top: 700px;
     }
 }
 @media only screen and (max-width: 2500px) {
     .trees {
         top: 450px;
     }
+    .section-gallery-desktop {
+        top: 700px;
+    }
 }
 @media only screen and (max-width: 1950px) {
     .trees {
         top: 400px;
     }
+    .section-gallery-desktop {
+        top: 600px;
+    }
 }
 @media only screen and (max-width: 1300px) {
     .trees {
         top: 300px;
+    }
+    .section-gallery-desktop {
+        top: 400px;
     }
 }
 @media only screen and (max-width: 768px) {
@@ -312,10 +355,88 @@ body {
         top: 600px;
     }
 }
+@media only screen and (max-width: 480px) {
+    .trees {
+        top: 500px;
+    }
+}
 
-.section-gallery{
-    width: 100%;
-    position: absolute;
-    z-index: 11;
+
+@media only screen and (min-width: 768px) {
+    .section-gallery-mobile {
+        display: none;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .section-gallery-desktop {
+        display: none;
+    }
+}
+
+.see-more-div {
+    margin-top: 2rem;
+    text-align: center;
+    z-index: 12;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.see-more-div p {
+    font-size: 12pt;
+}
+
+.see-more-btn {
+    background-color: #1a1a1a;
+    border: 0 solid #E5E7EB;
+    box-sizing: border-box;
+    color: #dfdfdf;
+    white-space: nowrap;
+    display: flex;
+    font-family: poppins-bold, sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    justify-content: center;
+    line-height: 1.75rem;
+    padding: .75rem 1.65rem;
+    position: relative;
+    text-align: center;
+    text-decoration: none #000000 solid;
+    width: 200px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    touch-action: manipulation;
 }
 /* #endregion gallery */
+.divider-pattern {
+    position: relative;
+    z-index: 12;
+    margin: 60px auto;
+}
+.divider-pattern img{
+    width: 100%;
+}
+
+.section-title {
+    font-family: South-Montana, sans;
+    font-size: 30pt;
+    text-align: center;
+}
+.section-text {
+    font-family: twcen, poppins-regular, sans;
+    text-align: center;
+    padding: 0 10%;
+}
+/* #region about */
+
+.banner-photo {
+    width: 110%;
+    transform: translateX(-60px); /*temp*/
+}
+/* #endregion about */
+
+/* #region location */
+.location iframe {
+    width: 100%;
+}
+/* #endregion location */
