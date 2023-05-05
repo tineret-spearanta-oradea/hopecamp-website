@@ -422,6 +422,10 @@ body {
     font-size: 30pt;
     text-align: center;
 }
+.section-title h2 {
+    margin: 0;
+    padding: 0.85em 0;
+}
 .section-text {
     font-family: twcen, poppins-regular, sans;
     text-align: center;
@@ -440,3 +444,10 @@ body {
     width: 100%;
 }
 /* #endregion location */
+
+.program {
+    background: #fbf3dc;
+}
+.program {
+    transform: translateY(-4px);
+}
