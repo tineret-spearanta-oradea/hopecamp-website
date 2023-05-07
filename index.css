@@ -162,6 +162,7 @@ body {
 }
 .over-slider{
     position: absolute;
+    z-index: 20;
 }
 .over-slider> h1 {
     font-family: freigeist-black;
@@ -275,7 +276,9 @@ body {
     animation-name: fade;
     animation-duration: 0.5s;
 }
-
+.mySlides.fade > img {
+    width:100%;
+}
 @keyframes fade {
     from {
         opacity: .4
@@ -366,23 +369,23 @@ body {
     .trees {
         top: 500px;
     }
-    .section-gallery-desktop {
-        top: 700px;
+    .divider-pattern {
+        top: 1000px;
     }
 }
 @media only screen and (max-width: 2500px) {
     .trees {
         top: 450px;
     }
-    .section-gallery-desktop {
-        top: 700px;
+    .divider-pattern {
+        top: 800px;
     }
 }
 @media only screen and (max-width: 1950px) {
     .trees {
         top: 400px;
     }
-    .section-gallery-desktop {
+    .divider-pattern {
         top: 600px;
     }
 }
@@ -390,30 +393,24 @@ body {
     .trees {
         top: 300px;
     }
-    .section-gallery-desktop {
-        top: 400px;
+    .divider-pattern {
+        top: 500px;
     }
+   
 }
 @media only screen and (max-width: 768px) {
     .trees {
         top: 600px;
     }
+    .divider-pattern {
+        top: 700px;
+    }
 }
 @media only screen and (max-width: 480px) {
     .trees {
         top: 500px;
-    }
-}
-
-
-@media only screen and (min-width: 768px) {
-    .section-gallery-mobile {
-        display: none;
-    }
-}
-@media only screen and (max-width: 768px) {
-    .section-gallery-desktop {
-        display: none;
+    }.divider-pattern {
+        top: 550px;
     }
 }
 
@@ -453,9 +450,13 @@ body {
 }
 /* #endregion gallery */
 .divider-pattern {
-    position: relative;
-    z-index: 12;
+   
+    z-index: 11;
     margin: 60px auto;
+
+    width: 100%;
+    position: absolute;
+    /* top: 500px; */
 }
 .divider-pattern img{
     width: 100%;
@@ -476,10 +477,29 @@ body {
     padding: 0 10%;
 }
 /* #region about */
-
+.about {
+    position: relative;
+    z-index: 12;
+}
 .banner-photo {
     width: 100%;
     transform: translateX(-40px); /*temp*/
+}
+
+@media only screen and (max-width: 768px) {
+    .about {
+        margin-top: 80px;
+    }
+}
+@media only screen and (max-width: 567px) {
+    .about {
+        margin-top: 120px;
+    }
+}
+@media only screen and (max-width: 500px) {
+    .about {
+        margin-top: 70px;
+    }
 }
 /* #endregion about */
 
