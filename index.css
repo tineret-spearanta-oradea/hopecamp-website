@@ -472,7 +472,7 @@ body {
     padding: 0.85em 0;
 }
 .section-text {
-    font-family: twcen, poppins-regular, sans;
+    font-family:  poppins-regular, sans;
     text-align: center;
     padding: 0 10%;
 }
@@ -501,6 +501,15 @@ body {
         margin-top: 70px;
     }
 }
+
+.contact-text {
+    font-size: 12pt;
+}
+.contact-text > a{
+    /* text-decoration: none; */
+    color: #000000;
+    display: block;
+}
 /* #endregion about */
 
 /* #region location */
@@ -525,7 +534,7 @@ body {
 /* #region footer */
 
 .section.footer {
-    background-color: rgb(27 27 27);
+    background-color: #1a1a1a;
     padding-top: 20px;
     margin-left: 0;
     margin-right: 0;
@@ -537,7 +546,7 @@ body {
     margin-left: auto;
     margin-right: auto;
     display: flex;
-    color: #fff;
+    color: #ffffdd;
 }
 .socials-wrap {
     grid-column-gap: 30px;
@@ -577,7 +586,7 @@ body {
     display: grid;
 }
 .socials-grid> a > img {
-    filter: invert(1);
+    filter: invert(0.9);
 }
 .container > .text{
     text-align: center;

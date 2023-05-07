@@ -1,92 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HopeCamp</title>
     <link rel="stylesheet" href="./index.css" />
     <link rel="icon" href="./media/tineret_logo.png" />
-  </head>
-  <body>
-    <div class="navbar">
-      <div class="burger-menu">
-        <img src="./media/burger-menu.svg" alt="=" />
-      </div>
-      <a href="#despre">DESPRE</a>
-      <a href="./galerie">GALERIE</a>
-      <a href="#intrebari">ÎNTREBĂRI</a>
-      <a href="#contact">CONTACT</a>
-      <a href="./login">PORTAL</a> <!--sau ./inscrie-te-->
+</head>
 
-      <div id="portal-btn" style="align-items: center">
-        <a href="./">
-          <img src="./media/tineret_logo_bw.svg" alt="" />
-        </a>
-      </div>
+<body>
+    <div class="navbar">
+        <div class="burger-menu">
+            <img src="./media/burger-menu.svg" alt="=" />
+        </div>
+        <a href="#despre">DESPRE</a>
+        <a href="./galerie">GALERIE</a>
+        <a href="#intrebari">ÎNTREBĂRI</a>
+        <a href="#contact">CONTACT</a>
+        <a href="./login">PORTAL</a> <!--sau ./inscrie-te-->
+
+        <div id="portal-btn" style="align-items: center">
+            <a href="./">
+                <img src="./media/tineret_logo_bw.svg" alt="" />
+            </a>
+        </div>
     </div>
-    <div class="popup-nav" style="/*display: flex; opacity: 0; top: -1000px;*/">
-      <ul>
-        <li><a href="#despre" class="navigation-item">DEPARTAMENTE</a></li>
-        <li><a href="./galerie" class="navigation-item">GALERIE</a></li>
-        <li><a href="#intrebari" class="navigation-item">ÎNTREBĂRI</a></li>
-        <li><a href="#contact" class="navigation-item">CONTACT</a></li>
-        <li><a href="./login class="navigation-item">PORTAL</a></li>
-      </ul>
+    <div class="popup-nav" style="opacity: 0;">
+        <ul>
+            <li><a href="#despre" class="navigation-item">DEPARTAMENTE</a></li>
+            <li><a href="./galerie" class="navigation-item">GALERIE</a></li>
+            <li><a href="#intrebari" class="navigation-item">ÎNTREBĂRI</a></li>
+            <li><a href="#contact" class="navigation-item">CONTACT</a></li>
+            <li><a href="./login" class=" navigation-item">PORTAL</a></li>
+        </ul>
     </div>
 
     <div class="section-hero">
-      <div class="flex-container">
-        <div class="hero-left">
-          <div class="container">
-            <img src="./media/hopecamp_logo.svg" alt="Hope Camp" class="hero-logo" />
-            <div class="under-title">
-              <img src="./media/arieseni.svg" alt="Arieseni" class="hero-location" />
-              <p class="bytso">by Tineret Speranța Oradea</p>
+        <div class="flex-container">
+            <div class="hero-left">
+                <div class="container">
+                    <img src="./media/hopecamp_logo.svg" alt="Hope Camp" class="hero-logo" />
+                    <div class="under-title">
+                        <img src="./media/arieseni.svg" alt="Arieseni" class="hero-location" />
+                        <p class="bytso">by Tineret Speranța Oradea</p>
+                    </div>
+                    <p>☑ Tabără creștină unde distracția și prezența lui Dumnezeu sunt îmbinate perfect!</p>
+                    <p>☑ închinare, rugăciune, activități, mesaje... totul la superlativ!</p>
+                    <div id="inscrie-te-div" class="reveal">
+                        <button class="inscrie-te-btn" role="button">ÎNSCRIE-TE</button>
+                    </div>
+                </div>
             </div>
-            <p>☑ Tabără creștină unde distracția și prezența lui Dumnezeu sunt îmbinate perfect!</p>
-            <p>☑ închinare, rugăciune, activități, mesaje... totul la superlativ!</p>
-            <div id="inscrie-te-div" class="reveal">
-              <button class="inscrie-te-btn" role="button">ÎNSCRIE-TE</button>
+            <div class="hero-right">
+                <div class="over-slider">
+                    <!-- <img src="./media/4.svg" alt="#4"> -->
+                    <!-- <p class="bytso">by Tineret Speranta Oradea</p> -->
+                    <h1>#4</h1>
+                </div>
+
+
+                <div class="slideshow-container">
+
+                    <div class="mySlides fade">
+                        <img src="./media/gallery/hc_all.jpg">
+                    </div>
+
+                    <div class="mySlides fade">
+                        <img src="./media/gallery/hc_worship1.jpg">
+                    </div>
+
+                    <div class="mySlides fade">
+                        <img src="./media/gallery/hc_fire.jpg">
+                    </div>
+
+                    <div class="mySlides fade">
+                        <img src="./media/gallery/hc_fun1.jpg">
+                    </div>
+
+                    <!-- <div class="mySlides fade">
+                        <img src="./media/gallery/hc_worship2.jpg">
+                    </div> -->
+
+                </div>
+
+
+
             </div>
-          </div>
         </div>
-        <div class="hero-right">
-          <div class="over-slider">
-            <!-- <img src="./media/4.svg" alt="#4"> -->
-            <!-- <p class="bytso">by Tineret Speranta Oradea</p> -->
-            <h1>#4</h1>
-          </div>
-
-
-            <div class="slideshow-container">
-            
-                <div class="mySlides fade">
-                    <img src="./media/gallery/hc_all.jpg">
-                </div>
-            
-                <div class="mySlides fade">
-                    <img src="./media/gallery/hc_fire.jpg" >
-                </div>
-            
-                <div class="mySlides fade">
-                    <img src="./media/gallery/hc_worship1.jpg">
-                </div>
-
-                <div class="mySlides fade">
-                    <img src="./media/gallery/hc_fun1.jpg">
-                </div>
-            
-            </div>
-
-
-
-        </div>
-      </div>
     </div>
 
     <div class="trees">
-      <img src="./media/brazi_mobile.svg" alt="" />
+        <img src="./media/brazi_mobile.svg" alt="" />
     </div>
 
     <div class="divider-pattern">
@@ -95,18 +101,48 @@
 
     <div class="about" id="despre">
         <div class="section-title">
-            <h2>DESPRE NOI</h2>
+            <p>DESPRE NOI</p>
         </div>
-        <div class="section-text">
+        <div class="section-text reveal active-scroll">
             <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga perspiciatis aperiam esse incidunt numquam, minus, amet placeat facilis unde eum consequatur ratione reprehenderit sunt rerum vitae doloremque? Exercitationem nihil sequi numquam ullam? Quam sapiente saepe minima, obcaecati facilis atque in ipsam quibusdam ipsa corporis, aliquam quo ipsum dignissimos expedita. Perferendis?
+                Hope Camp este tabăra de tineret apărută în 2019, în viziunea lucrării Tineret Speranța Oradea.
+            </p>
+            <p>
+                Am creat o tabără prin care să răspundem generației tinere actuale, atât în ce privește intenția de
+                jocuri și distracție, cât și în nevoia spirituală a tinerilor de azi.
+            </p>
+            <p>
+                Hope Camp nu este o tabără de relaxare, ci sunt 5 zile intense în activități, jocuri, distracție,
+                mesaje, închinare, rugăciune, Q&amp;A, discuții provocatoare!
+            </p>
+            <p>
+                Cu siguranță nu pleci la fel din tabără.
             </p>
         </div>
         <div class="see-more-div">
             <form action="https://tineret-speranta-oradea.pixieset.com/" ">
-                <button class=" see-more-btn"role="button">MAI MULTE</button>
+                <button class=" see-more-btn"role="button">VEZI GALERIE</button>
             </form>
         </div>
+    </div>
+    <div class="contact-section">
+        <div class="section-title">
+            <p>Contact</p>
+        </div>
+        <div class="section-title section-text reveal active-scroll contact-text">
+            <a href="https://www.facebook.com/tineretsperantaoradea">
+                <img src="./media/bxl-facebook-circle.svg" loading="lazy" alt="">
+            </a>
+            <a href="https://www.instagram.com/tineret_speranta_oradea">
+                <img src="./media/bxl-instagram.svg" loading="lazy" alt="">
+            </a>
+            <a href="mailto:tineretsperantaoradea@gmail.com">tineretsperantaoradea@gmail.com</a>
+            <a href="tel:+40773311577">0773 311 577</a>
+            <a style="text-decoration: none;" href="https://goo.gl/maps/otuz1YuMX4U3CPte6">Oradea, Bihorului 53, in fiecare joi la 19</a>
+        </div>
+
+        <div class=""></div>
+
         <div class="banner-photo">
             <img src="./media/about_us_rect.svg" alt="">
             <!-- <img src="./media/hc _logo_full.svg" alt=""> -->
@@ -119,13 +155,12 @@
 
     <div class="location">
         <div class="section-title">
-            <h2>Hope Camp #4</h2>
+            <p>Locatie</p>
         </div>
         <iframe
-            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d10989.689543984066!2d22.7504382!3d46.4799481!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4748d474cd5a61fb%3A0xc046cf82065010c!2sPensiunea%20Speran%C8%9Ba!5e0!3m2!1sro!2sro!4v1683310895504!5m2!1sro!2sro"
+            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d10989.705520592837!2d22.7504243!3d46.479869!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4748d3764c86eca1%3A0x59560d4baf75f00d!2sVila%20Speran%C8%9Ba!5e0!3m2!1sro!2sro!4v1683475440163!5m2!1sro!2sro"
             width="" height="200" style="border:0;" allowfullscreen="" loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
         <div class="">
 
         </div>
@@ -133,20 +168,18 @@
 
     <div class="program">
         <div class="section-title">
-            <h2>Program</h2>
+            <p>Program</p>
         </div>
         <div class="section-text">
             <p>
-                Coming soon...
+                În curând afișăm programul și invitații pentru anul acesta!
             </p>
         </div>
     </div>
 
     <footer class="section footer">
         <div class="container">
-            <img src="./media/hc_logo_full.svg"
-                loading="lazy" sizes="70px" height="70"
-                alt="LOGO" class="logo-image">
+            <img src="./media/hc_logo_full.svg" loading="lazy" sizes="70px" height="70" alt="LOGO" class="logo-image">
             <div class="socials-wrap">
                 <div id="w-node-_0fba647d-e222-0ef7-f350-6a280e2fd47f-51e627e8" class="container-2 w-container">
                     <div class="socials-grid">
@@ -154,7 +187,7 @@
                             <img src="./media/bxl-facebook-circle.svg" loading="lazy" alt="">
                         </a>
                         <a href="https://www.instagram.com/tineret_speranta_oradea">
-                            <img src="./media/bxl-instagram.svg"loading="lazy" alt="">
+                            <img src="./media/bxl-instagram.svg" loading="lazy" alt="">
                         </a>
                     </div>
                 </div>
@@ -163,6 +196,7 @@
         </div>
     </footer>
 
-  </body>
-  <script src="./index.js"></script>
+</body>
+<script src="./index.js"></script>
+
 </html>
