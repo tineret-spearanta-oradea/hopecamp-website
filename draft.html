@@ -14,10 +14,10 @@
         <img src="./media/burger-menu.svg" alt="=" />
       </div>
       <a href="#despre">DESPRE</a>
-      <a href="#galerie">GALERIE</a>
+      <a href="./galerie">GALERIE</a>
       <a href="#intrebari">ÎNTREBĂRI</a>
       <a href="#contact">CONTACT</a>
-      <a href="./login.html">PORTAL</a>
+      <a href="./login">PORTAL</a> <!--sau ./inscrie-te-->
 
       <div id="portal-btn" style="align-items: center">
         <a href="./">
@@ -27,10 +27,11 @@
     </div>
     <div class="popup-nav" style="/*display: flex; opacity: 0; top: -1000px;*/">
       <ul>
-        <li><a href="./departamente" class="navigation-item">DEPARTAMENTE</a></li>
-        <li><a href="./contact" class="navigation-item">CONTACT</a></li>
+        <li><a href="#despre" class="navigation-item">DEPARTAMENTE</a></li>
         <li><a href="./galerie" class="navigation-item">GALERIE</a></li>
-        <li><a href="./sustine-ne" class="navigation-item">SUSȚINE-NE</a></li>
+        <li><a href="#intrebari" class="navigation-item">ÎNTREBĂRI</a></li>
+        <li><a href="#contact" class="navigation-item">CONTACT</a></li>
+        <li><a href="./login class="navigation-item">PORTAL</a></li>
       </ul>
     </div>
 
@@ -76,14 +77,16 @@
     </div>
 
     <div class="see-more-div">
-        <button class="see-more-btn" role="button">MAI MULTE</button>
+        <form action="./galerie.html" ">
+            <button class="see-more-btn"role="button">MAI MULTE</button>
+        </form>
     </div>
 
     <div class="divider-pattern">
         <img src="./media/pattern.svg" alt="***********pattern************">
     </div>
 
-    <div class="about ">
+    <div class="about" id="despre">
         <div class="section-title">
             <h2>DESPRE NOI</h2>
         </div>
@@ -112,7 +115,7 @@
             referrerpolicy="no-referrer-when-downgrade">
         </iframe>
         <div class="">
-            
+
         </div>
     </div>
 
@@ -127,9 +130,27 @@
         </div>
     </div>
 
-    <footer style="background-color: #ecdda5; height: 100px;">
-        footer cica
+    <footer class="section footer">
+        <div class="container">
+            <img src="./media/hc_logo_full.svg"
+                loading="lazy" sizes="70px" height="70"
+                alt="LOGO" class="logo-image">
+            <div class="socials-wrap">
+                <div id="w-node-_0fba647d-e222-0ef7-f350-6a280e2fd47f-51e627e8" class="container-2 w-container">
+                    <div class="socials-grid">
+                        <a href="https://www.facebook.com/tineretspreantaoradea">
+                            <img src="./media/bxl-facebook-circle.svg" loading="lazy" alt="">
+                        </a>
+                        <a href="https://www.instagram.com/tineret_spreanta_oradea">
+                            <img src="./media/bxl-instagram.svg"loading="lazy" alt="">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="text">© 2023 Tineret Speranța Oradea. Toate drepturile rezervate.</div>
+        </div>
     </footer>
+
   </body>
   <script src="./index.js"></script>
 </html>
