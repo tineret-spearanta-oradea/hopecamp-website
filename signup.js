@@ -88,9 +88,9 @@ select_days_w2.forEach(day => {
 const aboutus_button = document.getElementById("about-us").addEventListener("click", function () {
   window.location.href =  indexURL;
 });
-const login_button = document.getElementById("login").addEventListener("click", function () {
-  window.location.href =  loginURL;
-});
+// const login_button = document.getElementById("login").addEventListener("click", function () {
+//   window.location.href =  loginURL;
+// });
 
 const agree_checked = document.getElementById("agree").addEventListener("change", function() {
   let age = document.getElementById("age").value;
@@ -98,8 +98,8 @@ const agree_checked = document.getElementById("agree").addEventListener("change"
     if (this.checked) {
       const UIsignupBtn = document.getElementById('signup-btn');
       UIsignupBtn.disable = false;
-      UIsignupBtn.style.setProperty("--c1", "#ff9000");
-      UIsignupBtn.style.setProperty("--c2", "#ffbb19");
+      UIsignupBtn.style.setProperty("--c1", "#1ea3b0");
+      UIsignupBtn.style.setProperty("--c2", "#9e5a00");
       UIsignupBtn.style.setProperty("--c3", "#463015");
 
       // UIsignupBtn.style.animation = "graytocolor 5s infinite"; //NOT working
@@ -115,8 +115,8 @@ const agree_checked = document.getElementById("agree").addEventListener("change"
     if (this.checked) {
       const UIsignupBtn = document.getElementById('signup-btn');
       UIsignupBtn.disable = false;
-      UIsignupBtn.style.setProperty("--c1", "#ff9000");
-      UIsignupBtn.style.setProperty("--c2", "#ffbb19");
+      UIsignupBtn.style.setProperty("--c1", "#1ea3b0");
+      UIsignupBtn.style.setProperty("--c2", "#9e5a00");
       UIsignupBtn.style.setProperty("--c3", "#463015");
 
       // UIsignupBtn.style.animation = "graytocolor 5s infinite"; //NOT working

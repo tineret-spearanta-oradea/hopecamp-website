@@ -1,12 +1,12 @@
 :root {
-  --color1: #b69e4d;
+  --color1: #1ea3b0;
   --color2: #9e5a00;
   --color3: #463015;
   --color4: #386329;
   --color5: #323a4a;
 
   --cardbg: #3f3f3f;
-  --white: #ebebeb;
+  --text: #000;
   --gray: #949494;
 }
 
@@ -16,6 +16,7 @@ a {
 body {
   /* background: -webkit-linear-gradient(bottom, var(--white), var(--primary)); */
   background: url(./media/portal_bg.jpg);
+  background: url(./media/portal_bg1.png);
   background-color: var(--color5);
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -28,7 +29,7 @@ body {
   background-size: cover;
   margin: 100px auto 100px auto;
 
-  font-family: twcen, sans-serif;
+  font-family: poppins-regular, twcen, sans-serif;
 }
 label {
   font-family: freigeist-regular, sans-serif;
@@ -39,21 +40,30 @@ input.form-content {
   font-size: 1em !important; 
 }
 h2 {
+  text-shadow: 2px 2px 8px #88a0a5;
   font-family: montana, sans-serif;
   font-weight: unset;
+  margin-top: 30px;
   /* color: var(--white); */
+}
+h5 {
+  font-weight: unset;
+}
+#changeable-content-1 h2 {
+  font-family: freigeist-bold, sans-serif;
+  font-size: 15pt;
 }
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus, 
 input:-webkit-autofill:active{
-  -webkit-box-shadow: 0 0 0 30px var(--color5) inset !important;
+  -webkit-box-shadow: 0 0 0 30px #e4e7b3 inset !important;
   -webkit-text-fill-color: var(--white) !important;
 }
 
 #card {
-  background: var(--color5);
-  color: var(--white);
+  backdrop-filter: blur(3px);
+  color: var(--text);
   border-radius: 8px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
   height: auto;
@@ -75,12 +85,13 @@ input:-webkit-autofill:active{
   margin-top: 0.5rem;
 }
 .header-buttons {
-  margin-top: 15px;
+  margin-top: 0;
   margin-bottom: 17px;
-  color: #ffffff;
+  color: #000000;
   border: 0px;
   font-family: poppins-regular, sans-serif;
   font-size: 11pt;
+  font-weight: bold;
   cursor: pointer;
 }
 #login {
@@ -92,21 +103,21 @@ input:-webkit-autofill:active{
 #about-us {
   float: right;
    /* background-color: #e6e6e6; */
-  background: -webkit-linear-gradient(right,#707070, #00000000);
+  background: -webkit-linear-gradient(right,#083e0736, #413e3e00);
 
 
   border-radius: 8px;
 }
 #card-title {
   font-family: poppins-regular, sans-serif;
-  letter-spacing: 0.1rem;
+  /* letter-spacing: 0.1rem; */
   padding-bottom: 1.43rem;
   padding-top: 2.18rem;
   text-align: center;
 }
 #card-subtitle {
   font-family: poppins-regular, sans-serif;
-  letter-spacing: 0px;
+  /* letter-spacing: 0px; */
   font-size: 11pt;
   padding-bottom: 14px;
   text-align: center;
@@ -145,7 +156,7 @@ input:-webkit-autofill:active{
   cursor: pointer;
   font-family: freigeist-bold, sans-serif;
   height: 42.3px;
-  letter-spacing: 1px;
+  /* letter-spacing: 1px; */
   margin: 0 auto 0rem auto;
   /* margin-top: 0rem; */
   /* margin-bottom: 1rem; */
@@ -164,7 +175,7 @@ input:-webkit-autofill:active{
 }
 #under18-agree {
   display: none;
-  letter-spacing: 0.5pt;
+  /* letter-spacing: 0.5pt; */
 }
 @property --c1{
   syntax: '<color>';
@@ -190,7 +201,7 @@ input:-webkit-autofill:active{
   border-radius: 21px;
   box-shadow: 0px 1px 8px #000000;
   cursor: pointer;
-  font-family: poppins-regular, sans-serif;
+  font-family: freigeist-bold, poppins-regular, sans-serif;
   height: 42.3px;
   letter-spacing: 1px;
   margin: 2rem auto 1rem auto;
@@ -203,13 +214,15 @@ input:-webkit-autofill:active{
   transition:--c3 1s;
   color: var(--c3);
   background-image: -webkit-linear-gradient(left, var(--c1), var(--c2));
+  /* background-image: -webkit-linear-gradient(45deg, var(--color2), var(--color1)); */
+  color: white;
 }
 #signup-btn:hover{ 
   box-shadow: 0px 1px 14px #000000;
 }
 #error {
   display: none;
-  background-color: #fdb16a;
+  background-color: #fb7201;
   border-radius: 5px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
   margin-top: 1rem;
@@ -226,7 +239,7 @@ input:-webkit-autofill:active{
   visibility: hidden;
 }
 #announce {
-  color: #790000;
+  color: #f2f2f2;
   font-family: poppins-regular, sans-serif;
   font-size: 11pt;
   margin-top: 1rem;
@@ -235,7 +248,7 @@ input:-webkit-autofill:active{
   text-align: center;
 }
 #announce-1 {
-  color: #790000;
+  color: #f2f2f2;
   font-family: poppins-regular, sans-serif;
   font-size: 11pt;
   margin-top: 1rem;
@@ -245,7 +258,7 @@ input:-webkit-autofill:active{
 }
 #category{
   color: var(--white);
-  font-family: twcen, sans-serif;
+  font-family: poppins-regular, sans-serif;
   font-size: 14pt;
   margin-top: 0.1rem;
   margin-bottom: 0px;
@@ -269,7 +282,7 @@ input:-webkit-autofill:active{
 }
 
 #intext-ref {
-  color:#dfbb57;
+  color: #1ea3b0;
 }
 
 .form {
@@ -279,7 +292,7 @@ input:-webkit-autofill:active{
 }
 .form-border {
   /* background: -webkit-linear-gradient(right, col, var(--secondary)); */
-  background: -webkit-linear-gradient(left, #ffba194d, var(--color1), #ffba194d);
+  background: -webkit-linear-gradient(left, #ffba1900, var(--color1), #ffba1900);
 
   /* background-color: var(--color2); */
   height: 0.05em;
@@ -298,7 +311,7 @@ input:-webkit-autofill:active{
 }
 #multiple-choice-div{
   margin: 0.2rem auto 0.2rem 1rem;
-  font-family: twcen, sans-serif;
+  font-family: poppins-regular, sans-serif;
   font-size: 11pt;
 }
 #other-church {
@@ -310,7 +323,7 @@ input:-webkit-autofill:active{
   float: right;
 }
 #taxa-inscriere {
-  font-size: 11pt;
+  /* font-size: 11pt; */
 }
 #regulament {
   font-size: 12pt;
@@ -328,6 +341,7 @@ input:-webkit-autofill:active{
   font-size: 8pt;
   margin-top: 0rem;
   text-align: left;
+  font-family: poppins-regular, sans-serif;
 }
 .multch { 
   margin-top: 0.5rem;
@@ -390,18 +404,21 @@ input:-webkit-autofill:active{
   
 }
 .small-day{
-  font-family: jakarta, sans-serif;
+  /* font-family: jakarta, sans-serif; */
   
   margin: 0;
   font-size: 7pt;
 }
 .big-day {
-  font-family: jakarta, sans-serif;
+  /* font-family: , sans-serif; */
   padding-top: 10px;
   font-size: 20pt;
 }
 .selected-day{
-  background: #41708a;
+  background: #1ea3b0;
+}
+.taxa-de-inscriere {
+  font-family: freigeist-bold;
 }
 
 @font-face {
