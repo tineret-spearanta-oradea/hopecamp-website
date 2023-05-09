@@ -448,6 +448,11 @@ body {
     -webkit-user-select: none;
     touch-action: manipulation;
 }
+
+.video-promo > iframe {
+    width: 100%;
+    height: auto;
+}
 /* #endregion gallery */
 .divider-pattern {
    
