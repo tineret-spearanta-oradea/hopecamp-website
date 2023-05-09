@@ -78,8 +78,8 @@ body {
 }
 .popup-nav {
     display: flex;
+    -webkit-backdrop-filter: blur(3px);
     backdrop-filter: blur(4px);
-    transform: translate3d(0, 0, 0);
     /* background-color: rgba(206, 203, 178, 0.945); */
     background-color: #fbf3dcd7;
     position: absolute;

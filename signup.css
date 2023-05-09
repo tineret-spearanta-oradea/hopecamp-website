@@ -32,7 +32,7 @@ body {
   font-family: poppins-regular, twcen, sans-serif;
 }
 label {
-  font-family: freigeist-regular, sans-serif;
+  font-family: freigeist-bold, sans-serif;
   font-size: 11pt;
   text-transform: uppercase;
 }
@@ -66,8 +66,7 @@ input:-webkit-autofill:active{
 }
 
 #card {
-  /* backdrop-filter: blur(3px); */
-  -webkit-backdrop-filter:  blur(4px);
+  -webkit-backdrop-filter:  blur(3px);
   backdrop-filter:  blur(4px);
   color: var(--text);
   border-radius: 8px;
@@ -110,8 +109,8 @@ input:-webkit-autofill:active{
   float: right;
    /* background-color: #e6e6e6; */
   background: -webkit-linear-gradient(right,#083e0736, #413e3e00);
-
-
+  position: absolute;
+  right: 20px;
   border-radius: 8px;
 }
 #card-title {
@@ -265,6 +264,7 @@ input:-webkit-autofill:active{
 #category{
   color: var(--white);
   font-family: poppins-regular, sans-serif;
+  font-weight: bold;
   font-size: 14pt;
   margin-top: 0.1rem;
   margin-bottom: 0px;
@@ -423,12 +423,19 @@ input:-webkit-autofill:active{
 .selected-day{
   background: #1ea3b0;
 }
-.taxa-de-inscriere {
-  font-family: freigeist-regular;
+
+#card-title > img {
+  width: 60%;
+  height: 70px;
+  margin: 0 auto; 
 }
 
 @font-face {
   font-family: poppins-regular;
+  src: url(fonts/Poppins-Regular.ttf);
+}
+@font-face {
+  font-family: poppins-bold;
   src: url(fonts/Poppins-Regular.ttf);
 }
 @font-face {
