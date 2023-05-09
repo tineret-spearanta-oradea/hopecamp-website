@@ -425,6 +425,7 @@ body {
 
 .see-more-div p {
     font-size: 12pt;
+    
 }
 
 .see-more-btn {
@@ -676,5 +677,11 @@ body {
 /* #region random */
 .pbold {
     font-family: freigeist-bold, sans-serif;
+}
+.unusual-title {
+    font-size: 16pt;
+    margin-top: 60px;
+    text-align: center;
+    font-family: freigeist-bold,sans-serif;
 }
 /* #endregion random */
