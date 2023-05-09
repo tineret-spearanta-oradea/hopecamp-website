@@ -34,13 +34,14 @@ body {
 label {
   font-family: freigeist-regular, sans-serif;
   font-size: 11pt;
+  text-transform: uppercase;
 }
 input.form-content {
   color: var(--white);
   font-size: 1em !important; 
 }
 h2 {
-  text-shadow: 2px 2px 8px #88a0a5;
+  /* text-shadow: 2px 2px 8px #88a0a5; */
   font-family: montana, sans-serif;
   font-weight: unset;
   margin-top: 30px;
@@ -48,6 +49,9 @@ h2 {
 }
 h5 {
   font-weight: unset;
+}
+#card-title {
+  text-shadow: 2px 2px 8px #dae1e2;
 }
 #changeable-content-1 h2 {
   font-family: freigeist-bold, sans-serif;
@@ -62,9 +66,9 @@ input:-webkit-autofill:active{
 }
 
 #card {
-  backdrop-filter: blur(3px);
-  transform: translate3d(0, 0, 0);
-  
+  /* backdrop-filter: blur(3px); */
+  -webkit-backdrop-filter:  blur(4px);
+  backdrop-filter:  blur(4px);
   color: var(--text);
   border-radius: 8px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
@@ -420,7 +424,7 @@ input:-webkit-autofill:active{
   background: #1ea3b0;
 }
 .taxa-de-inscriere {
-  font-family: freigeist-bold;
+  font-family: freigeist-regular;
 }
 
 @font-face {
