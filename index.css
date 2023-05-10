@@ -685,4 +685,34 @@ body {
     text-align: center;
     font-family: freigeist-bold,sans-serif;
 }
+.locatie-img {
+    position: relative;
+    top: -5px;
+    height: 400px;
+    width: 100%;
+}
+.locatie-img img {
+    height: 400px;
+    width: 100%;
+    object-fit: cover;
+}
+@media only screen and (max-width: 1580px) {
+    .locatie-img,
+    .locatie-img img {
+        height: 300px;
+    }
+}
+@media only screen and (max-width: 1280px) {
+
+    .locatie-img,
+    .locatie-img img {
+        height: 250px;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .locatie-img, .locatie-img img {
+        height: 200px;
+    }
+}
+
 /* #endregion random */

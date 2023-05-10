@@ -47,6 +47,7 @@ const setupUI = (user) => {
   if(user) {
     // console.log(user.uid);
     USERid = user.uid;
+    localStorage['userid'] = user.uid;
     get(child(dbRef, `users/${user.uid}/admin`)).then((snapshot) => {
       if (snapshot.exists()) {
         let data = snapshot.val();
@@ -161,7 +162,14 @@ const handleData = (usersData) => {
         let noid = row.insertCell(++num);
         noid.style.width = "0rem";
         noid.style.margin = "0";
-        noid.innerHTML = user.qr_id - 200;
+        // noid.innerHTML = user.qr_id - 200;
+        noid.innerHTML = `<span class="user-displayed-id">${user.qr_id-200}</span>`;
+        let isChecked = row.insertCell(++num);
+        if(user.is_confirmed) {
+          isChecked.innerHTML = `<span class="user-confirmed">DA</span>`;
+        } else {
+          isChecked.innerHTML = `<span class="user-not-confirmed">NU</span>`;
+        }
 
         let nume = row.insertCell(++num);
         nume.innerHTML = user.name;
@@ -208,8 +216,8 @@ const handleData = (usersData) => {
         } 
         zile.innerHTML = `<span class="status ${status}">${daysAmount}</span>`;
 
-        let email = row.insertCell(++num);
-        email.innerHTML = `<span class="user-email">${user.email}</span>`;
+        // let email = row.insertCell(++num);
+        // email.innerHTML = `<span class="user-email">${user.email}</span>`;
 
         let biserica = row.insertCell(++num);
         biserica.innerHTML = user.church;
@@ -232,8 +240,8 @@ const handleData = (usersData) => {
         } 
         platit.innerHTML = `<span class="status ${status}">${payedAmount}</span>`;
         
-        let telefon = row.insertCell(++num);
-        telefon.innerHTML = user.phone;
+        // let telefon = row.insertCell(++num);
+        // telefon.innerHTML = user.phone;
 
         let transport= row.insertCell(++num);
         transport.innerHTML = user.transport;
@@ -302,13 +310,13 @@ const handleData = (usersData) => {
     more_infos.forEach(btn => {
       btn.addEventListener("click", function() { 
         let row = btn.parentElement.parentElement;
-        let uemail = row.querySelector(".user-email").innerHTML;
-
+        // let uemail = row.querySelector(".user-email").innerHTML;
+        let displayedId = row.querySelector(".user-displayed-id").innerHTML;
         Object.keys(allUsersData).forEach(uid => {
           let user = allUsersData[uid];
-          if(user.email === uemail) {
-            document.querySelector('.hover_bg').style.display = 'block';
 
+          if(user.qr_id - 200 == displayedId) {
+            document.querySelector('.hover_bg').style.display = 'block';
             document.querySelector('.popup-title').innerHTML = `${user.name}`;
 
             let date1 = new Date((user.start_date).toString());
@@ -326,7 +334,7 @@ const handleData = (usersData) => {
 
             let popup_text = document.querySelector('.popup-text');
             popup_text.innerHTML = 
-              `<span style="font-size: 6pt">${uid}</span><br>QR ID: ${user.qr_id}<br>
+              `<span style="font-size: 6pt">${uid}</span><br>Telefon:${user.phone}<br>QR ID: ${user.qr_id}<br>
               Data sosirii: ${date1}<br>Data plecarii: ${date2}<br>Preferințe cazare:${user.cazare_cu}<br>
                 <img src="${user.img_url}" alt="pfp" height="100rem" width="auto">
               `;
@@ -357,11 +365,12 @@ const handleData = (usersData) => {
     edit_btns.forEach(btn => {
       btn.addEventListener("click", function() { 
         let row = btn.parentElement.parentElement;
-        let uemail = row.querySelector(".user-email").innerHTML;
+        // let uemail = row.querySelector(".user-email").innerHTML;
+        let displayedId = row.querySelector(".user-displayed-id").innerHTML;
 
         Object.keys(allUsersData).forEach(uid => {
           let user = allUsersData[uid];
-          if(user.email === uemail) {
+          if(user.qr_id - 200  == displayedId) {
             document.querySelector('.hover_bg').style.display = 'block';
 
             document.querySelector('.popup-title').innerHTML = `${user.name} - EDIT`;
@@ -410,6 +419,12 @@ const handleData = (usersData) => {
                     Preferinte cazare:
                 </label>
                 <input id="cazare-edit" class="inputs-edit" type="text" value="${user.cazare_cu}"/>
+                
+                <label class="edit-label" style="padding-top:0.81rem">
+                    Confirmat:
+                </label>
+                <input id="confirmat-edit" class="inputs-edit" type="checkbox" value="confirmat" 
+                ${ user.is_confirmed ? 'checked' : '' }/>
               </form>`;
             
             popup_text.style.margin = "0 0 2rem 0";
@@ -431,7 +446,7 @@ const handleData = (usersData) => {
               let payedUpdate = parseInt(document.querySelector("#payed-edit").value);
               let transportUpdate = document.querySelector("#transport-edit").value;
               let cazareUpdate = document.querySelector("#cazare-edit").value;
-
+              let isConfirmed = document.querySelector("#confirmat-edit").checked;
 
               let data_to_update = {
                 phone: phoneUpdate,
@@ -439,8 +454,9 @@ const handleData = (usersData) => {
                 payed: payedUpdate,
                 transport: transportUpdate,
                 cazare_cu: cazareUpdate,
+                is_confirmed:  isConfirmed,
               };
-
+              //TODO: send email
               update(ref(database, `users/${uid}`), data_to_update).then(function(){
                 location.reload();
                 document.getElementById('Statistica').scrollIntoView();
@@ -493,7 +509,7 @@ const add_admin = document.querySelector("#add-admin-submit").addEventListener("
     let user = allUsersData[uid];
     let foundUserWithEmail = false;
     if(user.email === emailToAdd) {
-      update(ref(database, `users/${uid}`), { admin:true }).then(function() {
+      update(ref(database, `users/${uid}`), { admin:true, is_confirmed:true }).then(function() {
         document.querySelector('.popup-text').innerHTML = `L-am adaugat pe ${user.name} în lista de admini.`;
         document.querySelector('.popup-text').style.color = "green";
 
@@ -534,3 +550,77 @@ function countProperties(obj) {
 
 
 
+const exportFromDb = document.querySelector("#btnExport").addEventListener("click", function () {
+  let USERid = localStorage['userid'];
+  get(child(dbRef, `users/${USERid}/admin`)).then((snapshot) => {
+    if (snapshot.exists()) {
+      let data = snapshot.val();
+      if(data){
+          get(child(dbRef, `users`)).then((snapshot_all) => {
+            exportData(snapshot_all.val());
+            
+          })
+      } else {
+          window.location.href = myaccountURL;
+      }
+    } else {
+      console.log("No data available");
+    }
+  });
+});
+
+const exportData = (usersData) => {
+  var csvContent = "DisplayId,Nume,Confirmat,Email,Telefon,Varsta,Biserica,Cui platesc," +
+  "Suma achitata,Transport,Preferinte cazare,Data in care vine,Data in care pleaca,URL catre poza";
+  Object.keys(usersData).forEach(uid => {
+    let user = allUsersData[uid];
+    csvContent += user.qr_id-200;
+    csvContent += ",";
+    csvContent += user.name;
+    csvContent += ",";
+    csvContent += user.is_confirmed ? 'DA' : 'NU';
+    csvContent += ",";
+    csvContent += user.email;
+    csvContent += ",";
+    csvContent += user.phone;
+    csvContent += ",";
+    csvContent += user.age;
+    csvContent += ",";
+    csvContent += user.church;
+    csvContent += ",";
+    csvContent += user.cui_platesc;
+    csvContent += ",";
+    csvContent += user.payed;
+    csvContent += ",";
+    csvContent += user.transport;
+    csvContent += ",";
+    csvContent += user.cazare_cu;
+    csvContent += ",";
+    csvContent += user.start_date;
+    csvContent += ",";
+    csvContent += user.end_date;
+    csvContent += ",";
+    csvContent += user.img_url;
+    csvContent += "\n";
+  });
+  console.log(csvContent);
+
+  const now = new Date();
+  var filename = `Participanti_HC_${now.getDay()}-${now.getMonth()}-${now.getFullYear()}_${now.getHours()}-${now.getMinutes()}`
+  var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    if (navigator.msSaveBlob) { // IE 10+
+        navigator.msSaveBlob(blob, filename);
+    } else {
+        var link = document.createElement("a");
+        if (link.download !== undefined) { // feature detection
+            // Browsers that support HTML5 download attribute
+            var url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", filename);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    }
+}

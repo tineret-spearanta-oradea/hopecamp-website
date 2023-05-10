@@ -316,6 +316,7 @@ const pushToDatabaseAndSetupUI = (user) => {
   }
   let pay = document.querySelector('input[name="pay_choice"]:checked').value;   
   let transport = document.querySelector('input[name="transport_choice"]:checked').value;  
+  let isChecked = false;
 
   // let start_date = document.getElementById("start-date").value;
   // let end_date = document.getElementById("end-date").value;
@@ -376,6 +377,7 @@ const pushToDatabaseAndSetupUI = (user) => {
           prezent: 0,
           img_url: pfpURL,
           date_of_signup: nowString,
+          is_confirmed: false,
         };
 
         set(ref(database, 'users/' + user.uid), user_data)

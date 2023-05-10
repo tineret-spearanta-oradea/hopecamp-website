@@ -96,55 +96,60 @@ const handleData = (data) => {
 
   name.innerHTML = "Hello, " + data["name"];
 
-  var QR_CODE = new QRCode("qrcode", {
-    text: data["qr_id"].toString(),
-    width: 100,
-    height: 100,
-    colorDark: "#575a73",
-    colorLight: "#fbfbfb",
-    correctLevel: QRCode.CorrectLevel.H,
-  });
+  if(data["is_confirmed"])  {
+    var QR_CODE = new QRCode("qrcode", {
+      text: data["qr_id"].toString(),
+      width: 100,
+      height: 100,
+      colorDark: "#575a73",
+      colorLight: "#fbfbfb",
+      correctLevel: QRCode.CorrectLevel.H,
+    });
 
-  id_text.innerHTML = "ID: " + data["qr_id"].toString();
-  phone.innerHTML = "Nr. tel.: " + data["phone"].toString();
-  age.innerHTML = "Vârsta: " + data["age"].toString();
-  church.innerHTML = "Biserica: " + data["church"];
-  cui_platesc.innerHTML = "Cui plătesc: " + data["cui_platesc"].toString();
-  payed.innerHTML = "Achitat: " + data["payed"].toString();
-  cazare_cu.innerHTML = "Preferințe cazare: " + data["cazare_cu"].toString();
+    id_text.innerHTML = "ID: " + data["qr_id"].toString();
+    phone.innerHTML = "Nr. tel.: " + data["phone"].toString();
+    age.innerHTML = "Vârsta: " + data["age"].toString();
+    church.innerHTML = "Biserica: " + data["church"];
+    cui_platesc.innerHTML = "Cui plătesc: " + data["cui_platesc"].toString();
+    payed.innerHTML = "Achitat: " + data["payed"].toString();
+    cazare_cu.innerHTML = "Preferințe cazare: " + data["cazare_cu"].toString();
 
-  // pfp.setAttribute('src', data["img_url"]);
+    // pfp.setAttribute('src', data["img_url"]);
 
-  if(data["admin"]) {
-    document.getElementById("admins-db").style.display = "flex";
-    cardAdditionalHeight += 2;
-    document.getElementById("card").style.height = (40+cardAdditionalHeight).toString() + "rem";
-  }
-
-  get(child(dbRef, `messages/${USERid}`)).then((snapshot) => {
-    let numberOfExistingMsg=0;
-
-    if (snapshot.exists()) {
-      numberOfExistingMsg = countProperties(snapshot.val());
-      messageID += numberOfExistingMsg;
-
-      const msg_data = snapshot.val();
-      let dateDiff = Date.now() - msg_data[numberOfExistingMsg]["time_of_send"];
-      dateDiff = (dateDiff /  (1000 * 3600)).toFixed();
-
-      if(dateDiff<24) {
-        // disable submit button.
-        const msg_submit_btn = document.querySelector("#msg-submit");
-        msg_submit_btn.innerHTML = "<p>Trimis</p>";
-        msg_submit_btn.style.backgroundImage = "-webkit-linear-gradient(right, #c0c0c0, #838383)";
-        msg_submit_btn.disabled = true;
-        
-        const msg_textarea = document.querySelector("#msg-text");
-        msg_textarea.placeholder = `Ai trimis deja un mesaj. Reîncearcă în ${24-dateDiff}h. (mesajul trimis: '${msg_data[numberOfExistingMsg]['message']}')`;
-        msg_textarea.disabled = true;
-      }
+    if(data["admin"]) {
+      document.getElementById("admins-db").style.display = "flex";
+      cardAdditionalHeight += 2;
+      document.getElementById("card").style.height = (40+cardAdditionalHeight).toString() + "rem";
     }
-  });
+
+    get(child(dbRef, `messages/${USERid}`)).then((snapshot) => {
+      let numberOfExistingMsg=0;
+
+      if (snapshot.exists()) {
+        numberOfExistingMsg = countProperties(snapshot.val());
+        messageID += numberOfExistingMsg;
+
+        const msg_data = snapshot.val();
+        let dateDiff = Date.now() - msg_data[numberOfExistingMsg]["time_of_send"];
+        dateDiff = (dateDiff /  (1000 * 3600)).toFixed();
+
+        if(dateDiff<24) {
+          // disable submit button.
+          const msg_submit_btn = document.querySelector("#msg-submit");
+          msg_submit_btn.innerHTML = "<p>Trimis</p>";
+          msg_submit_btn.style.backgroundImage = "-webkit-linear-gradient(right, #c0c0c0, #838383)";
+          msg_submit_btn.disabled = true;
+          
+          const msg_textarea = document.querySelector("#msg-text");
+          msg_textarea.placeholder = `Ai trimis deja un mesaj. Reîncearcă în ${24-dateDiff}h. (mesajul trimis: '${msg_data[numberOfExistingMsg]['message']}')`;
+          msg_textarea.disabled = true;
+        }
+      }
+    });
+  }
+  else { //is not checked yet
+    document.getElementById("user-check").innerHTML = "<p>Vei primi un mesaj de confirmare de la noi pe Whatsapp/Email. Stai pe aproape!</p>";
+  }
   // .catch((error) => {
   //   console.log(error.);
   // });

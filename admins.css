@@ -782,6 +782,13 @@ tfoot input {
 	margin-bottom: 0;
 }
 /* MAIN */
+
+.user-not-confirmed {
+	color: #5e2a2a;
+}
+.user-confirmed {
+	color: #cfc757;
+}
 /* CONTENT */
 
 
