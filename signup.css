@@ -422,6 +422,7 @@ input:-webkit-autofill:active{
 }
 .selected-day{
   background: #1ea3b0;
+  background-image: url(./media/checkmark.svg);
 }
 
 #card-title > img {

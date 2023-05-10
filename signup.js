@@ -52,20 +52,36 @@ window.addEventListener("orientationchange", function() {
 
 }, false);
 
-const select_days_w1 = document.querySelectorAll('#week1 div')
+const select_days_w1 = document.querySelectorAll('#week1 div');
+const select_days_w2 = document.querySelectorAll('#week2 div');
+
 select_days_w1.forEach(day => {
   day.addEventListener("click", function (){
-    select_days_w1.forEach(day_grey => {
-      day_grey.classList.remove("selected-day");
+    let nextDate;
+
+    select_days_w2.forEach(day => {
+      if(day.classList.contains("selected-day")) {
+        nextDate = day.dataset['date'];
+      }
     });
-    day.classList.add("selected-day");
+
+    let date01, date02;
+    date01 = new Date(day.dataset['date']);
+    date02 = new Date(nextDate);
+
+    if(date01 >= date02) {
+      select_days_w2.forEach(day_grey => {
+        day_grey.classList.remove("selected-day");
+      });
+      day.classList.add("selected-day");
+    }
   })
 });
 
-const select_days_w2 = document.querySelectorAll('#week2 div')
 select_days_w2.forEach(day => {
   day.addEventListener("click", function (){
     let previousDate;
+
     select_days_w1.forEach(day => {
       if(day.classList.contains("selected-day")) {
         previousDate = day.dataset['date'];
