@@ -253,7 +253,7 @@ const logout_button = document.getElementById("logout").addEventListener("click"
 function otherUIStuff() {
   // Days left pana la tabara
   const date1 = new Date();
-  const date2 = new Date('7/30/2022');
+  const date2 = new Date('7/29/2023');
   const diffTime = Math.abs(date2 - date1);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   document.getElementById("days-left").innerHTML = diffDays.toString() + " zile";

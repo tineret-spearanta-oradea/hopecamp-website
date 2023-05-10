@@ -450,10 +450,15 @@ function validate_field(field) {
   }
 }
 
+onAuthStateChanged(auth, (user) => {
+  setupUI(user);
+});
+
 
 const setupUI = (user) => {
   if(user) {
     window.location.href= myAccountURL;
+    alert("Esti deja inscris! Apasa OK apoi LOGOUT daca vrei sa inscrii pe altcineva");
   } else {
     
   }

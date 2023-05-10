@@ -305,6 +305,8 @@ body {
 #inscrie-te-div {
     margin-top: 2rem;
     text-align: center;
+    position: relative;
+    z-index: 102;
 }
 #inscrie-te-div p {
     font-size: 12pt;
@@ -435,7 +437,7 @@ body {
 .see-more-div {
     margin-top: 2rem;
     text-align: center;
-    z-index: 12;
+    z-index: 102;
     position: relative;
     display: flex;
     justify-content: center;
