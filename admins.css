@@ -18,12 +18,12 @@ li {
 	--poppins: 'Poppins', sans-serif;
 	--lato: 'Lato', sans-serif;
 
-	--light: #535353;
-	--blue: #3C91E6;
+	--light: #2c3135;
+	--blue: #1ea3b0;
 	--light-blue: #CFE8FF;
-	--grey: #d3d0c3;
+	--grey: #6f806a;
 	--dark-grey: #cecece;
-	--dark: #f0f0f0;
+	--dark: #ffffff;
 	--dark2: rgb(159, 179, 216);
 	--red: #DB504A;
 	--yellow: #b49e55;
@@ -39,7 +39,7 @@ html {
 body.dark {
 	--light: #22222e;
 	--grey: #435569;
-	--dark: #d7ecda;
+	--dark: #ffffff;
 }
 
 body {
@@ -171,6 +171,8 @@ body {
 	width: calc(100% - 280px);
 	left: 280px;
 	transition: .3s ease;
+
+	border-radius: 9px;
 }
 #sidebar.hide ~ #content {
 	width: calc(100% - 60px);
@@ -327,7 +329,7 @@ body {
 /*stai o țâră */
 #messages-table > tbody > tr:hover,
 #table-body > tr:hover {
-	color: #000000;
+	color: #fff;
 }
   
 
@@ -484,10 +486,10 @@ tfoot input {
 	grid-gap: 16px;
 }
 #content main .head-title .left .breadcrumb li {
-	color: var(--dark);
+	color: white;
 }
 #content main .head-title .left .breadcrumb li a {
-	color: #4747479a;
+	color: white;
 	pointer-events: none;
 }
 #content main .head-title .left .breadcrumb li a.active {
@@ -497,7 +499,7 @@ tfoot input {
 #content main .head-title .btn-download {
 	height: 36px;
 	padding: 0 16px;
-	border-radius: 36px;
+	border-radius: 9px;
 	background: var(--blue);
 	color: var(--light);
 	display: flex;
@@ -579,10 +581,10 @@ tfoot input {
 }
 #logo {
 	margin-left: auto;
-	background-color: var(--grey);
-
+	/* background-color: var(--grey); */
+	filter: invert(1);
 	border-radius: 6px 0 0 6px;
-	box-shadow: 0px 1px 16px #d3d0c391;
+	/* box-shadow: 0px 1px 16px #d3d0c391; */
 
 }
 #logo img{
@@ -599,7 +601,7 @@ tfoot input {
 #content main .box-info li {
 	padding: 24px;
 	background: var(--light);
-	border-radius: 20px;
+	border-radius: 9px;
 	display: flex;
 	align-items: center;
 	grid-gap: 24px;
@@ -607,7 +609,7 @@ tfoot input {
 #content main .box-info li .bx {
 	width: 80px;
 	height: 80px;
-	border-radius: 10px;
+	border-radius: 5px;
 	font-size: 36px;
 	display: flex;
 	justify-content: center;
@@ -792,7 +794,9 @@ tfoot input {
 /* CONTENT */
 
 
-
+.inline-checkbox {
+	display: inline;
+}
 
 
 
@@ -976,7 +980,7 @@ tfoot input {
 	visibility: hidden;
 }
 .more-info-btn {
-	background-color: #747474;
+	background-color: #363e41;
 	border-radius: 2px;
 	cursor: pointer;
 }
@@ -1005,7 +1009,6 @@ tfoot input {
 }
 #messages-table > tbody > tr > td:nth-child(5) {
 	background-color: var(--grey);
-	color: #000000;
 	width: 20rem;
 }
 #messages-table > tbody > tr > td:nth-child(6) {
@@ -1025,12 +1028,11 @@ tfoot input {
 #loader {
   margin: 10rem auto 1rem auto;
   border: 10px solid #000000;
-  border-top: 10px solid #3C91E6; 
+  border-top: 10px solid #ffdb26; 
   border-radius: 50%;
   width: 50px;
   height: 50px;
   animation: spin 1s linear infinite;
-  box-shadow: 3px 1px 13px #d7d7d7;
 }
 #sidebar {
 	display: none;
@@ -1053,7 +1055,7 @@ tfoot input {
   line-height: 0.8;
 
   background-color: var(--grey);
-  color: var(--light);
+  color: rgb(255, 251, 33);
 }
 .week div div{
   display: inline-block;
@@ -1064,6 +1066,7 @@ tfoot input {
   height: 1rem;
   box-shadow: 0px 1px 8px #000000;
   line-height: 0.8;
+  font-family: var(--poppins);
 }
 .week p{
   display: inline;

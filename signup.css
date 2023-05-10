@@ -310,7 +310,7 @@ input:-webkit-autofill:active{
   border-radius: 3px;
   border-color: #0000000a;
   border-width: 1px;
-  /* border: none; */
+  border: none;
   outline: none;
   display: inline;
   padding-top:7px;
@@ -351,27 +351,26 @@ input:-webkit-autofill:active{
 }
 .multch { 
   margin-top: 0.5rem;
+  font-family: poppins-regular, sans-serif;
 }
 #loader {
   margin: 0.5rem auto 1rem auto;
   border: 10px solid #000000; /* Light grey */
-  border-top: 10px solid var(--color5); /* Blue */
+  border-top: 10px solid #ffdb26; /* Blue */
   border-radius: 50%;
   width: 50px;
   height: 50px;
   animation: spin 1s linear infinite;
-  box-shadow: 3px 1px 13px #d7d7d7;
   visibility: hidden;
 }
 #loader-1 {
   margin: 0.5rem auto 1rem auto;
   border: 10px solid #dbdbdb; /* Light grey */
-  border-top: 10px solid #6a6aaa; /* Blue */
+  border-top: 10px solid #ffdb26; /* Blue */
   border-radius: 50%;
   width: 50px;
   height: 50px;
   animation: spin 1s linear infinite;
-  box-shadow: 3px 1px 13px #1b1b1b;
   visibility: hidden;
 }
 
@@ -422,7 +421,6 @@ input:-webkit-autofill:active{
 }
 .selected-day{
   background: #1ea3b0;
-  background-image: url(./media/checkmark.svg);
 }
 
 #card-title > img {

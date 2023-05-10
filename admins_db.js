@@ -27,12 +27,12 @@ let USERid;
 
 let attendanceOngoing = false;
 let calendarDaysCounter = {
+  '2022/7/29': 0,
   '2022/7/30': 0,
   '2022/7/31': 0,
   '2022/8/1': 0,
   '2022/8/2': 0,
   '2022/8/3': 0,
-  '2022/8/4': 0,
 
 };
 
@@ -235,13 +235,13 @@ const handleData = (usersData) => {
           status = "pending";
         } else if(payedAmount<500 && payedAmount>0){
           status = "process";
-        } else if(payedAmount===500){
+        } else if(payedAmount >= 500){
           status = "completed";
         } 
         platit.innerHTML = `<span class="status ${status}">${payedAmount}</span>`;
         
-        // let telefon = row.insertCell(++num);
-        // telefon.innerHTML = user.phone;
+        let withFamily = row.insertCell(++num);
+        withFamily.innerHTML = user.with_family ? `<span class="user-confirmed">da</span>` : 'nu';
 
         let transport= row.insertCell(++num);
         transport.innerHTML = user.transport;
@@ -339,6 +339,7 @@ const handleData = (usersData) => {
                 <img src="${user.img_url}" alt="pfp" height="100rem" width="auto">
               `;
 
+                
             if(user.cazare_cu)
               popup_text += `<br>Cazare: ${user.cazare_cu}`;
             // popup_text.style.margin = "0 0 2rem 0";
@@ -420,11 +421,22 @@ const handleData = (usersData) => {
                 </label>
                 <input id="cazare-edit" class="inputs-edit" type="text" value="${user.cazare_cu}"/>
                 
+                <div style="display: inline">
+                <label class="edit-label" style="padding-top:0.81rem">
+                    Cu familie in tabara:
+                </label>
+                <input id="confirmat-edit" class="inputs-edit" type="checkbox" value="confirmat" 
+                ${ user.with_family ? 'checked' : '' }/>
+                </div>
+
+                <div style="display: inline">
                 <label class="edit-label" style="padding-top:0.81rem">
                     Confirmat:
                 </label>
                 <input id="confirmat-edit" class="inputs-edit" type="checkbox" value="confirmat" 
                 ${ user.is_confirmed ? 'checked' : '' }/>
+                </div>
+
               </form>`;
             
             popup_text.style.margin = "0 0 2rem 0";
@@ -571,7 +583,7 @@ const exportFromDb = document.querySelector("#btnExport").addEventListener("clic
 
 const exportData = (usersData) => {
   var csvContent = "DisplayId,Nume,Confirmat,Email,Telefon,Varsta,Biserica,Cui platesc," +
-  "Suma achitata,Transport,Preferinte cazare,Data in care vine,Data in care pleaca,URL catre poza";
+  "Suma achitata,Cu familie in tabara,Transport,Preferinte cazare,Data in care vine,Data in care pleaca,URL catre poza\n";
   Object.keys(usersData).forEach(uid => {
     let user = allUsersData[uid];
     csvContent += user.qr_id-200;
@@ -591,6 +603,8 @@ const exportData = (usersData) => {
     csvContent += user.cui_platesc;
     csvContent += ",";
     csvContent += user.payed;
+    csvContent += ",";
+    csvContent += user.with_family ? 'DA' : 'NU';
     csvContent += ",";
     csvContent += user.transport;
     csvContent += ",";

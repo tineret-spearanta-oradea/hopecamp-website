@@ -96,7 +96,7 @@ const handleData = (data) => {
 
   name.innerHTML = "Hello, " + data["name"];
 
-  if(data["is_confirmed"])  {
+  if(data["is_confirmed"] || data["admin"])  {
     var QR_CODE = new QRCode("qrcode", {
       text: data["qr_id"].toString(),
       width: 100,

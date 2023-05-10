@@ -52,12 +52,12 @@ window.addEventListener("orientationchange", function() {
 
 }, false);
 
-const select_days_w1 = document.querySelectorAll('#week1 div');
-const select_days_w2 = document.querySelectorAll('#week2 div');
+const select_days_w1 = document.querySelectorAll('#week1 div')
+const select_days_w2 = document.querySelectorAll('#week2 div')
 
 select_days_w1.forEach(day => {
   day.addEventListener("click", function (){
-    let nextDate;
+    var nextDate;
 
     select_days_w2.forEach(day => {
       if(day.classList.contains("selected-day")) {
@@ -69,19 +69,18 @@ select_days_w1.forEach(day => {
     date01 = new Date(day.dataset['date']);
     date02 = new Date(nextDate);
 
-    if(date01 >= date02) {
-      select_days_w2.forEach(day_grey => {
+    if(date01 <= date02) {
+      select_days_w1.forEach(day_grey => {
         day_grey.classList.remove("selected-day");
       });
-      day.classList.add("selected-day");
+        day.classList.add("selected-day");
     }
   })
 });
 
 select_days_w2.forEach(day => {
   day.addEventListener("click", function (){
-    let previousDate;
-
+    var previousDate;
     select_days_w1.forEach(day => {
       if(day.classList.contains("selected-day")) {
         previousDate = day.dataset['date'];
@@ -326,13 +325,12 @@ const pushToDatabaseAndSetupUI = (user) => {
   var name = document.getElementById("name").value;
   var age = document.getElementById("age").value;
   var phone = document.getElementById("phone").value;
-  let church = document.querySelector('input[name="church_choice"]:checked').value;
+  var church = document.querySelector('input[name="church_choice"]:checked').value;
   if(church==="Alta"){
     church = document.getElementById("other-church").value;
   }
   let pay = document.querySelector('input[name="pay_choice"]:checked').value;   
   let transport = document.querySelector('input[name="transport_choice"]:checked').value;  
-  let isChecked = false;
 
   // let start_date = document.getElementById("start-date").value;
   // let end_date = document.getElementById("end-date").value;
@@ -394,6 +392,7 @@ const pushToDatabaseAndSetupUI = (user) => {
           img_url: pfpURL,
           date_of_signup: nowString,
           is_confirmed: false,
+          with_family: false,
         };
 
         set(ref(database, 'users/' + user.uid), user_data)
