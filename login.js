@@ -73,9 +73,9 @@ var resetpass_button = document.getElementById("forgot-pass").addEventListener("
   window.location.href = forgotPassURL;
 });
 
-const homepage_btn = document.querySelector("#card-title h2").addEventListener("click", function (){ 
-  window.location.href = indexURL;
-});
+// const homepage_btn = document.querySelector("#card-title h2").addEventListener("click", function (){ 
+//   window.location.href = indexURL;
+// });
 
 const togglePassword = document.querySelector('#togglePassword').addEventListener('click', function () {
   const password = document.querySelector('#password');

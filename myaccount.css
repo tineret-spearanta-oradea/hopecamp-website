@@ -1,23 +1,18 @@
 :root {
-  /* --primary: #202336; /*sau: #336fa3*
-  --secondary: #106fcf;
-  --third: #c272a0; */
-  --white: #fbfbfb;
-  --cardbg: #3f3f3f;
-  --gray: #949494;
-
-
-  --color1: #b69e4d;
+  --color1: #1ea3b0;
   --color2: #9e5a00;
   --color3: #463015;
   --color4: #386329;
   --color5: #323a4a;
-}
 
+  --cardbg: #3f3f3f;
+  --text: #000;
+  --gray: #949494;
+}
 
 body {
   /* background: -webkit-linear-gradient(bottom, var(--white), var(--primary)); */
-  background: url(./media/portal_bg.jpg);
+  background: url(./media/portal_bg1.png);
   background-color: var(--color5);
 
   background-attachment: fixed;
@@ -27,13 +22,15 @@ body {
   
   opacity: 0;
   transition: opacity 0.25s;
+
+  font-family: poppins-regular, twcen, sans-serif;
 }
 label {
-  font-family: "Raleway", sans-serif;
+  /* font-family: "Raleway", sans-serif; */
   font-size: 11pt;
 }
 p {
-  font-family: poppins-regular, sans-serif;
+  /* font-family: poppins-regular, sans-serif; */
 }
 h4 {
   font-size: 20pt;
@@ -45,11 +42,12 @@ textarea {
 
 .list {
   font-size: 10pt;
-  font-family: poppins-regular, sans-serif;
+  /* font-family: poppins-regular, sans-serif; */
 }
 #card {
-  background: var(--color5);
-  color: var(--white);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(4px);
+  color: var(--text);
 
   border-radius: 8px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
@@ -68,7 +66,7 @@ textarea {
   margin-bottom: 0;
 }
 #card-content {
-  font-family: "Raleway Thin", sans-serif;
+  /* font-family: "Raleway Thin", sans-serif; */
   padding: 12px 44px;
 
   /* opacity: 0;
@@ -76,14 +74,14 @@ textarea {
    */
 }
 #card-title {
-  font-family: poppins-regular, sans-serif;
+  /* font-family: poppins-regular, sans-serif; */
   letter-spacing: 0.25rem;
   padding-bottom: 1.43rem;
   padding-top: 2.18rem;
   text-align: center;
 }
 #card-subtitle {
-  font-family: "Raleway Thin", sans-serif;
+  /* font-family: "Raleway Thin", sans-serif; */
   letter-spacing: 1px;
   padding-bottom: 23px;
   padding-top: 13px;
@@ -93,7 +91,7 @@ textarea {
   margin-top: 0.5rem;
 }
 #initial-loading-msg {
-  font-family: roboto-light, sans-serif;
+  /* font-family: roboto-light, sans-serif; */
   font-size: 10pt;
   margin-top: 2rem;
   margin-bottom: 3rem;
@@ -116,7 +114,7 @@ textarea {
 #expand-data {
   cursor: pointer;
   color:rgba(27, 46, 133, 0.76);
-  font-family: poppins-regular, sans-serif;
+  /* font-family: poppins-regular, sans-serif; */
   font-size: 11pt;
 }
 #pfp {
@@ -124,7 +122,7 @@ textarea {
   height: 50%;
 }
 #report-bug {
-  font-family: poppins-regular, sans-serif;
+  /* font-family: poppins-regular, sans-serif; */
   font-size: 9pt;
   color: rgb(106, 106, 106);
   text-align: center;
@@ -136,20 +134,25 @@ textarea {
 #logout {
   float: left;
   /* background-color: #e6e6e6; */
-  background: -webkit-linear-gradient(left,#707070, #00000000);
+  background: -webkit-linear-gradient(right, #413e3e00, #083e0736);
   border-radius: 8px;
+  color: #000;
+    font-family: poppins-regular, sans-serif;
 }
 #about-us {
   float: right;
-   /* background-color: #e6e6e6; */
-  background: -webkit-linear-gradient(right,#707070, #00000000);
-
-
+  /* background-color: #e6e6e6; */
+  background: -webkit-linear-gradient(right, #083e0736, #413e3e00);
+  position: absolute;
+  right: 20px;
   border-radius: 8px;
+  color: #000;
+  font-family: poppins-regular, sans-serif;
 }
 #hello {
   color: #caba9a;
-  font-family: poppins-regular;
+  font-family: freigeist-bold, sans-serif;
+  /* text-transform: uppercase; */
   font-size: 15pt;
   margin-top: 0.5rem;
   margin-bottom: 1rem;
@@ -161,14 +164,14 @@ textarea {
   box-shadow: 0px 1px 8px #000000;
   cursor: pointer;
   color: rgb(255, 255, 255);
-  font-family: poppins-regular;
+  font-family: freigeist-bold, sans-serif;
   letter-spacing: 1px;
   margin: 0 auto;
   margin-top: 0px;
   margin-bottom: 0px;
   transition: 0.25s;
   height: 2.5em;
-  width: 15em;
+  width: 18em;
   display: none;
   justify-content:center;
 }
@@ -212,7 +215,7 @@ textarea {
   border: none;
   outline: none;
   border-radius: 4px;
-  font-family: roboto-light;
+  /* font-family: roboto-light; */
   font-size: 0.9em !important; 
 }
 #trimite-btn {
@@ -226,8 +229,8 @@ textarea {
   border: none;
   border-radius: 7px;
   cursor: pointer;
-  color: var(--color3);
-  font-family: poppins-regular, sans-serif;
+  color: var(--text);
+  font-family: freigeist-regular, sans-serif;
   letter-spacing: 0px;
   margin: 0 auto;
   margin-top: 15px;
@@ -249,7 +252,7 @@ textarea {
 #info-expand-data {
   margin-top: 2.5rem;
   font-size: 11pt;
-  font-family: poppins-regular, sans-serif;
+  /* font-family: poppins-regular, sans-serif; */
   margin-bottom: 2rem;
 }
 
@@ -258,7 +261,7 @@ textarea {
   margin-bottom: 17px;
   color: #ffffff;
   border: 0px;
-  font-family: poppins-regular, sans-serif;
+  /* font-family: poppins-regular, sans-serif; */
   font-size: 10pt;
   cursor: pointer;
 }
@@ -282,11 +285,11 @@ textarea {
 
 #trigger_popup {
   cursor: pointer;
-  color:#c0caf4c2;
-  font-family: poppins-regular, sans-serif;
+  color:#3d3d3dc2;
+  /* font-family: poppins-regular, sans-serif; */
   font-size: 11pt;
   border-radius: 10px;
-  background-color: #0000006d;
+  background-color: #ffffffec;
   padding: 2%;
   box-shadow: 1px 1px 7px #0000009a;
 }
@@ -326,7 +329,7 @@ textarea {
   border-radius: 50px;
   cursor: pointer;
   display: inline-block;
-  font-family: arial;
+  /* font-family: arial; */
   font-weight: bold;
   position: absolute;
   top: -20px;
@@ -341,6 +344,10 @@ textarea {
   background-color: #ccc;
 }
 
+#card-title {
+  font-family: freigeist-bold;
+}
+
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
@@ -350,11 +357,38 @@ textarea {
   font-family: poppins-regular;
   src: url(fonts/Poppins-Regular.ttf);
 }
+
 @font-face {
   font-family: poppins-bold;
-  src: url(fonts/Poppins-Bold.ttf);
+  src: url(fonts/Poppins-Regular.ttf);
 }
+
 @font-face {
-  font-family: roboto-light;
-  src: url(fonts/RobotoMono-Light.ttf);
+  font-family: twcen;
+  src: url(./fonts/TwCenClassMTStd-Regular.otf);
+}
+
+@font-face {
+  font-family: freigeist-light;
+  src: url(./fonts/freigeist/FreigeistXWide-Light.ttf);
+}
+
+@font-face {
+  font-family: freigeist-regular;
+  src: url(./fonts/freigeist/FreigeistXWide-Regular.ttf);
+}
+
+@font-face {
+  font-family: freigeist-bold;
+  src: url(./fonts/freigeist/FreigeistXWide-Bold.ttf);
+}
+
+@font-face {
+  font-family: freigeist-black;
+  src: url(./fonts/freigeist/FreigeistXWide-Black.ttf);
+}
+
+@font-face {
+  font-family: montana;
+  src: url(./fonts/south-montana/South\ Montana\ Regular.ttf);
 }

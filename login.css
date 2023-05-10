@@ -1,13 +1,13 @@
 :root {
-  --color1: #b69e4d;
+  --color1: #1ea3b0;
   --color2: #9e5a00;
   --color3: #463015;
   --color4: #386329;
   --color5: #323a4a;
 
-  /* dark blue #38404d */
   --cardbg: #3f3f3f;
-  --white: #ebebeb;
+  --text: #000;
+  --gray: #949494;
 }
 
 a {
@@ -15,7 +15,7 @@ a {
 }
 body {
   /* background: -webkit-linear-gradient(bottom, var(--white), var(--primary)); */
-  background: url(./media/portal_bg.jpg);
+  background: url(./media/portal_bg1.png);
   background-color: var(--color5);
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -28,9 +28,11 @@ body {
   background-size: cover;
   margin: 100px auto 100px auto;
 
+  font-family: poppins-regular, twcen, sans-serif;
+  color: black;
 }
 label {
-  font-family: jakarta, sans-serif;
+  font-family: freigeist-regular, sans-serif;
   font-size: 11pt;
 }
 input.form-content {
@@ -39,10 +41,10 @@ input.form-content {
 }
 /* Change the white to any color */
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active{
-  -webkit-box-shadow: 0 0 0 30px var(--color5) inset !important;
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #e4e7b3 inset !important;
   -webkit-text-fill-color: var(--white) !important;
 }
 form i {
@@ -57,27 +59,25 @@ form i {
 
 #forgot-pass {
   color: var(--white);
-  font-family: poppins-regular, sans-serif;
+  /* font-family: poppins-regular, sans-serif; */
   font-size: 8pt;
   margin-top: 3px;
   margin-left: 200px;
   text-align: right;
 }
 #about-us {
-  color: #ffffffbb;
-  background: -webkit-linear-gradient(right,#707070, #00000000);
-  border-radius: 8px;
-
-  font-family: poppins-regular, sans-serif;
-  font-size: 10pt;
-  cursor: pointer;
   float: right;
-  margin-top: 19px;
-  padding: 4px;
+  color: black;
+  /* background-color: #e6e6e6; */
+  background: -webkit-linear-gradient(right, #083e0736, #413e3e00);
+  position: absolute;
+  right: 20px;
+  border-radius: 8px;
 }
 
 #card {
-  background: var(--color5);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(4px);
   border-radius: 8px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
   height: auto;
@@ -99,14 +99,14 @@ form i {
   transition: opacity 0.5s;
 }
 #card-title {
-  font-family: poppins-regular, sans-serif;
+  /* font-family: poppins-regular, sans-serif; */
   letter-spacing: 0.25rem;
   padding-bottom: 1.43rem;
   padding-top: 4rem;
   text-align: center;
 }
 #card-subtitle {
-  font-family: poppins-regular, sans-serif;
+  /* font-family: poppins-regular, sans-serif; */
   letter-spacing: 0px;
   font-size: 11pt;
   padding-top: 1px;
@@ -125,7 +125,7 @@ form i {
 }
 #announce {
   color: #790000;
-  font-family: poppins-regular, sans-serif;
+  /* font-family: poppins-regular, sans-serif; */
   font-size: 11pt;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
@@ -134,7 +134,7 @@ form i {
   
 }
 #report-bug {
-  font-family: poppins-regular, sans-serif;
+  /* font-family: poppins-regular, sans-serif; */
   font-size: 9pt;
   color: rgb(106, 106, 106);
   text-align: center;
@@ -145,7 +145,7 @@ form i {
 }
 #signup {
   color: var(--white);
-  font-family: poppins-regular, sans-serif;
+  /* font-family: poppins-regular, sans-serif; */
   font-size: 10pt;
   margin-top: 3rem;
   text-align: center;
@@ -175,7 +175,7 @@ form i {
   box-shadow: 0px 1px 8px #141414;
   cursor: pointer;
   color: var(--white);
-  font-family: poppins-regular, sans-serif;
+  font-family: freigeist-bold, sans-serif;
   letter-spacing: 1px;
   height: 42.3px;
   margin: 0 auto;
@@ -201,7 +201,7 @@ form i {
   box-shadow: 0px 1px 8px #000000;
   cursor: pointer;
   color: var(--white);
-  font-family: poppins-regular, sans-serif;
+  font-family: freigeist-bold, sans-serif;
   height: 42.3px;
   letter-spacing: 1px;
   margin: 0 auto 4rem auto;
@@ -224,7 +224,18 @@ form i {
   /* visibility: hidden; */
   display: none;
 }
-
+.underline-title {
+  background: -webkit-linear-gradient(left, #e9c8a200, var(--color1), #e9c8a200);
+  height: 0.2rem;
+  margin: -1.1rem auto 0 auto;
+  width: 14rem;
+  /* border-radius: 10px; */
+}
+#card-title>img {
+  width: 60%;
+  height: 70px;
+  margin: 0 auto;
+}
 .form {
   align-items: left;
   display: flex;
@@ -243,7 +254,7 @@ form i {
   border-radius: 3px;
   border-color: #0000000a;
   border-width: 1px;
-  /* border: none; */
+  border: none;
   outline: none;
   display: inline;
   padding-top:7px;
@@ -254,7 +265,7 @@ form i {
 
   /* background-color: #ffbb19; */
   height: 0.2rem;
-  margin: -1.1rem auto 0rem auto;
+  margin: -1rem auto 0rem auto;
   width: 10rem;
   /* border-radius: 20px; */
 }
@@ -271,6 +282,46 @@ form i {
 @font-face {
   font-family: jakarta;
   src: url(fonts/PlusJakartaSans-Regular.ttf);
+}
+
+@font-face {
+  font-family: poppins-regular;
+  src: url(fonts/Poppins-Regular.ttf);
+}
+
+@font-face {
+  font-family: poppins-bold;
+  src: url(fonts/Poppins-Regular.ttf);
+}
+
+@font-face {
+  font-family: twcen;
+  src: url(./fonts/TwCenClassMTStd-Regular.otf);
+}
+
+@font-face {
+  font-family: freigeist-light;
+  src: url(./fonts/freigeist/FreigeistXWide-Light.ttf);
+}
+
+@font-face {
+  font-family: freigeist-regular;
+  src: url(./fonts/freigeist/FreigeistXWide-Regular.ttf);
+}
+
+@font-face {
+  font-family: freigeist-bold;
+  src: url(./fonts/freigeist/FreigeistXWide-Bold.ttf);
+}
+
+@font-face {
+  font-family: freigeist-black;
+  src: url(./fonts/freigeist/FreigeistXWide-Black.ttf);
+}
+
+@font-face {
+  font-family: montana;
+  src: url(./fonts/south-montana/South\ Montana\ Regular.ttf);
 }
 
 /* NAVBAR *

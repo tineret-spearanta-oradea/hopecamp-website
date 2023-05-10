@@ -15,7 +15,7 @@ a {
 }
 body {
   /* background: -webkit-linear-gradient(bottom, var(--white), var(--primary)); */
-  background: url(./media/portal_bg.jpg);
+  /* background: url(./media/portal_bg.jpg); */
   background: url(./media/portal_bg1.png);
   background-color: var(--color5);
   background-repeat: no-repeat;
