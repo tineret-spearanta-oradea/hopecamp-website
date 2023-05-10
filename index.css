@@ -37,12 +37,13 @@ body {
 /* #region navbar */
 
 .navbar {
+    position: fixed;
+    top: 0;
     overflow: hidden;
     background-color: var(--secondcolor);
     width: 100%;
-    z-index: 9;
-    /* position: fixed; */
     background-color: #fbf3dc;
+    z-index: 101;
 }
 
 .navbar a {
@@ -77,12 +78,12 @@ body {
     margin: 10px;
 }
 .popup-nav {
+    position: fixed;
     display: flex;
     -webkit-backdrop-filter: blur(3px);
     backdrop-filter: blur(4px);
     /* background-color: rgba(206, 203, 178, 0.945); */
     background-color: #fbf3dcd7;
-    position: absolute;
     justify-content: center;
     width: 100%;
     z-index: 100;
@@ -354,6 +355,7 @@ body {
     transform: translateX(-50%);
     z-index: 10;
     top: 200px;
+    margin-top: 130px;
 }
 .section-gallery-desktop {
     width: 100%;
@@ -402,19 +404,34 @@ body {
 @media only screen and (max-width: 768px) {
     .trees {
         top: 600px;
+        margin-top: 85px;
     }
     .divider-pattern {
+        margin-top: 25px;
         top: 700px;
     }
 }
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 520px) {
     .trees {
         top: 500px;
     }.divider-pattern {
         top: 550px;
     }
 }
+@media only screen and (max-width: 370px) {
+    .trees {
+        top: 450px;
+    }
 
+    .divider-pattern {
+        top: 500px;
+    }
+}
+@media only screen and (max-width: 320px) {
+    .divider-pattern {
+            top: 470px;
+        }
+}
 .see-more-div {
     margin-top: 2rem;
     text-align: center;
@@ -468,6 +485,7 @@ body {
     width: 100%;
     position: absolute;
     /* top: 500px; */
+    margin-top: 130px;
 }
 .divider-pattern img{
     width: 100%;
@@ -675,6 +693,54 @@ body {
 /* #endregion footer */
 
 
+/* #region countdown */
+
+.countdown
+{
+    margin-top:50px;
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    background-color: #fbf3dc;
+}
+
+.countdown ul {
+    margin:0;
+    padding:0;
+}
+
+.countdown li {
+    display: inline-block;
+    font-size: 0.7em;
+    padding:20px;
+    list-style-type: none;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+.countdown li span {
+    display: block;
+    font-size: 3.5rem;
+  }
+
+  @media all and (max-width: 768px) {
+    .countdown li {
+        font-size: 1rem;
+        }
+
+    .countdown li span {
+        font-size: 1.8rem;
+        }
+    }
+  @media all and (max-width: 400px) {
+    .countdown li {
+            font-size: 0.4rem;
+        }
+  }
+/* #endregion countdown */
+
+
 /* #region random */
 .pbold {
     font-family: freigeist-bold, sans-serif;
@@ -714,5 +780,24 @@ body {
         height: 200px;
     }
 }
+@media only screen and (max-width: 768px) {
+    .hero-left>.container {
+        text-align: center;
+    }
 
+    #inscrie-te-div {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 30px;
+    }
+
+    .section-text {
+        font-size: 10pt;
+    }
+
+    .video-promo>iframe {
+        width: 90%;
+        height: 240px;
+    }
+}
 /* #endregion random */

@@ -270,11 +270,11 @@ const continue_button = document.getElementById("continue-btn").addEventListener
     let diffTime = Math.abs(date2 - date1);
     let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    if(diffDays===5) {
-      document.querySelector("#taxa-inscriere-suma").innerHTML = `500 lei.`;
-    } else {
-      document.querySelector("#taxa-inscriere-suma").innerHTML = `${(diffDays*120)} lei.`;
-    }
+    // if(diffDays===5) {
+    //   document.querySelector("#taxa-inscriere-suma").innerHTML = `500 lei.`;
+    // } else {
+    //   document.querySelector("#taxa-inscriere-suma").innerHTML = `${(diffDays*120)} lei.`;
+    // }
 
     
     if(age<18) {
