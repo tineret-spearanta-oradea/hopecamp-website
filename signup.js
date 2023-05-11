@@ -309,7 +309,27 @@ onAuthStateChanged(auth, (user) => {
   if(user) {
     //  window.location.href = myAccountURL;
     console.log("logged in");
-    pushToDatabaseAndSetupUI(user); // here it goes the setupUI
+
+    console.log(user.metadata.creationTime);
+    console.log(user.auth);
+    var accountCreationTime = new Date(user.metadata.creationTime);
+
+    var timeStamp = Math.round(new Date().getTime() / 1000);
+    var timeStampSomeTimeAgo = timeStamp - (3600);
+    var timeSomeTimeAgo= new Date(timeStampSomeTimeAgo*1000).getTime();
+
+    if(accountCreationTime.getTime() > timeSomeTimeAgo ) {
+      try {
+        pushToDatabaseAndSetupUI(user); // here it goes the setupUI
+      }
+      catch (error) {
+        console.error("Ceva nu a functionat cum trebuie. Daca eroarea insisnta, te rugam ia legatura cu noi prin datele de contact de pe prima pagina, https://www.hopecamp.ro/#contact ");
+        window.location.href = myAccountURL;
+      }
+    } else {
+      setupUI(user);
+    }
+
   } else {
     console.log("NOT logged in.");
     //  window.location.href = myAccountURL;
@@ -455,10 +475,10 @@ onAuthStateChanged(auth, (user) => {
   var accountCreationTime = new Date(user.metadata.creationTime);
 
   var timeStamp = Math.round(new Date().getTime() / 1000);
-  var timeStampThreeHousrAgo = timeStamp - (3 * 3600);
-  var timeThreeHoursAgo = new Date(timeStampThreeHousrAgo*1000).getTime();
+  var timeStampSomeTimeAgo = timeStamp - (3 * 3600);
+  var timeSomeTimeAgo= new Date(timeStampSomeTimeAgo*1000).getTime();
 
-  if(accountCreationTime.getTime() > timeThreeHoursAgo ) {
+  if(accountCreationTime.getTime() > timeSomeTimeAgo ) {
     //alert("less than one hour ago");
   } else {
     setupUI(user);
