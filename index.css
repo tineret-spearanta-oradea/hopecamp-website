@@ -729,6 +729,7 @@ body {
   @media all and (max-width: 768px) {
     .countdown li {
         font-size: 1rem;
+        padding: 8px;
         }
 
     .countdown li span {
