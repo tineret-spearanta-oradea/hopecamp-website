@@ -2,12 +2,14 @@ const popup = document.querySelector(".popup-nav");
 const navigation = document.querySelector(".navigation");
 const navbtn = document.querySelector(".burger-menu").addEventListener("click", function() {
     if(popup.style.opacity == "0") {
-        popup.style.display = "flex";
+        // popup.style.display = "flex";
+        popup.style.visibility = "visible";
         popup.style.opacity = "1";
         // popup.style.top = "70px";
         // navigation.style.backgroundColor = "rgb(66, 75, 84)";
     } else {
-        popup.style.display = "none";
+        // popup.style.display = "none";
+        popup.style.visibility = "hidden";
         popup.style.opacity = "0";
         // popup.style.top = "-1000px";
         // navigation.style.backgroundColor = "rgba(0, 0, 0, 0)";
@@ -39,9 +41,12 @@ for (i = 0; i < acc.length; i++) {
     this.classList.toggle("active");
     var panel = this.nextElementSibling;
     if (panel.style.display === "block") {
-      panel.style.display = "none";
+      // panel.style.display = "none";
+      popup.style.visibility = "hidden";
     } else {
-      panel.style.display = "block";
+      // panel.style.display = "block";
+      popup.style.visibility = "visile";
+
     }
   });
 }

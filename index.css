@@ -79,7 +79,8 @@ body {
 }
 .popup-nav {
     position: fixed;
-    display: flex;
+    /* display: flex; */
+    visibility: hidden;
     -webkit-backdrop-filter: blur(3px);
     backdrop-filter: blur(4px);
     /* background-color: rgba(206, 203, 178, 0.945); */
@@ -88,7 +89,7 @@ body {
     width: 100%;
     z-index: 100;
     opacity: 0;
-    transition: .2s ease;
+    transition: .5s ease;
 }
 
 .popup-nav ul {
