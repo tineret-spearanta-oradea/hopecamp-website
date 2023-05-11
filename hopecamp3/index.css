@@ -644,9 +644,10 @@ font-size: 11pt;
 	height: 2rem;
 	text-indent: 10px ;
 	border-width: 0px;
-	border-radius: 16px;
+	border-radius: 1px;
 	background-color: #ffffff;
   font-size: 1em !important; 
+  margin: 10px;
 }
 
 

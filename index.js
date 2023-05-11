@@ -41,14 +41,37 @@ for (i = 0; i < acc.length; i++) {
     this.classList.toggle("active");
     var panel = this.nextElementSibling;
     if (panel.style.display === "block") {
-      // panel.style.display = "none";
-      popup.style.visibility = "hidden";
+      panel.style.display = "none";
+      // popup.style.visibility = "hidden";
     } else {
-      // panel.style.display = "block";
-      popup.style.visibility = "visile";
+      panel.style.display = "block";
+      // popup.style.visibility = "visile";
 
     }
   });
+}
+
+
+function searchFunction() {
+  var input, filter, ul, li, a, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  ul = document.querySelector(".questions-container");
+  li = document.querySelectorAll(".panel");
+  accordion = document.querySelectorAll(".accordion");
+  for (i = 0; i < li.length; i++) {
+      a = li[i].getElementsByTagName("p")[0];
+      acc = accordion[i];
+      txtValue = acc.innerText || a.innerText;
+      if (acc.innerText.toUpperCase().indexOf(filter) > -1 || a.innerText.toUpperCase().indexOf(filter) > -1 ) {
+          li[i].style.display = "";
+          acc.style.display = "";
+
+      } else {
+          li[i].style.display = "none";
+          acc.style.display = "none";
+      }
+  }
 }
 
 

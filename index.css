@@ -769,6 +769,18 @@ body {
     width: 100%;
     object-fit: cover;
 }
+.questions-container input {
+    font-family: poppins-regular, sans-serif;
+	width: 20em;
+	height: 2rem;
+	text-indent: 10px ;
+	border-width: 0px;
+	border-radius: 4px;
+	background-color: #ecdda5;
+    font-size: 1em !important; 
+    margin: 10px 0;
+
+}
 @media only screen and (max-width: 1580px) {
     .locatie-img,
     .locatie-img img {
