@@ -1087,7 +1087,9 @@ tfoot input {
   background: #41708a;
 }
 
-
+.user-email {
+	font-size: 8pt;
+}
 @font-face {
   font-family: poppins-regular;
   src: url(fonts/Poppins-Regular.ttf);
