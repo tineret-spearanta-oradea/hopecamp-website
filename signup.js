@@ -451,14 +451,26 @@ function validate_field(field) {
 }
 
 onAuthStateChanged(auth, (user) => {
-  setupUI(user);
+  console.log(user.metadata.creationTime);
+  var accountCreationTime = new Date(user.metadata.creationTime);
+
+  var timeStamp = Math.round(new Date().getTime() / 1000);
+  var timeStampThreeHousrAgo = timeStamp - (3 * 3600);
+  var timeThreeHoursAgo = new Date(timeStampThreeHousrAgo*1000).getTime();
+
+  if(accountCreationTime.getTime() > timeThreeHoursAgo ) {
+    //alert("less than one hour ago");
+  } else {
+    setupUI(user);
+  }
+  
 });
 
 
 const setupUI = (user) => {
   if(user) {
     window.location.href= myAccountURL;
-    alert("Esti deja inscris! Apasa OK apoi LOGOUT daca vrei sa inscrii pe altcineva");
+    // alert("Esti deja inscris! Apasa OK apoi LOGOUT daca vrei sa inscrii pe altcineva");
   } else {
     
   }

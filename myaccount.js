@@ -166,6 +166,14 @@ const setupUI = (user) => {
       if (snapshot.exists()) {
         handleData(snapshot.val());
       } else {
+        document.querySelector('.hover_bg').style.display = 'block';
+        document.querySelector('.helper-content').innerHTML = 
+          `<p>Ceva nu a functionat cum trebuie. <br> Te rugam ia legatura cu noi prin datele de contact de pe  
+          <a href="https://www.hopecamp.ro/#contact">
+           prima pagina!
+          </a>
+          </p>`
+        // alert("Ceva nu a functionat cum trebuie. Te rugam ia legatura cu noi prin datele de contact de pe prima pagina, www.hopecamp.ro");
         console.log("No data available");
       }
     })
