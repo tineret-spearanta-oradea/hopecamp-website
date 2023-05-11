@@ -125,3 +125,33 @@ function searchFunction() {
       //seconds
     }, 0);
 })();
+
+
+
+/// REVEAL
+
+// document.querySelector("#inscrie-te-div").classList.add("active-scroll");
+// document.querySelector("#cand").classList.add("active-scroll");
+// document.querySelector("#unde").classList.add("active-scroll");
+// document.querySelector("#value-prop").classList.add("active-scroll");
+
+
+
+function reveal() {
+    var reveals = document.querySelectorAll(".reveal");
+    for (var i = 0; i < reveals.length; i++) {
+        var windowHeight = window.innerHeight;
+        var elementTop = reveals[i].getBoundingClientRect().top;
+        var elementVisible = 150;
+        if (elementTop < windowHeight - elementVisible) {
+            reveals[i].classList.add("active-scroll");
+        } 
+        // else {
+        //     reveals[i].classList.remove("active-scroll");
+        // }
+    }
+}
+window.addEventListener("scroll", reveal);
+
+// To check the scroll position on page load
+reveal();
