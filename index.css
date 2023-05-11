@@ -730,16 +730,17 @@ body {
     .countdown li {
         font-size: 1rem;
         padding: 8px;
-        }
+    }
 
     .countdown li span {
         font-size: 1.8rem;
-        }
+    }
     }
   @media all and (max-width: 400px) {
     .countdown li {
-            font-size: 0.4rem;
-        }
+        font-size: 0.5rem;
+        padding: 4px;
+    }
   }
 /* #endregion countdown */
 
