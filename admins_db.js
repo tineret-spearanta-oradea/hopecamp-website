@@ -216,8 +216,8 @@ const handleData = (usersData) => {
         } 
         zile.innerHTML = `<span class="status ${status}">${daysAmount}</span>`;
 
-        // let email = row.insertCell(++num);
-        // email.innerHTML = `<span class="user-email">${user.email}</span>`;
+        let email = row.insertCell(++num);
+        email.innerHTML = `<span class="user-email">${user.email}</span>`;
 
         let biserica = row.insertCell(++num);
         biserica.innerHTML = user.church;
