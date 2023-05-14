@@ -312,6 +312,7 @@ const handleData = (usersData) => {
         let row = btn.parentElement.parentElement;
         // let uemail = row.querySelector(".user-email").innerHTML;
         let displayedId = row.querySelector(".user-displayed-id").innerHTML;
+        console.log(displayedId);
         Object.keys(allUsersData).forEach(uid => {
           let user = allUsersData[uid];
 
@@ -371,7 +372,10 @@ const handleData = (usersData) => {
 
         Object.keys(allUsersData).forEach(uid => {
           let user = allUsersData[uid];
+
           if(user.qr_id - 200  == displayedId) {
+            console.log(user.qr_id);
+
             document.querySelector('.hover_bg').style.display = 'block';
 
             document.querySelector('.popup-title').innerHTML = `${user.name} - EDIT`;
@@ -425,7 +429,7 @@ const handleData = (usersData) => {
                 <label class="edit-label" style="padding-top:0.81rem">
                     Cu familie in tabara:
                 </label>
-                <input id="confirmat-edit" class="inputs-edit" type="checkbox" value="confirmat" 
+                <input id="with-family-edit" class="inputs-edit" type="checkbox" value="confirmat" 
                 ${ user.with_family ? 'checked' : '' }/>
                 </div>
 
@@ -459,6 +463,7 @@ const handleData = (usersData) => {
               let transportUpdate = document.querySelector("#transport-edit").value;
               let cazareUpdate = document.querySelector("#cazare-edit").value;
               let isConfirmed = document.querySelector("#confirmat-edit").checked;
+              let withFamily = document.querySelector("#with-family-edit").checked;
 
               let data_to_update = {
                 phone: phoneUpdate,
@@ -467,6 +472,7 @@ const handleData = (usersData) => {
                 transport: transportUpdate,
                 cazare_cu: cazareUpdate,
                 is_confirmed:  isConfirmed,
+                with_family: withFamily,
               };
               //TODO: send email
               update(ref(database, `users/${uid}`), data_to_update).then(function(){
