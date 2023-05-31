@@ -455,7 +455,7 @@ const handleData = (usersData) => {
             document.querySelector("#yes-delete").style.display = 'none';
             document.querySelector("#no-delete").style.display = 'none';
 
-
+            
             const save_edits = document.getElementById("save-edits").addEventListener("click", function (){ 
               let phoneUpdate = document.querySelector("#phone-edit").value;
               let cuiAchitUpdate = document.querySelector("#cui-platesc-edit").value;
@@ -465,6 +465,7 @@ const handleData = (usersData) => {
               let isConfirmed = document.querySelector("#confirmat-edit").checked;
               let withFamily = document.querySelector("#with-family-edit").checked;
 
+              // console.log(uid, user.qr_id - 200, displayedId);
               let data_to_update = {
                 phone: phoneUpdate,
                 cui_platesc: cuiAchitUpdate,

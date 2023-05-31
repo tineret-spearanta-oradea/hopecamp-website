@@ -86,17 +86,23 @@ document.querySelector(".hover_bg>div").addEventListener("mouseleave", function 
 document.querySelector('.hover_bg').addEventListener("mousedown", function(){
   if(!isMouseOverHover) {
     document.querySelector('.hover_bg').style.display = 'none';
+    const save_edits = document.getElementById("save-edits");
+    save_edits.replaceWith(save_edits.cloneNode(true));
   }
 });
 
 document.querySelector('.popupCloseButton').addEventListener("click", function(){
     document.querySelector('.hover_bg').style.display = 'none';
+    const save_edits = document.getElementById("save-edits");
+    save_edits.replaceWith(save_edits.cloneNode(true));
 });
 
 const popup_btns = document.querySelectorAll('.popup-btn')
 popup_btns.forEach(btn=> {
   btn.addEventListener("click", function(){
       document.querySelector('.hover_bg').style.display = 'none';
+      const save_edits = document.getElementById("save-edits");
+      save_edits.replaceWith(save_edits.cloneNode(true));
   });
 });
 // document.querySelector('#add-admin-submit').addEventListener("click", function(){
