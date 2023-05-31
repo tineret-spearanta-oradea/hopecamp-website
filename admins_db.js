@@ -617,7 +617,8 @@ const exportData = (usersData) => {
     csvContent += ",";
     csvContent += user.transport;
     csvContent += ",";
-    csvContent += user.cazare_cu;
+    let replacedCazareCu = user.cazare_cu.replace(/,/g, ';');
+    csvContent += replacedCazareCu;
     csvContent += ",";
     csvContent += user.start_date;
     csvContent += ",";
