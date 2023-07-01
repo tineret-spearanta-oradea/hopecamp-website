@@ -607,7 +607,8 @@ const exportData = (usersData) => {
     csvContent += ",";
     csvContent += user.age;
     csvContent += ",";
-    csvContent += user.church;
+    let replacedChurch = user.church.replace(/,/g, ' - ');
+    csvContent += replacedChurch;
     csvContent += ",";
     csvContent += user.cui_platesc;
     csvContent += ",";
