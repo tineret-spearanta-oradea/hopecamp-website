@@ -570,8 +570,8 @@ body {
 }
 .program-grid div > img { 
     backdrop-filter: blur;
-    width: 240px;
-    transform: translateX(-60px);
+    width: 200px;
+    transform: translateX(-50px);
 }
 
 @media screen and (max-width: 1100px) {
