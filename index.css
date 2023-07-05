@@ -555,7 +555,7 @@ body {
 .program-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    grid-gap: 10px;
+    column-gap: 120px;
     justify-self: center;
 
     margin-bottom: 30px;
@@ -564,14 +564,24 @@ body {
 .program-grid div {
     text-align: center;
     width: 100px;
-    background-color: #1a1a1a;
+    /* background-color: #1a1a1a; */
     color: #fbf3dc;
     padding: 8px;
 }
-@media screen and (max-width: 768px) {
+.program-grid div > img { 
+    backdrop-filter: blur;
+    width: 240px;
+    transform: translateX(-60px);
+}
+
+@media screen and (max-width: 1100px) {
     .program-grid {
         grid-template-columns: 1fr;
         grid-template-rows: repeat(5, 1fr);
+    }
+    .program-grid div>img {
+        width: 280px;
+        transform: translateX(-80px);
     }
 }
 .program {
