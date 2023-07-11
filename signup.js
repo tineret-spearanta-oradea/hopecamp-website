@@ -28,18 +28,18 @@ const pfpRef = storage_ref(storage, "profilepics");
 let isMobile = false;
 
 // COMMENT THESE NEXT YEAR :) if we use this site*****************
-document.querySelector("#changeable-content-1").innerHTML = '';
-document.querySelector("#changeable-content-0").innerHTML =
-`
- <div id="card-subtitle" style="height: 160px">
-  <p>
-    Ne pare rău.<br>
-    <strong>Locurile din tabără au fost ocupate!</strong><br>
-    Vestea bună e că ne poți vizita pe timp de zi
-    29 iulie - 3 august, Vila Speranța, Arieșeni.
-  </p>
- </div>
-`;
+// document.querySelector("#changeable-content-1").innerHTML = '';
+// document.querySelector("#changeable-content-0").innerHTML =
+// `
+//  <div id="card-subtitle" style="height: 160px">
+//   <p>
+//     Ne pare rău.<br>
+//     <strong>Locurile din tabără au fost ocupate!</strong><br>
+//     Vestea bună e că ne poți vizita pe timp de zi
+//     29 iulie - 3 august, Vila Speranța, Arieșeni.
+//   </p>
+//  </div>
+// `;
 //***************************************************************
 
 
@@ -401,7 +401,7 @@ const pushToDatabaseAndSetupUI = (user) => {
       get(child(dbRef, `users/`)).then((snapshot) => {
         if (snapshot.exists()) {
           var numberOfExistingUsers = countProperties(snapshot.val());
-          unique_ID += numberOfExistingUsers;
+          unique_ID += numberOfExistingUsers + 10;
         } else {
           // alert("No data available");
         } 

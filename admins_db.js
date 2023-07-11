@@ -595,6 +595,8 @@ const exportData = (usersData) => {
   "Suma achitata,Cu familie in tabara,Transport,Preferinte cazare,Data in care vine,Data in care pleaca,URL catre poza\n";
   Object.keys(usersData).forEach(uid => {
     let user = allUsersData[uid];
+    // csvContent += uid;
+    //replace with the line above if you want to export the DB id
     csvContent += user.qr_id-200;
     csvContent += ",";
     csvContent += user.name;
