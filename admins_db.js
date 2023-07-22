@@ -100,6 +100,8 @@ function updatePrezent(mode, uname, uemail, uprezent) {
       }
     });
   }
+
+  document.querySelector("#users-table > thead > tr > th > button").click();
 }
 
 let allUsersData;
@@ -199,7 +201,7 @@ const handleData = (usersData) => {
           let cYear = nextDate.getFullYear();
 
           calendarDaysCounter[`${cYear}/${cMonth}/${cDay}`] ++;
-          console.log(`${nextDate} vs ${date2}`);
+          // console.log(`${nextDate} vs ${date2}`);
 
           nextDate.setDate(nextDate.getDate() + 1);
         }
@@ -312,7 +314,7 @@ const handleData = (usersData) => {
         let row = btn.parentElement.parentElement;
         // let uemail = row.querySelector(".user-email").innerHTML;
         let displayedId = row.querySelector(".user-displayed-id").innerHTML;
-        console.log(displayedId);
+        // console.log(displayedId);
         Object.keys(allUsersData).forEach(uid => {
           let user = allUsersData[uid];
 
@@ -374,7 +376,7 @@ const handleData = (usersData) => {
           let user = allUsersData[uid];
 
           if(user.qr_id - 200  == displayedId) {
-            console.log(user.qr_id);
+            // console.log(user.qr_id);
 
             document.querySelector('.hover_bg').style.display = 'block';
 
@@ -495,7 +497,7 @@ const handleData = (usersData) => {
     document.querySelector("#sidebar").style.display = "block";
     document.querySelector("#content").style.display = "block";
 
-    console.log(calendarDaysCounter);
+    // console.log(calendarDaysCounter);
      Object.keys(calendarDaysCounter).forEach(dt => {
       document.getElementById(dt).innerHTML = calendarDaysCounter[dt];
 

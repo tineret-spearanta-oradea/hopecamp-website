@@ -401,11 +401,9 @@ const pushToDatabaseAndSetupUI = (user) => {
 
     getDownloadURL(storage_ref(pfpRef, user.uid)).then((url) => {
       pfpURL = url;
-      var unique_ID = 300;
       get(child(dbRef, `users/`)).then((snapshot) => {
         if (snapshot.exists()) {
-          var numberOfExistingUsers = countProperties(snapshot.val());
-          unique_ID += numberOfExistingUsers + 10;
+          var qrId = getNextQrId(snapshot.val());
         } else {
           // alert("No data available");
         } 
@@ -415,7 +413,7 @@ const pushToDatabaseAndSetupUI = (user) => {
 
         var user_data = {
           email : email,
-          qr_id: unique_ID,
+          qr_id: qrId,
           // password: password,
           admin: false,
           name: name,
@@ -490,18 +488,21 @@ function validate_field(field) {
   }
 }
 
+// what is this function ???
 onAuthStateChanged(auth, (user) => {
-  console.log(user.metadata.creationTime);
-  var accountCreationTime = new Date(user.metadata.creationTime);
+  if(user) {
+    console.log(user.metadata.creationTime);
+    var accountCreationTime = new Date(user.metadata.creationTime);
 
-  var timeStamp = Math.round(new Date().getTime() / 1000);
-  var timeStampSomeTimeAgo = timeStamp - (3 * 3600);
-  var timeSomeTimeAgo= new Date(timeStampSomeTimeAgo*1000).getTime();
+    var timeStamp = Math.round(new Date().getTime() / 1000);
+    var timeStampSomeTimeAgo = timeStamp - (3 * 3600);
+    var timeSomeTimeAgo= new Date(timeStampSomeTimeAgo*1000).getTime();
 
-  if(accountCreationTime.getTime() > timeSomeTimeAgo ) {
-    //alert("less than one hour ago");
-  } else {
-    setupUI(user);
+    if(accountCreationTime.getTime() > timeSomeTimeAgo ) {
+      //alert("less than one hour ago");
+    } else {
+      setupUI(user);
+    }
   }
   
 });
@@ -557,13 +558,19 @@ function hideError1() {
   document.getElementById('error-1').style.display = "none";
 }
 
-function countProperties(obj) {
-    var count = 0;
+function getNextQrId(usersData) {
+  if(usersData.length == 0){
+    return 100;
+  }
 
-    for(var prop in obj) {
-        if(obj.hasOwnProperty(prop))
-            ++count;
-    }
+  let sortable = [];
+  for (var u in usersData) {
+      sortable.push([u, usersData[u]]);
+  }
 
-    return count;
+  sortable.sort(function(a, b) {
+      return a[1].qr_id - b[1].qr_id;
+  });
+
+  return sortable[sortable.length-1][1].qr_id + 1; 
 }
