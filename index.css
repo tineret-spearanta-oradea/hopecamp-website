@@ -479,8 +479,8 @@ body {
     margin-top: 50px;
 }
 .video-promo > iframe {
-    width: 70%;
-    height: 350px;
+    width: 50%;
+    height: 480px;
 }
 /* #endregion gallery */
 .divider-pattern {
