@@ -126,6 +126,7 @@ function searchFunction() {
     }, 0);
 })();
 
+$(function() {
 $('img[data-enlargable]').addClass('img-enlargable').click(function(){
     var src = $(this).attr('src');
     $('<div>').css({
@@ -140,6 +141,7 @@ $('img[data-enlargable]').addClass('img-enlargable').click(function(){
         $(this).remove();
     }).appendTo('body');
 });
+})
 
 
 
