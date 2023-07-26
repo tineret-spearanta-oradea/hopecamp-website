@@ -555,23 +555,24 @@ body {
 .program-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    column-gap: 120px;
+    column-gap: 0;
     justify-self: center;
-
-    margin-bottom: 30px;
+    width: 90%;
+    margin: auto;
+/*     margin-bottom: 30px; */
 }
 
 .program-grid div {
     text-align: center;
-    width: 100px;
+/*     width: 100px; */
     /* background-color: #1a1a1a; */
     color: #fbf3dc;
-    padding: 8px;
+/*     padding: 8px; */
 }
 .program-grid div > img { 
-    backdrop-filter: blur;
-    width: 200px;
-    transform: translateX(-50px);
+/*     backdrop-filter: blur; */
+    width: 100%;
+    transform: translateX(0px);
 }
 
 @media screen and (max-width: 1100px) {
