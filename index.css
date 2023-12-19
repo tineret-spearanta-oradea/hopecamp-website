@@ -389,6 +389,24 @@ body {
     position: absolute;
     z-index: 11;
 }
+
+/* #endregion gallery */
+.divider-pattern {
+   
+    z-index: 11;
+    margin: 60px auto;
+    width: 100%;
+    position: absolute;
+    top: 900px;
+/*     margin-top: 220px; */
+    background: var(--background_intermediate);
+    padding: 2% 0%;
+}
+}
+.divider-pattern img{
+    width: 100%;
+}
+
 @media only screen and (min-width: 2500px) {
     .trees {
         top: 500px;
@@ -530,22 +548,7 @@ body {
     width: 50%;
     height: 480px;
 }
-/* #endregion gallery */
-.divider-pattern {
-   
-    z-index: 11;
-    margin: 60px auto;
-    width: 100%;
-    position: absolute;
-    top: 900px;
-/*     margin-top: 220px; */
-    background: var(--background_intermediate);
-    padding: 2% 0%;
-}
-}
-.divider-pattern img{
-    width: 100%;
-}
+
 
 .section-title {
     font-family: South-Montana, sans;
