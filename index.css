@@ -6,7 +6,7 @@
 
 /* WINTER */
 --background: #9AD0C2;
---background02: #ECF4D6;
+--background02: #2D9596;
 
 }
 
@@ -404,8 +404,17 @@ body {
 }
 @media only screen and (max-width: 1950px) {
     .trees {
-        top: 400px;
+        top: 300px;
+    	object-fit: fill;
     }
+
+    .trees img{
+	height: 525px;
+	width: 100%;
+	object-fit: cover;
+	object-position: top;
+    }
+	
     .divider-pattern {
         top: 700px;
     }
