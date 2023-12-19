@@ -3,6 +3,7 @@
 /* NORMAL */
 --background: #ecdda5;
 --background02: #fbf3dc;
+--background03: #1a1a1a;
 
 /* WINTER */
 --background: #9AD0C2;
@@ -658,8 +659,8 @@ body {
 }
 
 .accordion {
-    background-color: #1a1a1a;
-    color: var(--background02);
+    background-color: var(--backgroun03);
+    color: var(--background);
     cursor: pointer;
     padding: 18px;
     width: 100%;
@@ -682,7 +683,7 @@ body {
     background-color: white;
     overflow: hidden;
     font-family: poppins-regular, sans-serif;
-    background-color: #efdda6;
+    background-color: var(--background02);
 }
 /* #endregion faq */
 
@@ -848,7 +849,7 @@ body {
 	text-indent: 10px ;
 	border-width: 0px;
 	border-radius: 4px;
-	background-color: var(--background);
+	background-color: var(--background02);
     font-size: 1em !important; 
     margin: 10px 0;
 
