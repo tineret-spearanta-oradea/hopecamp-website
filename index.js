@@ -89,15 +89,10 @@ function searchFunction() {
     dd = String(today.getDate()).padStart(2, "0"),
     mm = String(today.getMonth() + 1).padStart(2, "0"),
     yyyy = today.getFullYear(),
-    // just for a specific year
-    // spec_year = "2024",
-    
+    // adding + 1
     nextYear = yyyy + 1,
     dayMonth = "02/22/",
     birthday = dayMonth + yyyy;
-    // birthday = dayMonth + spec_year;
-
-    alert(birthday);
 
   today = mm + "/" + dd + "/" + yyyy;
   if (today > birthday) {
