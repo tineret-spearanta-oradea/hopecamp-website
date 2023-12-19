@@ -2,9 +2,11 @@
 :root{
 /* NORMAL */
 --background: #ecdda5;
+--background02: #fbf3dc;
 
 /* WINTER */
 --background: #9AD0C2;
+--background02: #ECF4D6;
 
 }
 
@@ -52,7 +54,7 @@ body {
     overflow: hidden;
     background-color: var(--secondcolor);
     width: 100%;
-    background-color: #fbf3dc;
+    background-color: var(--background02);
     z-index: 101;
 }
 
@@ -152,7 +154,7 @@ body {
 .flex-container {
     display: flex;
     flex-wrap: nowrap;
-    background-color: #fbf3dc;
+    background-color: var(--background02);
 }
 
 .flex-container > div {
@@ -179,7 +181,7 @@ body {
 }
 .over-slider> h1 {
     font-family: freigeist-black;
-    color: #fbf3dc;
+    color: var(--background02);
     font-size: 20pt;
     margin: 0;
 }
@@ -329,7 +331,7 @@ body {
     background-color: #1a1a1a;
     border: 0 solid #E5E7EB;
     box-sizing: border-box;
-    color: #fbf3dc;
+    color: var(--background02);
     white-space: nowrap;
     display: flex;
     font-family: freigeist-regular, poppins, sans-serif;
@@ -466,7 +468,7 @@ body {
     background-color: #1a1a1a;
     border: 0 solid #E5E7EB;
     box-sizing: border-box;
-    color: #fbf3dc;
+    color: var(--background02);
     white-space: nowrap;
     display: flex;
     font-family: freigeist-regular, poppins, sans-serif;
@@ -584,7 +586,7 @@ body {
     text-align: center;
 /*     width: 100px; */
     /* background-color: #1a1a1a; */
-    color: #fbf3dc;
+    color: var(--background02);
 /*     padding: 8px; */
 }
 .program-grid div > img { 
@@ -604,7 +606,7 @@ body {
     }
 }
 .program {
-    background: #fbf3dc;
+    background: var(--background02);
 }
 .program {
     transform: translateY(-4px);
@@ -622,7 +624,7 @@ body {
 
 /* #region faq */
 .faq-section {
-    background-color: #fbf3dc;
+    background-color: var(--background02);
     margin: 0;
     padding: 40px 0;
     transform: translateY(-1px);
@@ -643,7 +645,7 @@ body {
 
 .accordion {
     background-color: #1a1a1a;
-    color: #fbf3dc;
+    color: var(--background02);
     cursor: pointer;
     padding: 18px;
     width: 100%;
@@ -761,7 +763,7 @@ body {
     display: flex;
     justify-content: center;
     width: 100%;
-    background-color: #fbf3dc;
+    background-color: var(--background02);
 }
 
 .countdown ul {
