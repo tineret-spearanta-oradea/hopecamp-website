@@ -1,7 +1,17 @@
+/* here you can declare and use some global style varibles - it will by use like 'var(--your_variable)'*/
+:root{
+/* NORMAL */
+--background: #ecdda5;
+
+/* WINTER */
+--background: #9AD0C2;
+
+}
+
 body {
     margin: 0;
     font-family: freigeist-regular, poppins-regular, sans-serif;
-    background-color: #ecdda5;
+    background-color: var(--background);
 }
 
 @font-face {
@@ -58,7 +68,7 @@ body {
 }
 
 .navbar a:hover {
-    background-color: #ecdda5;
+    background-color: var(--background);
 }
 
 #portal-btn {
@@ -822,7 +832,7 @@ body {
 	text-indent: 10px ;
 	border-width: 0px;
 	border-radius: 4px;
-	background-color: #ecdda5;
+	background-color: var(--background);
     font-size: 1em !important; 
     margin: 10px 0;
 
