@@ -90,12 +90,12 @@ function searchFunction() {
     mm = String(today.getMonth() + 1).padStart(2, "0"),
     yyyy = today.getFullYear(),
     // just for a specific year
-    spec_year = "2024",
+    // spec_year = "2024",
     
-    nextYear = yyyy,
+    nextYear = yyyy + 1,
     dayMonth = "02/22/",
-    // birthday = dayMonth + yyyy;
-    birthday = dayMonth + spec_year;
+    birthday = dayMonth + yyyy;
+    // birthday = dayMonth + spec_year;
 
     alert(birthday);
 
