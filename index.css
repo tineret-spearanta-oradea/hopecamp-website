@@ -511,6 +511,10 @@ body {
     text-align: center;
     padding: 0 10%;
 }
+
+.section-text hr{
+	width: 85%;
+}
 /* #region about */
 .about {
     position: relative;
