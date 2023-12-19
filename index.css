@@ -515,7 +515,7 @@ body {
     position: absolute;
     /* top: 500px; */
     margin-top: 220px;
-    background: var(--background04);
+    background: var(--background_intermediate);
     padding: 2% 0%;
 }
 }
