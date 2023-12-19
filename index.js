@@ -97,6 +97,8 @@ function searchFunction() {
     // birthday = dayMonth + yyyy;
     birthday = dayMonth + spec_year;
 
+    alert(birthday);
+
   today = mm + "/" + dd + "/" + yyyy;
   if (today > birthday) {
     birthday = dayMonth + nextYear;
