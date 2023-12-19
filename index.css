@@ -445,8 +445,18 @@ body {
 @media only screen and (max-width: 520px) {
     .trees {
         top: 500px;
-    }.divider-pattern {
-        top: 550px;
+    }
+
+.trees img{
+	height: 100px;
+	width: 100%;
+	margin-left: 0%;
+	object-fit: cover;
+	object-position: top;
+}
+	
+.divider-pattern {
+        top: 120px;
     }
 }
 @media only screen and (max-width: 370px) {
