@@ -438,7 +438,7 @@ body {
     }
 	
     .divider-pattern {
-        top: 700px;
+        top: 850px;
     }
 } 
 @media only screen and (max-width: 1300px) and (min-width: 769px) {
@@ -455,7 +455,7 @@ body {
     }
 	
     .divider-pattern {
-        top: 700px;
+        top: 750px;
     }
    
 }
@@ -487,7 +487,7 @@ body {
 }
 	
 .divider-pattern {
-        margin-top: -20px;
+       top: 670px;
     }
 }
 @media only screen and (max-width: 370px) {
@@ -685,7 +685,7 @@ body {
 }
 
 .accordion {
-    background-color: var(--backgroun03);
+    background-color: var(--background03);
     color: var(--background);
     cursor: pointer;
     padding: 18px;
