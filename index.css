@@ -429,7 +429,7 @@ body {
     }
 
    .trees img{
-	height: 100px;
+	height: 400px;
 	width: 100%;
 	margin-left: 0%;
 	object-fit: cover;
@@ -437,7 +437,7 @@ body {
     }
 	
     .divider-pattern {
-        top: 500px;
+        top: 700px;
     }
    
 }
@@ -446,10 +446,13 @@ body {
         top: 600px;
         margin-top: 85px;
     }
+
+   .trees img{
+	height: 250px;
+    }
+	
     .divider-pattern {
-	display: none;
-        margin-top: 25px;
-        top: 700px;
+        top: 850px;
     }
 }
 @media only screen and (max-width: 520px) {
@@ -534,8 +537,8 @@ body {
     margin: 60px auto;
     width: 100%;
     position: absolute;
-    /* top: 500px; */
-    margin-top: 220px;
+    top: 900px;
+/*     margin-top: 220px; */
     background: var(--background_intermediate);
     padding: 2% 0%;
 }
