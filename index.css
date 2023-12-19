@@ -427,6 +427,15 @@ body {
     .trees {
         top: 300px;
     }
+
+   .trees img{
+	height: 100px;
+	width: 100%;
+	margin-left: 0%;
+	object-fit: cover;
+	object-position: top;
+    }
+	
     .divider-pattern {
         top: 500px;
     }
