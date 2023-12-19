@@ -438,6 +438,7 @@ body {
         margin-top: 85px;
     }
     .divider-pattern {
+	display: none;
         margin-top: 25px;
         top: 700px;
     }
