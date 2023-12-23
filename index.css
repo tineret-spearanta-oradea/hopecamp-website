@@ -2,15 +2,13 @@
 :root{
 /* NORMAL */
 --background: #ecdda5;
---background02: #fbf3dc;
---background03: #1a1a1a;
+--background-upper: #fbf3dc;
 
 /* WINTER */
---background: #9AD0C2;
---background02: #2D9596;
---background03: #265073;
---background_intermediate: linear-gradient(0deg, rgba(154,208,194,1) 0%, rgba(236,221,165,1) 100%);
-
+--background: #e3f7fe;
+--background-upper: #2D9596;
+--background_intermediate: #e3f7fe; /*linear-gradient(0deg, #e3f7fe 0%, #e3f7fe 100%); we don't need gradient since the trees will be the same color*/
+--text-color-upper: #fdfcff;
 }
 
 body {
@@ -70,14 +68,17 @@ body {
     overflow: hidden;
     background-color: var(--secondcolor);
     width: 100%;
-    background-color: var(--background02);
+--background: #9AD0C2;
+--background02: #2D9596;
+--background03: #265073;
+    background-color: var(--background-upper);
     z-index: 101;
 }
 
 .navbar a {
     float: left;
     display: block;
-    color: #000000;
+    color: var(--text-color-upper);
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
@@ -170,7 +171,7 @@ body {
 .flex-container {
     display: flex;
     flex-wrap: nowrap;
-    background-color: var(--background02);
+    background-color: var(--background-upper);
 }
 
 .flex-container > div {
@@ -186,6 +187,7 @@ body {
     width: 80%;
     text-align: left;
     align-items: baseline;
+    color: var(--text-color-upper);
 }
 
 .hero-right{
@@ -197,7 +199,7 @@ body {
 }
 .over-slider> h1 {
     font-family: freigeist-black;
-    color: var(--background02);
+    color: var(--text-color-upper);
     font-size: 20pt;
     margin: 0;
 }
@@ -344,10 +346,10 @@ body {
     font-size: 12pt;
 }
 .inscrie-te-btn {
-    background-color: #1a1a1a;
+    background-color: #f9b13b;
     border: 0 solid #E5E7EB;
     box-sizing: border-box;
-    color: var(--background02);
+    color: var(--text-color-upper);
     white-space: nowrap;
     display: flex;
     font-family: freigeist-regular, poppins, sans-serif;
@@ -369,7 +371,7 @@ body {
 .inscrie-te-btn:after {
     content: '';
     position: absolute;
-    border: 1px solid #da7500;
+    border: 1px solid #E5E7EB;
     bottom: 4px;
     left: 4px;
     width: calc(100% - 1px);
@@ -535,7 +537,7 @@ body {
     background-color: #1a1a1a;
     border: 0 solid #E5E7EB;
     box-sizing: border-box;
-    color: var(--background02);
+    color: var(--text-color-upper);
     white-space: nowrap;
     display: flex;
     font-family: freigeist-regular, poppins, sans-serif;
@@ -640,7 +642,7 @@ body {
     text-align: center;
 /*     width: 100px; */
     /* background-color: #1a1a1a; */
-    color: var(--background02);
+    color: var(--background-upper);
 /*     padding: 8px; */
 }
 .program-grid div > img { 
@@ -660,7 +662,7 @@ body {
     }
 }
 .program {
-    background: var(--background02);
+    background: var(--background-upper);
 }
 .program {
     transform: translateY(-4px);
@@ -678,7 +680,7 @@ body {
 
 /* #region faq */
 .faq-section {
-    background-color: var(--background02);
+    background-color: var(--background);
     margin: 0;
     padding: 40px 0;
     transform: translateY(-1px);
@@ -698,7 +700,7 @@ body {
 }
 
 .accordion {
-    background-color: var(--background03);
+    background-color: #191b1a;
     color: var(--background);
     cursor: pointer;
     padding: 18px;
@@ -722,7 +724,7 @@ body {
     background-color: white;
     overflow: hidden;
     font-family: poppins-regular, sans-serif;
-    background-color: var(--background02);
+    background-color: var(--background-upper);
 }
 /* #endregion faq */
 
@@ -817,7 +819,8 @@ body {
     display: flex;
     justify-content: center;
     width: 100%;
-    background-color: var(--background02);
+    background-color: var(--background-upper);
+    color: var(--text-color-upper);
 }
 
 .countdown ul {
@@ -866,7 +869,7 @@ body {
 }
 .unusual-title {
     font-size: 16pt;
-    margin-top: 60px;
+    margin-top: 154px;
     text-align: center;
     font-family: freigeist-bold,sans-serif;
 }
@@ -888,10 +891,15 @@ body {
 	text-indent: 10px ;
 	border-width: 0px;
 	border-radius: 4px;
-	background-color: var(--background);
+	background-color: var(--background-upper);
+    color: white;
     font-size: 1em !important; 
     margin: 10px 0;
 
+}
+
+.questions-container input::placeholder {
+    color: #ffffff94;
 }
 @media only screen and (max-width: 1580px) {
     .locatie-img,
@@ -951,6 +959,12 @@ body {
     margin-bottom: 1rem;
 }
 .download-regulament > a{
-    color: green;
+    color: #f9b13b;
 }
 /* #endregion random */
+
+
+/* region winter */
+
+
+/* endregion winter */
