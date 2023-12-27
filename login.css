@@ -1,12 +1,12 @@
 :root {
-  --color1: #1ea3b0;
-  --color2: #9e5a00;
+  --color1: #e2f7ff;
+  --color2: #f9b13b;
   --color3: #463015;
-  --color4: #386329;
+  --color4: #9db993;
   --color5: #323a4a;
 
-  --cardbg: #3f3f3f;
-  --text: #000;
+  --cardbg: #0000009b;
+  --text: #ffffff;
   --gray: #949494;
 }
 
@@ -15,7 +15,7 @@ a {
 }
 body {
   /* background: -webkit-linear-gradient(bottom, var(--white), var(--primary)); */
-  background: url(./media/portal_bg1.png);
+  background: url(./media/portal_bg_winter.jpeg);
   background-color: var(--color5);
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -44,9 +44,10 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px #e4e7b3 inset !important;
-  -webkit-text-fill-color: var(--white) !important;
+  -webkit-box-shadow: 0 0 0 30px #3c514ef3 inset !important;
+  -webkit-text-fill-color: var(--text) !important;
 }
+
 form i {
   margin-left: 0.5em;
   margin-top: -2rem;
@@ -67,7 +68,7 @@ form i {
 }
 #about-us {
   float: right;
-  color: black;
+  color: var(--text);
   /* background-color: #e6e6e6; */
   background: -webkit-linear-gradient(right, #083e0736, #413e3e00);
   position: absolute;
@@ -76,19 +77,20 @@ form i {
 }
 
 #card {
-  -webkit-backdrop-filter: blur(3px);
-  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   border-radius: 8px;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
+  box-shadow: 2px 2px 8px rgba(0, 0, 0);
   height: auto;
   margin: 3em auto 3em auto;
   width: 20rem; 
   transition: width 0.75s;
-  color: var(--white);
+  color: var(--text);
   /* width: 50vw; */
   /* width: 96%; */
   /* width: 400px; */
   float: center;
+  background-color: var(--cardbg);
 
   margin-bottom: 0;
 }
@@ -195,7 +197,7 @@ form i {
   box-shadow: 0px 1px 18px #acacac;
 }
 #signup-btn {
-  background: -webkit-linear-gradient(45deg, var(--color2), var(--color1));
+  background: -webkit-linear-gradient(45deg, var(--color2), rgb(76, 142, 199));
   border: none;
   border-radius: 21px;
   box-shadow: 0px 1px 8px #000000;
@@ -260,8 +262,7 @@ form i {
   padding-top:7px;
 }
 .underline-title {
-  background: -webkit-linear-gradient(left, #e9c8a200, var(--color1), #e9c8a200);
-
+  background: -webkit-linear-gradient(left, #e9c8a200, var(--color2), #e9c8a200);
 
   /* background-color: #ffbb19; */
   height: 0.2rem;

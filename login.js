@@ -87,7 +87,7 @@ const togglePassword = document.querySelector('#togglePassword').addEventListene
 const pass_clr = document.querySelector("#password").addEventListener("keypress", function() {
   if(document.querySelector("#email").value) {
     const UISubmitBtn = document.querySelector('#submit-btn');
-    UISubmitBtn.style.setProperty("--c1", "#5b814c");
+    UISubmitBtn.style.setProperty("--c1", "#53b2b3");
     UISubmitBtn.style.setProperty("--c2", "#81d461");
   }
 })
