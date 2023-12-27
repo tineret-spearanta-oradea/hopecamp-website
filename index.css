@@ -447,8 +447,8 @@ body {
 
     .trees img{
 	height: 590px;
-	width: 100%;
-	margin-left: 0%;
+	width: 105%;
+	margin-left: -2.5%;
 	object-fit: cover;
 	object-position: top;
     }
@@ -464,8 +464,8 @@ body {
 
    .trees img{
 	height: 400px;
-	width: 100%;
-	margin-left: 0%;
+	width: 105%;
+	margin-left: -2.5%;
 	object-fit: cover;
 	object-position: top;
     }
@@ -483,7 +483,8 @@ body {
 
    .trees img{
 	height: 250px;
-	   width: 100%;
+	width: 105%;
+	margin-left: -2.5%;
     }
 	
     .divider-pattern {
@@ -497,8 +498,8 @@ body {
 
 .trees img{
 	height: 100px;
-	width: 100%;
-	margin-left: 0%;
+	width: 105%;
+	margin-left: -2.5%;
 	object-fit: cover;
 	object-position: top;
 }
