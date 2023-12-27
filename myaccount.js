@@ -87,6 +87,7 @@ const handleData = (data) => {
   var church = document.getElementById("church");
   var cui_platesc = document.getElementById("cui-platesc");
   var payed = document.getElementById("payed");
+  var partie = document.getElementById("partie");
   var cazare_cu = document.getElementById("cazare-cu");
   var observatii_sugestii = document.getElementById("observatii-sugestii");
 
@@ -112,6 +113,7 @@ const handleData = (data) => {
     church.innerHTML = "Biserica: " + data["church"];
     cui_platesc.innerHTML = "Cui plătesc: " + data["cui_platesc"].toString();
     payed.innerHTML = "Achitat: " + data["payed"].toString();
+    partie.innerHTML = "Merg la pârtie: " + data["partie"].toString();
     cazare_cu.innerHTML = "Preferințe cazare: " + data["cazare_cu"].toString();
 
     // pfp.setAttribute('src', data["img_url"]);
@@ -261,7 +263,7 @@ const logout_button = document.getElementById("logout").addEventListener("click"
 function otherUIStuff() {
   // Days left pana la tabara
   const date1 = new Date();
-  const date2 = new Date('7/29/2023');
+  const date2 = new Date('2/22/2024');
   const diffTime = Math.abs(date2 - date1);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   document.getElementById("days-left").innerHTML = diffDays.toString() + " zile";

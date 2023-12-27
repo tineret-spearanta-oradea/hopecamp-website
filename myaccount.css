@@ -1,18 +1,19 @@
 :root {
-  --color1: #1ea3b0;
-  --color2: #9e5a00;
+  --color1: #e2f7ff;
+  --color2: #f9b13b;
   --color3: #463015;
-  --color4: #386329;
+  --color4: #9db993;
   --color5: #323a4a;
 
-  --cardbg: #3f3f3f;
-  --text: #000;
+  --cardbg: #0000009b;
+  --text: #ffffff;
   --gray: #949494;
 }
 
+
 body {
   /* background: -webkit-linear-gradient(bottom, var(--white), var(--primary)); */
-  background: url(./media/portal_bg1.png);
+  background: url(./media/portal_bg_winter.jpeg);
   background-color: var(--color5);
 
   background-attachment: fixed;
@@ -45,12 +46,12 @@ textarea {
   /* font-family: poppins-regular, sans-serif; */
 }
 #card {
-  -webkit-backdrop-filter: blur(3px);
-  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   color: var(--text);
 
   border-radius: 8px;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.65);
+  box-shadow: 2px 2px 8px rgba(0, 0, 0);
   margin: 3em auto 3em auto;
   height: auto;
   min-height: 42rem;
@@ -58,6 +59,7 @@ textarea {
   width: 20rem;
   transition: width 0.75s;
   transition: height 1s;
+  background-color: var(--cardbg);
 
   float: center;
   clear: left;
@@ -80,6 +82,7 @@ textarea {
   padding-top: 2.18rem;
   margin-top: 30px;
   text-align: center;
+  color: var(--text);
 }
 #card-subtitle {
   /* font-family: "Raleway Thin", sans-serif; */
@@ -137,8 +140,7 @@ textarea {
   /* background-color: #e6e6e6; */
   background: -webkit-linear-gradient(right, #413e3e00, #083e0736);
   border-radius: 8px;
-  color: #000;
-    font-family: poppins-regular, sans-serif;
+  font-family: poppins-regular, sans-serif;
 }
 #about-us {
   float: right;
@@ -147,11 +149,10 @@ textarea {
   position: absolute;
   right: 20px;
   border-radius: 8px;
-  color: #000;
   font-family: poppins-regular, sans-serif;
 }
 #hello {
-  color: #5e7e57;
+  color: #b8c8f7;
   font-family: freigeist-bold, sans-serif;
   /* text-transform: uppercase; */
   font-size: 15pt;
@@ -159,7 +160,7 @@ textarea {
   margin-bottom: 1rem;
 }
 #admins-db {
-  background: #7a9679;
+  background: #53b2b3;
   border: none;
   border-radius: 21px;
   box-shadow: 0px 1px 8px #000000;
@@ -226,7 +227,7 @@ textarea {
   /* width: 22%; */
   height: 2rem;
   text-align: center; /*why not work man*/
-  background: -webkit-linear-gradient(right, var(--color1), var(--color2));
+  background: -webkit-linear-gradient(right, rgb(82, 142, 219), var(--color2));
   border: none;
   border-radius: 7px;
   cursor: pointer;
@@ -260,14 +261,14 @@ textarea {
 .header-buttons {
   margin-top: 15px;
   margin-bottom: 17px;
-  color: #ffffff;
+  color: var(--text);
   border: 0px;
   /* font-family: poppins-regular, sans-serif; */
   font-size: 10pt;
   cursor: pointer;
 }
 .underline-title {
-  background: -webkit-linear-gradient(left, #e9c8a200, var(--color1), #e9c8a200);
+  background: -webkit-linear-gradient(left, #e9c8a200, var(--color2), #e9c8a200);
 
   height: 0.2rem;
   margin: -1.1rem auto 0 auto;
@@ -290,7 +291,7 @@ textarea {
   /* font-family: poppins-regular, sans-serif; */
   font-size: 11pt;
   border-radius: 10px;
-  background-color: #ffffffec;
+  background-color: #ffffffa5;
   padding: 2%;
   box-shadow: 1px 1px 7px #0000009a;
 }

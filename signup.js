@@ -27,23 +27,23 @@ const pfpRef = storage_ref(storage, "profilepics");
 
 let isMobile = false;
 
-// COMMENT THESE NEXT YEAR :) if we use this site******************
-let params = new URLSearchParams(window.location.search);
-let mode = params.get('mode');
-if (mode != 'temp') {
-  document.querySelector("#changeable-content-1").innerHTML = '';
-  document.querySelector("#changeable-content-0").innerHTML =
-  `
-  <div id="card-subtitle" style="height: 160px">
-    <p>
-      Ne pare rău.<br>
-      <strong>Locurile din tabără au fost ocupate!</strong><br>
-      Vestea bună e că ne poți vizita pe timp de zi
-      29 iulie - 3 august, Vila Speranța, Arieșeni.
-    </p>
-  </div>
-  `;
-}
+// UNCOMMENT THESE WHEN FULLY BOOKED ******************
+// let params = new URLSearchParams(window.location.search);
+// let mode = params.get('mode');
+// if (mode != 'temp') {
+//   document.querySelector("#changeable-content-1").innerHTML = '';
+//   document.querySelector("#changeable-content-0").innerHTML =
+//   `
+//   <div id="card-subtitle" style="height: 160px">
+//     <p>
+//       Ne pare rău.<br>
+//       <strong>Locurile din tabără au fost ocupate!</strong><br>
+//       Vestea bună e că ne poți vizita pe timp de zi
+//       29 iulie - 3 august, Vila Speranța, Arieșeni.
+//     </p>
+//   </div>
+//   `;
+// }
 //****************************************************************
 
 
@@ -134,7 +134,7 @@ const agree_checked = document.getElementById("agree").addEventListener("change"
       const UIsignupBtn = document.getElementById('signup-btn');
       UIsignupBtn.disable = false;
       UIsignupBtn.style.setProperty("--c1", "#1ea3b0");
-      UIsignupBtn.style.setProperty("--c2", "#9e5a00");
+      UIsignupBtn.style.setProperty("--c2", "#f9b13b");
       UIsignupBtn.style.setProperty("--c3", "#463015");
 
       // UIsignupBtn.style.animation = "graytocolor 5s infinite"; //NOT working
@@ -151,7 +151,7 @@ const agree_checked = document.getElementById("agree").addEventListener("change"
       const UIsignupBtn = document.getElementById('signup-btn');
       UIsignupBtn.disable = false;
       UIsignupBtn.style.setProperty("--c1", "#1ea3b0");
-      UIsignupBtn.style.setProperty("--c2", "#9e5a00");
+      UIsignupBtn.style.setProperty("--c2", "#f9b13b");
       UIsignupBtn.style.setProperty("--c3", "#463015");
 
       // UIsignupBtn.style.animation = "graytocolor 5s infinite"; //NOT working
@@ -208,6 +208,7 @@ const continue_button = document.getElementById("continue-btn").addEventListener
     church = church.value;
   } 
   let pay = document.querySelector('input[name="pay_choice"]:checked');    
+  let partie = document.querySelector('input[name="partie_choice"]:checked');    
   let transport = document.querySelector('input[name="transport_choice"]:checked');     
   const pfp = document.getElementById("profile-photo").files[0];
   
@@ -256,6 +257,11 @@ const continue_button = document.getElementById("continue-btn").addEventListener
 
   if(!pay && !somethingIsNotValid) {
     stopLoadingAndShowError(0, "Alege cui plătești.");
+    somethingIsNotValid = true;
+  }
+
+  if(!partie && !somethingIsNotValid) {
+    stopLoadingAndShowError(0, "Alege dacă mergi pe pârtie.");
     somethingIsNotValid = true;
   }
 
@@ -370,6 +376,7 @@ const pushToDatabaseAndSetupUI = (user) => {
     church = document.getElementById("other-church").value;
   }
   let pay = document.querySelector('input[name="pay_choice"]:checked').value;   
+  let partie = document.querySelector('input[name="partie_choice"]:checked').value;   
   let transport = document.querySelector('input[name="transport_choice"]:checked').value;  
 
   // let start_date = document.getElementById("start-date").value;
@@ -422,6 +429,7 @@ const pushToDatabaseAndSetupUI = (user) => {
           church: church,
           cui_platesc: pay,
           payed: 0,
+          partie: partie,
           start_date: start_date,
           end_date: end_date,
           cazare_cu: person,
@@ -440,7 +448,6 @@ const pushToDatabaseAndSetupUI = (user) => {
         .catch(function(error) {
           stopLoadingAndShowError(0, error.message);
         });
-
 
       }).catch((error) => {
         stopLoadingAndShowError(0, error.message);
