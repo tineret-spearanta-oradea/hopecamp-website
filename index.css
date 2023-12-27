@@ -236,6 +236,7 @@ body {
     justify-content: space-between;
 }
 .under-title>.hero-location {
+    filter: invert(100%) ; 
     width: 50%;
 }
 .bytso {
