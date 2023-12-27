@@ -447,8 +447,8 @@ body {
 
     .trees img{
 	height: 590px;
-	width: 130%;
-	margin-left: -20%;
+	width: 100%;
+	margin-left: 0%;
 	object-fit: cover;
 	object-position: top;
     }
