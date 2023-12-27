@@ -428,7 +428,7 @@ body {
         top: 500px;
     }
     .divider-pattern {
-        top: 1000px;
+        top: 900px;
     }
 }
 @media only screen and (max-width: 2500px) {
@@ -436,7 +436,7 @@ body {
         top: 450px;
     }
     .divider-pattern {
-        top: 800px;
+        top: 700px;
     }
 }
 @media only screen and (max-width: 1950px) {
@@ -454,7 +454,7 @@ body {
     }
 	
     .divider-pattern {
-        top: 900px;
+        top: 800px;
     }
 } 
 @media only screen and (max-width: 1300px) and (min-width: 769px) {
@@ -471,7 +471,7 @@ body {
     }
 	
     .divider-pattern {
-        top: 750px;
+        top: 650px;
     }
    
 }
@@ -488,7 +488,7 @@ body {
     }
 	
     .divider-pattern {
-        top: 850px;
+        top: 750px;
     }
 }
 @media only screen and (max-width: 520px) {
