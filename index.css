@@ -446,7 +446,7 @@ body {
     }
 
     .trees img{
-	height: 590px;
+	height: 690px;
 	width: 100%;
 	margin-left: 0%;
 	object-fit: cover;
@@ -463,7 +463,7 @@ body {
     }
 
    .trees img{
-	height: 400px;
+	height: 600px;
 	width: 100%;
 	margin-left: 0%;
 	object-fit: cover;
@@ -482,7 +482,7 @@ body {
     }
 
    .trees img{
-	height: 250px;
+	height: 350px;
 	width: 100%;
 	margin-left: 0%;
     }
@@ -497,7 +497,7 @@ body {
     }
 
 .trees img{
-	height: 100px;
+	height: 300px;
 	width: 100%;
 	margin-left: 0%;
 	object-fit: cover;
