@@ -477,12 +477,14 @@ body {
 }
 @media only screen and (max-width: 768px) and (min-width: 521px) {
     .trees {
-        top: 600px;
+        top: 550px;
         margin-top: 85px;
     }
 
    .trees img{
 	height: 250px;
+	width: 100%;
+	margin-left: 0%;
     }
 	
     .divider-pattern {
@@ -491,7 +493,7 @@ body {
 }
 @media only screen and (max-width: 520px) {
     .trees {
-        top: 500px;
+        top: 400px;
     }
 
 .trees img{
