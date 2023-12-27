@@ -113,7 +113,7 @@ body {
     -webkit-backdrop-filter: blur(3px);
     backdrop-filter: blur(4px);
     /* background-color: rgba(206, 203, 178, 0.945); */
-    background-color: #fbf3dcd7;
+    background-color: #267f80d7;
     justify-content: center;
     width: 100%;
     z-index: 100;
@@ -135,7 +135,7 @@ body {
     text-decoration: none;
     font-weight: 600;
     opacity: .85;
-    color: #000000;
+    color: var(--text-color-upper);
     letter-spacing: 1px;
     text-transform: uppercase;
     -webkit-text-fill-color: inherit;
