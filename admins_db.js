@@ -27,12 +27,10 @@ let USERid;
 
 let attendanceOngoing = false;
 let calendarDaysCounter = {
-  '2023/7/29': 0,
-  '2023/7/30': 0,
-  '2023/7/31': 0,
-  '2023/8/1': 0,
-  '2023/8/2': 0,
-  '2023/8/3': 0,
+  '2024/2/22': 0,
+  '2024/2/23': 0,
+  '2024/2/24': 0,
+  '2024/2/25': 0,
 
 };
 
@@ -165,7 +163,7 @@ const handleData = (usersData) => {
         noid.style.width = "0rem";
         noid.style.margin = "0";
         // noid.innerHTML = user.qr_id - 200;
-        noid.innerHTML = `<span class="user-displayed-id">${user.qr_id-200}</span>`;
+        noid.innerHTML = `<span class="user-displayed-id">${user.qr_id-100}</span>`;
         let isChecked = row.insertCell(++num);
         if(user.is_confirmed) {
           isChecked.innerHTML = `<span class="user-confirmed">DA</span>`;
@@ -242,6 +240,9 @@ const handleData = (usersData) => {
         } 
         platit.innerHTML = `<span class="status ${status}">${payedAmount}</span>`;
         
+        let partie = row.insertCell(++num);
+        partie.innerHTML = user.partie;
+
         let withFamily = row.insertCell(++num);
         withFamily.innerHTML = user.with_family ? `<span class="user-confirmed">da</span>` : 'nu';
 
@@ -268,38 +269,39 @@ const handleData = (usersData) => {
     const msg_table = document.querySelector("#messages-table");
     get(child(dbRef, `messages`)).then((snapshot) => { 
         let msgData = snapshot.val();
-        $("#nr-mesaje").html(countProperties(msgData));
+        let numberOfMessages = countProperties(msgData);
+        $("#nr-mesaje").html(numberOfMessages);
 
-        Object.keys(msgData).forEach(msguid => {
-            let messages = msgData[msguid];
+        if (numberOfMessages !== 0) {
+          Object.keys(msgData).forEach(msguid => {
+              let messages = msgData[msguid];
 
-            Object.keys(messages).forEach(message => {
-                let msg = messages[message];
-                let row = msg_table.insertRow();
+              Object.keys(messages).forEach(message => {
+                  let msg = messages[message];
+                  let row = msg_table.insertRow();
 
-                let name = row.insertCell(0);
-                name.innerHTML = msg.sender_name;
+                  let name = row.insertCell(0);
+                  name.innerHTML = msg.sender_name;
 
-                let time = row.insertCell(1);
-                let T = new Date(msg.time_of_send);
-                time.innerHTML = `${T.getDate()}/0${T.getMonth()+1} &nbsp;&nbsp; ${T.getHours()}:${T.getMinutes()}`;
+                  let time = row.insertCell(1);
+                  let T = new Date(msg.time_of_send);
+                  time.innerHTML = `${T.getDate()}/0${T.getMonth()+1} &nbsp;&nbsp; ${T.getHours()}:${T.getMinutes()}`;
 
-                let email = row.insertCell(2);
-                email.innerHTML = msg.sender_email;
+                  let email = row.insertCell(2);
+                  email.innerHTML = msg.sender_email;
 
-                let telefon = row.insertCell(3);
-                telefon.innerHTML = msg.sender_phone;
+                  let telefon = row.insertCell(3);
+                  telefon.innerHTML = msg.sender_phone;
 
-                let mesaj = row.insertCell(4);
-                mesaj.innerHTML = msg.message;
+                  let mesaj = row.insertCell(4);
+                  mesaj.innerHTML = msg.message;
 
-                let deleteuser = row.insertCell(5);
-                deleteuser.innerHTML = `<input type="button" value="Delete not working" onclick="SomeDeleteRowFunction(this);">`;
-                
-            });
-
-            
-        });
+                  let deleteuser = row.insertCell(5);
+                  deleteuser.innerHTML = `<input type="button" value="Delete not working" onclick="SomeDeleteRowFunction(this);">`;
+                  
+              });
+          });
+        }
 
 
 
@@ -318,7 +320,7 @@ const handleData = (usersData) => {
         Object.keys(allUsersData).forEach(uid => {
           let user = allUsersData[uid];
 
-          if(user.qr_id - 200 == displayedId) {
+          if(user.qr_id - 100 == displayedId) {
             document.querySelector('.hover_bg').style.display = 'block';
             document.querySelector('.popup-title').innerHTML = `${user.name}`;
 
@@ -375,7 +377,7 @@ const handleData = (usersData) => {
         Object.keys(allUsersData).forEach(uid => {
           let user = allUsersData[uid];
 
-          if(user.qr_id - 200  == displayedId) {
+          if(user.qr_id - 100  == displayedId) {
             // console.log(user.qr_id);
 
             document.querySelector('.hover_bg').style.display = 'block';
@@ -416,6 +418,12 @@ const handleData = (usersData) => {
                     Suma achitata (deja):
                 </label>
                 <input id="payed-edit" class="inputs-edit" type="number" value="${user.payed}"/>
+
+                <label class="edit-label" style="padding-top:0.81rem">
+                Pârtie:
+                </label>
+                <input id="partie-edit" class="inputs-edit" type="text" value="${user.partie}"/>
+
 
                 <label class="edit-label" style="padding-top:0.81rem">
                     Transport
@@ -462,6 +470,7 @@ const handleData = (usersData) => {
               let phoneUpdate = document.querySelector("#phone-edit").value;
               let cuiAchitUpdate = document.querySelector("#cui-platesc-edit").value;
               let payedUpdate = parseInt(document.querySelector("#payed-edit").value);
+              let partieUpdate = document.querySelector("#partie-edit").value;
               let transportUpdate = document.querySelector("#transport-edit").value;
               let cazareUpdate = document.querySelector("#cazare-edit").value;
               let isConfirmed = document.querySelector("#confirmat-edit").checked;
@@ -472,6 +481,7 @@ const handleData = (usersData) => {
                 phone: phoneUpdate,
                 cui_platesc: cuiAchitUpdate,
                 payed: payedUpdate,
+                partie: partieUpdate,
                 transport: transportUpdate,
                 cazare_cu: cazareUpdate,
                 is_confirmed:  isConfirmed,
@@ -594,7 +604,7 @@ const exportFromDb = document.querySelector("#btnExport").addEventListener("clic
 
 const exportData = (usersData) => {
   var csvContent = "DisplayId,Nume,Confirmat,Email,Telefon,Varsta,Biserica,Cui platesc," +
-  "Suma achitata,Cu familie in tabara,Transport,Preferinte cazare,Data in care vine,Data in care pleaca,URL catre poza\n";
+  "Suma achitata,Partie,Cu familie in tabara,Transport,Preferinte cazare,Data in care vine,Data in care pleaca,URL catre poza\n";
   Object.keys(usersData).forEach(uid => {
     let user = allUsersData[uid];
     // csvContent += uid;
@@ -617,6 +627,8 @@ const exportData = (usersData) => {
     csvContent += user.cui_platesc;
     csvContent += ",";
     csvContent += user.payed;
+    csvContent += ",";
+    csvContent += user.partie;
     csvContent += ",";
     csvContent += user.with_family ? 'DA' : 'NU';
     csvContent += ",";

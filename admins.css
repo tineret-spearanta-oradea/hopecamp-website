@@ -18,10 +18,10 @@ li {
 	--poppins: 'Poppins', sans-serif;
 	--lato: 'Lato', sans-serif;
 
-	--light: #2c3135;
+	--light: #252729;
 	--blue: #1ea3b0;
 	--light-blue: #CFE8FF;
-	--grey: #6f806a;
+	--grey: #2D9596;
 	--dark-grey: #cecece;
 	--dark: #ffffff;
 	--dark2: rgb(159, 179, 216);
@@ -1055,7 +1055,7 @@ tfoot input {
   line-height: 0.8;
 
   background-color: var(--grey);
-  color: rgb(255, 251, 33);
+  color: rgb(236, 255, 160);
 }
 .week div div{
   display: inline-block;
