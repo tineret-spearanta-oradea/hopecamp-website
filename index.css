@@ -427,18 +427,26 @@ body {
     .trees {
         top: 300px;
     }
+
+    .trees img{
+	height: 1250px;
+	width: 100%;
+	margin-left: 0%;
+	object-fit: cover;
+	object-position: top;
+    }
     .divider-pattern {
         top: 900px;
     }
 }
 @media only screen and (max-width: 2500px) {
     .trees {
-        top: 250px;
+        top: 225px;
     }
 
 
 .trees img{
-	height: 850px;
+	height: 1250px;
 	width: 100%;
 	margin-left: 0%;
 	object-fit: cover;
@@ -455,7 +463,7 @@ body {
     }
 
     .trees img{
-	height: 850px;
+	height: 900px;
 	width: 100%;
 	margin-left: 0%;
 	object-fit: cover;
