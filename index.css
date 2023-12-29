@@ -755,8 +755,10 @@ body {
 
 /* #region location */
 .location iframe {
-    width: 100%;
+    width: 80%;
     height: 400px;
+    border:0; 
+    margin: 1% 10%;
 }
 /* #endregion location */
 
