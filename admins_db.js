@@ -209,9 +209,9 @@ const handleData = (usersData) => {
         let daysAmount = diffDays;
         daysAmount = parseInt(daysAmount);
 
-        if(daysAmount<5){
+        if(daysAmount<3){
           status = "process";
-        } else if(daysAmount===5){
+        } else if(daysAmount===3){
           status = "completed";
         } 
         zile.innerHTML = `<span class="status ${status}">${daysAmount}</span>`;
@@ -233,9 +233,9 @@ const handleData = (usersData) => {
 
         if(payedAmount===0) {
           status = "pending";
-        } else if(payedAmount<500 && payedAmount>0){
+        } else if(payedAmount<400 && payedAmount>0){
           status = "process";
-        } else if(payedAmount >= 500){
+        } else if(payedAmount == 400 || payedAmount == 450){
           status = "completed";
         } 
         platit.innerHTML = `<span class="status ${status}">${payedAmount}</span>`;
