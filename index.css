@@ -756,6 +756,7 @@ body {
 /* #region location */
 .location iframe {
     width: 100%;
+    height: 400px;
 }
 /* #endregion location */
 
@@ -1010,11 +1011,11 @@ body {
 .locatie-img {
     position: relative;
     top: -5px;
-    height: 400px;
+    height: 500px;
     width: 100%;
 }
 .locatie-img img {
-    height: 400px;
+    height: 500px;
     width: 100%;
     object-fit: cover;
 }
