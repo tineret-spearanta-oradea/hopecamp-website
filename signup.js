@@ -127,42 +127,21 @@ const aboutus_button = document.getElementById("about-us").addEventListener("cli
 //   window.location.href =  loginURL;
 // });
 
-const agree_checked = document.getElementById("agree").addEventListener("change", function() {
-  let age = document.getElementById("age").value;
-  if(age>=18) {
-    if (this.checked) {
-      const UIsignupBtn = document.getElementById('signup-btn');
-      UIsignupBtn.disable = false;
-      UIsignupBtn.style.setProperty("--c1", "#1ea3b0");
-      UIsignupBtn.style.setProperty("--c2", "#f9b13b");
-      UIsignupBtn.style.setProperty("--c3", "#463015");
-
-      // UIsignupBtn.style.animation = "graytocolor 5s infinite"; //NOT working
-    } else {
-      const UIsignupBtn = document.getElementById('signup-btn');
-      UIsignupBtn.disable = true;
-      UIsignupBtn.style.setProperty("--c1", "#5a5a5a");
-      UIsignupBtn.style.setProperty("--c2", "#bdbdbd");
-      UIsignupBtn.style.setProperty("--c3", "#fff");
-
-    }
+const agreePay_checked = document.getElementById("agree-pay").addEventListener("change", function() {
+  if (this.checked) {
+    const UIsignupBtn = document.getElementById('signup-btn');
+    UIsignupBtn.disable = false;
+    UIsignupBtn.style.setProperty("--c1", "#1ea3b0");
+    UIsignupBtn.style.setProperty("--c2", "#f9b13b");
+    UIsignupBtn.style.setProperty("--c3", "#463015");
+  
+    // UIsignupBtn.style.animation = "graytocolor 5s infinite"; //NOT working
   } else {
-    if (this.checked) {
-      const UIsignupBtn = document.getElementById('signup-btn');
-      UIsignupBtn.disable = false;
-      UIsignupBtn.style.setProperty("--c1", "#1ea3b0");
-      UIsignupBtn.style.setProperty("--c2", "#f9b13b");
-      UIsignupBtn.style.setProperty("--c3", "#463015");
-
-      // UIsignupBtn.style.animation = "graytocolor 5s infinite"; //NOT working
-    } else {
-      const UIsignupBtn = document.getElementById('signup-btn');
-      UIsignupBtn.disable = true;
-      UIsignupBtn.style.setProperty("--c1", "#5a5a5a");
-      UIsignupBtn.style.setProperty("--c2", "#bdbdbd");
-      UIsignupBtn.style.setProperty("--c3", "#fff");
-
-    }
+    const UIsignupBtn = document.getElementById('signup-btn');
+    UIsignupBtn.disable = true;
+    UIsignupBtn.style.setProperty("--c1", "#5a5a5a");
+    UIsignupBtn.style.setProperty("--c2", "#bdbdbd");
+    UIsignupBtn.style.setProperty("--c3", "#fff");
   }
 });
 
@@ -190,7 +169,6 @@ const report_btn = document.querySelector("#report-btn").addEventListener("click
 });
 
 const continue_button = document.getElementById("continue-btn").addEventListener("click", function ()  {
-  
   // UI setup (loading)
   startLoading(0);
 
@@ -302,7 +280,6 @@ const continue_button = document.getElementById("continue-btn").addEventListener
     //   document.querySelector("#taxa-inscriere-suma").innerHTML = `${(diffDays*120)} lei.`;
     // }
 
-    
     if(age<18) {
       document.getElementById("regulament").style.display = "none";
       document.getElementById("under18-agree").style.display = "block";
@@ -313,6 +290,14 @@ const continue_button = document.getElementById("continue-btn").addEventListener
 const signup_button = document.getElementById("signup-btn").addEventListener("click", function ()  { 
   let email = document.getElementById("user-email").value;
   let password = document.getElementById("user-password").value;
+  const agreePay_checked = document.getElementById("agree-pay").checked;
+  const agreeTerms_checked = document.getElementById("agree-regulament").checked;
+
+  if (!agreePay_checked || !agreeTerms_checked) {
+    stopLoadingAndShowError(1, "Trebuie sa bifezi pătrățelele ca fiind de acord.");
+    return;
+  }
+
   startLoading(1);
 
   createUserWithEmailAndPassword(auth, email, password)
@@ -320,7 +305,6 @@ const signup_button = document.getElementById("signup-btn").addEventListener("cl
       
     })
     .catch(function(error) {
-
       if(error.code === "auth/invalid-email"){
         stopLoadingAndShowError(1, "Email invalid.");
       } else if(error.code === "auth/invalid-password"){
@@ -535,9 +519,9 @@ function startLoading(changeable) {
   // document.getElementById("card").style.height = "108rem";
 }
 
-function stopLoadingAndShowError(changeable, err) {
-  // console.log(err);
-  if(changeable===0) {
+function stopLoadingAndShowError(mode, err) {
+  // mode refers to which changeable-content is being used
+  if(mode===0) {
     document.getElementById("error").style.display = "inline";
     document.getElementById("error").style.visibility = "visible";
     document.getElementById("announce").innerHTML = err;
@@ -546,7 +530,7 @@ function stopLoadingAndShowError(changeable, err) {
     document.getElementById("last-small-info").style.visibility = "hidden";
 
     setTimeout(hideError0, 3400);
-  } else if(changeable===1) {
+  } else if(mode===1) {
     document.getElementById("error-1").style.display = "block";
     document.getElementById("error-1").style.visibility = "visible";
     document.getElementById("announce-1").innerHTML = err;
