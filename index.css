@@ -1089,8 +1089,20 @@ body {
     text-align: center;
     margin-bottom: 1rem;
 }
+
 .download-regulament > a{
-    color: #f9b13b;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    background-color: #f9b13b;
+    padding: 15px;
+    border-radius: 25px;
+}
+
+.download-regulament > i{
+    color: var(--background-upper);
+}
+
 }
 /* #endregion random */
 
