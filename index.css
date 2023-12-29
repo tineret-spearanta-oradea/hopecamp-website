@@ -412,7 +412,7 @@ body {
     width: 100%;
 }
 .row_mini_gallery{
-    width: 940px; /*750 - 60 (150*5 - 60px (from margin-right))*/
+    width: 1190px; /*1250 - 60 (250*5 - 60px (from margin-right))*/
     margin: auto;
 }
 
@@ -455,7 +455,7 @@ body {
 
 .column_mini_gallery {
     float: left;
-    width: 200px;
+    width: 250px;
 }
 
 .column_mini_gallery img{
