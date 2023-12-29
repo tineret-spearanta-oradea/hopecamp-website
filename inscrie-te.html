@@ -62,7 +62,12 @@
                     <input id="name" class="form-content" type="text" name="text" required />
                     <div class="form-border"></div>
 
-                    <label for="age" style="padding-top: 1.38rem">&nbsp;Vârsta
+                    <label for="photo" style="padding-top: 1.38rem">&nbsp;Poză cu tine
+                    </label>
+                    <input type="file" accept="image/*" class="photo" id="profile-photo">
+                    <div class="form-border"></div>
+
+                    <label for="age" style="margin-top: 1.38rem">&nbsp;Vârsta
                     </label>
                     <input id="age" class="form-content" type="number" pattern="\d*" name="number" required />
                     <div class="form-border"></div>
@@ -93,7 +98,7 @@
                         <input class="multch"  type="radio" name="pay_choice" value="Rebeca">Rebeca Gros<br>
                         
                     </div>
-                    <div class="form-border" style="margin-top: 1.38rem;"></div>
+                    <div class="form-border"></div>
                     
                     
                     <label for="partie" style="padding-top: 1.38rem" class="partie">&nbsp;Vei merge pe pârtia Vârtop?
@@ -106,7 +111,19 @@
                         
                     </div>
                     
-                    <div class="form-border" style="margin-top: 1.38rem;"></div>
+                    <div class="form-border"></div>
+
+
+                    <label for="church" style="padding-top: 1.38rem">&nbsp;Transport
+                    </label>
+                    <div id="multiple-choice-div">
+                        <input class="multch"  type="radio" name="transport_choice" value="Masina personala">Vin cu mașina personală<br>
+                        <input class="multch"  type="radio" name="transport_choice" value="Masina altcuiva">Vin cu un prieten cu mașina<br>
+                        <input class="multch"  type="radio" name="transport_choice" value="Autocar (cu noi)">Autocar de la biserică
+                    </div>
+                    <div class="form-border"></div>
+
+
 
                     <!-- <div class="period-side"> -->
                     <label for="date" style="padding-top: 1.38rem">&nbsp;Data în care vii în tabară 
@@ -139,28 +156,12 @@
                     <!-- </div> -->
                     <div class="form-border"></div>
 
-                    <label for="church" style="padding-top: 1.38rem">&nbsp;Transport
-                    </label>
-                    <div id="multiple-choice-div">
-                        <input class="multch"  type="radio" name="transport_choice" value="Masina personala">Vin cu mașina personală<br>
-                        <input class="multch"  type="radio" name="transport_choice" value="Masina altcuiva">Vin cu un prieten cu mașina<br>
-                        <input class="multch"  type="radio" name="transport_choice" value="Autocar (cu noi)">Autocar de la biserică
-                    </div>
-                    <div class="form-border"></div>
-
-
-                    <label for="photo" style="padding-top: 1.38rem">&nbsp;Poză cu tine
-                    </label>
-                    <input type="file" accept="image/*" class="photo" id="profile-photo">
-                    <div class="form-border"></div>
-
-
                     <label for="person" style="padding-top: 1.38rem">&nbsp;Preferințe cazare
                     <legend class="small-info" style = "text-align: left;">
                     Introdu numele persoanelor cu care dorești să stai în cameră, daca nu ai, lasă liber.</legend>
 
                     </label>
-                    <input id="person" class="form-content" type="text" name="text" />
+                    <input id="person" class="form-content" type="text" name="text" placeholder="opțional"/>
                     <div class="form-border"></div>
 
                     <div id="error">

@@ -304,7 +304,7 @@ input:-webkit-autofill:active{
   /* background-color: var(--color2); */
   height: 0.05em;
   width: 100%;
-
+  padding-top: 0.01em;
 }
 .form-content {
   background: #cacaca05;

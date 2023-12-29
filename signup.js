@@ -250,7 +250,7 @@ const continue_button = document.getElementById("continue-btn").addEventListener
   
   if(typeof pfp === "undefined" && !somethingIsNotValid)
   {
-    stopLoadingAndShowError(0, "Introdu o poză cu tine.");
+    stopLoadingAndShowError(0, "Introdu o poză cu tine. Daca ai introdus, te rugam asteapta 5-10 secunde, apoi apasa continuă.");
     somethingIsNotValid = true;
   }
 
