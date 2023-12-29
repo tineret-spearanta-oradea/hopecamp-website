@@ -458,6 +458,22 @@ body {
     width: 200px;
 }
 
+.column_mini_gallery img{
+    transition: all .5s;
+    -moz-transition: all .5s;
+    -webkit-transition: all .5s;
+    -o-transition: all .5s;
+    -ms-transition: all .5s;
+}
+
+.column_mini_gallery img:hover{
+    transform : scale(1.15);
+    -moz-transform : scale(1.15);
+    -webkit-transform : scale(1.15);
+    -o-transform : scale(1.15);
+    -ms-transform : scale(1.15);
+}
+
 @media only screen and (max-width: 1300px) and (min-width: 769px) {
 
     .row_mini_gallery{
