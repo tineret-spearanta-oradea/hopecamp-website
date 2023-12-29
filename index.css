@@ -842,6 +842,8 @@ body {
     font-size: 15px;
     transition: 0.4s;
     font-family: freigeist-regular, poppins-regular, sans-serif;
+    margin-top: 20px;
+    text-transform: uppercase;
 }
 
 .active,
@@ -850,12 +852,13 @@ body {
 }
 
 .panel {
-    padding: 0 18px;
+    padding: 5px 18px;
     display: none;
     background-color: white;
     overflow: hidden;
     font-family: poppins-regular, sans-serif;
     background-color: var(--background-upper);
+    color: #ffffff;
 }
 /* #endregion faq */
 
