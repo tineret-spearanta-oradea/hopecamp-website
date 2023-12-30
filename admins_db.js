@@ -24,6 +24,7 @@ const auth = getAuth();
 const database = getDatabase();
 const dbRef = ref(getDatabase());
 let USERid;
+const QrIdDifference = 0;
 
 let attendanceOngoing = false;
 let calendarDaysCounter = {
@@ -163,7 +164,7 @@ const handleData = (usersData) => {
         noid.style.width = "0rem";
         noid.style.margin = "0";
         // noid.innerHTML = user.qr_id - 200;
-        noid.innerHTML = `<span class="user-displayed-id">${user.qr_id-100}</span>`;
+        noid.innerHTML = `<span class="user-displayed-id">${user.qr_id-QrIdDifference}</span>`;
         let isChecked = row.insertCell(++num);
         if(user.is_confirmed) {
           isChecked.innerHTML = `<span class="user-confirmed">DA</span>`;
@@ -320,7 +321,7 @@ const handleData = (usersData) => {
         Object.keys(allUsersData).forEach(uid => {
           let user = allUsersData[uid];
 
-          if(user.qr_id - 100 == displayedId) {
+          if(user.qr_id - QrIdDifference == displayedId) {
             document.querySelector('.hover_bg').style.display = 'block';
             document.querySelector('.popup-title').innerHTML = `${user.name}`;
 
@@ -329,12 +330,12 @@ const handleData = (usersData) => {
             if(date1.getMonth()+1===7){
               date1 = `${date1.getDate()}/0${date1.getMonth()+1}`;
             } else {
-              date1 = `0${date1.getDate()}/0${date1.getMonth()+1}`;
+              date1 = `${date1.getDate()}/0${date1.getMonth()+1}`;
             }
             if(date2.getMonth()+1===7){
               date2 = `${date2.getDate()}/0${date2.getMonth()+1}`;
             } else {
-              date2 = `0${date2.getDate()}/0${date2.getMonth()+1}`;
+              date2 = `${date2.getDate()}/0${date2.getMonth()+1}`;
             }
 
             let popup_text = document.querySelector('.popup-text');
@@ -377,7 +378,7 @@ const handleData = (usersData) => {
         Object.keys(allUsersData).forEach(uid => {
           let user = allUsersData[uid];
 
-          if(user.qr_id - 100  == displayedId) {
+          if(user.qr_id - QrIdDifference  == displayedId) {
             // console.log(user.qr_id);
 
             document.querySelector('.hover_bg').style.display = 'block';
