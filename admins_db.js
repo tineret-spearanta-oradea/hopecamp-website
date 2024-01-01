@@ -401,43 +401,44 @@ const handleData = (usersData) => {
             let popup_text = document.querySelector('.popup-text');
             popup_text.innerHTML = 
               `<form method="post" class="form"> 
-                <div style="margin: 2rem auto;">
-                Aici modifici informatiile persoanei mentionate mai sus. Orice schimbare este ireversibila!
+                <div style="margin: 0 auto; font-size:8pt">
+               Schimbarile sunt ireversibile
                 </div>
+                
 
-                <label class="edit-label" style="padding-top:0.81rem">
+                <label class="edit-label" style="padding-top:0.4rem">
                     Telefon:
                 </label>
                 <input id="phone-edit" class="inputs-edit" type="phone" value="${user.phone}"/>
 
-                <label class="edit-label" style="padding-top:0.81rem">
+                <label class="edit-label" style="padding-top:0.4rem">
                     Cui achit:
                 </label>
                 <input id="cui-platesc-edit" class="inputs-edit" type="text" value="${user.cui_platesc}"/>
 
-                <label class="edit-label" style="padding-top:0.81rem">
+                <label class="edit-label" style="padding-top:0.4rem">
                     Suma achitata (deja):
                 </label>
                 <input id="payed-edit" class="inputs-edit" type="number" value="${user.payed}"/>
 
-                <label class="edit-label" style="padding-top:0.81rem">
+                <label class="edit-label" style="padding-top:0.4rem">
                 Pârtie:
                 </label>
                 <input id="partie-edit" class="inputs-edit" type="text" value="${user.partie}"/>
 
 
-                <label class="edit-label" style="padding-top:0.81rem">
+                <label class="edit-label" style="padding-top:0.4rem">
                     Transport
                 </label>
                 <input id="transport-edit" class="inputs-edit" type="text" value="${user.transport}"/>
 
-                <label class="edit-label" style="padding-top:0.81rem">
+                <label class="edit-label" style="padding-top:0.4rem">
                     Preferinte cazare:
                 </label>
                 <input id="cazare-edit" class="inputs-edit" type="text" value="${user.cazare_cu}"/>
                 
                 <div style="display: inline">
-                <label class="edit-label" style="padding-top:0.81rem">
+                <label class="edit-label" style="padding-top:0.4rem">
                     Cu familie in tabara:
                 </label>
                 <input id="with-family-edit" class="inputs-edit" type="checkbox" value="confirmat" 
@@ -445,7 +446,7 @@ const handleData = (usersData) => {
                 </div>
 
                 <div style="display: inline">
-                <label class="edit-label" style="padding-top:0.81rem">
+                <label class="edit-label" style="padding-top:0.4rem">
                     Confirmat:
                 </label>
                 <input id="confirmat-edit" class="inputs-edit" type="checkbox" value="confirmat" 
@@ -454,7 +455,7 @@ const handleData = (usersData) => {
 
               </form>`;
             
-            popup_text.style.margin = "0 0 2rem 0";
+            popup_text.style.margin = "0 0 0 0";
 
             document.querySelector('.popup-text').style.color = "black";
 

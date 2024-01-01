@@ -868,6 +868,7 @@ tfoot input {
 
 .popup-title {
 	margin: 1rem auto;
+	margin-bottom: 0.1rem;
 	font-family: poppins-regular, sans-serif;
 	font-size: 15pt;
 }
