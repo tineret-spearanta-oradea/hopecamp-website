@@ -39,7 +39,7 @@ if (mode != 'temp') {
       Ne pare rău.<br>
       <strong>Locurile din tabără au fost ocupate!</strong><br>
       Vestea bună e că ne poți vizita pe timp de zi
-      29 iulie - 3 august, Vila Speranța, Arieșeni.
+      22-25 feb, Vila Speranța, Arieșeni.
     </p>
   </div>
   `;
