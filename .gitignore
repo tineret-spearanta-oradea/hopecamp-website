@@ -26,4 +26,5 @@ dist-ssr
 node_modules
 
 #firebase
-src\firebase\firebase.js
+src/firebase/firebase.js
+src/firebase/firebase.js
