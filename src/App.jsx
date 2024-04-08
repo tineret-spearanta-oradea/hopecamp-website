@@ -6,6 +6,7 @@ import Register from "./components/auth/register";
 import Home from "./components/home";
 import "./index.css";
 
+
 function App() {
   const { UserLoggedIn } = useAuth();
 
