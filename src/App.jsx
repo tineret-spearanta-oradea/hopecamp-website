@@ -4,7 +4,7 @@ import { useAuth } from "./contexts/authContext"; // Adjust path if needed
 import Login from "./components/auth/login"; // Adjust path if needed
 import Register from "./components/auth/register"; // Adjust path if needed
 import Home from "./components/home"; // Adjust path if needed
-import './index.css';
+import "./index.css";
 
 function App() {
   const { UserLoggedIn } = useAuth();
@@ -14,10 +14,10 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/inscrie-te" element={<Register />} />
       </Routes>
     </Router>
-    // Add additional routes as needed  
+    // Add additional routes as needed
   );
 }
 
