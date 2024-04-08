@@ -10,15 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.18",
-    "classnames": "^2.5.1",
     "firebase": "^10.10.0",
-    "formik": "^2.4.5",
-    "immer": "^10.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.51.2",
-    "react-multistep": "^5.5.9",
     "react-router-dom": "^6.22.3",
     "yup": "^1.4.0"
   },
@@ -27,6 +21,7 @@
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.19",
+    "depcheck": "^1.4.7",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
