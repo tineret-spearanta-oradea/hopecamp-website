@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Step from "./Step";
+// import firebase from "../../../firebase"
 
 const MultiStepForm = ({ handleSubmit, formData, setFormData }) => {
   const [step, setStep] = useState(1);
@@ -27,6 +28,32 @@ const MultiStepForm = ({ handleSubmit, formData, setFormData }) => {
     setAgreementChecked(checked);
   };
 
+  const handleImageChange = (e) => {
+    if (e.target.files[0]) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // Here you might want to handle the base64 string for previews or direct uploads
+        setFormData(prev => ({ ...prev, imageUrl: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  //uploading image feauture 
+  // const uploadImageToStorage = (file) => {
+  //   const storageRef = firebase.storage().ref();
+  //   const fileRef = storageRef.child('images/' + file.name);
+  //   return fileRef.put(file).then(() => {
+  //     return fileRef.getDownloadURL();  // This URL can be saved in your database
+  //   });
+  // };
+  // // Call this function when submitting the form, using the original File object
+  // uploadImageToStorage(formData.imageFile).then((downloadURL) => {
+  //   console.log("Uploaded and got URL:", downloadURL);
+  // });
+  
+
   // const handleSubmit = () => {
   //   console.log("Form submitted:", formData);
   // };
@@ -49,6 +76,7 @@ const MultiStepForm = ({ handleSubmit, formData, setFormData }) => {
           handleChange={handleChange}
           handleNext={handleNext}
           handlePrev={handlePrev}
+          handleImageChange={handleImageChange}
         />
       )}
       {step === 3 && (

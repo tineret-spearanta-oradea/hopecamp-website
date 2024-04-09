@@ -11,6 +11,19 @@ const Register = () => {
     password: "",
     confirmPassword: "",
     phoneNumber: "",
+    fullName: "",
+    age: "",
+    church: "",
+    payTaxTo: "",
+    amountPaid: "",
+    transport: "",
+    startDate: "",
+    endDate: "",
+    imageUrl: "",
+    isAdmin: false,
+    isConfirmed: false,
+    preferences: "",
+    signupDate: new Date().toISOString().slice(0, 10) // YYYY-MM-DD format
   });
 
   const handleSubmit = async () => {
