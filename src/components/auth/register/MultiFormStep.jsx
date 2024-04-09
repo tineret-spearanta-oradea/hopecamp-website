@@ -6,17 +6,11 @@ import Step from "./Step";
 const MultiStepForm = ({ handleSubmit, formData, setFormData }) => {
   const [step, setStep] = useState(1);
 
-  const [agreementChecked, setAgreementChecked] = useState(false);
+  const [agreementChecked, setAgreementChecked] = useState(false); // Define the agreementChecked state
 
-  /*
-  Function to handle form input changes
-  The structure of the formData object is:
-  {
-    authData // Object defined in ../../models/AuthData.js
-    userData // Object defined in ../../models/UserData.js
-  }
-  */
-  const handleChange = (objectName, e) => {
+  const [errors, setErrors] = useState({});
+
+  const handleChange = (e) => {
     const { name, value } = e.target;
 
     setFormData((prevData) => ({
@@ -29,7 +23,9 @@ const MultiStepForm = ({ handleSubmit, formData, setFormData }) => {
   };
 
   const handleNext = () => {
-    setStep((prevStep) => prevStep + 1);
+    if (validateFields()) {
+      setStep((prevStep) => prevStep + 1);
+    }
   };
 
   const handlePrev = () => {
@@ -54,6 +50,7 @@ const MultiStepForm = ({ handleSubmit, formData, setFormData }) => {
   };
 
   //uploading image feauture
+  //uploading image feauture
   // const uploadImageToStorage = (file) => {
   //   const storageRef = firebase.storage().ref();
   //   const fileRef = storageRef.child('images/' + file.name);
@@ -67,8 +64,37 @@ const MultiStepForm = ({ handleSubmit, formData, setFormData }) => {
   // });
 
   // const handleSubmit = () => {
+  // e.preventDefault();
+  // if (validateFields()) {
+  //   await doCreateUserWithEmailAndPassword(
+  //     formData.email,
+  //     formData.password
+  //   );
   //   console.log("Form submitted:", formData);
+  //  }
   // };
+
+  const validateFields = () => {
+    let newErrors = {};
+
+    if (!formData.email) {
+      newErrors.email = "Adresa de email este necesară.";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Adresa de email este invalidă.";
+    }
+
+    if (!formData.password) {
+      newErrors.password = "Parola este necesară.";
+    } else if (formData.password.length < 8) {
+      newErrors.password = "Parola trebuie să aibă cel puțin 8 caractere.";
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Parolele nu se potrivesc.";
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   return (
     <div className="max-w-lg mx-auto p-4">
@@ -79,6 +105,7 @@ const MultiStepForm = ({ handleSubmit, formData, setFormData }) => {
           handleChange={handleChange}
           handleNext={handleNext}
           handlePrev={handlePrev}
+          errors={errors}
         />
       )}
       {step === 2 && (

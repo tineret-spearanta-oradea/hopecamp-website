@@ -1,9 +1,7 @@
 import React from "react";
 import InputField from "../InputField";
 import CheckboxField from "../CheckboxField";
-import ImageField from "../ImageField"
-
-// TODO: Implement error message field
+import ImageField from "../ImageField";
 
 const Step = ({
   stepNumber,
@@ -15,6 +13,7 @@ const Step = ({
   agreementChecked,
   handleAgreementChange,
   handleImageChange,
+  errors,
 }) => {
   return (
     <div>
@@ -23,8 +22,8 @@ const Step = ({
         {stepNumber === 1
           ? "Authentication"
           : stepNumber === 2
-            ? "Contact Details"
-            : "Confirmation"}
+          ? "Contact Details"
+          : "Confirmation"}
       </h2>
       {stepNumber === 1 && (
         <>
@@ -35,6 +34,7 @@ const Step = ({
             autoComplete="email"
             value={formData.email}
             onChange={(e) => handleChange("authData", e)}
+            errorMessage={errors.email}
           />
           <InputField
             label="Password"
@@ -42,6 +42,7 @@ const Step = ({
             name="password"
             value={formData.password}
             onChange={(e) => handleChange("authData", e)}
+            errorMessage={errors.password}
           />
           <InputField
             label="Confirm Password"
@@ -49,10 +50,8 @@ const Step = ({
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={(e) => handleChange("authData", e)}
+            errorMessage={errors.confirmPassword}
           />
-          {/* TODO: Add password validation here.
-          Confirm password value and password value should be equal
-          This validation should be done on the "Next" Button. */}
         </>
       )}
       {stepNumber === 2 && (
