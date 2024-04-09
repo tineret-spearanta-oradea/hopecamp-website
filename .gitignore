@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 node_modules
+
+#firebase
+src/firebase/firebase.js
