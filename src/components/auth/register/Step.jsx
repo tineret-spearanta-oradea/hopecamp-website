@@ -1,6 +1,7 @@
 import React from "react";
 import InputField from "../InputField";
 import CheckboxField from "../CheckboxField";
+import ImageField from "../ImageField"
 
 // TODO: Implement error message field
 
@@ -13,6 +14,7 @@ const Step = ({
   handleSubmit,
   agreementChecked,
   handleAgreementChange,
+  handleImageChange,
 }) => {
   return (
     <div>
@@ -21,8 +23,8 @@ const Step = ({
         {stepNumber === 1
           ? "Authentication"
           : stepNumber === 2
-          ? "Contact Details"
-          : "Confirmation"}
+            ? "Contact Details"
+            : "Confirmation"}
       </h2>
       {stepNumber === 1 && (
         <>
@@ -56,11 +58,90 @@ const Step = ({
       {stepNumber === 2 && (
         <>
           <InputField
+            label="Full Name"
+            type="text"
+            name="fullName"
+            value={formData.fullName}
+            onChange={handleChange}
+          />
+          <InputField
+            label="Age"
+            type="number"
+            name="age"
+            value={formData.age}
+            onChange={handleChange}
+          />
+          <InputField
             label="Phone Number"
             type="tel"
             name="phoneNumber"
             value={formData.phoneNumber}
             onChange={(e) => handleChange("userData", e)}
+          />
+          <InputField
+            label="Church"
+            type="text"
+            name="church"
+            value={formData.church}
+            onChange={handleChange}
+          />
+          <InputField
+            label="Pay Tax To"
+            type="text"
+            name="payTaxTo"
+            value={formData.payTaxTo}
+            onChange={handleChange}
+          />
+          <InputField
+            label="Amount Paid"
+            type="number"
+            name="amountPaid"
+            value={formData.amountPaid}
+            onChange={handleChange}
+          />
+          <InputField
+            label="Transport"
+            type="text"
+            name="transport"
+            value={formData.transport}
+            onChange={handleChange}
+          />
+          <InputField
+            label="Start Date"
+            type="date"
+            name="startDate"
+            value={formData.startDate}
+            onChange={handleChange}
+          />
+          <InputField
+            label="End Date"
+            type="date"
+            name="endDate"
+            value={formData.endDate}
+            onChange={handleChange}
+          />
+          <ImageField
+            label="Profile Picture"
+            type="file"
+            name="imageUrl"
+            onChange={handleImageChange}
+          />
+          <CheckboxField
+            label="Is Admin"
+            checked={formData.isAdmin}
+            onChange={handleChange}
+          />
+          <CheckboxField
+            label="Is Confirmed"
+            checked={formData.isConfirmed}
+            onChange={handleChange}
+          />
+          <InputField
+            label="Preferences"
+            type="text"
+            name="preferences"
+            value={formData.preferences}
+            onChange={handleChange}
           />
         </>
       )}
