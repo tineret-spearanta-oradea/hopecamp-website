@@ -1,6 +1,6 @@
 import React from "react";
 
-const ImageField = ({ handleImageChange }) => (
+const ImageInputField = ({ handleImageChange }) => (
 <div>
   <label className="block text-sm font-medium text-gray-700">Profile Picture</label>
   <input
@@ -13,4 +13,4 @@ const ImageField = ({ handleImageChange }) => (
 </div>
 );
 
-export default ImageField;
+export default ImageInputField;
