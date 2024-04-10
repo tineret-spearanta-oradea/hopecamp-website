@@ -27,9 +27,18 @@ const MultiStepForm = ({ handleSubmit, formData, setFormData }) => {
     setAgreementChecked(checked);
   };
 
-  // const handleSubmit = () => {
-  //   console.log("Form submitted:", formData);
-  // };
+  const handleImageChange = (e) => {
+    if (e.target.files[0]) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // Here we might want to handle the base64 string for previews or direct uploads
+        setFormData(prev => ({ ...prev, imageUrl: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
 
   return (
     <div className="max-w-lg mx-auto p-4">
@@ -49,6 +58,7 @@ const MultiStepForm = ({ handleSubmit, formData, setFormData }) => {
           handleChange={handleChange}
           handleNext={handleNext}
           handlePrev={handlePrev}
+          handleImageChange={handleImageChange}
         />
       )}
       {step === 3 && (
