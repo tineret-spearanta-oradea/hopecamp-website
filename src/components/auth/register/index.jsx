@@ -1,36 +1,41 @@
 import React, { useState } from "react";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { Navigate, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/authContext";
 import MultiFormStep from "./MultiFormStep";
 import { doCreateUserWithEmailAndPassword } from "../../../firebase/auth";
+import { registerAndCreateUser } from "../../../firebase";
+import UserData from "../../../models/UserData";
 
 const Register = () => {
-  const { userLoggedIn } = useAuth();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
-    phoneNumber: "",
-  });
+  const auth = getAuth();
+  const [userData, setUserData] = useState(new UserData());
 
   const handleSubmit = async () => {
-    e.preventDefault();
-
-    await doCreateUserWithEmailAndPassword(
-      formData["email"],
-      formData["password"]
-    );
+    registerAndCreateUser(userData);
   };
+
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in
+      // user properties and method (docs): https://firebase.google.com/docs/reference/js/auth.user
+      setLoggedInUser(user);
+    } else {
+      // User is signed out
+    }
+  });
 
   return (
     <>
-      {userLoggedIn && <Navigate to={"/home"} replace={true} />}
+      {/* TODO: Redirect to /cont page when it will be implemented */}
+      {loggedInUser !== null && <Navigate to={"/"} replace={true} />}
       <main className="w-full h-screen flex self-center place-content-center place-items-center">
         <div className="w-96 text-gray-600 space-y-5 p-4 shadow-xl border rounded-xl">
           <MultiFormStep
             handleSubmit={handleSubmit}
-            formData={formData}
-            setFormData={setFormData}
+            formData={userData}
+            setFormData={setUserData}
           />
         </div>
       </main>
