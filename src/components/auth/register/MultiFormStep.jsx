@@ -38,7 +38,6 @@ const MultiStepForm = ({ handleSubmit, formData, setFormData }) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         // Here we might want to handle the base64 string for previews or direct uploads
-        // Here we might want to handle the base64 string for previews or direct uploads
         setFormData(prev => ({ ...prev, imageUrl: reader.result }));
       };
       reader.readAsDataURL(file);
