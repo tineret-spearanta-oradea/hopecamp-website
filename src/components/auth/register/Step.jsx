@@ -1,7 +1,7 @@
 import React from "react";
-import InputField from "../InputField";
-import CheckboxField from "../CheckboxField";
-import ImageField from "../ImageField"
+import InputField from "../TextInputField";
+import CheckboxField from "../CheckboxInputField";
+import ImageField from "../ImageInputField"
 
 // TODO: Implement error message field
 
