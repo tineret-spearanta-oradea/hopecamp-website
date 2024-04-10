@@ -1,7 +1,6 @@
 //TODO: rename this file to MultiFormStep.jsx
 import React, { useState } from "react";
 import Step from "./Step";
-// import firebase from "../../../firebase"
 
 const MultiStepForm = ({ handleSubmit, formData, setFormData }) => {
   const [step, setStep] = useState(1);
