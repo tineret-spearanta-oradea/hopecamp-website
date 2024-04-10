@@ -38,37 +38,12 @@ const MultiStepForm = ({ handleSubmit, formData, setFormData }) => {
       const file = e.target.files[0];
       const reader = new FileReader();
       reader.onloadend = () => {
-        // Here you might want to handle the base64 string for previews or direct uploads
+        // Here we might want to handle the base64 string for previews or direct uploads
         setFormData(prev => ({ ...prev, imageUrl: reader.result }));
       };
       reader.readAsDataURL(file);
     }
   };
-
-  //uploading image feauture
-  // const uploadImageToStorage = (file) => {
-  //   const storageRef = firebase.storage().ref();
-  //   const fileRef = storageRef.child('images/' + file.name);
-  //   return fileRef.put(file).then(() => {
-  //     return fileRef.getDownloadURL();  // This URL can be saved in your database
-  //   });
-  // };
-  // // Call this function when submitting the form, using the original File object
-  // uploadImageToStorage(formData.imageFile).then((downloadURL) => {
-  //   console.log("Uploaded and got URL:", downloadURL);
-  // });
-
-
-  // const handleSubmit = () => {
-  // e.preventDefault();
-  // if (validateFields()) {
-  //   await doCreateUserWithEmailAndPassword(
-  //     formData.email,
-  //     formData.password
-  //   );
-  //   console.log("Form submitted:", formData);
-  //  }
-  // };
 
   const validateFields = () => {
     let newErrors = {};
