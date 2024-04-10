@@ -1,7 +1,7 @@
 import React from "react";
-import InputField from "../TextInputField";
-import CheckboxField from "../CheckboxInputField";
-import ImageField from "../ImageInputField";
+import TextInputField from "../TextInputField";
+import CheckboxInputField from "../CheckboxInputField";
+import ImageInputField from "../ImageInputField";
 
 // TODO: Implement error message field
 
@@ -29,7 +29,7 @@ const Step = ({
       </h2>
       {stepNumber === 1 && (
         <>
-          <InputField
+          <TextInputField
             label="Email"
             type="email"
             name="email"
@@ -38,7 +38,7 @@ const Step = ({
             onChange={(e) => handleChange("authData", e)}
             errorMessage={errors.email}
           />
-          <InputField
+          <TextInputField
             label="Password"
             type="password"
             name="password"
@@ -46,7 +46,7 @@ const Step = ({
             onChange={(e) => handleChange("authData", e)}
             errorMessage={errors.password}
           />
-          <InputField
+          <TextInputField
             label="Confirm Password"
             type="password"
             name="confirmPassword"
@@ -58,86 +58,86 @@ const Step = ({
       )}
       {stepNumber === 2 && (
         <>
-          <InputField
+          <TextInputField
             label="Full Name"
             type="text"
             name="fullName"
             value={formData.fullName}
             onChange={handleChange}
           />
-          <InputField
+          <TextInputField
             label="Age"
             type="number"
             name="age"
             value={formData.age}
             onChange={handleChange}
           />
-          <InputField
+          <TextInputField
             label="Phone Number"
             type="tel"
             name="phoneNumber"
             value={formData.phoneNumber}
             onChange={(e) => handleChange("userData", e)}
           />
-          <InputField
+          <TextInputField
             label="Church"
             type="text"
             name="church"
             value={formData.church}
             onChange={handleChange}
           />
-          <InputField
+          <TextInputField
             label="Pay Tax To"
             type="text"
             name="payTaxTo"
             value={formData.payTaxTo}
             onChange={handleChange}
           />
-          <InputField
+          <TextInputField
             label="Amount Paid"
             type="number"
             name="amountPaid"
             value={formData.amountPaid}
             onChange={handleChange}
           />
-          <InputField
+          <TextInputField
             label="Transport"
             type="text"
             name="transport"
             value={formData.transport}
             onChange={handleChange}
           />
-          <InputField
+          <TextInputField
             label="Start Date"
             type="date"
             name="startDate"
             value={formData.startDate}
             onChange={handleChange}
           />
-          <InputField
+          <TextInputField
             label="End Date"
             type="date"
             name="endDate"
             value={formData.endDate}
             onChange={handleChange}
           />
-          <ImageField
+          <ImageInputField
             label="Profile Picture"
             type="file"
             name="imageUrl"
             onChange={handleImageChange}
           />
-          <CheckboxField
+          <CheckboxInputField
             label="Is Admin"
             checked={formData.isAdmin}
             onChange={handleChange}
           />
-          <CheckboxField
+          <CheckboxInputField
             label="Is Confirmed"
             checked={formData.isConfirmed}
             onChange={handleChange}
           />
-          <InputField
+          <TextInputField
             label="Preferences"
             type="text"
             name="preferences"
@@ -151,7 +151,7 @@ const Step = ({
           <p>Email: {formData.email}</p>
           <p>Phone Number: {formData.phoneNumber}</p>
 
-          <CheckboxField
+          <CheckboxInputField
             label="I agree to the terms and conditions"
             checked={agreementChecked}
             onChange={handleAgreementChange}

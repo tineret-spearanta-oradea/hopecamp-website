@@ -1,6 +1,6 @@
 import React from "react";
 
-const CheckboxField = ({ label, checked, onChange }) => (
+const CheckboxInputField = ({ label, checked, onChange }) => (
   <div className="flex items-center">
     <input
       type="checkbox"
@@ -12,4 +12,4 @@ const CheckboxField = ({ label, checked, onChange }) => (
   </div>
 );
 
-export default CheckboxField;
+export default CheckboxInputField;
