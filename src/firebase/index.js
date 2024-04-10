@@ -2,25 +2,57 @@
 // This file will manage the functions from the individual files
 // Maybe this will not be needed, but for now, I will write the first version of it
 
-import { doCreateUserWithEmailAndPassword } from "./auth";
+import { doCreateUserWithEmailAndPassword, doDeleteAuthUser } from "./auth";
 import { writeUserData } from "./database";
-import UserData from "../models/UserData";
-
-// const formData = new UserData();
+import { uploadFile } from "./storage";
 
 export const registerAndCreateUser = async (formData) => {
-  // var userData = new UserData();
-  // userData = formData;
-  // console.log(typeof userData);
-  // console.log(typeof formData);
-  await doCreateUserWithEmailAndPassword(
-    formData["email"],
-    formData["password"]
-  ).then((userCredential) => {
+  const authData = formData.authData;
+  const userData = formData.userData;
+  userData["email"] = authData["email"];
+
+  // Sanity check, but this should be checked at the form level
+  if (authData["password"] !== authData["confirmPassword"]) {
+    //TODO: Change alert with an UI error component
+    alert("Passwords do not match");
+    return;
+  }
+
+  try {
+    const userCredential = await doCreateUserWithEmailAndPassword(
+      authData["email"],
+      authData["password"]
+    );
     const user = userCredential.user;
-    console.log(user);
-    formData["uid"] = user.uid;
-    writeUserData(formData);
-  });
+    userData["uid"] = user.uid;
+
+    try {
+      try {
+        await uploadFile(userData["imageFile"]);
+      } catch (uploadError) {
+        console.error("Error uploading file:", uploadError);
+        //TODO: Log error
+      }
+      await writeUserData(userData);
+    } catch (createError) {
+      //TODO: Change alert with an UI error component
+      alert("Error creating user!");
+      console.error("Error creating user data:", createError);
+      //TODO: Log error
+
+      try {
+        // Delete the user in the auth system if the user creation in db fails
+        await doDeleteAuthUser();
+      } catch (deleteError) {
+        //TODO: Log error
+        alert("Error creating user!");
+        console.error("Error deleting auth user:", deleteError);
+      }
+    }
+  } catch (authError) {
+    //TODO: Log error
+    //TODO: Change alert with an UI error component
+    alert("Error creating user!");
+    console.error("Error creating user data:", authError);
+  }
 };
-//TODO: I can delete the user in the auth system if the user creation fails

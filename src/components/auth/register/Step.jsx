@@ -32,21 +32,21 @@ const Step = ({
             name="email"
             autoComplete="email"
             value={formData.email}
-            onChange={handleChange}
+            onChange={(e) => handleChange("authData", e)}
           />
           <InputField
             label="Password"
             type="password"
             name="password"
             value={formData.password}
-            onChange={handleChange}
+            onChange={(e) => handleChange("authData", e)}
           />
           <InputField
             label="Confirm Password"
             type="password"
             name="confirmPassword"
             value={formData.confirmPassword}
-            onChange={handleChange}
+            onChange={(e) => handleChange("authData", e)}
           />
           {/* TODO: Add password validation here.
           Confirm password value and password value should be equal
@@ -60,7 +60,7 @@ const Step = ({
             type="tel"
             name="phoneNumber"
             value={formData.phoneNumber}
-            onChange={handleChange}
+            onChange={(e) => handleChange("userData", e)}
           />
         </>
       )}

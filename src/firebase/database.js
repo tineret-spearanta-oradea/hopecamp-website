@@ -3,13 +3,17 @@ import { db } from "./firebase-config";
 import { doc, setDoc, Timestamp } from "firebase/firestore";
 
 export const writeUserData = async (userData) => {
-  console.log(userData);
+  // Here you can add default values to the user data
+  userData.amountPayed = 0;
+
+  const normalizedUserData = Object.fromEntries(
+    Object.entries(userData)
+      .filter(([key, value]) => value !== undefined)
+      .filter(([key]) => key !== "uid")
+  );
 
   const docData = {
-    fullName: userData.uid,
-    email: userData.email,
-    // imageUrl: userData.imageUrl,
-    // phone: userData.phone,
+    normalizedUserData,
   };
 
   await setDoc(doc(db, "users", userData.uid), docData);

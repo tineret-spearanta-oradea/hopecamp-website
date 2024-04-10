@@ -6,7 +6,8 @@ class UserData {
     confirmPassword,
     name,
     phone,
-    imageUrl
+    imageUrl,
+    amountPayed
   ) {
     this.uid = uid;
     this.email = email;
@@ -15,6 +16,7 @@ class UserData {
     this.phone = phone;
     this.imageUrl = imageUrl;
     this.confirmPassword = confirmPassword;
+    this.amountPayed = amountPayed;
   }
 }
 

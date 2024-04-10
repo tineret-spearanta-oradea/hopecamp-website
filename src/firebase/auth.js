@@ -1,5 +1,6 @@
 import {
   createUserWithEmailAndPassword,
+  deleteUser,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "./firebase-config";
@@ -14,6 +15,11 @@ export const doSignInWithEmailAndPassword = (email, password) => {
 
 export const doSignOut = () => {
   return auth.SignOut();
+};
+
+export const doDeleteAuthUser = () => {
+  const user = auth.currentUser;
+  return deleteUser(user);
 };
 
 export const doPasswordReset = (email) => {

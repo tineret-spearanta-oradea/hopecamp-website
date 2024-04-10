@@ -5,13 +5,25 @@ import Step from "./Step";
 const MultiStepForm = ({ handleSubmit, formData, setFormData }) => {
   const [step, setStep] = useState(1);
 
-  const [agreementChecked, setAgreementChecked] = useState(false); // Define the agreementChecked state
+  const [agreementChecked, setAgreementChecked] = useState(false);
 
-  const handleChange = (e) => {
+  /*
+  Function to handle form input changes
+  The structure of the formData object is:
+  {
+    authData // Object defined in ../../models/AuthData.js
+    userData // Object defined in ../../models/UserData.js
+  }
+  */
+  const handleChange = (objectName, e) => {
     const { name, value } = e.target;
+
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [objectName]: {
+        ...prevData[objectName],
+        [name]: value,
+      },
     }));
   };
 
@@ -27,10 +39,6 @@ const MultiStepForm = ({ handleSubmit, formData, setFormData }) => {
     const { checked } = e.target;
     setAgreementChecked(checked);
   };
-
-  // const handleSubmit = () => {
-  //   console.log("Form submitted:", formData);
-  // };
 
   return (
     <div className="max-w-lg mx-auto p-4">
@@ -58,8 +66,8 @@ const MultiStepForm = ({ handleSubmit, formData, setFormData }) => {
           formData={formData}
           handlePrev={handlePrev}
           handleSubmit={handleSubmit}
-          agreementChecked={agreementChecked} // Pass agreementChecked state to Step
-          handleAgreementChange={handleAgreementChange} // Pass handleAgreementChange to Step
+          agreementChecked={agreementChecked}
+          handleAgreementChange={handleAgreementChange}
         />
       )}
     </div>

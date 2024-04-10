@@ -6,13 +6,17 @@ import MultiFormStep from "./MultiFormStep";
 import { doCreateUserWithEmailAndPassword } from "../../../firebase/auth";
 import { registerAndCreateUser } from "../../../firebase";
 import UserData from "../../../models/UserData";
+import AuthData from "../../../models/AuthData";
 
 const Register = () => {
   const auth = getAuth();
-  const [userData, setUserData] = useState(new UserData());
+  const [formData, setFormData] = useState({
+    authData: new AuthData(),
+    userData: new UserData(),
+  });
 
   const handleSubmit = async () => {
-    registerAndCreateUser(userData);
+    registerAndCreateUser(formData);
   };
 
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -34,8 +38,8 @@ const Register = () => {
         <div className="w-96 text-gray-600 space-y-5 p-4 shadow-xl border rounded-xl">
           <MultiFormStep
             handleSubmit={handleSubmit}
-            formData={userData}
-            setFormData={setUserData}
+            formData={formData}
+            setFormData={setFormData}
           />
         </div>
       </main>
