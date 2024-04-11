@@ -8,8 +8,8 @@ const Home = () => {
                     Hope Camp
                 </div>
                 <div className='text-base flex justify-center text-center p-4'>
-                    Work in progress... Please, come back later!
-                    <br/>Will be back sooon.
+                    Work in progress...     Please, come back later!
+                    <br />Will be back sooon.
                 </div>
             </div>
         </div>
