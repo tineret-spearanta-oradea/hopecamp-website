@@ -4,9 +4,11 @@
 
 import { doCreateUserWithEmailAndPassword, doDeleteAuthUser } from "./auth";
 import { writeUserData } from "./database";
-import { uploadFile } from "./storage";
+import { uploadImageAndGetUrl } from "./storage";
 
-export const registerAndCreateUser = async (formData) => {
+//TODO [Optional]: Log errors in a log file
+
+export const registerAndCreateUser = async (formData, imageFile) => {
   const authData = formData.authData;
   const userData = formData.userData;
   userData["email"] = authData["email"];
@@ -27,30 +29,33 @@ export const registerAndCreateUser = async (formData) => {
     userData["uid"] = user.uid;
 
     try {
-      try {
-        await uploadFile(userData["imageFile"]);
-      } catch (uploadError) {
-        console.error("Error uploading file:", uploadError);
-        //TODO: Log error
-      }
+      const imageUrl = await uploadImageAndGetUrl(
+        imageFile,
+        userData["uid"],
+        userData["email"],
+        userData["fullName"]
+      );
+      userData["imageUrl"] = imageUrl;
+    } catch (uploadError) {
+      console.error("Error uploading file:", uploadError);
+    }
+
+    try {
       await writeUserData(userData);
     } catch (createError) {
       //TODO: Change alert with an UI error component
       alert("Error creating user!");
       console.error("Error creating user data:", createError);
-      //TODO: Log error
 
       try {
         // Delete the user in the auth system if the user creation in db fails
         await doDeleteAuthUser();
       } catch (deleteError) {
-        //TODO: Log error
         alert("Error creating user!");
         console.error("Error deleting auth user:", deleteError);
       }
     }
   } catch (authError) {
-    //TODO: Log error
     //TODO: Change alert with an UI error component
     alert("Error creating user!");
     console.error("Error creating user data:", authError);

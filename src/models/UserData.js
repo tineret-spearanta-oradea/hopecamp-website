@@ -2,21 +2,37 @@ class UserData {
   constructor(
     uid = null,
     email,
-    password,
-    confirmPassword,
-    name,
+    fullName,
     phone,
     imageUrl,
-    amountPayed
+    amountPaid = 0,
+    payTaxTo,
+    age,
+    church,
+    transport,
+    startDate,
+    endDate,
+    isAdmin = false,
+    isConfirmed = false,
+    preferences = "",
+    signupDate = new Date().toISOString().slice(0, 10)
   ) {
     this.uid = uid;
     this.email = email;
-    this.password = password;
-    this.name = name;
+    this.fullName = fullName;
     this.phone = phone;
     this.imageUrl = imageUrl;
-    this.confirmPassword = confirmPassword;
-    this.amountPayed = amountPayed;
+    this.amountPaid = amountPaid;
+    this.payTaxTo = payTaxTo;
+    this.age = age;
+    this.church = church;
+    this.transport = transport;
+    this.startDate = startDate;
+    this.endDate = endDate;
+    this.isAdmin = isAdmin;
+    this.isConfirmed = isConfirmed;
+    this.preferences = preferences;
+    this.signupDate = signupDate;
   }
 }
 
