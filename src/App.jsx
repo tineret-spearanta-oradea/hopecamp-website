@@ -7,6 +7,7 @@ import Home from "./components/home";
 import NavigationBar from "./components/navigationBar";
 import "./index.css";
 
+
 function App() {
   const { UserLoggedIn } = useAuth();
 

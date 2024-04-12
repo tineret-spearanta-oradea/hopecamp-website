@@ -90,9 +90,9 @@ const Step = ({
             label="Numar de telefon:"
             type="tel"
             name="phone"
-            value={formData.userData.phoneNumber}
+            value={formData.userData.phone}
             onChange={(e) => handleChange("userData", e)}
-            errorMessage={errors.phoneNumber}
+            errorMessage={errors.phone}
           />
           <TextInputField
             label="Biserica din care provii:"
