@@ -14,11 +14,13 @@ function App() {
   return (
     <Router>
       <NavigationBar />
+      <div className="pt-2 overflow-y-auto h-[calc(100vh-4rem)]">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/inscrie-te" element={<Register />} />
       </Routes>
+      </div>
     </Router>
   );
 }
