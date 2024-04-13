@@ -1,47 +1,58 @@
 import React, { useState } from "react";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { Navigate, Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../../contexts/authContext";
-import MultiFormStep from "./MultiFormStep";
-import { doCreateUserWithEmailAndPassword } from "../../../firebase/auth";
+import MultiStepForm from "./MultiStepForm";
+import { uploadImageAndGetUrl } from "../../../firebase/storage";
+import { registerAndCreateUser } from "../../../firebase";
+import UserData from "../../../models/UserData";
+import AuthData from "../../../models/AuthData";
 
 const Register = () => {
-  const { userLoggedIn } = useAuth();
+  const auth = getAuth();
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
-    phoneNumber: "",
-    fullName: "",
-    age: "",
-    church: "",
-    payTaxTo: "",
-    amountPaid: "",
-    transport: "",
-    startDate: "",
-    endDate: "",
-    imageUrl: "",
-    isAdmin: false,
-    isConfirmed: false,
-    preferences: "",
-    signupDate: new Date().toISOString().slice(0, 10) // YYYY-MM-DD format
+    authData: new AuthData(),
+    userData: new UserData(),
   });
+  const [imageFile, setImageFile] = useState(null);
+  const [agreementChecked, setAgreementChecked] = useState(false);
 
   const handleSubmit = async () => {
-    e.preventDefault();
-
-    await doCreateUserWithEmailAndPassword(
-      formData["email"],
-      formData["password"]
-    );
+    if (agreementChecked) {
+      registerAndCreateUser(formData, imageFile);
+    }
   };
+
+  const handleImageChange = (e) => {
+    if (e.target.files[0]) {
+      setImageFile(e.target.files[0]);
+    }
+  };
+
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      //TODO: review if this is a correct way to handle user state.
+      // create ticket
+      //
+      // User is signed in
+      // user properties and method (docs): https://firebase.google.com/docs/reference/js/auth.user
+      setLoggedInUser(user);
+    } else {
+      // User is signed out
+    }
+  });
 
   return (
     <>
-      {userLoggedIn && <Navigate to={"/home"} replace={true} />}
+      {/* TODO: Redirect to /cont page when it will be implemented */}
+      {loggedInUser !== null && <Navigate to={"/"} replace={true} />}
       <main className="w-full h-screen flex self-center place-content-center place-items-center">
         <div className="w-96 text-gray-600 space-y-5 p-4 shadow-xl border rounded-xl">
-          <MultiFormStep
+          <MultiStepForm
             handleSubmit={handleSubmit}
+            handleImageChange={handleImageChange}
+            agreementChecked={agreementChecked}
+            setAgreementChecked={setAgreementChecked}
             formData={formData}
             setFormData={setFormData}
           />
