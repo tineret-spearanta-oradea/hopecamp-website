@@ -33,7 +33,7 @@ export const registerAndCreateUser = async (formData, imageFile) => {
         imageFile,
         userData["uid"],
         userData["email"],
-        userData["fullName"]
+        userData["name"]
       );
       userData["imageUrl"] = imageUrl;
     } catch (uploadError) {
