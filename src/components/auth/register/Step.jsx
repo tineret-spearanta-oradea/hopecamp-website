@@ -73,10 +73,10 @@ const Step = ({
           <TextInputField
             label="Numele intreg:"
             type="text"
-            name="fullName"
-            value={formData.userData.fullName}
+            name="name"
+            value={formData.userData.name}
             onChange={(e) => handleChange("userData", e)}
-            errorMessage={errors.fullName}
+            errorMessage={errors.name}
           />
           <TextInputField
             label="Varsta:"

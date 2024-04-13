@@ -16,14 +16,14 @@ export const uploadImageAndGetUrl = async (
   file,
   uid,
   email = null,
-  fullName = null
+  name = null
 ) => {
   try {
     const imageRef = ref(usersRef, uid);
     const snapshot = await uploadBytes(imageRef, file);
     const downloadUrl = await getDownloadURL(snapshot.ref);
 
-    updateMetadataForImage(imageRef, email, fullName);
+    updateMetadataForImage(imageRef, email, name);
 
     return downloadUrl;
   } catch (error) {
@@ -32,20 +32,16 @@ export const uploadImageAndGetUrl = async (
   }
 };
 
-const updateMetadataForImage = async (
-  imageRef,
-  email = null,
-  fullName = null
-) => {
+const updateMetadataForImage = async (imageRef, email = null, name = null) => {
   try {
     const updatedMetadata = {
-      contentType: "image/*",
+      contentType: "image/.*",
       customMetadata: {},
     };
 
-    if (fullName || email) {
-      if (fullName) {
-        updatedMetadata.customMetadata.createdBy = fullName;
+    if (name || email) {
+      if (name) {
+        updatedMetadata.customMetadata.createdBy = name;
       }
       if (email) {
         updatedMetadata.customMetadata.createdByEmail = email;

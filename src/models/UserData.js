@@ -1,19 +1,20 @@
 class UserData {
   constructor(
-    uid = null,
     email,
     name,
     phone,
-    imageUrl,
-    amountPaid = 0,
     payTaxTo,
     age,
     church,
     transport,
-    startDate,
-    endDate,
+    uid = null,
+    startDate = null,
+    endDate = null,
+    amountPaid = 0,
+    imageUrl = "",
     isAdmin = false,
     isConfirmed = false,
+    withFamilyMember = false,
     preferences = "",
     signupDate = new Date().toISOString().slice(0, 10)
   ) {
@@ -31,6 +32,7 @@ class UserData {
     this.endDate = endDate;
     this.isAdmin = isAdmin;
     this.isConfirmed = isConfirmed;
+    this.withFamilyMember = withFamilyMember;
     this.preferences = preferences;
     this.signupDate = signupDate;
   }
