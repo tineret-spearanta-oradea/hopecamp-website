@@ -44,8 +44,7 @@ const Register = () => {
 
   return (
     <>
-      {/* TODO: Redirect to /cont page when it will be implemented */}
-      {loggedInUser !== null && <Navigate to={"/"} replace={true} />}
+      {loggedInUser !== null && <Navigate to={"/cont"} replace={true} />}
       <main className="w-full h-screen flex self-center place-content-center place-items-center">
         <div className="w-96 text-gray-600 space-y-5 p-4 shadow-xl border rounded-xl">
           <MultiStepForm
