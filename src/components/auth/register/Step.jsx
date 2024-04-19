@@ -2,6 +2,7 @@ import React from "react";
 import TextInputField from "../TextInputField";
 import CheckboxInputField from "../CheckboxInputField";
 import ImageInputField from "../ImageInputField";
+import RadioInputField from '../RadioInputField';
 
 // TODO: Add diacritics to the text
 const Step = ({
