@@ -2,7 +2,7 @@ class UserData {
   constructor(
     uid = null,
     email,
-    fullName,
+    name,
     phone,
     imageUrl,
     amountPaid = 0,
@@ -19,7 +19,7 @@ class UserData {
   ) {
     this.uid = uid;
     this.email = email;
-    this.fullName = fullName;
+    this.name = name;
     this.phone = phone;
     this.imageUrl = imageUrl;
     this.amountPaid = amountPaid;

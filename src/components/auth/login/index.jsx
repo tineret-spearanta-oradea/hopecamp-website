@@ -4,12 +4,15 @@ import { doSignInWithEmailAndPassword } from "../../../firebase/auth";
 import { useAuth } from "../../../contexts/authContext";
 
 const Login = () => {
-  const { userLoggedIn } = useAuth();
-
+  const { authData, userData, userLoggedIn, loading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  if (userLoggedIn) {
+    return <Navigate to={"/cont"} replace={true} />;
+  }
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -20,16 +23,8 @@ const Login = () => {
     }
   };
 
-  const onGoogleSignIn = (e) => {
-    alert(
-      "This is not and will not be implemented. TODO: Remove this button from the UI"
-    );
-  };
-
   return (
     <div>
-      {userLoggedIn && <Navigate to={"/cont"} replace={true} />}
-
       <main className="w-full h-screen flex self-center place-content-center place-items-center">
         <div className="w-96 text-gray-600 space-y-5 p-4 pb-8 shadow-xl border rounded-xl">
           <div className="text-center">
@@ -56,9 +51,7 @@ const Login = () => {
             </div>
 
             <div>
-              <label className="text-sm text-gray-600 font-bold">
-                Parolă
-              </label>
+              <label className="text-sm text-gray-600 font-bold">Parolă</label>
               <input
                 type="password"
                 autoComplete="current-password"
@@ -71,7 +64,10 @@ const Login = () => {
               />
             </div>
             <div className="text-right text-sm">
-              <Link to={"/resetare-parola"} className="hover:underline font-bold text-blue-700">
+              <Link
+                to={"/resetare-parola"}
+                className="hover:underline font-bold text-blue-700"
+              >
                 Am uitat parola
               </Link>
             </div>
@@ -94,11 +90,13 @@ const Login = () => {
           </form>
           <p className="text-center text-sm ">
             Nu te-ai înscris încă în tabără?{" "}
-            <Link to={"/inscrie-te"} className="hover:underline font-bold text-blue-700">
+            <Link
+              to={"/inscrie-te"}
+              className="hover:underline font-bold text-blue-700"
+            >
               Înscrie-te aici
             </Link>
           </p>
-        
         </div>
       </main>
     </div>
