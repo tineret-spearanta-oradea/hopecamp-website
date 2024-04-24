@@ -8,6 +8,7 @@ import {
   query,
   where,
   getDocs,
+  getDoc,
 } from "firebase/firestore";
 
 export const writeUserData = async (userData) => {
@@ -17,11 +18,19 @@ export const writeUserData = async (userData) => {
       .filter(([key]) => key !== "uid")
   );
 
-  const docData = {
-    normalizedUserData,
-  };
+  const docData = normalizedUserData;
 
   await setDoc(doc(db, "users", userData.uid), docData);
+};
+
+export const getUserData = async (uid) => {
+  const docRef = doc(db, "users", uid);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return docSnap.data();
+  }
+  return null;
 };
 
 export const getArchivedUserData = async (email) => {
