@@ -11,19 +11,33 @@ export const useAuth = () => {
   return useContext(AuthContext);
 };
 
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export function AuthProvider({ children }) {
   const [authData, setAuthData] = useState(null);
   const [userData, setUserData] = useState(null);
   const [userLoggedIn, setUserLoggedIn] = useState(false); // Set to false initially
   const [loading, setLoading] = useState(true); // Set to true initially
+  const [error, setError] = useState(null); // Set to true initially
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setAuthData(user);
         setUserLoggedIn(true);
-        const userData = await getUserData(user.uid);
-        setUserData(userData);
+        var keepTrying = 5;
+        while (keepTrying >= 0) {
+          await delay(1000);
+          const userData = await getUserData(user.uid);
+          if (userData) {
+            setUserData(userData);
+            break;
+          }
+          keepTrying--;
+        }
+        if (keepTrying == 0) {
+          setError("Failed to get user data");
+        }
       } else {
         setAuthData(null);
         setUserLoggedIn(false);
@@ -40,6 +54,7 @@ export function AuthProvider({ children }) {
     userData,
     userLoggedIn,
     loading,
+    error,
   };
 
   // Check if loading is true, if so, return a loading indicator

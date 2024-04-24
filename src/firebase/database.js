@@ -26,7 +26,6 @@ export const writeUserData = async (userData) => {
 export const getUserData = async (uid) => {
   const docRef = doc(db, "users", uid);
   const docSnap = await getDoc(docRef);
-  console.log(uid);
 
   if (docSnap.exists()) {
     return docSnap.data();

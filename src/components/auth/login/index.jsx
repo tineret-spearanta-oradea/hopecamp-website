@@ -4,7 +4,7 @@ import { doSignInWithEmailAndPassword } from "../../../firebase/auth";
 import { useAuth } from "../../../contexts/authContext";
 
 const Login = () => {
-  const { authData, userData, userLoggedIn, loading } = useAuth();
+  const { authData, userData, userLoggedIn, loading, error } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSigningIn, setIsSigningIn] = useState(false);

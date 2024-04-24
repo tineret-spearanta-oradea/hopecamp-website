@@ -8,11 +8,10 @@ import PendingUser from "./PendingUser";
 
 //TODO: Style this component and the children components
 const Account = () => {
-  const { authData, userData, userLoggedIn, loading } = useAuth();
+  const { authData, userData, userLoggedIn, loading, error } = useAuth();
   const navigate = useNavigate();
 
   const goToLogout = () => {
-    console.log("asd");
     navigate("/logout");
   };
 
