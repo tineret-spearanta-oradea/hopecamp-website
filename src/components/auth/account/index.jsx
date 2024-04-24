@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Navigate, Link } from "react-router-dom";
+import { Navigate, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/authContext";
 import { getUserData } from "../../../firebase/database";
 import UserData from "../../../models/UserData";
@@ -9,6 +9,12 @@ import PendingUser from "./PendingUser";
 //TODO: Style this component and the children components
 const Account = () => {
   const { authData, userData, userLoggedIn, loading } = useAuth();
+  const navigate = useNavigate();
+
+  const goToLogout = () => {
+    console.log("asd");
+    navigate("/logout");
+  };
 
   if (!userLoggedIn) {
     return <Navigate to={"/login"} replace={true} />;
@@ -21,6 +27,14 @@ const Account = () => {
         <div>
           <main className="w-full h-screen flex self-center place-content-center place-items-center">
             <div className="w-96 text-gray-600 space-y-5 p-4 pb-8 shadow-xl border rounded-xl">
+              <div className="text-right">
+                <button
+                  onClick={goToLogout}
+                  className="m-2 py-1 px-4 bg-red-400 text-white rounded-md"
+                >
+                  Logout
+                </button>
+              </div>
               <div className="mt-2 text-center">
                 <h3 className="text-gray-800 text-xl font-semibold sm:text-2xl">
                   Contul meu

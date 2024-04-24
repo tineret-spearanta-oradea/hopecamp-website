@@ -7,6 +7,7 @@ import Home from "./components/home";
 import NavigationBar from "./components/navigationBar";
 import ResetPassword from "./components/auth/reset_password";
 import Account from "./components/auth/account";
+import Logout from "./components/auth/logout";
 import "./index.css";
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route path="/inscrie-te" element={<Register />} />
           <Route path="/resetare-parola" element={<ResetPassword />} />
           <Route path="/cont" element={<Account />} />
+          <Route path="/logout" element={<Logout />} />
         </Routes>
       </div>
     </Router>
