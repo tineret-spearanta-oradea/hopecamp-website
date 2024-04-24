@@ -127,6 +127,22 @@ const MultiStepForm = ({
     return Object.keys(newErrors).length === 0;
   };
 
+  const churchOptions = [
+    { label: 'Speranța, Oradea', value: 'Speranta' },
+    { label: 'Muntele Sionului, Aleșd', value: 'Muntele Sionului' },
+  ];
+
+  const payTaxToOptions = [
+    { label: 'Carina Ban', value: 'Carina Ban' },
+    { label: 'Rebeca Gros', value: 'Rebeca Gros' },
+  ];
+
+  const transportOptions = [
+    { label: 'Vin cu mașina personală', value: 'Masina personala' },
+    { label: 'Vin cu un prieten cu mașina', value: 'Masina prietenului' },
+    { label: 'Autocar de la biserică', value: 'Autocar' },
+  ];
+
   return (
     <div className="max-w-lg mx-auto p-4">
       {step === 1 && (
@@ -148,6 +164,9 @@ const MultiStepForm = ({
           handlePrev={handlePrev}
           handleImageChange={handleImageChange}
           errors={errors}
+          churchOptions={churchOptions}
+          payTaxToOptions={payTaxToOptions}
+          transportOptions={transportOptions}
         />
       )}
       {step === 3 && (

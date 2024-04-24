@@ -16,6 +16,9 @@ const Step = ({
   handleAgreementChange,
   handleImageChange,
   errors,
+  churchOptions,
+  payTaxToOptions,
+  transportOptions,
 }) => {
   return (
     <div>
@@ -95,29 +98,32 @@ const Step = ({
             onChange={(e) => handleChange("userData", e)}
             errorMessage={errors.phone}
           />
-          <TextInputField
+          <RadioInputField
             label="Biserica din care provii:"
-            type="text"
             name="church"
+            options={churchOptions}
             value={formData.userData.church}
             onChange={(e) => handleChange("userData", e)}
-            errorMessage={errors.church}
+            // errorMessage={errors.church}
+            // onOtherChange
+            // otherValue
+            showOther={true}
           />
-          {/* TODO: This should be a radio input: */}
-          <TextInputField
+          <RadioInputField
             label="Cui platesti taxa de inscriere:"
-            type="text"
             name="payTaxTo"
+            options={payTaxToOptions}
             value={formData.userData.payTaxTo}
             onChange={(e) => handleChange("userData", e)}
+            showOther={false}
           />
-          {/* TODO: This should be a radio input: */}
-          <TextInputField
+          <RadioInputField
             label="Mijloc de transport:"
-            type="text"
             name="transport"
+            options={transportOptions}
             value={formData.userData.transport}
             onChange={(e) => handleChange("userData", e)}
+            showOther={false}
           />
           {/* TODO: This should be a limited input, and the user should select start date and end date.
           We could do this with a calendar, or with creating our own 'cards' with the dates. 
@@ -138,8 +144,6 @@ const Step = ({
           />
           <ImageInputField
             label="Poza cu tine" // TODO: maybe make this optional (?) to be discussed
-            type="file"
-            name="imageUrl"
             handleImageChange={handleImageChange}
           />
           <TextInputField
