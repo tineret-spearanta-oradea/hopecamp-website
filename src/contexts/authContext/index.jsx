@@ -25,12 +25,13 @@ export function AuthProvider({ children }) {
       if (user) {
         setAuthData(user);
         setUserLoggedIn(true);
-        var keepTrying = 5;
+        var keepTrying = 20;
         while (keepTrying >= 0) {
-          await delay(1000);
-          const userData = await getUserData(user.uid);
-          if (userData) {
-            setUserData(userData);
+          await delay(100);
+          const getUserDataResponse = await getUserData(user.uid);
+          console.log(getUserDataResponse);
+          if (getUserDataResponse) {
+            setUserData(getUserDataResponse);
             break;
           }
           keepTrying--;

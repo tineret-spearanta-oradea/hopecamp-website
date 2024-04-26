@@ -22,7 +22,7 @@ const MultiStepForm = ({
   };
 
   const handleChange = (objectName, e) => {
-    const { name, value } = e.target;
+    const { name, value } = e;
     setFormData((prevData) => ({
       ...prevData,
       [objectName]: {
@@ -86,14 +86,6 @@ const MultiStepForm = ({
     setStep((prevStep) => prevStep - 1);
   };
 
-  const handleArrivalDateChange = (event) => {
-    // setArrivalDate(event.target.value);
-  };
-
-  const handleDepartureDateChange = (event) => {
-    // setDepartureDate(event.target.value);
-  };
-
   const areFieldsValid = (step) => {
     let newErrors = {};
 
@@ -135,6 +127,10 @@ const MultiStepForm = ({
         newErrors.church = "Biserica este necesară.";
       }
 
+      if (userData.startDate === null || userData.endDate === null) {
+        newErrors.dateRange = "Perioada este necesară.";
+      }
+
       // TODO: implement errors for all new required fields (including radio buttons and date pickers and file input)
       // this should be done after implemeting the new fields first.
     }
@@ -142,22 +138,6 @@ const MultiStepForm = ({
 
     return Object.keys(newErrors).length === 0;
   };
-
-  const churchOptions = [
-    { label: 'Speranța, Oradea', value: 'Speranta' },
-    { label: 'Muntele Sionului, Aleșd', value: 'Muntele Sionului' },
-  ];
-
-  const payTaxToOptions = [
-    { label: 'Carina Ban', value: 'Carina Ban' },
-    { label: 'Rebeca Gros', value: 'Rebeca Gros' },
-  ];
-
-  const transportOptions = [
-    { label: 'Vin cu mașina personală', value: 'Masina personala' },
-    { label: 'Vin cu un prieten cu mașina', value: 'Masina prietenului' },
-    { label: 'Autocar de la biserică', value: 'Autocar' },
-  ];
 
   return (
     <div className="max-w-lg mx-auto p-4">
@@ -178,13 +158,8 @@ const MultiStepForm = ({
           handleChange={handleChange}
           handleNext={handleNext}
           handlePrev={handlePrev}
-          handleArrivalDateChange={handleArrivalDateChange}
-          handleDepartureDateChange={handleDepartureDateChange}
           handleImageChange={handleImageChange}
           errors={errors}
-          churchOptions={churchOptions}
-          payTaxToOptions={payTaxToOptions}
-          transportOptions={transportOptions}
         />
       )}
       {step === 3 && (

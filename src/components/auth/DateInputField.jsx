@@ -1,25 +1,47 @@
-import React from 'react';
+import React from "react";
+import { DateRangePicker } from "rsuite";
+import "rsuite/DateRangePicker/styles/index.css";
+import { dateRange } from "../../models/Options";
 
 const DateInputField = ({
   label,
   name,
-  value,
+  startDateValue,
+  endDateValue,
   onChange,
-  minDate,
-  maxDate,
-}) => (
-  <div>
-    <label className="text-sm text-gray-600 font-bold">{label}</label>
-    <input
-      className="mt-1 block w-full px-3 py-2 bg-white border shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-      type="date"
-      name={name}
-     // value={value}
-      onChange={onChange}
-      min={minDate}
-      max={maxDate}
-    />
-  </div>
-);
+  errorMessage,
+}) => {
+  const { combine, allowedRange, beforeToday } = DateRangePicker;
+  const minDate = dateRange.startDate;
+  const maxDate = dateRange.endDate;
+
+  const handleChange = (dates) => {
+    if (dates == null) {
+      onChange({ name: "startDate", value: null });
+      onChange({ name: "endDate", value: null });
+    } else {
+      onChange({ name: "startDate", value: dates[0] });
+      onChange({ name: "endDate", value: dates[1] });
+    }
+  };
+
+  return (
+    <div>
+      <label className="text-sm text-gray-600 font-bold">{label}</label>
+      <DateRangePicker
+        showOneCalendar
+        block
+        format="dd.MM.yyyy"
+        defaultValue={[startDateValue, endDateValue]}
+        defaultCalendarValue={[startDateValue, endDateValue]}
+        shouldDisableDate={allowedRange(minDate, maxDate)}
+        onChange={handleChange}
+      />
+      {errorMessage && (
+        <p className="text-red-500 text-xs italic">{errorMessage}</p>
+      )}
+    </div>
+  );
+};
 
 export default DateInputField;

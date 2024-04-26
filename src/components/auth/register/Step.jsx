@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TextInputField from "../TextInputField";
 import CheckboxInputField from "../CheckboxInputField";
 import ImageInputField from "../ImageInputField";
-import RadioInputField from '../RadioInputField';
-import DateInputField from '../DateInputField'
+import RadioInputField from "../RadioInputField";
+import DateInputField from "../DateInputField";
+import { churchOptions } from "../../../models/Options";
+import { payTaxToOptions } from "../../../models/Options";
+import { transportOptions } from "../../../models/Options";
 
 // TODO: Add diacritics to the text
 const Step = ({
@@ -17,11 +20,6 @@ const Step = ({
   handleAgreementChange,
   handleImageChange,
   errors,
-  churchOptions,
-  payTaxToOptions,
-  transportOptions,
-  handleDepartureDateChange,
-  handleArrivalDateChange,
 }) => {
   return (
     <div>
@@ -30,8 +28,8 @@ const Step = ({
         {stepNumber === 1
           ? "Autentificare"
           : stepNumber === 2
-            ? "Detalii personale"
-            : "Confirmare"}
+          ? "Detalii personale"
+          : "Confirmare"}
       </h2>
       <h3 className="mb-4">
         {stepNumber === 1
@@ -43,8 +41,8 @@ const Step = ({
         {stepNumber === 1
           ? "Emailul si parola vor fi folosite pentru a te conecta la platforma noastrǎ"
           : stepNumber === 2
-            ? "Ajuta-ne să te (re)cunoaștem!"
-            : ""}
+          ? "Ajuta-ne să te (re)cunoaștem!"
+          : ""}
       </h5>
       {stepNumber === 1 && (
         <>
@@ -54,7 +52,7 @@ const Step = ({
             name="email"
             autoComplete="email"
             value={formData.authData.email}
-            onChange={(e) => handleChange("authData", e)}
+            onChange={(e) => handleChange("authData", e.target)}
             errorMessage={errors.email}
           />
           <TextInputField
@@ -62,7 +60,7 @@ const Step = ({
             type="password"
             name="password"
             value={formData.authData.password}
-            onChange={(e) => handleChange("authData", e)}
+            onChange={(e) => handleChange("authData", e.target)}
             errorMessage={errors.password}
           />
           <TextInputField
@@ -70,7 +68,7 @@ const Step = ({
             type="password"
             name="confirmPassword"
             value={formData.authData.confirmPassword}
-            onChange={(e) => handleChange("authData", e)}
+            onChange={(e) => handleChange("authData", e.target)}
             errorMessage={errors.confirmPassword}
           />
         </>
@@ -82,7 +80,7 @@ const Step = ({
             type="text"
             name="name"
             value={formData.userData.name}
-            onChange={(e) => handleChange("userData", e)}
+            onChange={(e) => handleChange("userData", e.target)}
             errorMessage={errors.name}
           />
           <TextInputField
@@ -90,7 +88,7 @@ const Step = ({
             type="number"
             name="age"
             value={formData.userData.age}
-            onChange={(e) => handleChange("userData", e)}
+            onChange={(e) => handleChange("userData", e.target)}
             errorMessage={errors.age}
           />
           <TextInputField
@@ -98,7 +96,7 @@ const Step = ({
             type="tel"
             name="phone"
             value={formData.userData.phone}
-            onChange={(e) => handleChange("userData", e)}
+            onChange={(e) => handleChange("userData", e.target)}
             errorMessage={errors.phone}
           />
           <RadioInputField
@@ -106,43 +104,30 @@ const Step = ({
             name="church"
             options={churchOptions}
             value={formData.userData.church}
-            onChange={(e) => handleChange("userData", e)}
-            // errorMessage={errors.church}
-            // onOtherChange
-            // otherValue
-            showOther={true}
+            onChange={(e) => handleChange("userData", e.target)}
+            errorMessage={errors.church}
           />
           <RadioInputField
             label="Cui platesti taxa de inscriere:"
             name="payTaxTo"
             options={payTaxToOptions}
             value={formData.userData.payTaxTo}
-            onChange={(e) => handleChange("userData", e)}
-            showOther={false}
+            onChange={(e) => handleChange("userData", e.target)}
           />
           <RadioInputField
             label="Mijloc de transport:"
             name="transport"
             options={transportOptions}
             value={formData.userData.transport}
+            onChange={(e) => handleChange("userData", e.target)}
+          />
+          <DateInputField
+            label="Perioada care stai în tabără:"
+            name="dateRange"
+            startDateValue={formData.userData.startDate}
+            endDateValue={formData.userData.endDate}
             onChange={(e) => handleChange("userData", e)}
-            showOther={false}
-          />
-          <DateInputField
-            label="Data în care vii în tabără"
-            name="arrival"
-            // value={arrivalDate}
-            onChange={handleArrivalDateChange}
-            minDate="2023-06-22"
-            maxDate="2023-06-25"
-          />
-          <DateInputField
-            label="Data în care pleci din tabără"
-            name="departure"
-            // value={departureDate}
-            onChange={handleDepartureDateChange}
-            minDate="2023-06-22"
-            maxDate="2023-06-25"
+            errorMessage={errors.dateRange}
           />
           <ImageInputField
             label="Poza cu tine" // TODO: maybe make this optional (?) to be discussed
@@ -153,7 +138,7 @@ const Step = ({
             type="text"
             name="preferences"
             value={formData.userData.preferences}
-            onChange={(e) => handleChange("userData", e)}
+            onChange={(e) => handleChange("userData", e.target)}
           />
         </>
       )}
@@ -189,8 +174,9 @@ const Step = ({
             // with different color, but it's not visible at all at this moment
             onClick={handleSubmit}
             disabled={!agreementChecked}
-            className={`bg-${agreementChecked === true ? "green-500" : "neutral-500"
-              } text-white px-4 py-2 rounded`}
+            className={`bg-${
+              agreementChecked === true ? "green-500" : "neutral-500"
+            } text-white px-4 py-2 rounded`}
           >
             Submit
           </button>
