@@ -3,6 +3,7 @@ import TextInputField from "../TextInputField";
 import CheckboxInputField from "../CheckboxInputField";
 import ImageInputField from "../ImageInputField";
 import RadioInputField from '../RadioInputField';
+import DateInputField from '../DateInputField'
 
 // TODO: Add diacritics to the text
 const Step = ({
@@ -19,6 +20,8 @@ const Step = ({
   churchOptions,
   payTaxToOptions,
   transportOptions,
+  handleDepartureDateChange,
+  handleArrivalDateChange,
 }) => {
   return (
     <div>
@@ -27,8 +30,8 @@ const Step = ({
         {stepNumber === 1
           ? "Autentificare"
           : stepNumber === 2
-          ? "Detalii personale"
-          : "Confirmare"}
+            ? "Detalii personale"
+            : "Confirmare"}
       </h2>
       <h3 className="mb-4">
         {stepNumber === 1
@@ -40,8 +43,8 @@ const Step = ({
         {stepNumber === 1
           ? "Emailul si parola vor fi folosite pentru a te conecta la platforma noastrǎ"
           : stepNumber === 2
-          ? "Ajuta-ne să te (re)cunoaștem!"
-          : ""}
+            ? "Ajuta-ne să te (re)cunoaștem!"
+            : ""}
       </h5>
       {stepNumber === 1 && (
         <>
@@ -125,22 +128,21 @@ const Step = ({
             onChange={(e) => handleChange("userData", e)}
             showOther={false}
           />
-          {/* TODO: This should be a limited input, and the user should select start date and end date.
-          We could do this with a calendar, or with creating our own 'cards' with the dates. 
-          Create a ticket for this for further discussion. */}
-          <TextInputField
-            label="Data in care vii in tabara:"
-            type="date"
-            name="startDate"
-            value={formData.userData.startDate}
-            onChange={(e) => handleChange("userData", e)}
+          <DateInputField
+            label="Data în care vii în tabără"
+            name="arrival"
+            // value={arrivalDate}
+            onChange={handleArrivalDateChange}
+            minDate="2023-06-22"
+            maxDate="2023-06-25"
           />
-          <TextInputField
-            label="Data in care pleci din tabara:"
-            type="date"
-            name="endDate"
-            value={formData.userData.endDate}
-            onChange={(e) => handleChange("userData", e)}
+          <DateInputField
+            label="Data în care pleci din tabără"
+            name="departure"
+            // value={departureDate}
+            onChange={handleDepartureDateChange}
+            minDate="2023-06-22"
+            maxDate="2023-06-25"
           />
           <ImageInputField
             label="Poza cu tine" // TODO: maybe make this optional (?) to be discussed
@@ -187,9 +189,8 @@ const Step = ({
             // with different color, but it's not visible at all at this moment
             onClick={handleSubmit}
             disabled={!agreementChecked}
-            className={`bg-${
-              agreementChecked === true ? "green-500" : "neutral-500"
-            } text-white px-4 py-2 rounded`}
+            className={`bg-${agreementChecked === true ? "green-500" : "neutral-500"
+              } text-white px-4 py-2 rounded`}
           >
             Submit
           </button>

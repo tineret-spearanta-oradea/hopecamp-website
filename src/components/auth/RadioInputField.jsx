@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const RadioInputField = ({ label, name, options, value, onChange, onOtherChange, otherValue, showOther }) => {
+const RadioInputField = ({ label, name, options, value, onChange, onOtherChange, otherValue, showOther, errorMessage }) => {
   const [showOtherInput, setShowOtherInput] = useState(false);
 
   const handleRadioChange = (event) => {
@@ -11,7 +11,7 @@ const RadioInputField = ({ label, name, options, value, onChange, onOtherChange,
 
   return (
     <div>
-      <span className="text-gray-700">{label}</span>
+      <span className="text-sm text-gray-600 font-bold">{label}</span>
       <div className="mt-2 flex flex-col">
         {options.map((option) => (
           <label key={option.value} className="flex items-center my-2">
@@ -50,6 +50,9 @@ const RadioInputField = ({ label, name, options, value, onChange, onOtherChange,
           </label>
         )}
       </div>
+      {errorMessage && (
+      <p className="text-red-500 text-xs italic">{errorMessage}</p>
+    )}
     </div>
   );
 };

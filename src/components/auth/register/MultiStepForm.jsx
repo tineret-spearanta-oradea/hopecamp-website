@@ -78,6 +78,14 @@ const MultiStepForm = ({
     setStep((prevStep) => prevStep - 1);
   };
 
+  const handleArrivalDateChange = (event) => {
+    // setArrivalDate(event.target.value);
+  };
+
+  const handleDepartureDateChange = (event) => {
+    // setDepartureDate(event.target.value);
+  };
+
   const areFieldsValid = (step) => {
     let newErrors = {};
 
@@ -162,6 +170,8 @@ const MultiStepForm = ({
           handleChange={handleChange}
           handleNext={handleNext}
           handlePrev={handlePrev}
+          handleArrivalDateChange={handleArrivalDateChange}
+          handleDepartureDateChange={handleDepartureDateChange}
           handleImageChange={handleImageChange}
           errors={errors}
           churchOptions={churchOptions}
