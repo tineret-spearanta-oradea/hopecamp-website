@@ -42,11 +42,19 @@ const MultiStepForm = ({
 
   const tryFillInUserData = (userName) => {
     const autoFillUserName = autoFillData.userData.name;
-    const nameField0 = autoFillUserName.split(" ")[0];
-    const nameField1 = autoFillUserName.split(" ")[1];
     if (
-      userName.includes(nameField0) ||
-      (nameField1 !== null && userName.includes(nameField1))
+      autoFillUserName === null ||
+      autoFillUserName === undefined ||
+      userName.split(" ").length < 1
+    ) {
+      return;
+    }
+
+    const nameField0 = userName.split(" ")[0];
+    const nameField1 = userName.split(" ")[1];
+    if (
+      autoFillUserName.includes(nameField0) ||
+      (nameField1 !== null && autoFillUserName.includes(nameField1))
     ) {
       const autoFillUserData = autoFillData.userData;
       setFormData((prevData) => ({

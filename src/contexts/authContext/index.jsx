@@ -1,48 +1,66 @@
 import React, { useContext, useState, useEffect } from "react";
 import { auth } from "../../firebase/firebase-config";
 import { onAuthStateChanged } from "firebase/auth";
+import { getUserData } from "../../firebase/database";
 
 const AuthContext = React.createContext();
 
+//TODO: *kind of optional, but would be cleaner*:
+//Use auth context in the components instead of explicit firebase auth calls
 export const useAuth = () => {
-    return useContext(AuthContext);
-  };
+  return useContext(AuthContext);
+};
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export function AuthProvider({ children }) {
-    const [currentUser, setCurrentUser] = useState(null);
-    const [UserLoggedIn, setUserLoggedIn] = useState(false); // Set to false initially
-    const [loading, setLoading] = useState(true); // Set to true initially
+  const [authData, setAuthData] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [userLoggedIn, setUserLoggedIn] = useState(false); // Set to false initially
+  const [loading, setLoading] = useState(true); // Set to true initially
+  const [error, setError] = useState(null); // Set to true initially
 
-    useEffect( () => {
-        const unsubscribe = onAuthStateChanged(auth, user => {
-            if (user) {
-                setCurrentUser(user);
-                setUserLoggedIn(true);
-            } else {
-                setCurrentUser(null);
-                setUserLoggedIn(false);
-            }
-            setLoading(false); // Set to false once we know the user's auth status
-        });
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setAuthData(user);
+        setUserLoggedIn(true);
+        var keepTrying = 5;
+        while (keepTrying >= 0) {
+          await delay(1000);
+          const userData = await getUserData(user.uid);
+          if (userData) {
+            setUserData(userData);
+            break;
+          }
+          keepTrying--;
+        }
+        if (keepTrying == 0) {
+          setError("Failed to get user data");
+        }
+      } else {
+        setAuthData(null);
+        setUserLoggedIn(false);
+      }
+      setLoading(false); // Set to false once we know the user's auth status
+    });
 
-        // Cleanup the subscription
-        return unsubscribe;
-    }, []);
+    // Cleanup the subscription
+    return unsubscribe;
+  }, []);
 
-    const value = {
-        currentUser,
-        UserLoggedIn,
-        loading
-    };
+  const value = {
+    authData,
+    userData,
+    userLoggedIn,
+    loading,
+    error,
+  };
 
-    // Check if loading is true, if so, return a loading indicator
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+  // Check if loading is true, if so, return a loading indicator
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-    return (
-        <AuthContext.Provider value={value}>
-            {children}
-        </AuthContext.Provider>
-    );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
