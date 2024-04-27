@@ -9,9 +9,12 @@ const MultiStepForm = ({
   setAgreementChecked,
   formData,
   setFormData,
+  handleTryGetUserDataFromArchive,
+  autoFillData,
 }) => {
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState({});
+  const [hasAlreadyAutoFilled, setHasAlreadyAutoFilled] = useState(false);
 
   const handleAgreementChange = (e) => {
     const { checked } = e.target;
@@ -19,8 +22,7 @@ const MultiStepForm = ({
   };
 
   const handleChange = (objectName, e) => {
-    const { name, value } = e.target;
-
+    const { name, value } = e;
     setFormData((prevData) => ({
       ...prevData,
       [objectName]: {
@@ -28,9 +30,53 @@ const MultiStepForm = ({
         [name]: value,
       },
     }));
+
+    if (
+      hasAlreadyAutoFilled !== true &&
+      name === "name" &&
+      autoFillData !== null
+    ) {
+      tryFillInUserData(value);
+    }
+  };
+
+  const tryFillInUserData = (userName) => {
+    const autoFillUserName = autoFillData.userData.name;
+    if (
+      autoFillUserName === null ||
+      autoFillUserName === undefined ||
+      userName.split(" ").length < 1
+    ) {
+      return;
+    }
+
+    const nameField0 = userName.split(" ")[0];
+    const nameField1 = userName.split(" ")[1];
+    if (
+      autoFillUserName.includes(nameField0) ||
+      (nameField1 !== null && autoFillUserName.includes(nameField1))
+    ) {
+      const autoFillUserData = autoFillData.userData;
+      setFormData((prevData) => ({
+        ...prevData,
+        userData: {
+          ...prevData.userData,
+          phone: autoFillUserData.phone,
+          payTaxTo: autoFillUserData.payTaxTo,
+          age: autoFillUserData.age,
+          church: autoFillUserData.church,
+          transport: autoFillUserData.transport,
+        },
+      }));
+
+      setHasAlreadyAutoFilled(true);
+    }
   };
 
   const handleNext = () => {
+    if (step === 1) {
+      handleTryGetUserDataFromArchive();
+    }
     if (areFieldsValid(step)) {
       setStep((prevStep) => prevStep + 1);
     }
@@ -65,8 +111,8 @@ const MultiStepForm = ({
     if (step === 2) {
       const userData = formData.userData;
 
-      if (!userData.fullName || userData.fullName.length === 0) {
-        newErrors.fullName = "Numele este necesar.";
+      if (!userData.name || userData.name.length === 0) {
+        newErrors.name = "Numele este necesar.";
       }
 
       if (!userData.age || userData.age.length === 0) {
@@ -79,6 +125,10 @@ const MultiStepForm = ({
 
       if (!userData.church || userData.church.length === 0) {
         newErrors.church = "Biserica este necesară.";
+      }
+
+      if (userData.startDate === null || userData.endDate === null) {
+        newErrors.dateRange = "Perioada este necesară.";
       }
 
       // TODO: implement errors for all new required fields (including radio buttons and date pickers and file input)

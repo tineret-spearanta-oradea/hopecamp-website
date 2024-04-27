@@ -1,36 +1,48 @@
+import { transportOptions } from "./Options";
+import { churchOptions } from "./Options";
+import { payTaxToOptions } from "./Options";
+import { dateRange } from "./Options";
+
+const retrieveDefaultOption = (options) => {
+  const defaultOption = options.find((option) => option.isDefault);
+  return defaultOption ? defaultOption.value : undefined;
+};
+
 class UserData {
   constructor(
-    uid = null,
     email,
-    fullName,
+    name,
     phone,
-    imageUrl,
-    amountPaid = 0,
-    payTaxTo,
     age,
-    church,
-    transport,
-    startDate,
-    endDate,
+    payTaxTo = retrieveDefaultOption(payTaxToOptions),
+    church = retrieveDefaultOption(churchOptions),
+    transport = retrieveDefaultOption(transportOptions),
+    uid = null,
+    startDate = dateRange.startDate,
+    endDate = dateRange.endDate,
+    amountPaid = 0,
+    imageUrl = "",
     isAdmin = false,
     isConfirmed = false,
+    withFamilyMember = false,
     preferences = "",
-    signupDate = new Date().toISOString().slice(0, 10)
+    signupDate = new Date()
   ) {
     this.uid = uid;
     this.email = email;
-    this.fullName = fullName;
+    this.name = name;
     this.phone = phone;
+    this.age = age;
     this.imageUrl = imageUrl;
     this.amountPaid = amountPaid;
     this.payTaxTo = payTaxTo;
-    this.age = age;
     this.church = church;
     this.transport = transport;
     this.startDate = startDate;
     this.endDate = endDate;
     this.isAdmin = isAdmin;
     this.isConfirmed = isConfirmed;
+    this.withFamilyMember = withFamilyMember;
     this.preferences = preferences;
     this.signupDate = signupDate;
   }

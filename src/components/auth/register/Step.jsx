@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TextInputField from "../TextInputField";
 import CheckboxInputField from "../CheckboxInputField";
 import ImageInputField from "../ImageInputField";
+import RadioInputField from "../RadioInputField";
+import DateInputField from "../DateInputField";
+import { churchOptions } from "../../../models/Options";
+import { payTaxToOptions } from "../../../models/Options";
+import { transportOptions } from "../../../models/Options";
 
 // TODO: Add diacritics to the text
 const Step = ({
@@ -47,7 +52,7 @@ const Step = ({
             name="email"
             autoComplete="email"
             value={formData.authData.email}
-            onChange={(e) => handleChange("authData", e)}
+            onChange={(e) => handleChange("authData", e.target)}
             errorMessage={errors.email}
           />
           <TextInputField
@@ -55,7 +60,7 @@ const Step = ({
             type="password"
             name="password"
             value={formData.authData.password}
-            onChange={(e) => handleChange("authData", e)}
+            onChange={(e) => handleChange("authData", e.target)}
             errorMessage={errors.password}
           />
           <TextInputField
@@ -63,7 +68,7 @@ const Step = ({
             type="password"
             name="confirmPassword"
             value={formData.authData.confirmPassword}
-            onChange={(e) => handleChange("authData", e)}
+            onChange={(e) => handleChange("authData", e.target)}
             errorMessage={errors.confirmPassword}
           />
         </>
@@ -73,17 +78,17 @@ const Step = ({
           <TextInputField
             label="Numele intreg:"
             type="text"
-            name="fullName"
-            value={formData.userData.fullName}
-            onChange={(e) => handleChange("userData", e)}
-            errorMessage={errors.fullName}
+            name="name"
+            value={formData.userData.name}
+            onChange={(e) => handleChange("userData", e.target)}
+            errorMessage={errors.name}
           />
           <TextInputField
             label="Varsta:"
             type="number"
             name="age"
             value={formData.userData.age}
-            onChange={(e) => handleChange("userData", e)}
+            onChange={(e) => handleChange("userData", e.target)}
             errorMessage={errors.age}
           />
           <TextInputField
@@ -91,54 +96,41 @@ const Step = ({
             type="tel"
             name="phone"
             value={formData.userData.phone}
-            onChange={(e) => handleChange("userData", e)}
+            onChange={(e) => handleChange("userData", e.target)}
             errorMessage={errors.phone}
           />
-          <TextInputField
+          <RadioInputField
             label="Biserica din care provii:"
-            type="text"
             name="church"
+            options={churchOptions}
             value={formData.userData.church}
-            onChange={(e) => handleChange("userData", e)}
+            onChange={(e) => handleChange("userData", e.target)}
             errorMessage={errors.church}
           />
-          {/* TODO: This should be a radio input: */}
-          <TextInputField
+          <RadioInputField
             label="Cui platesti taxa de inscriere:"
-            type="text"
             name="payTaxTo"
+            options={payTaxToOptions}
             value={formData.userData.payTaxTo}
-            onChange={(e) => handleChange("userData", e)}
+            onChange={(e) => handleChange("userData", e.target)}
           />
-          {/* TODO: This should be a radio input: */}
-          <TextInputField
+          <RadioInputField
             label="Mijloc de transport:"
-            type="text"
             name="transport"
+            options={transportOptions}
             value={formData.userData.transport}
-            onChange={(e) => handleChange("userData", e)}
+            onChange={(e) => handleChange("userData", e.target)}
           />
-          {/* TODO: This should be a limited input, and the user should select start date and end date.
-          We could do this with a calendar, or with creating our own 'cards' with the dates. 
-          Create a ticket for this for further discussion. */}
-          <TextInputField
-            label="Data in care vii in tabara:"
-            type="date"
-            name="startDate"
-            value={formData.userData.startDate}
+          <DateInputField
+            label="Perioada care stai în tabără:"
+            name="dateRange"
+            startDateValue={formData.userData.startDate}
+            endDateValue={formData.userData.endDate}
             onChange={(e) => handleChange("userData", e)}
-          />
-          <TextInputField
-            label="Data in care pleci din tabara:"
-            type="date"
-            name="endDate"
-            value={formData.userData.endDate}
-            onChange={(e) => handleChange("userData", e)}
+            errorMessage={errors.dateRange}
           />
           <ImageInputField
             label="Poza cu tine" // TODO: maybe make this optional (?) to be discussed
-            type="file"
-            name="imageUrl"
             handleImageChange={handleImageChange}
           />
           <TextInputField
@@ -146,7 +138,7 @@ const Step = ({
             type="text"
             name="preferences"
             value={formData.userData.preferences}
-            onChange={(e) => handleChange("userData", e)}
+            onChange={(e) => handleChange("userData", e.target)}
           />
         </>
       )}
