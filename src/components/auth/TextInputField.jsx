@@ -18,7 +18,7 @@ const TextInputField = ({
       autoComplete={autoComplete}
       required
       disabled={disabled}
-      value={value}
+      value={value || ''}
       onChange={onChange}
       className={`${
         errorMessage ? "border-red-500" : ""

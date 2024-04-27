@@ -22,7 +22,7 @@ const MultiStepForm = ({
   };
 
   const handleChange = (objectName, e) => {
-    const { name, value } = e.target;
+    const { name, value } = e;
     setFormData((prevData) => ({
       ...prevData,
       [objectName]: {
@@ -125,6 +125,10 @@ const MultiStepForm = ({
 
       if (!userData.church || userData.church.length === 0) {
         newErrors.church = "Biserica este necesară.";
+      }
+
+      if (userData.startDate === null || userData.endDate === null) {
+        newErrors.dateRange = "Perioada este necesară.";
       }
 
       // TODO: implement errors for all new required fields (including radio buttons and date pickers and file input)
