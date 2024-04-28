@@ -5,8 +5,10 @@ import MultiStepForm from "./MultiStepForm";
 import { getArchivedUserData } from "../../../firebase/database";
 import { registerAndCreateUser } from "../../../firebase";
 import UserData from "../../../models/UserData";
+import NavigationBar from "../../navigationBar";
 import AuthData from "../../../models/AuthData";
 import { useEffect } from "react";
+import { payTaxToOptions } from "../../../models/Options";
 
 const Register = () => {
   const auth = getAuth();
@@ -19,6 +21,7 @@ const Register = () => {
   });
   const [imageFile, setImageFile] = useState(null);
   const [agreementChecked, setAgreementChecked] = useState(false);
+  const [hasAlreadyAutoFilled, setHasAlreadyAutoFilled] = useState(false);
 
   const handleSubmit = async () => {
     if (agreementChecked) {
@@ -32,22 +35,25 @@ const Register = () => {
     }
   };
 
-  const handleTryGetUserDataFromArchive = async () => {
+  const handleTryAutofillUserData = async () => {
     const archivedUserData = await getArchivedUserData(formData.authData.email);
-    if (archivedUserData !== null) {
-      const userData = new UserData(
-        archivedUserData.email,
-        archivedUserData.name,
-        archivedUserData.phone,
-        archivedUserData.payTaxTo,
-        archivedUserData.age,
-        archivedUserData.church,
-        archivedUserData.transport
-      );
-      setAutoFillData((prevData) => ({
+    if (!hasAlreadyAutoFilled && archivedUserData !== null) {
+      setFormData((prevData) => ({
         ...prevData,
-        userData: userData,
+        userData: {
+          ...prevData.userData,
+          name: archivedUserData.name,
+          phone: archivedUserData.phone,
+          payTaxTo: payTaxToOptions.find(
+            (opt) => opt.value === archivedUserData.payTaxTo
+          )
+            ? archivedUserData.payTaxTo
+            : undefined,
+          church: archivedUserData.church,
+        },
       }));
+
+      setHasAlreadyAutoFilled(true);
     }
   };
 
@@ -73,8 +79,7 @@ const Register = () => {
             setAgreementChecked={setAgreementChecked}
             formData={formData}
             setFormData={setFormData}
-            handleTryGetUserDataFromArchive={handleTryGetUserDataFromArchive}
-            autoFillData={autoFillData}
+            handleTryAutofillUserData={handleTryAutofillUserData}
           />
         </div>
       </main>

@@ -19,7 +19,7 @@ export const uploadImageAndGetUrl = async (
   name = null
 ) => {
   try {
-    const imageRef = ref(usersRef, uid);
+    const imageRef = ref(usersRef, uid + ".jpg"); // add .jpg to the end of the filename
     const snapshot = await uploadBytes(imageRef, file);
     const downloadUrl = await getDownloadURL(snapshot.ref);
 

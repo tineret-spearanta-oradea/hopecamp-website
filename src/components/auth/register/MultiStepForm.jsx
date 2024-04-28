@@ -9,12 +9,10 @@ const MultiStepForm = ({
   setAgreementChecked,
   formData,
   setFormData,
-  handleTryGetUserDataFromArchive,
-  autoFillData,
+  handleTryAutofillUserData,
 }) => {
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState({});
-  const [hasAlreadyAutoFilled, setHasAlreadyAutoFilled] = useState(false);
 
   const handleAgreementChange = (e) => {
     const { checked } = e.target;
@@ -30,52 +28,11 @@ const MultiStepForm = ({
         [name]: value,
       },
     }));
-
-    if (
-      hasAlreadyAutoFilled !== true &&
-      name === "name" &&
-      autoFillData !== null
-    ) {
-      tryFillInUserData(value);
-    }
-  };
-
-  const tryFillInUserData = (userName) => {
-    const autoFillUserName = autoFillData.userData.name;
-    if (
-      autoFillUserName === null ||
-      autoFillUserName === undefined ||
-      userName.split(" ").length < 1
-    ) {
-      return;
-    }
-
-    const nameField0 = userName.split(" ")[0];
-    const nameField1 = userName.split(" ")[1];
-    if (
-      autoFillUserName.includes(nameField0) ||
-      (nameField1 !== null && autoFillUserName.includes(nameField1))
-    ) {
-      const autoFillUserData = autoFillData.userData;
-      setFormData((prevData) => ({
-        ...prevData,
-        userData: {
-          ...prevData.userData,
-          phone: autoFillUserData.phone,
-          payTaxTo: autoFillUserData.payTaxTo,
-          age: autoFillUserData.age,
-          church: autoFillUserData.church,
-          transport: autoFillUserData.transport,
-        },
-      }));
-
-      setHasAlreadyAutoFilled(true);
-    }
   };
 
   const handleNext = () => {
     if (step === 1) {
-      handleTryGetUserDataFromArchive();
+      handleTryAutofillUserData();
     }
     if (areFieldsValid(step)) {
       setStep((prevStep) => prevStep + 1);
@@ -101,7 +58,7 @@ const MultiStepForm = ({
       if (!authData.password || authData.password.length === 0) {
         newErrors.password = "Parola este necesară.";
       } else if (authData.password.length < 6) {
-        newErrors.password = "Parola trebuie să aibă cel puțin 8 caractere.";
+        newErrors.password = "Parola trebuie să aibă cel puțin 6 caractere.";
       }
 
       if (authData.password !== authData.confirmPassword) {
@@ -125,6 +82,14 @@ const MultiStepForm = ({
 
       if (!userData.church || userData.church.length === 0) {
         newErrors.church = "Biserica este necesară.";
+      }
+
+      if (!userData.payTaxTo || userData.payTaxTo.length === 0) {
+        newErrors.payTaxTo = "Alege o persoana căruia sa plătești.";
+      }
+
+      if (!userData.transport || userData.transport.length === 0) {
+        newErrors.transport = "Mijlocul de transport este necesar.";
       }
 
       if (userData.startDate === null || userData.endDate === null) {

@@ -21,7 +21,6 @@ const Account = () => {
 
   return (
     <>
-      {loading && <div>Loading.....</div>}
       {!loading && (
         <div>
           <main className="w-full h-screen flex self-center place-content-center place-items-center">

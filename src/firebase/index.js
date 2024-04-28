@@ -16,7 +16,7 @@ export const registerAndCreateUser = async (formData, imageFile) => {
   // Sanity check, but this should be checked at the form level
   if (authData["password"] !== authData["confirmPassword"]) {
     //TODO: Change alert with an UI error component
-    alert("Passwords do not match");
+    alert("Parola si confirmarea parolei nu sunt la fel!");
     return;
   }
 
@@ -28,16 +28,18 @@ export const registerAndCreateUser = async (formData, imageFile) => {
     const user = userCredential.user;
     userData["uid"] = user.uid;
 
-    try {
-      const imageUrl = await uploadImageAndGetUrl(
-        imageFile,
-        userData["uid"],
-        userData["email"],
-        userData["name"]
-      );
-      userData["imageUrl"] = imageUrl;
-    } catch (uploadError) {
-      console.error("Error uploading file:", uploadError);
+    if (imageFile !== null) {
+      try {
+        const imageUrl = await uploadImageAndGetUrl(
+          imageFile,
+          userData["uid"],
+          userData["email"],
+          userData["name"]
+        );
+        userData["imageUrl"] = imageUrl;
+      } catch (uploadError) {
+        console.error("Error uploading file:", uploadError);
+      }
     }
 
     try {

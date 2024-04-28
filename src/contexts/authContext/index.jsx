@@ -29,7 +29,9 @@ export function AuthProvider({ children }) {
         while (keepTrying >= 0) {
           await delay(100);
           const getUserDataResponse = await getUserData(user.uid);
-          console.log(getUserDataResponse);
+          // for debugging:
+          // console.log(keepTrying);
+          // console.log(getUserDataResponse);
           if (getUserDataResponse) {
             setUserData(getUserDataResponse);
             break;
@@ -60,7 +62,11 @@ export function AuthProvider({ children }) {
 
   // Check if loading is true, if so, return a loading indicator
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+      </div>
+    );
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
