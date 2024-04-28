@@ -29,7 +29,9 @@ export function AuthProvider({ children }) {
         while (keepTrying >= 0) {
           await delay(100);
           const getUserDataResponse = await getUserData(user.uid);
-          console.log(getUserDataResponse);
+          // for debugging:
+          // console.log(keepTrying);
+          // console.log(getUserDataResponse);
           if (getUserDataResponse) {
             setUserData(getUserDataResponse);
             break;

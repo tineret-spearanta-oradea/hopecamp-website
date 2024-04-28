@@ -28,16 +28,18 @@ export const registerAndCreateUser = async (formData, imageFile) => {
     const user = userCredential.user;
     userData["uid"] = user.uid;
 
-    try {
-      const imageUrl = await uploadImageAndGetUrl(
-        imageFile,
-        userData["uid"],
-        userData["email"],
-        userData["name"]
-      );
-      userData["imageUrl"] = imageUrl;
-    } catch (uploadError) {
-      console.error("Error uploading file:", uploadError);
+    if (imageFile !== null) {
+      try {
+        const imageUrl = await uploadImageAndGetUrl(
+          imageFile,
+          userData["uid"],
+          userData["email"],
+          userData["name"]
+        );
+        userData["imageUrl"] = imageUrl;
+      } catch (uploadError) {
+        console.error("Error uploading file:", uploadError);
+      }
     }
 
     try {

@@ -40,8 +40,8 @@ const Register = () => {
         archivedUserData.email,
         archivedUserData.name,
         archivedUserData.phone,
-        archivedUserData.payTaxTo,
         archivedUserData.age,
+        archivedUserData.payTaxTo,
         archivedUserData.church,
         archivedUserData.transport
       );

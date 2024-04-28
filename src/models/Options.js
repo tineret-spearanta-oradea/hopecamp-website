@@ -5,8 +5,8 @@ export const churchOptions = [
 ];
 
 export const payTaxToOptions = [
-  { label: "Carina Ban", value: "Carina Ban", isDefault: true },
-  { label: "Rebeca Gros", value: "Rebeca Gros" },
+  { label: "Carina Ban", value: "Carina", isDefault: true },
+  { label: "Rebeca Gros", value: "Rebeca" },
 ];
 
 export const transportOptions = [
@@ -22,4 +22,9 @@ export const transportOptions = [
 export const dateRange = {
   startDate: new Date(2024, 6, 20),
   endDate: new Date(2024, 6, 25),
+};
+
+export const sumToPay = {
+  normal: 700,
+  withFamilyMember: 600,
 };

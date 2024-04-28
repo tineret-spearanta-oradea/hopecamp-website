@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import UserListSection from "./UserList";
 
 const AdminDashboard = () => {
+  //TODO: add identity validation
   const [selectedSection, setSelectedSection] = useState("users");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
@@ -75,45 +76,14 @@ const AdminDashboard = () => {
   );
 };
 
-const mockData = [
-  {
-    id: 1,
-    emailAddress: "john@example.com",
-    fullName: "John Doe",
-    age: 25,
-    phone: "1234567890",
-    church: "First Church",
-    payTaxTo: "IRS",
-    amountPaid: "$100",
-    transport: "Car",
-    numberOfDays: 3,
-    isConfirmed: true,
-    isAdmin: true,
-  },
-  {
-    id: 2,
-    emailAddress: "jane@example.com",
-    fullName: "Jane Smith",
-    age: 17,
-    phone: "9876543210",
-    church: "Second Church",
-    payTaxTo: "IRS",
-    amountPaid: "$150",
-    transport: "Bus",
-    numberOfDays: 2,
-    isConfirmed: false,
-    isAdmin: false,
-  },
-];
 const UsersSection = () => {
-  return <UserListSection userList={mockData} />;
+  return <UserListSection />;
 };
 
 const MessagesSection = () => {
   // Placeholder for Messages Section
   return <h2>Messages Section</h2>;
 };
-
 const AddAdminSection = () => {
   // Placeholder for Add Admin Section
   return <h2>Add Admin Section</h2>;

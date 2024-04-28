@@ -57,6 +57,7 @@ const MultiStepForm = ({
       (nameField1 !== null && autoFillUserName.includes(nameField1))
     ) {
       const autoFillUserData = autoFillData.userData;
+
       setFormData((prevData) => ({
         ...prevData,
         userData: {
@@ -101,7 +102,7 @@ const MultiStepForm = ({
       if (!authData.password || authData.password.length === 0) {
         newErrors.password = "Parola este necesară.";
       } else if (authData.password.length < 6) {
-        newErrors.password = "Parola trebuie să aibă cel puțin 8 caractere.";
+        newErrors.password = "Parola trebuie să aibă cel puțin 6 caractere.";
       }
 
       if (authData.password !== authData.confirmPassword) {

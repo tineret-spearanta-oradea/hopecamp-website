@@ -1,6 +1,13 @@
 import React, { useState } from "react";
+import { Navigate, Link, useNavigate } from "react-router-dom";
 
 const ConfirmedUser = ({ userData }) => {
+  const navigate = useNavigate();
+
+  const navigateToAdminsDashboard = () => {
+    navigate("/admins");
+  };
+
   const getRemainingDays = () => {
     const today = new Date();
     //TODO: *kind of optional* add this date to an env or settings file?
@@ -17,7 +24,10 @@ const ConfirmedUser = ({ userData }) => {
       {userData.isAdmin && (
         //TODO: extract this in a component?
         <div className="text-center">
-          <button className="w-60 py-1 px-4 bg-green-500 text-white rounded-md">
+          <button
+            onClick={navigateToAdminsDashboard}
+            className="w-60 py-1 px-4 bg-green-500 text-white rounded-md"
+          >
             ADMINS DASHBOARD
           </button>
         </div>
