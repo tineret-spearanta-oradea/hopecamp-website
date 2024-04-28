@@ -1,21 +1,31 @@
-import React, { useState } from "react";
-import UserListSection from "./UserList";
+import React, { useState, useEffect } from "react";
+import UserTable from "./UserTable";
+import { useAuth } from "../../contexts/authContext";
+import { Navigate, Link, useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
   //TODO: add identity validation
   const [selectedSection, setSelectedSection] = useState("users");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const navigate = useNavigate();
+  const { authData, userData, userLoggedIn, loading, error } = useAuth();
 
   const sections = [
-    { label: "Users", value: "users" },
-    { label: "Messages", value: "messages" },
-    { label: "Add Admin", value: "addAdmin" },
-    { label: "Remove User", value: "removeUser" },
+    { label: "Participanti", value: "users" },
+    { label: "Mesaje", value: "messages" },
+    { label: "Aduga admin", value: "addAdmin" },
+    { label: "Sterge", value: "removeUser" },
   ];
 
   const handleSectionClick = (section) => {
     setSelectedSection(section);
   };
+
+  useEffect(() => {
+    if (!loading && !userData.isAdmin) {
+      navigate("/cont");
+    }
+  }, [loading, userData, navigate]);
 
   return (
     <div className="flex min-h-screen">
@@ -44,7 +54,7 @@ const AdminDashboard = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 ">
+      <main className="max-w-full overflow-x-auto bg-slate-200">
         {/* Navbar */}
         <nav className="bg-gray-700 text-white w-full p-4 mb-4 flex justify-between items-center">
           {/* Sidebar toggle button */}
@@ -67,17 +77,19 @@ const AdminDashboard = () => {
         </nav>
 
         {/* Main section based on selected section */}
-        {selectedSection === "users" && <UsersSection />}
-        {selectedSection === "messages" && <MessagesSection />}
-        {selectedSection === "addAdmin" && <AddAdminSection />}
-        {selectedSection === "removeUser" && <RemoveUserSection />}
+        {userData.isAdmin ? (
+          <>
+            {selectedSection === "users" && <UserTable />}
+            {selectedSection === "messages" && <MessagesSection />}
+            {selectedSection === "addAdmin" && <AddAdminSection />}
+            {selectedSection === "removeUser" && <RemoveUserSection />}
+          </>
+        ) : (
+          <div></div>
+        )}
       </main>
     </div>
   );
-};
-
-const UsersSection = () => {
-  return <UserListSection />;
 };
 
 const MessagesSection = () => {

@@ -113,6 +113,7 @@ const Step = ({
             options={payTaxToOptions}
             value={formData.userData.payTaxTo}
             onChange={(e) => handleChange("userData", e.target)}
+            errorMessage={errors.payTaxTo}
           />
           <RadioInputField
             label="Mijloc de transport:"
@@ -120,6 +121,7 @@ const Step = ({
             options={transportOptions}
             value={formData.userData.transport}
             onChange={(e) => handleChange("userData", e.target)}
+            errorMessage={errors.transport}
           />
           <DateInputField
             label="Perioada care stai în tabără:"

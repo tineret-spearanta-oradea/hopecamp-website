@@ -16,7 +16,7 @@ export const registerAndCreateUser = async (formData, imageFile) => {
   // Sanity check, but this should be checked at the form level
   if (authData["password"] !== authData["confirmPassword"]) {
     //TODO: Change alert with an UI error component
-    alert("Passwords do not match");
+    alert("Parola si confirmarea parolei nu sunt la fel!");
     return;
   }
 

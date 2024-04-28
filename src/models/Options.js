@@ -13,7 +13,6 @@ export const transportOptions = [
   {
     label: "Vin cu mașina personală",
     value: "Masina personala",
-    isDefault: true,
   },
   { label: "Vin cu un prieten cu mașina", value: "Masina prietenului" },
   { label: "Autocar de la biserică", value: "Autocar" },

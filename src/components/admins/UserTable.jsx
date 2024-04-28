@@ -6,7 +6,7 @@ import { sumToPay } from "../../models/Options";
 import TableRow from "./TableRow";
 import { updateUserData } from "../../firebase/database";
 
-const UserListSection = () => {
+const UserTable = () => {
   const [userList, setUserList] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
   const [editingRowId, setEditingRowId] = useState(null);
@@ -36,6 +36,22 @@ const UserListSection = () => {
 
   const handleMoreInfo = (row) => {
     setSelectedRow(row.original.uid);
+  };
+
+  const handleDownloadTableAsCsv = () => {
+    //TODO: Implement this feature
+    alert("This feature is not implemented yet.");
+    // const csv = userList.map((user) => {
+    //   return Object.values(user).join(",");
+    // });
+    // const csvString = csv.join("\n");
+    // const blob = new Blob([csvString], { type: "text/csv" });
+    // const url = URL.createObjectURL(blob);
+    // const a = document.createElement("a");
+    // a.href = url;
+    // a.download = "users.csv";
+    // a.click();
+    // URL.revokeObjectURL(url);
   };
 
   // These are different than UserData.
@@ -235,57 +251,94 @@ const UserListSection = () => {
       {
         columns: visibleColumns,
         data: userList,
+        initialState: { sortBy: [{ id: "id", desc: true }] },
       },
       useFilters,
       useSortBy
     );
   return (
-    <div className="overflow-x-auto max-w-full">
-      <table
-        {...getTableProps()}
-        className="w-full table-fixed divide-y divide-gray-200"
-      >
-        <colgroup>
-          {visibleColumns.map((column, index) => (
-            <col key={index} style={{ width: column.width }} />
-          ))}
-        </colgroup>
-        <thead className="bg-gray-50">
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  {column.render("Header")}
-                  <span>
-                    {column.isSorted ? (column.isSortedDesc ? " ▼" : " ▲") : ""}
-                  </span>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody
-          {...getTableBodyProps()}
-          className="bg-white divide-y divide-gray-200"
+    <div className="">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold mb-4 mx-4">Lista participanților</h1>
+        <div className="mb-4 mx-4">
+          <button
+            className="p-2 bg-cyan-500 text-white rounded-full flex items-center"
+            onClick={handleDownloadTableAsCsv}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+              />
+            </svg>
+            <span className="text-xs">.csv</span>
+          </button>
+        </div>
+      </div>
+      <div className="overflow-x-auto max-w-full">
+        <table
+          {...getTableProps()}
+          className="w-full divide-y divide-gray-200 rounded border border-gray-300"
         >
-          {rows.map((row, i) => (
-            <TableRow
-              row={row}
-              i={i}
-              prepareRow={prepareRow}
-              selectedRow={selectedRow}
-              setSelectedRow={setSelectedRow}
-              columns={userProperties}
-              updateUser={updateUser}
-            />
-          ))}
-        </tbody>
-      </table>
+          <colgroup>
+            {visibleColumns.map((column, index) => (
+              <col
+                key={index}
+                //style={{ maxWidth: column.width }} //this doesn't work
+              />
+            ))}
+          </colgroup>
+          <thead className="bg-gray-50">
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th
+                    {...column.getHeaderProps(column.getSortByToggleProps())}
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    {column.render("Header")}
+                    <span>
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? " ▼"
+                          : " ▲"
+                        : ""}
+                    </span>
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody
+            {...getTableBodyProps()}
+            className="bg-white divide-y divide-gray-200"
+          >
+            {rows.map((row, i) => {
+              return (
+                <TableRow
+                  row={row}
+                  i={i}
+                  prepareRow={prepareRow}
+                  selectedRow={selectedRow}
+                  setSelectedRow={setSelectedRow}
+                  columns={userProperties}
+                  updateUser={updateUser}
+                />
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
 
-export default UserListSection;
+export default UserTable;

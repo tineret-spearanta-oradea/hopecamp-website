@@ -50,31 +50,78 @@ export const getAllUsers = async () => {
   const docSnap = await getDocs(docRef);
   const users = docSnap.docs.map((doc) => doc.data());
 
-  users.sort((a, b) => a.signupDate.seconds - b.signupDate.seconds);
+  // transformiing the data to march the structure of the table
+  users.sort((a, b) => {
+    let signupDateA, signupDateB;
+    if (a.signupDate instanceof Timestamp) {
+      signupDateA = a.signupDate.seconds;
+    } else {
+      signupDateA = new Date(a.signupDate).getTime();
+    }
+    if (b.signupDate instanceof Timestamp) {
+      signupDateB = b.signupDate.seconds;
+    } else {
+      signupDateB = new Date(b.signupDate).getTime();
+    }
+    return signupDateA - signupDateB;
+  });
+
   users.forEach((user, index) => {
-    user.numberOfDays = Math.abs((user.endDate - user.startDate) / 86400);
     user.uid = docSnap.docs[index].id;
-    user.signupDate = user.signupDate.toDate().toLocaleString();
-    user.startDate = user.startDate.toDate().toLocaleDateString();
-    user.endDate = user.endDate.toDate().toLocaleDateString();
+
+    var signupDate, startDate, endDate;
+    if (user.signupDate instanceof Timestamp) {
+      signupDate = user.signupDate.toDate();
+    } else {
+      signupDate = new Date(user.signupDate);
+    }
+    if (user.startDate instanceof Timestamp) {
+      startDate = user.startDate.toDate();
+    } else {
+      startDate = new Date(user.startDate);
+    }
+    if (user.endDate instanceof Timestamp) {
+      endDate = user.endDate.toDate();
+    } else {
+      endDate = new Date(user.endDate);
+    }
+
+    const diffTime = Math.abs(endDate - startDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    user.numberOfDays = diffDays;
+    user.signupDate = signupDate.toLocaleString();
+    user.startDate = startDate.toLocaleDateString();
+    user.endDate = endDate.toLocaleDateString();
   });
 
   return users;
 };
 
-export const updateUserData = async (updatedUserData) => {
+export const updateUserData = async (userToUpdate) => {
   // normalize data
-  updateUserData.signupDate = Timestamp.fromDate(
-    new Date(updatedUserData.signupDate)
+  const uid = userToUpdate.uid;
+  // remove fields that by nature, will not be updated
+  const normalizedUserData = Object.fromEntries(
+    Object.entries(userToUpdate)
+      .filter(([key, value]) => value !== undefined)
+      .filter(([key]) => key !== "uid")
+      .filter(([key]) => key !== "signupDate")
+      .filter(([key]) => key !== "numberOfDays")
   );
-  updateUserData.startDate = Date.parse(updatedUserData.startDate);
-  updateUserData.endDate = Date.parse(updatedUserData.endDate);
-  const docRef = doc(db, "users", updatedUserData.uid);
+  // transform date fields
+  normalizedUserData.startDate = Timestamp.fromDate(
+    new Date(normalizedUserData.startDate)
+  );
+  normalizedUserData.endDate = Timestamp.fromDate(
+    new Date(normalizedUserData.endDate)
+  );
+
+  const docRef = doc(db, "users", uid);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
     const docData = docSnap.data();
-    const newDocData = { ...docData, ...updatedUserData };
+    const newDocData = { ...docData, ...normalizedUserData };
     await setDoc(docRef, newDocData);
   }
 };

@@ -12,7 +12,6 @@ const Logout = () => {
 
   return (
     <>
-      {loading && <div>Loading.....</div>}
       {!loading && <div></div>}
       <Navigate to={"/login"} replace={true} />
     </>
