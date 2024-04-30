@@ -1,38 +1,41 @@
 import {
   createUserWithEmailAndPassword,
   deleteUser,
+  fetchSignInMethodsForEmail,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
 import { auth } from "./firebase-config";
 
 export const doCreateUserWithEmailAndPassword = async (email, password) => {
-  return createUserWithEmailAndPassword(auth, email, password);
+  const result = await createUserWithEmailAndPassword(auth, email, password);
+  return result;
 };
 
-export const doSignInWithEmailAndPassword = (email, password) => {
-  return signInWithEmailAndPassword(auth, email, password);
+export const doSignInWithEmailAndPassword = async (email, password) => {
+  const result = await signInWithEmailAndPassword(auth, email, password);
+  return result;
 };
 
-export const doSignOut = () => {
-  return signOut(auth);
+export const doSignOut = async () => {
+  await signOut(auth);
 };
 
-export const doDeleteAuthUser = () => {
+export const doDeleteAuthUser = async () => {
   const user = auth.currentUser;
-  return deleteUser(user);
+  await deleteUser(user);
 };
 
-export const doPasswordReset = (email) => {
-  return sendPasswordResetEmail(auth, email);
+export const doPasswordReset = async (email) => {
+  await sendPasswordResetEmail(auth, email);
 };
 
-export const doPasswordChange = (password) => {
-  return updatePassword(auth.currentUser, password);
+export const doPasswordChange = async (password) => {
+  await updatePassword(auth.currentUser, password);
 };
 
-export const doSendEmailVerification = (email) => {
-  return SendEmailVerification(auth.currentUser, password, {
+export const doSendEmailVerification = async (email) => {
+  await sendEmailVerification(auth.currentUser, {
     url: `${window.location.origin}/home`,
   });
 };

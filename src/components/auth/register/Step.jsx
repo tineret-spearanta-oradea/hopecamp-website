@@ -31,23 +31,16 @@ const Step = ({
           ? "Detalii personale"
           : "Confirmare"}
       </h2>
-      <h3 className="mb-4">
+      <h3 className="mb-4 text-center">
         {stepNumber === 1
-          ? `Hope Camp #6 este o tabară creștină de tineret, organizată de TineretSperanța Oradea.
-          Mai multe detalii despre noi și tabără găsiți in pagina principala.`
+          ? `Hope Camp #5 este o tabară creștină de tineret, organizată de Tineret Speranța Oradea.
+          Mai multe detalii despre noi și tabără găsiți in pagina principala.` //TODO: add link to the index page
           : ""}
       </h3>
-      <h5 className="text-sm mb-4">
-        {stepNumber === 1
-          ? "Emailul si parola vor fi folosite pentru a te conecta la platforma noastrǎ"
-          : stepNumber === 2
-          ? "Ajuta-ne să te (re)cunoaștem!"
-          : ""}
-      </h5>
       {stepNumber === 1 && (
         <>
           <TextInputField
-            label="Email"
+            label="Email *"
             type="email"
             name="email"
             autoComplete="email"
@@ -56,7 +49,7 @@ const Step = ({
             errorMessage={errors.email}
           />
           <TextInputField
-            label="Parola"
+            label="Parola *"
             type="password"
             name="password"
             value={formData.authData.password}
@@ -64,7 +57,7 @@ const Step = ({
             errorMessage={errors.password}
           />
           <TextInputField
-            label="Confirma parola"
+            label="Confirma parola *"
             type="password"
             name="confirmPassword"
             value={formData.authData.confirmPassword}
@@ -184,6 +177,13 @@ const Step = ({
           </button>
         )}
       </div>
+      <h5 className="text-sm mt-4 text-yellow-600">
+        {stepNumber === 1
+          ? "* Emailul si parola vor fi folosite pentru a te conecta la platforma noastrǎ. Acestea sunt necesare pentru înscriere."
+          : stepNumber === 2
+          ? "Ajuta-ne să te (re)cunoaștem!"
+          : ""}
+      </h5>
     </div>
   );
 };

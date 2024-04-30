@@ -23,7 +23,7 @@ export const uploadImageAndGetUrl = async (
     const snapshot = await uploadBytes(imageRef, file);
     const downloadUrl = await getDownloadURL(snapshot.ref);
 
-    updateMetadataForImage(imageRef, email, name);
+    await updateMetadataForImage(imageRef, email, name);
 
     return downloadUrl;
   } catch (error) {

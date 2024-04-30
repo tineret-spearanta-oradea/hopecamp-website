@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const ExpandedRow = ({ row, columns, setSelectedRow, updateUser }) => {
+const ExpandedRow = ({ row, columns, handleMoreInfo, updateUser }) => {
   const [editingRowId, setEditingRowId] = useState(null);
   const [editedUser, setEditedUser] = useState({ ...row.original });
 
@@ -87,7 +87,7 @@ const ExpandedRow = ({ row, columns, setSelectedRow, updateUser }) => {
             </button>
           )}
           <button
-            onClick={() => setSelectedRow(null)}
+            onClick={() => handleMoreInfo()}
             className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
           >
             Close

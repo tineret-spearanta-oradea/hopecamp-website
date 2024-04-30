@@ -5,8 +5,8 @@ const TableRow = ({
   row,
   i,
   prepareRow,
-  selectedRow,
-  setSelectedRow,
+  selectedRowRef,
+  handleMoreInfo,
   columns,
   updateUser,
 }) => {
@@ -28,11 +28,12 @@ const TableRow = ({
           </td>
         ))}
       </tr>
-      {selectedRow === row.original.uid && (
+      {selectedRowRef.current === row.original.uid && (
         <ExpandedRow
           row={row}
           columns={columns}
-          setSelectedRow={setSelectedRow}
+          selectedRowRef={selectedRowRef}
+          handleMoreInfo={handleMoreInfo}
           updateUser={updateUser}
         />
       )}

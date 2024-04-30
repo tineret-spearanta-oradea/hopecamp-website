@@ -1,17 +1,32 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useRef } from "react";
 import { useTable, useSortBy, useFilters } from "react-table";
 import classNames from "classnames";
 import { getAllUsers } from "../../firebase/database";
 import { sumToPay } from "../../models/Options";
 import TableRow from "./TableRow";
 import { updateUserData } from "../../firebase/database";
+import LoadingIcon from "../LoadingIcon";
 
 const UserTable = () => {
   const [userList, setUserList] = useState([]);
-  const [selectedRow, setSelectedRow] = useState(null);
-  const [editingRowId, setEditingRowId] = useState(null);
+  const [filteredUserList, setFilteredUserList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const selectedRowRef = useRef(null);
+  const [filterValue, setFilterValue] = useState(""); // Added state for filter input
+
+  // i use this method because the table doesn't rerender when i change the selectedRowRef.current
+  // if i used useRef for the selectedRow, it would have rerendered, but i would have lost the selectedRowRef.current value, since it only updates after a rerender
+  // maybe there is a better way to do this, but i don't have time to look for it. If you know a better way, please update this code.
+  const [, updateState] = useState();
+  const forceRender = React.useCallback(() => updateState({}), []);
 
   const updateUser = async (updatedUser) => {
+    //TODO: Add a confirmation dialog/modal
+    if (
+      confirm("Sigur dorești să actualizezi datele utilizatorului?") === false
+    )
+      return;
+
     try {
       await updateUserData(updatedUser);
       setUserList((prevUserList) => {
@@ -21,7 +36,7 @@ const UserTable = () => {
       });
     } catch (error) {
       //TODO: show UI component error
-      console.error(error);
+      alert(error);
     }
   };
 
@@ -30,31 +45,80 @@ const UserTable = () => {
     async function fetchData() {
       const allUsersData = await getAllUsers();
       setUserList(allUsersData);
+      setFilteredUserList(allUsersData);
+      setIsLoading(false);
     }
     fetchData();
   }, []);
 
   const handleMoreInfo = (row) => {
-    setSelectedRow(row.original.uid);
+    if (selectedRowRef.current === null) {
+      selectedRowRef.current = row.original.uid;
+    } else {
+      selectedRowRef.current = null;
+    }
+    forceRender();
+  };
+
+  // Added function to handle filter input change
+  const handleFilterChange = (e) => {
+    setFilterValue(e.target.value);
+    setFilteredUserList(
+      userList.filter((user) =>
+        user.name.toLowerCase().includes(e.target.value.toLowerCase())
+      )
+    );
   };
 
   const handleDownloadTableAsCsv = () => {
     //TODO: Implement this feature
-    alert("This feature is not implemented yet.");
-    // const csv = userList.map((user) => {
-    //   return Object.values(user).join(",");
-    // });
-    // const csvString = csv.join("\n");
-    // const blob = new Blob([csvString], { type: "text/csv" });
-    // const url = URL.createObjectURL(blob);
-    // const a = document.createElement("a");
-    // a.href = url;
-    // a.download = "users.csv";
-    // a.click();
-    // URL.revokeObjectURL(url);
+    // alert("This feature is not implemented yet.");
+
+    const titleKeys = userProperties
+      //if there are more columns that should not be included in the csv, add a isExportable property in the userProperties object
+      .filter((property) => property.Header !== "Id")
+      .map((property) => property.accessor);
+    const refinedData = [];
+    refinedData.push(titleKeys);
+    userList.forEach((item) => {
+      const rowData = titleKeys.map((key) => item[key]);
+      refinedData.push(rowData);
+    });
+
+    let csvContent = "";
+    refinedData.forEach((row) => {
+      csvContent +=
+        row
+          .map((value) => {
+            if (typeof value === "string") {
+              return value.replace(",", "");
+            } else {
+              return value;
+            }
+          })
+          .join(",") + "\n";
+    });
+
+    const now = new Date();
+    const filename = `Participanti_HC_${now.getDay()}-${now.getMonth()}-${now.getFullYear()}_${now.getHours()}-${now.getMinutes()}`;
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    if (navigator.msSaveBlob) {
+      navigator.msSaveBlob(blob, filename);
+    } else {
+      var link = document.createElement("a");
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", filename);
+        link.style.visibility = "hidden";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
   };
 
-  // These are different than UserData.
+  // These are different than UserData model.
   // This is because, when we add for example a new property in the UserData,
   // we need to explictily say where this value will be shown in the users list.
   // I could maybe extract this in another file
@@ -234,14 +298,14 @@ const UserTable = () => {
         Header: "More",
         width: 50,
         Cell: ({ row }) => (
-          <button onClick={() => handleMoreInfo(row)}>▼</button>
+          <button onClick={() => handleMoreInfo(row)}>🔽</button>
         ),
       },
     ],
     []
   );
 
-  const visibleColumns = React.useMemo(
+  const visibleColumns = useMemo(
     () => userProperties.filter((column) => !column.isHidden),
     [userProperties]
   );
@@ -250,7 +314,7 @@ const UserTable = () => {
     useTable(
       {
         columns: visibleColumns,
-        data: userList,
+        data: filteredUserList,
         initialState: { sortBy: [{ id: "id", desc: true }] },
       },
       useFilters,
@@ -282,6 +346,17 @@ const UserTable = () => {
             <span className="text-xs">.csv</span>
           </button>
         </div>
+      </div>
+      {isLoading && <LoadingIcon />}
+      <div className="w-100">
+        {/* TODO: add filter text input */}{" "}
+        <input
+          type="text"
+          className="w-60 px-2 py-1 border rounded-md m-2"
+          value={filterValue}
+          onChange={handleFilterChange}
+          placeholder="Cautǎ după nume..."
+        />
       </div>
       <div className="overflow-x-auto max-w-full">
         <table
@@ -327,8 +402,8 @@ const UserTable = () => {
                   row={row}
                   i={i}
                   prepareRow={prepareRow}
-                  selectedRow={selectedRow}
-                  setSelectedRow={setSelectedRow}
+                  selectedRowRef={selectedRowRef}
+                  handleMoreInfo={handleMoreInfo}
                   columns={userProperties}
                   updateUser={updateUser}
                 />

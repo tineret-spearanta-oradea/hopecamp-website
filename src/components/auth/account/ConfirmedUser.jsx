@@ -1,8 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Navigate, Link, useNavigate } from "react-router-dom";
+import { writeMessageData, getMessageData } from "../../../firebase/database";
+import MessageData from "../../../models/MessageData";
 
 const ConfirmedUser = ({ userData }) => {
   const navigate = useNavigate();
+  const [messageText, setMessageText] = useState("");
+
+  useEffect(() => {
+    const fetchMessage = async () => {
+      const messageData = await getMessageData(userData.uid);
+      if (messageData) {
+        setMessageText(messageData.text);
+      }
+    };
+
+    fetchMessage();
+  }, [userData.uid]);
 
   const navigateToAdminsDashboard = () => {
     navigate("/admins");
@@ -17,6 +31,12 @@ const ConfirmedUser = ({ userData }) => {
       timeDifference / (1000 * 60 * 60 * 24)
     );
     return timeDifferenceInDays;
+  };
+
+  const handleMessageSend = async () => {
+    const messageText = document.querySelector("textarea").value;
+    const messageData = new MessageData(userData.uid, messageText);
+    await writeMessageData(messageData);
   };
 
   return (
@@ -41,14 +61,36 @@ const ConfirmedUser = ({ userData }) => {
         referitoare la tabără:
       </p>
       {/* TODO: implement the submission of this form in a new table called "messages" that contains the user id, name, phone, and message */}
-      <textarea
-        className="w-full h-24 p-2 mt-2 border rounded-md resize-none"
-        placeholder="Gând sau sugestie..."
-      ></textarea>
+      {messageText ? (
+        <textarea
+          className="w-full h-24 p-2 mt-2 border rounded-md resize-none"
+          placeholder={messageText}
+          disabled
+        ></textarea>
+      ) : (
+        <textarea
+          className="w-full h-24 p-2 mt-2 border rounded-md resize-none"
+          placeholder="Gând sau sugestie... (opțional)"
+        ></textarea>
+      )}
+
       <div className="text-right">
-        <button className="m-2 py-1 px-4 bg-blue-500 text-white rounded-md">
-          Trimite mesaj (opțional)
-        </button>
+        {messageText ? (
+          <button
+            onClick={handleMessageSend}
+            className="m-2 py-1 px-4 bg-gray-500 text-white rounded-md"
+            disabled
+          >
+            Ai trimis deja
+          </button>
+        ) : (
+          <button
+            onClick={handleMessageSend}
+            className="m-2 py-1 px-4 bg-blue-500 text-white rounded-md"
+          >
+            Trimite mesaj
+          </button>
+        )}
       </div>
       <p>
         De asemenea poți da click mai jos pentru a vedea datele cu care te-ai

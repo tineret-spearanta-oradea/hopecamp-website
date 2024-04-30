@@ -22,6 +22,7 @@ class UserData {
     endDate = dateRange.endDate,
     amountPaid = 0,
     imageUrl = "",
+    isSuperAdmin = false,
     isAdmin = false,
     isConfirmed = false,
     withFamilyMember = false,
@@ -40,6 +41,7 @@ class UserData {
     this.transport = transport;
     this.startDate = startDate;
     this.endDate = endDate;
+    this.isSuperAdmin = isSuperAdmin;
     this.isAdmin = isAdmin;
     this.isConfirmed = isConfirmed;
     this.withFamilyMember = withFamilyMember;

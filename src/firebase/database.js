@@ -28,7 +28,10 @@ export const getUserData = async (uid) => {
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    return docSnap.data();
+    //add uid to the returned data
+    const userData = docSnap.data();
+    userData.uid = docSnap.id;
+    return userData;
   }
   return null;
 };
@@ -48,23 +51,13 @@ export const getArchivedUserData = async (email) => {
 export const getAllUsers = async () => {
   const docRef = collection(db, "users");
   const docSnap = await getDocs(docRef);
+  // console.log(docSnap.docs);
   const users = docSnap.docs.map((doc) => doc.data());
 
-  // transformiing the data to march the structure of the table
-  users.sort((a, b) => {
-    let signupDateA, signupDateB;
-    if (a.signupDate instanceof Timestamp) {
-      signupDateA = a.signupDate.seconds;
-    } else {
-      signupDateA = new Date(a.signupDate).getTime();
-    }
-    if (b.signupDate instanceof Timestamp) {
-      signupDateB = b.signupDate.seconds;
-    } else {
-      signupDateB = new Date(b.signupDate).getTime();
-    }
-    return signupDateA - signupDateB;
-  });
+  // transforming the data to march the structure of the table
+  // console.log(
+  //   users.find((user) => user.uid === "qdTJa7EL4YdSflkJuDV0K7eYv6w1")
+  // );
 
   users.forEach((user, index) => {
     user.uid = docSnap.docs[index].id;
@@ -85,6 +78,9 @@ export const getAllUsers = async () => {
     } else {
       endDate = new Date(user.endDate);
     }
+    // console.log(
+    //   users.find((user) => user.uid === "qdTJa7EL4YdSflkJuDV0K7eYv6w1")
+    // );
 
     const diffTime = Math.abs(endDate - startDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -115,7 +111,8 @@ export const updateUserData = async (userToUpdate) => {
   normalizedUserData.endDate = Timestamp.fromDate(
     new Date(normalizedUserData.endDate)
   );
-
+  // for debugging:
+  // console.log(uid);
   const docRef = doc(db, "users", uid);
   const docSnap = await getDoc(docRef);
 
@@ -123,5 +120,69 @@ export const updateUserData = async (userToUpdate) => {
     const docData = docSnap.data();
     const newDocData = { ...docData, ...normalizedUserData };
     await setDoc(docRef, newDocData);
+  } else {
+    throw new Error("User not found");
   }
+};
+
+export const writeMessageData = async (messageData) => {
+  const uid = messageData.uid;
+  const normalizedMessageData = Object.fromEntries(
+    Object.entries(messageData)
+      .filter(([key, value]) => value !== undefined)
+      .filter(([key]) => key !== "uid")
+  );
+  const docData = normalizedMessageData;
+
+  await setDoc(doc(db, "messages", uid), docData);
+};
+
+export const getMessageData = async (uid) => {
+  const docRef = doc(db, "messages", uid);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    const messageData = docSnap.data();
+    messageData.uid = docSnap.id;
+
+    // Join on the users table to retrieve user name and phone
+    const userData = await getUserData(messageData.uid);
+    if (userData) {
+      messageData.userName = userData.name;
+      messageData.phone = userData.phone;
+    }
+
+    return messageData;
+  }
+  return null;
+};
+
+export const getAllMessages = async () => {
+  const docRef = collection(db, "messages");
+  const docSnap = await getDocs(docRef);
+  const messages = docSnap.docs.map((doc) => doc.data());
+
+  messages.forEach(async (message, index) => {
+    message.uid = docSnap.docs[index].id;
+    message.sentDate = message.sentDate.toDate().toLocaleString();
+
+    // Join on the users table to retrieve user name and phone
+    const userData = await getUserData(message.uid);
+    if (userData) {
+      message.userName = userData.name;
+      message.phone = userData.phone;
+    }
+  });
+
+  return messages;
+};
+
+export const getNumberOfUnreadMessages = async () => {
+  const docRef = collection(db, "messages");
+  const docSnap = await getDocs(docRef);
+  const messages = docSnap.docs.map((doc) => doc.data());
+
+  const unreadMessages = messages.filter((message) => !message.isRead);
+
+  return unreadMessages.length;
 };
