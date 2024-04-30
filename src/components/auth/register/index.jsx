@@ -70,8 +70,8 @@ const Register = () => {
   return (
     <>
       {loggedInUser !== null && <Navigate to={"/cont"} replace={true} />}
-      <main className="w-full h-screen flex self-center place-content-center place-items-center">
-        <div className="w-96 text-gray-600 space-y-5 p-4 shadow-xl border rounded-xl">
+      <main className="flex flex-col justify-center items-center min-h-screen p-6">
+        <div className="w-full max-w-md text-gray-600 space-y-5 p-4 shadow-xl border rounded-xl">
           <MultiStepForm
             handleSubmit={handleSubmit}
             handleImageChange={handleImageChange}
