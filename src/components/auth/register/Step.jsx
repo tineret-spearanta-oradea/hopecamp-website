@@ -4,6 +4,7 @@ import CheckboxInputField from "../CheckboxInputField";
 import ImageInputField from "../ImageInputField";
 import RadioInputField from "../RadioInputField";
 import DateInputField from "../DateInputField";
+import ErrorAlert from '../ErrorAlert';
 import { churchOptions } from "../../../models/Options";
 import { payTaxToOptions } from "../../../models/Options";
 import { transportOptions } from "../../../models/Options";
@@ -44,6 +45,7 @@ const Step = ({
           ? "Ajuta-ne să te (re)cunoaștem!"
           : ""}
       </h5>
+      <ErrorAlert messages={Object.values(errors)} />
       {stepNumber === 1 && (
         <>
           <TextInputField
