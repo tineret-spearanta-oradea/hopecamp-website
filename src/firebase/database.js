@@ -9,6 +9,7 @@ import {
   where,
   getDocs,
   getDoc,
+  deleteDoc,
 } from "firebase/firestore";
 
 export const writeUserData = async (userData) => {
@@ -51,14 +52,9 @@ export const getArchivedUserData = async (email) => {
 export const getAllUsers = async () => {
   const docRef = collection(db, "users");
   const docSnap = await getDocs(docRef);
-  // console.log(docSnap.docs);
   const users = docSnap.docs.map((doc) => doc.data());
 
   // transforming the data to march the structure of the table
-  // console.log(
-  //   users.find((user) => user.uid === "qdTJa7EL4YdSflkJuDV0K7eYv6w1")
-  // );
-
   users.forEach((user, index) => {
     user.uid = docSnap.docs[index].id;
 
@@ -78,9 +74,6 @@ export const getAllUsers = async () => {
     } else {
       endDate = new Date(user.endDate);
     }
-    // console.log(
-    //   users.find((user) => user.uid === "qdTJa7EL4YdSflkJuDV0K7eYv6w1")
-    // );
 
     const diffTime = Math.abs(endDate - startDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -123,6 +116,11 @@ export const updateUserData = async (userToUpdate) => {
   } else {
     throw new Error("User not found");
   }
+};
+
+export const deleteUserData = async (uid) => {
+  const docRef = doc(db, "users", uid);
+  await deleteDoc(docRef);
 };
 
 export const writeMessageData = async (messageData) => {

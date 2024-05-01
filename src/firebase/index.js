@@ -3,7 +3,7 @@
 // Maybe this will not be needed, but for now, I will write the first version of it
 
 import { doCreateUserWithEmailAndPassword, doDeleteAuthUser } from "./auth";
-import { writeUserData } from "./database";
+import { writeUserData, deleteUserData } from "./database";
 import { uploadImageAndGetUrl } from "./storage";
 
 //TODO [Optional]: Log errors in a log file
@@ -61,5 +61,15 @@ export const registerAndCreateUser = async (formData, imageFile) => {
     //TODO: Change alert with an UI error component
     alert("Error creating user!");
     console.error("Error creating user data:", authError);
+  }
+};
+
+export const deleteUserFromSystem = async (uid) => {
+  try {
+    // TODO: find a proper solution for this
+    // await doDeleteAuthUser(); // this is not supported. right now we'll let the auth user be
+    await deleteUserData(uid);
+  } catch (authError) {
+    console.error("Error deleting auth user:", authError);
   }
 };

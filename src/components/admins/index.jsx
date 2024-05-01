@@ -4,6 +4,7 @@ import MessagesTable from "./MessagesTable";
 import { useAuth } from "../../contexts/authContext";
 import { Navigate, Link, useNavigate } from "react-router-dom";
 import { getNumberOfUnreadMessages } from "../../firebase/database";
+import ManageAdminsSection from "./ManageAdminsSection";
 
 const AdminDashboard = () => {
   //TODO: add identity validation
@@ -19,8 +20,8 @@ const AdminDashboard = () => {
   const sections = [
     { label: "Participanti", value: "users" },
     { label: "Mesaje", value: "messages" },
-    { label: "Adaugǎ admin", value: "addAdmin" },
-    { label: "Sterge", value: "removeUser" },
+    { label: "Admins", value: "admins" },
+    { label: "Statistici", value: "statistics" },
   ];
 
   const getNumberForLabels = async (section) => {
@@ -119,10 +120,14 @@ const AdminDashboard = () => {
         {/* Main section based on selected section */}
         {userData !== null && userData.isAdmin ? (
           <>
-            {selectedSection === "users" && <UserTable />}
+            {selectedSection === "users" && (
+              <UserTable loggedInUserData={userData} />
+            )}
             {selectedSection === "messages" && <MessagesTable />}
-            {selectedSection === "addAdmin" && <AddAdminSection />}
-            {selectedSection === "removeUser" && <RemoveUserSection />}
+            {selectedSection === "admins" && (
+              <ManageAdminsSection loggedInUserData={userData} />
+            )}
+            {selectedSection === "statistics" && <StatisticsSection />}
           </>
         ) : (
           <div></div> // ???
@@ -132,14 +137,9 @@ const AdminDashboard = () => {
   );
 };
 
-const AddAdminSection = () => {
-  // Placeholder for Add Admin Section
-  return <h2>Add Admin Section</h2>;
-};
-
-const RemoveUserSection = () => {
+const StatisticsSection = () => {
   // Placeholder for Remove User Section
-  return <h2>Remove User Section</h2>;
+  return <h2>❗️aceasta pagina este inca in lucru❗️</h2>;
 };
 
 export default AdminDashboard;

@@ -5,6 +5,7 @@ import { getUserData } from "../../../firebase/database";
 import UserData from "../../../models/UserData";
 import ConfirmedUser from "./ConfirmedUser";
 import PendingUser from "./PendingUser";
+import LoadingIcon from "../../LoadingIcon";
 
 //TODO: Style this component and the children components
 
@@ -21,6 +22,11 @@ const Account = () => {
 
   if (!userLoggedIn) {
     return <Navigate to={"/login"} replace={true} />;
+  }
+
+  if (userData === null || userData === undefined || loading) {
+    // This should only based on "laoding" but it's a temporary solution, since there's a bug in the authContext
+    return <LoadingIcon />;
   }
 
   return (

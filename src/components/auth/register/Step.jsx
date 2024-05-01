@@ -37,6 +37,9 @@ const Step = ({
           Mai multe detalii despre noi și tabără găsiți in pagina principala.` //TODO: add link to the index page
           : ""}
       </h3>
+      <h5 className="text-sm my-4 text-center">
+        {stepNumber === 2 ? "Ajuta-ne să te (re)cunoaștem!" : ""}
+      </h5>
       {stepNumber === 1 && (
         <>
           <TextInputField
@@ -180,8 +183,6 @@ const Step = ({
       <h5 className="text-sm mt-4 text-yellow-600">
         {stepNumber === 1
           ? "* Emailul si parola vor fi folosite pentru a te conecta la platforma noastrǎ. Acestea sunt necesare pentru înscriere."
-          : stepNumber === 2
-          ? "Ajuta-ne să te (re)cunoaștem!"
           : ""}
       </h5>
     </div>

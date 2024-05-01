@@ -8,7 +8,9 @@ const TableRow = ({
   selectedRowRef,
   handleMoreInfo,
   columns,
+  isSuperAdmin,
   updateUser,
+  deleteUser,
 }) => {
   prepareRow(row);
   return (
@@ -34,7 +36,9 @@ const TableRow = ({
           columns={columns}
           selectedRowRef={selectedRowRef}
           handleMoreInfo={handleMoreInfo}
+          isSuperAdmin={isSuperAdmin}
           updateUser={updateUser}
+          deleteUser={deleteUser}
         />
       )}
     </>

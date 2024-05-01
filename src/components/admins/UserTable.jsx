@@ -6,8 +6,10 @@ import { sumToPay } from "../../models/Options";
 import TableRow from "./TableRow";
 import { updateUserData } from "../../firebase/database";
 import LoadingIcon from "../LoadingIcon";
+import { deleteUserFromSystem } from "../../firebase";
 
-const UserTable = () => {
+const UserTable = (loggedInUserData) => {
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [userList, setUserList] = useState([]);
   const [filteredUserList, setFilteredUserList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -24,15 +26,33 @@ const UserTable = () => {
     //TODO: Add a confirmation dialog/modal
     if (
       confirm("Sigur dorești să actualizezi datele utilizatorului?") === false
-    )
+    ) {
       return;
+    }
 
     try {
       await updateUserData(updatedUser);
-      setUserList((prevUserList) => {
+      setFilteredUserList((prevUserList) => {
         return prevUserList.map((user) =>
           user.uid === updatedUser.uid ? updatedUser : user
         );
+      });
+    } catch (error) {
+      //TODO: show UI component error
+      alert(error);
+    }
+  };
+
+  const deleteUser = async (uid) => {
+    //TODO: Add a confirmation dialog/modal
+    if (confirm("Sigur dorești să STERGI utilizatorul?") === false) {
+      return;
+    }
+
+    try {
+      await deleteUserFromSystem(uid);
+      setFilteredUserList((prevUserList) => {
+        return prevUserList.filter((user) => user.uid !== uid);
       });
     } catch (error) {
       //TODO: show UI component error
@@ -47,6 +67,12 @@ const UserTable = () => {
       setUserList(allUsersData);
       setFilteredUserList(allUsersData);
       setIsLoading(false);
+      if (
+        loggedInUserData.loggedInUserData.isSuperAdmin &&
+        loggedInUserData.loggedInUserData.isSuperAdmin === true
+      ) {
+        setIsSuperAdmin(true);
+      }
     }
     fetchData();
   }, []);
@@ -169,7 +195,7 @@ const UserTable = () => {
         isExpandable: true,
       },
       {
-        Header: "Are membru de familie in tabara",
+        Header: "Are familie in tabara",
         accessor: "withFamilyMember",
         width: 0,
         // Cell: ({ value }) => (value ? "Da" : "Nu"),
@@ -253,14 +279,14 @@ const UserTable = () => {
         ),
       },
       {
-        Header: "Ziua in care vine in tabara",
+        Header: "Vine in tabarǎ",
         accessor: "startDate",
         width: 0,
         isHidden: true,
         isExpandable: true,
       },
       {
-        Header: "Ziua in care vine in tabara",
+        Header: "Pleacǎ din tabara",
         accessor: "endDate",
         width: 0,
         isHidden: true,
@@ -405,7 +431,9 @@ const UserTable = () => {
                   selectedRowRef={selectedRowRef}
                   handleMoreInfo={handleMoreInfo}
                   columns={userProperties}
+                  isSuperAdmin={isSuperAdmin}
                   updateUser={updateUser}
+                  deleteUser={deleteUser}
                 />
               );
             })}

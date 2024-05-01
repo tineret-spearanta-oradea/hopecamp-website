@@ -14,7 +14,6 @@ const MessagesTable = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       const response = await getAllMessages();
-      console.log(response);
       setMessagesData(response);
       setLoading(false);
     };
@@ -24,9 +23,8 @@ const MessagesTable = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold">
-        Mesaje - aceasta pagina este inca in lucru
-      </h1>
+      <h1 className="text-3xl font-bold mb-4">Mesaje</h1>
+      <h2>❗️aceasta pagina este inca in lucru❗️</h2>
       {loading ? (
         <div className="flex justify-center items-center h-32">
           <div className="w-6 h-6 border-2 border-t-0 border-gray-900 rounded-full animate-spin"></div>

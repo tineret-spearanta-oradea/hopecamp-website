@@ -7,6 +7,7 @@ import {
 } from "firebase/auth";
 import { auth } from "./firebase-config";
 
+//TODO: change the naming. Shouldn't have "do" in the name
 export const doCreateUserWithEmailAndPassword = async (email, password) => {
   const result = await createUserWithEmailAndPassword(auth, email, password);
   return result;
