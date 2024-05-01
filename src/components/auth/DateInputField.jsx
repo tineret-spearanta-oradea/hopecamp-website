@@ -1,6 +1,6 @@
 import React from "react";
 import { DateRangePicker } from "rsuite";
-import "rsuite/DateRangePicker/styles/index.css";
+import "rsuite/DateRangePicker/styles/index.css"; //this causes an error, but the component works
 import { dateRange } from "../../models/Options";
 
 const DateInputField = ({

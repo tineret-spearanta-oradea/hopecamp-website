@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import UserTable from "./UserTable";
+import MessagesTable from "./MessagesTable";
 import { useAuth } from "../../contexts/authContext";
 import { Navigate, Link, useNavigate } from "react-router-dom";
+import { getNumberOfUnreadMessages } from "../../firebase/database";
+import ManageAdminsSection from "./ManageAdminsSection";
 
 const AdminDashboard = () => {
   //TODO: add identity validation
@@ -9,23 +12,43 @@ const AdminDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const navigate = useNavigate();
   const { authData, userData, userLoggedIn, loading, error } = useAuth();
+  const [numbersForLabels, setNumberForLabels] = useState({
+    unreadMessages: null,
+    users: null,
+  });
 
   const sections = [
     { label: "Participanti", value: "users" },
     { label: "Mesaje", value: "messages" },
-    { label: "Aduga admin", value: "addAdmin" },
-    { label: "Sterge", value: "removeUser" },
+    { label: "Admins", value: "admins" },
+    { label: "Statistici", value: "statistics" },
   ];
+
+  const getNumberForLabels = async (section) => {
+    try {
+      const numberOfUnreadMessages = await getNumberOfUnreadMessages();
+      setNumberForLabels((prevData) => ({
+        ...prevData,
+        unreadMessages: numberOfUnreadMessages.toString(),
+      }));
+    } catch (error) {
+      console.error("Error fetching number of unread messages:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (!loading && (userData === null || !userData.isAdmin)) {
+      navigate("/cont");
+    }
+  }, [loading, userData, navigate]);
+
+  useEffect(() => {
+    getNumberForLabels("messages");
+  }, [selectedSection]);
 
   const handleSectionClick = (section) => {
     setSelectedSection(section);
   };
-
-  useEffect(() => {
-    if (!loading && !userData.isAdmin) {
-      navigate("/cont");
-    }
-  }, [loading, userData, navigate]);
 
   return (
     <div className="flex min-h-screen">
@@ -46,7 +69,25 @@ const AdminDashboard = () => {
                     : "hover:bg-gray-800"
                 }`}
               >
-                {section.label}
+                <div className="flex">
+                  {section.label}{" "}
+                  {section.value === "messages" &&
+                    numbersForLabels.unreadMessages !== undefined &&
+                    numbersForLabels.unreadMessages !== null &&
+                    numbersForLabels.unreadMessages !== "0" && (
+                      <span className="mx-2 rounded-full bg-red-500 flex items-center justify-center font-mono w-7 text-sm">
+                        {numbersForLabels.unreadMessages}
+                      </span>
+                    )}
+                  {section.value === "users" &&
+                    numbersForLabels.users !== undefined &&
+                    numbersForLabels.users !== null &&
+                    numbersForLabels.users !== "0" && (
+                      <span className="mx-2 rounded-full bg-red-500 flex items-center justify-center font-mono w-7 text-sm">
+                        {numbersForLabels.users}
+                      </span>
+                    )}
+                </div>
               </button>
             </li>
           ))}
@@ -54,7 +95,7 @@ const AdminDashboard = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="max-w-full overflow-x-auto bg-slate-200">
+      <main className="w-full overflow-x-auto bg-slate-200">
         {/* Navbar */}
         <nav className="bg-gray-700 text-white w-full p-4 mb-4 flex justify-between items-center">
           {/* Sidebar toggle button */}
@@ -77,33 +118,28 @@ const AdminDashboard = () => {
         </nav>
 
         {/* Main section based on selected section */}
-        {userData.isAdmin ? (
+        {userData !== null && userData.isAdmin ? (
           <>
-            {selectedSection === "users" && <UserTable />}
-            {selectedSection === "messages" && <MessagesSection />}
-            {selectedSection === "addAdmin" && <AddAdminSection />}
-            {selectedSection === "removeUser" && <RemoveUserSection />}
+            {selectedSection === "users" && (
+              <UserTable loggedInUserData={userData} />
+            )}
+            {selectedSection === "messages" && <MessagesTable />}
+            {selectedSection === "admins" && (
+              <ManageAdminsSection loggedInUserData={userData} />
+            )}
+            {selectedSection === "statistics" && <StatisticsSection />}
           </>
         ) : (
-          <div></div>
+          <div></div> // ???
         )}
       </main>
     </div>
   );
 };
 
-const MessagesSection = () => {
-  // Placeholder for Messages Section
-  return <h2>Messages Section</h2>;
-};
-const AddAdminSection = () => {
-  // Placeholder for Add Admin Section
-  return <h2>Add Admin Section</h2>;
-};
-
-const RemoveUserSection = () => {
+const StatisticsSection = () => {
   // Placeholder for Remove User Section
-  return <h2>Remove User Section</h2>;
+  return <h2>❗️aceasta pagina este inca in lucru❗️</h2>;
 };
 
 export default AdminDashboard;
