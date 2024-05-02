@@ -31,3 +31,22 @@ export const sumToPay = {
 export const contactInfo = {
   phone: "0000 000 000",
 };
+
+export const MAX_LENGTHS = {
+  email: 100,
+  password: 50,
+  name: 200,
+  age: 2,
+  phone: 15,
+  church: 100,
+  payTaxTo: 100,
+  transport: 100,
+  preferences: 300, 
+};
+
+export const constraints = {
+  email: value => /\S+@\S+\.\S+/.test(value),
+  password: value => value.length >= 6,
+  phone: value => /^\d{10}$/.test(value),
+  age: value => parseInt(value) >= 13 && parseInt(value) <= 35,
+};

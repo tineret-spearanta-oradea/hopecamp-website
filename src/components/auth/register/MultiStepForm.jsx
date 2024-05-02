@@ -1,6 +1,7 @@
 //TODO: rename this file to MultiFormStep.jsx
 import React, { useState } from "react";
 import Step from "./Step";
+import { constraints, MAX_LENGTHS } from "../../../models/Options";
 
 const MultiStepForm = ({
   handleSubmit,
@@ -21,11 +22,16 @@ const MultiStepForm = ({
 
   const handleChange = (objectName, e) => {
     const { name, value } = e;
-    setFormData((prevData) => ({
+    if (name === "age" && !/^\d*$/.test(value)) return;
+    let trimmedValue = value;
+    if (value.length > (MAX_LENGTHS[name] || 999)) {
+      trimmedValue = value.substr(0, MAX_LENGTHS[name]);
+    }
+    setFormData(prevData => ({
       ...prevData,
       [objectName]: {
         ...prevData[objectName],
-        [name]: value,
+        [name]: trimmedValue,
       },
     }));
   };
@@ -47,58 +53,39 @@ const MultiStepForm = ({
     let newErrors = {};
 
     if (step === 1) {
-      const authData = formData.authData;
+      const { email, password, confirmPassword } = formData.authData;
 
-      if (!authData.email || authData.email.length === 0) {
-        newErrors.email = "Adresa de email este necesară.";
-      } else if (!/\S+@\S+\.\S+/.test(authData.email)) {
-        newErrors.email = "Adresa de email este invalidă.";
-      }
+      if (!email) newErrors.email = "Adresa de email este necesară.";
+      else if (!constraints.email(email)) newErrors.email = "Adresa de email este invalidă.";
+      else if (email.length > MAX_LENGTHS.email) newErrors.email = `Adresa de email nu poate depăși ${MAX_LENGTHS.email} de caractere.`;
 
-      if (!authData.password || authData.password.length === 0) {
-        newErrors.password = "Parola este necesară.";
-      } else if (authData.password.length < 6) {
-        newErrors.password = "Parola trebuie să aibă cel puțin 6 caractere.";
-      }
+      if (!password) newErrors.password = "Parola este necesară.";
+      else if (!constraints.password(password)) newErrors.password = "Parola trebuie să aibă cel puțin 6 caractere.";
+      else if (password.length > MAX_LENGTHS.password) newErrors.password = `Parola nu poate depăși ${MAX_LENGTHS.password} de caractere.`;
 
-      if (authData.password !== authData.confirmPassword) {
-        newErrors.confirmPassword = "Parolele nu se potrivesc.";
-      }
+      if (password !== confirmPassword) newErrors.confirmPassword = "Parolele nu se potrivesc.";
     }
+
     if (step === 2) {
-      const userData = formData.userData;
+      const { name, age, phone, church, payTaxTo, transport, preferences } = formData.userData;
 
-      if (!userData.name || userData.name.length === 0) {
-        newErrors.name = "Numele este necesar.";
-      }
+      if (!name) newErrors.name = "Numele este necesar.";
+      else if (name.length > MAX_LENGTHS.name) newErrors.name = `Numele nu poate depăși ${MAX_LENGTHS.name} de caractere.`;
 
-      if (!userData.age || userData.age.length === 0) {
-        newErrors.age = "Vârsta este necesară.";
-      }
+      if (!age) newErrors.age = "Vârsta este necesară.";
+      else if (!/^\d+$/.test(age)) newErrors.age = "Vârsta trebuie să fie un număr valid.";
+      else if (!constraints.age(age)) newErrors.age = "Vârsta trebuie să fie între 13 și 35 ani.";
+    
+      if (!phone) newErrors.phone = "Numărul de telefon este necesar.";
+      else if (!constraints.phone(phone)) newErrors.phone = "Numărul de telefon este invalid.";
 
-      if (!userData.phone || userData.phone.length === 0) {
-        newErrors.phone = "Numărul de telefon este necesar.";
-      }
+      if (!church) newErrors.church = "Biserica este necesară.";
+      if (!payTaxTo) newErrors.payTaxTo = "Alege o persoana căruia să plătești.";
+      if (!transport) newErrors.transport = "Mijlocul de transport este necesar.";
 
-      if (!userData.church || userData.church.length === 0) {
-        newErrors.church = "Biserica este necesară.";
-      }
-
-      if (!userData.payTaxTo || userData.payTaxTo.length === 0) {
-        newErrors.payTaxTo = "Alege o persoana căruia sa plătești.";
-      }
-
-      if (!userData.transport || userData.transport.length === 0) {
-        newErrors.transport = "Mijlocul de transport este necesar.";
-      }
-
-      if (userData.startDate === null || userData.endDate === null) {
-        newErrors.dateRange = "Perioada este necesară.";
-      }
-
-      // TODO: implement errors for all new required fields (including radio buttons and date pickers and file input)
-      // this should be done after implemeting the new fields first.
+      if (preferences && preferences.length > MAX_LENGTHS.preferences) newErrors.preferences = `Preferințele nu pot depăși ${MAX_LENGTHS.preferences} de caractere.`;
     }
+
     setErrors(newErrors);
 
     return Object.keys(newErrors).length === 0;
