@@ -2,8 +2,8 @@ function LocationSection() {
   return (
     <>
       <section>
-        <div className="px-8 flex justify-center">
-          <div className="bg-hope-orange w-full max-w-2xl h-32 z-10 relative -mb-10 sm:h-36 md:h-44 md:-mb-14 lg:h-60 lg:-mb-24 xl:h-72 2xl:h-80"></div>
+        <div className="mt-24 px-8 flex justify-center">
+          <div className="bg-hope-orange rounded-lg w-full max-w-2xl h-32 z-10 relative -mb-10 sm:h-36 md:h-44 md:-mb-14 lg:h-60 lg:-mb-24 xl:h-72 2xl:h-80"></div>
         </div>
         <div className="spacer location-divider-up z-0 relative inset-0" />
         <div className="bg-hope-darkcyan">
