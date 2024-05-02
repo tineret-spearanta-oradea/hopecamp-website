@@ -28,10 +28,34 @@ export const getUserData = async (uid) => {
   const docRef = doc(db, "users", uid);
   const docSnap = await getDoc(docRef);
 
+  //TODO: *kind of optional*: Add this to a transformation function
   if (docSnap.exists()) {
     //add uid to the returned data
     const userData = docSnap.data();
     userData.uid = docSnap.id;
+    var signupDate, startDate, endDate;
+    if (userData.signupDate instanceof Timestamp) {
+      signupDate = userData.signupDate.toDate();
+    } else {
+      signupDate = new Date(userData.signupDate);
+    }
+    if (userData.startDate instanceof Timestamp) {
+      startDate = userData.startDate.toDate();
+    } else {
+      startDate = new Date(userData.startDate);
+    }
+    if (userData.endDate instanceof Timestamp) {
+      endDate = userData.endDate.toDate();
+    } else {
+      endDate = new Date(userData.endDate);
+    }
+
+    const diffTime = Math.abs(endDate - startDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    userData.numberOfDays = diffDays;
+    userData.signupDate = signupDate.toLocaleString();
+    userData.startDate = startDate.toLocaleDateString();
+    userData.endDate = endDate.toLocaleDateString();
     return userData;
   }
   return null;
