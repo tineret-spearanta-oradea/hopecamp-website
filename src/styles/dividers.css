@@ -20,3 +20,10 @@
     background-image: url('/src/assets/svgs/wave-buttonsection-down.svg');
 }
 
+.schedule-divider-up {
+    background-image: url('/src/assets/svgs/wave-schedulesection-up.svg');
+}
+
+.schedule-divider-down {
+    background-image: url('/src/assets/svgs/wave-schedulesection-down.svg');
+}
