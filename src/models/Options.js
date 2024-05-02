@@ -27,3 +27,7 @@ export const sumToPay = {
   normal: 700,
   withFamilyMember: 600,
 };
+
+export const contactInfo = {
+  phone: "0000 000 000",
+};

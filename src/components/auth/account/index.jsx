@@ -5,8 +5,13 @@ import { getUserData } from "../../../firebase/database";
 import UserData from "../../../models/UserData";
 import ConfirmedUser from "./ConfirmedUser";
 import PendingUser from "./PendingUser";
+import LoadingIcon from "../../LoadingIcon";
 
 //TODO: Style this component and the children components
+
+//TODO: Treat the case when we get alreadyLoggedIn as a url parameter.
+// In this case we should show a warning message that the user is already logged in, and for registering another user, they should log themselves out first.
+
 const Account = () => {
   const { authData, userData, userLoggedIn, loading, error } = useAuth();
   const navigate = useNavigate();
@@ -17,6 +22,11 @@ const Account = () => {
 
   if (!userLoggedIn) {
     return <Navigate to={"/login"} replace={true} />;
+  }
+
+  if (userData === null || userData === undefined || loading) {
+    // This should only based on "laoding" but it's a temporary solution, since there's a bug in the authContext
+    return <LoadingIcon />;
   }
 
   return (
@@ -41,7 +51,6 @@ const Account = () => {
               <div className="mt-4">
                 <p>
                   <span className="font-semibold">Hello, </span>
-                  {/* TODO: replace with name */}
                   {userData.name}!
                 </p>
                 {!userData.isConfirmed && (

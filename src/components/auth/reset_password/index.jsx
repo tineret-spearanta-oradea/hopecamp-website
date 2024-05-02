@@ -1,20 +1,9 @@
 import React, { useState } from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { Navigate, Link } from "react-router-dom";
+import { useAuth } from "../../../contexts/authContext";
 
 const ResetPassword = () => {
-  const auth = getAuth();
-
-  const [loggedInUser, setLoggedInUser] = useState(null);
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      //TODO: review if this is a correct way to handle user state.
-      setLoggedInUser(user);
-    } else {
-      // User is signed out
-    }
-  });
-
+  const { authData, userData, userLoggedIn, loading, error } = useAuth();
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isResetting, setIsResetting] = useState(false);
@@ -26,7 +15,7 @@ const ResetPassword = () => {
 
   return (
     <div>
-      {loggedInUser && <Navigate to={"/cont"} replace={true} />}
+      {userLoggedIn && <Navigate to={"/cont?alreadyLoggedIn"} replace={true} />}
 
       <main className="w-full h-screen flex self-center place-content-center place-items-center">
         <div className="w-96 text-gray-600 space-y-5 p-4 pb-8 shadow-xl border rounded-xl">
@@ -70,15 +59,17 @@ const ResetPassword = () => {
           </form>
           <p className="text-center text-sm ">
             Nu te-ai înscris încă în tabără?{" "}
-            <Link to={"/inscrie-te"} className="hover:underline font-bold text-blue-700">
+            <Link
+              to={"/inscrie-te"}
+              className="hover:underline font-bold text-blue-700"
+            >
               Înscrie-te aici
             </Link>
           </p>
-        
         </div>
       </main>
     </div>
-  ); 
-}
+  );
+};
 
 export default ResetPassword;

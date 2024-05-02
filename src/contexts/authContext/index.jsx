@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { auth } from "../../firebase/firebase-config";
 import { onAuthStateChanged } from "firebase/auth";
 import { getUserData } from "../../firebase/database";
+import LoadingIcon from "../../components/LoadingIcon";
 
 const AuthContext = React.createContext();
 
@@ -60,13 +61,8 @@ export function AuthProvider({ children }) {
     error,
   };
 
-  // Check if loading is true, if so, return a loading indicator
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
-      </div>
-    );
+    return <LoadingIcon></LoadingIcon>;
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

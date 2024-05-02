@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { Navigate, Link, useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import MultiStepForm from "./MultiStepForm";
 import { getArchivedUserData } from "../../../firebase/database";
 import { registerAndCreateUser } from "../../../firebase";
 import UserData from "../../../models/UserData";
-import NavigationBar from "../../navigationBar";
 import AuthData from "../../../models/AuthData";
-import { useEffect } from "react";
 import { payTaxToOptions } from "../../../models/Options";
+import { useAuth } from "../../../contexts/authContext";
+import LoadingIcon from "../../LoadingIcon";
 
 const Register = () => {
-  const auth = getAuth();
+  const { authData, userData, userLoggedIn, loading, error } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     authData: new AuthData(),
     userData: new UserData(),
@@ -25,6 +26,7 @@ const Register = () => {
   const [errorAuthMessages, setErrorAuthMessages] = useState([]);
 
   const handleSubmit = async () => {
+    setIsLoading(true);
     if (agreementChecked) {
       const result = await registerAndCreateUser(formData, imageFile);
       if (!result.success) {
@@ -33,7 +35,9 @@ const Register = () => {
         setErrorAuthMessages([]);
         // handle success
       }
+      navigate("/cont");
     }
+    setIsLoading(false);
   };
 
   const handleImageChange = (e) => {
@@ -64,21 +68,11 @@ const Register = () => {
     }
   };
 
-  const [loggedInUser, setLoggedInUser] = useState(null);
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      //TODO: review if this is a correct way to handle user state.
-      setLoggedInUser(user); // (docs): https://firebase.google.com/docs/reference/js/auth.user
-    } else {
-      // User is signed out
-    }
-  });
-
   return (
     <>
-      {loggedInUser !== null && <Navigate to={"/cont"} replace={true} />}
-      <main className="w-full h-screen flex self-center place-content-center place-items-center">
-        <div className="w-96 text-gray-600 space-y-5 p-4 shadow-xl border rounded-xl">
+      {userLoggedIn && <Navigate to={"/cont?alreadyLoggedIn"} replace={true} />}
+      <main className="flex flex-col justify-center items-center min-h-screen p-6">
+        <div className="w-full max-w-md text-gray-600 space-y-5 p-4 shadow-xl border rounded-xl">
           <MultiStepForm
             handleSubmit={handleSubmit}
             handleImageChange={handleImageChange}
@@ -91,6 +85,7 @@ const Register = () => {
           />
         </div>
       </main>
+      {isLoading && <LoadingIcon />}
     </>
   );
 };
