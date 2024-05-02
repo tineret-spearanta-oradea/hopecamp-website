@@ -1,16 +1,27 @@
 import React, { useState } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { useAuth } from "../../../contexts/authContext";
+import { doPasswordReset } from "../../../firebase/auth";
 
 const ResetPassword = () => {
   const { authData, userData, userLoggedIn, loading, error } = useAuth();
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isResetting, setIsResetting] = useState(false);
+  const [isEmailSent, setIsEmailSent] = useState(false);
 
   const onSubmit = async (e) => {
     e.preventDefault();
     // Call firebase reset password
+    setIsResetting(true);
+    try {
+      await doPasswordReset(email);
+      setErrorMessage("");
+    } catch (error) {
+      setErrorMessage("A apărut o eroare. Încearcă din nou.");
+    }
+    setIsResetting(false);
+    setIsEmailSent(true);
   };
 
   return (
@@ -25,6 +36,17 @@ const ResetPassword = () => {
                 Resetare parola
               </h3>
             </div>
+            {!isEmailSent ? (
+              <p className="mt-4 text-sm text-gray-600">
+                Introdu adresa de email pentru a primi un link de resetare a
+                parolei.
+              </p>
+            ) : (
+              <p className="mt-4 text-sm text-indigo-600">
+                Un email a fost trimis la adresa {email}. Verifică-ți inbox-ul
+                pentru a reseta parola.
+              </p>
+            )}
           </div>
           <form onSubmit={onSubmit} className="space-y-5">
             <div>
@@ -33,6 +55,7 @@ const ResetPassword = () => {
                 type="email"
                 autoComplete="email"
                 required
+                disabled={isResetting || isEmailSent}
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
@@ -54,7 +77,7 @@ const ResetPassword = () => {
                   : "bg-indigo-600 hover:bg-indigo-700 hover:shadow-xl transition duration-300"
               }`}
             >
-              {isResetting ? "Logging In..." : "Log in"}
+              {isResetting ? "Trimitem mail..." : "Resetare parolǎ"}
             </button>
           </form>
           <p className="text-center text-sm ">
