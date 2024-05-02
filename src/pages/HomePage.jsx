@@ -1,7 +1,9 @@
+import HeroSection from "../components/homepage-components/HeroSection";
+
 function HomePage() {
     return(
         <>
-        <div>test</div>
+        <HeroSection/>
         
         </>
     );
