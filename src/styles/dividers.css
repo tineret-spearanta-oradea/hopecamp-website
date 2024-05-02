@@ -11,3 +11,12 @@
 .hero-divider {
     background-image: url('/src/assets/svgs/wave-herosection.svg');
 }
+
+.button-divider-up {
+    background-image: url('/src/assets/svgs/wave-buttonsection-up.svg');
+}
+
+.button-divider-down {
+    background-image: url('/src/assets/svgs/wave-buttonsection-down.svg');
+}
+
