@@ -10,6 +10,7 @@ const MultiStepForm = ({
   formData,
   setFormData,
   handleTryAutofillUserData,
+  errorAuthMessages,
 }) => {
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState({});
@@ -135,6 +136,7 @@ const MultiStepForm = ({
           handleSubmit={handleSubmit}
           agreementChecked={agreementChecked}
           handleAgreementChange={handleAgreementChange}
+          errorAuthMessages={errorAuthMessages}
         />
       )}
     </div>

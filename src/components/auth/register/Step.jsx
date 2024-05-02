@@ -4,7 +4,7 @@ import CheckboxInputField from "../CheckboxInputField";
 import ImageInputField from "../ImageInputField";
 import RadioInputField from "../RadioInputField";
 import DateInputField from "../DateInputField";
-import ErrorAlert from '../ErrorAlert';
+import ErrorAlert from '../../notifications/ErrorAlert';
 import { churchOptions } from "../../../models/Options";
 import { payTaxToOptions } from "../../../models/Options";
 import { transportOptions } from "../../../models/Options";
@@ -21,6 +21,7 @@ const Step = ({
   handleAgreementChange,
   handleImageChange,
   errors,
+  errorAuthMessages,
 }) => {
   return (
     <div>
@@ -45,7 +46,7 @@ const Step = ({
           ? "Ajuta-ne să te (re)cunoaștem!"
           : ""}
       </h5>
-      <ErrorAlert messages={Object.values(errors)} />
+      {errorAuthMessages.length > 0 && <ErrorAlert messages={errorAuthMessages} />}
       {stepNumber === 1 && (
         <>
           <TextInputField

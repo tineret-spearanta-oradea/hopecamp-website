@@ -15,9 +15,7 @@ export const registerAndCreateUser = async (formData, imageFile) => {
 
   // Sanity check, but this should be checked at the form level
   if (authData["password"] !== authData["confirmPassword"]) {
-    //TODO: Change alert with an UI error component
-    alert("Parola si confirmarea parolei nu sunt la fel!");
-    return;
+    return { success: false, message: "Parola și confirmarea parolei nu sunt la fel!" };
   }
 
   try {
@@ -44,22 +42,16 @@ export const registerAndCreateUser = async (formData, imageFile) => {
 
     try {
       await writeUserData(userData);
+      return { success: true };
     } catch (createError) {
-      //TODO: Change alert with an UI error component
-      alert("Error creating user!");
       console.error("Error creating user data:", createError);
-
-      try {
-        // Delete the user in the auth system if the user creation in db fails
-        await doDeleteAuthUser();
-      } catch (deleteError) {
-        alert("Error creating user!");
+      await doDeleteAuthUser().catch(deleteError => {
         console.error("Error deleting auth user:", deleteError);
-      }
+      });
+      return { success: false, message: "Error creating user!" };
     }
   } catch (authError) {
-    //TODO: Change alert with an UI error component
-    alert("Error creating user!");
     console.error("Error creating user data:", authError);
+    return { success: false, message: "Error creating user!" };
   }
 };

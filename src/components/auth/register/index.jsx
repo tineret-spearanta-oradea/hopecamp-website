@@ -22,10 +22,17 @@ const Register = () => {
   const [imageFile, setImageFile] = useState(null);
   const [agreementChecked, setAgreementChecked] = useState(false);
   const [hasAlreadyAutoFilled, setHasAlreadyAutoFilled] = useState(false);
+  const [errorAuthMessages, setErrorAuthMessages] = useState([]);
 
   const handleSubmit = async () => {
     if (agreementChecked) {
-      registerAndCreateUser(formData, imageFile);
+      const result = await registerAndCreateUser(formData, imageFile);
+      if (!result.success) {
+        setErrorAuthMessages([result.message]);
+      } else {
+        setErrorAuthMessages([]);
+        // handle success
+      }
     }
   };
 
@@ -80,6 +87,7 @@ const Register = () => {
             formData={formData}
             setFormData={setFormData}
             handleTryAutofillUserData={handleTryAutofillUserData}
+            errorAuthMessages={errorAuthMessages}
           />
         </div>
       </main>
