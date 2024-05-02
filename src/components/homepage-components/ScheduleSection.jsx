@@ -4,10 +4,10 @@ import ScheduleDay from "./ScheduleDays";
 function ScheduleSection() {
   return (
     <>
-      <section>
-        <div className="spacer schedule-divider-up" />
-        <div className="bg-hope-beige py-14 px-8">
-          <div className="container mx-auto flex flex-col items-center gap-5">
+      <div className="spacer schedule-divider-up" />
+      <section className="bg-hope-beige py-14 px-8">
+        <div className="container mx-auto flex flex-col lg:items-center lg:justify-around lg:flex-row gap-5">
+          <div className="flex flex-col items-center gap-5 lg:items-start">
             <h2 className="text-black text-3xl font-bold sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">
               Program
             </h2>
@@ -18,16 +18,17 @@ function ScheduleSection() {
               eligendi voluptate placeat!
             </p>
           </div>
-          <div className="mt-8 flex flex-col gap-2">
-            <ScheduleDay day="Day #1" date="7 aprilie"/>
-            <ScheduleDay day="Day #2" date="7 aprilie"/>
-            <ScheduleDay day="Day #3" date="7 aprilie"/>
-            <ScheduleDay day="Day #4" date="7 aprilie"/>
-            <ScheduleDay day="Day #5" date="7 aprilie"/>
+
+          <div className="mt-8 flex flex-col gap-2 w-full lg:w-1/2 lg:mt-0">
+            <ScheduleDay day="Day #1" date="7 aprilie" />
+            <ScheduleDay day="Day #2" date="7 aprilie" />
+            <ScheduleDay day="Day #3" date="7 aprilie" />
+            <ScheduleDay day="Day #4" date="7 aprilie" />
+            <ScheduleDay day="Day #5" date="7 aprilie" />
           </div>
         </div>
-        <div className="spacer schedule-divider-down"></div>
       </section>
+      <div className="spacer schedule-divider-down"></div>
     </>
   );
 }
