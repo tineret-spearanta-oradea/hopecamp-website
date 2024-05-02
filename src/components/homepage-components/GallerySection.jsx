@@ -4,7 +4,7 @@ function GallerySection() {
   return (
     <>
       <section className="py-14">
-        <div className="flex flex-col items-center gap-5">
+        <div className="container mx-auto flex flex-col items-center gap-5">
           <h2 className="text-black text-3xl font-bold sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">
             Galerie
           </h2>
