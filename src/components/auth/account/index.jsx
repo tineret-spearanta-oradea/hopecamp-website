@@ -21,7 +21,7 @@ const Account = () => {
   };
 
   if (!userLoggedIn) {
-    return <Navigate to={"/login"} replace={true} />;
+    return <Navigate to={"/inscrie-te"} replace={true} />;
   }
 
   if (userData === null || userData === undefined || loading) {
