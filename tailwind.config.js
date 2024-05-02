@@ -12,6 +12,7 @@ export default {
         'hope-darkcyan': '#0E7E6F',
         'hope-lightgray': '#D9D9D9',
         'hope-darkgray': '#5F5F5F',
+        'hope-beige': '#FFF0C8'
       }
     },
   },
