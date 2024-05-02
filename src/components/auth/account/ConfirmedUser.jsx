@@ -2,10 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Navigate, Link, useNavigate } from "react-router-dom";
 import { writeMessageData, getMessageData } from "../../../firebase/database";
 import MessageData from "../../../models/MessageData";
+import { contactInfo, dateRange } from "../../../models/Options";
 
 const ConfirmedUser = ({ userData }) => {
   const navigate = useNavigate();
   const [messageText, setMessageText] = useState("");
+  const [isOpenDetails, setIsOpenDetails] = useState(false);
+
+  const seeMyDetails = () => {
+    setIsOpenDetails(!isOpenDetails);
+  };
 
   useEffect(() => {
     const fetchMessage = async () => {
@@ -25,7 +31,7 @@ const ConfirmedUser = ({ userData }) => {
   const getRemainingDays = () => {
     const today = new Date();
     //TODO: *kind of optional* add this date to an env or settings file?
-    const campDate = new Date("2024-07-20");
+    const campDate = dateRange.startDate;
     const timeDifference = campDate - today;
     const timeDifferenceInDays = Math.ceil(
       timeDifference / (1000 * 60 * 60 * 24)
@@ -60,7 +66,6 @@ const ConfirmedUser = ({ userData }) => {
         Între timp, dacă vrei, ne poți lăsa aici un gând sau o sugestie
         referitoare la tabără:
       </p>
-      {/* TODO: implement the submission of this form in a new table called "messages" that contains the user id, name, phone, and message */}
       {messageText ? (
         <textarea
           className="w-full h-24 p-2 mt-2 border rounded-md resize-none"
@@ -81,7 +86,7 @@ const ConfirmedUser = ({ userData }) => {
             className="m-2 py-1 px-4 bg-gray-500 text-white rounded-md"
             disabled
           >
-            Ai trimis deja
+            Ai trimis deja 🔒
           </button>
         ) : (
           <button
@@ -93,16 +98,59 @@ const ConfirmedUser = ({ userData }) => {
         )}
       </div>
       <p>
-        De asemenea poți da click mai jos pentru a vedea datele cu care te-ai
-        înscris in tabără. Dacă ai greșit ceva și dorești să modifici scrie-ne
-        folosind câmpul și butonul de mai sus.
+        📝 Mai jos poți sǎ vezi datele cu care te-ai înscris in tabără. Daca
+        doreşti să le modifici scrie-ne folosind câmpul și butonul de mai sus,
+        sau pe Whatsapp la {contactInfo.phone}.
       </p>
       {/* TODO: implement the expandable data field or maybe a popup that contains the data? */}
       <div className="text-center">
-        <button className="mt-2 py-1 px-4 bg-gray-300 text-white rounded-md">
-          Vezi datele...
+        <button
+          onClick={seeMyDetails}
+          className="mt-2 py-1 px-4 bg-gray-300 text-white rounded-md"
+        >
+          {isOpenDetails ? "Ascunde 🔼" : "Vezi datele tale 🔽"}
         </button>
       </div>
+      {isOpenDetails && (
+        <div>
+          <h1 className="font-bold">Detalii - {userData.name}</h1>
+          <p>
+            <span className="font-bold">Nume:</span> {userData.name}
+          </p>
+          <p>
+            <span className="font-bold">Email:</span> {userData.email}
+          </p>
+          <p>
+            <span className="font-bold">Telefon:</span> {userData.phone}
+          </p>
+          <p>
+            <span className="font-bold">Vârsta:</span> {userData.age}
+          </p>
+          <p>
+            <span className="font-bold">Biserica:</span> {userData.church}
+          </p>
+          <p>
+            <span className="font-bold">Plǎtit:</span> {userData.amountPaid} RON
+          </p>
+          <p>
+            <span className="font-bold">Cui achit taxa:</span>{" "}
+            {userData.payTaxTo}
+          </p>
+          <p>
+            <span className="font-bold">Transport:</span> {userData.transport}
+          </p>
+          <p>
+            <span className="font-bold">Perioada in care eşti în tabǎrǎ:</span>{" "}
+          </p>
+          <p>
+            {userData.startDate} - {userData.endDate}
+          </p>
+          <p>
+            <span className="font-bold">Preferințe:</span>{" "}
+            {userData.preferences || "nicio preferință"}
+          </p>
+        </div>
+      )}
     </div>
   );
 };
