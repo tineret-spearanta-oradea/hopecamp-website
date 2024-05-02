@@ -27,3 +27,11 @@
 .schedule-divider-down {
     background-image: url('/src/assets/svgs/wave-schedulesection-down.svg');
 }
+
+.location-divider-up {
+    background-image: url('/src/assets/svgs/wave-locationsection-up.svg');
+}
+
+.location-divider-down {
+    background-image: url('/src/assets/svgs/wave-locationsection-down.svg');
+}
