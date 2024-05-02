@@ -12,17 +12,16 @@ function AboutSection() {
             error atque iste alias, distinctio doloribus magni, doloremque, fuga
             odit odio quam vero?
           </p>
+          <div
+            className="h-32 w-full"
+            style={{
+              backgroundImage: "url('/src/assets/images/ZVE03429.jpg')",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
+            }}
+          />
         </div>
-        
-        <div
-          className="h-32"
-          style={{
-            backgroundImage: "url('/src/assets/images/ZVE03429.jpg')",
-            backgroundPosition: "center",
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover'
-          }}
-        />
       </section>
     </>
   );
