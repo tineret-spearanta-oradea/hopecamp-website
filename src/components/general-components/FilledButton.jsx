@@ -7,7 +7,7 @@ FilledButton.propTypes = {
 
 function FilledButton(props) {
     return <>
-        <button>{props.text}</button>
+        <button className='bg-hope-orange font-semibold rounded-full px-8 py-2'>{props.text}</button>
     </>
 }
 
