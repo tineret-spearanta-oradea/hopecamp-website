@@ -7,6 +7,8 @@ import ResetPassword from "./components/auth/reset_password";
 import Account from "./components/auth/account";
 import Logout from "./components/auth/logout";
 import "./index.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+
 
 function App() {
   return (

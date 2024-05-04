@@ -6,6 +6,7 @@ import GallerySection from "../components/homepage-components/GallerySection";
 import ScheduleSection from "../components/homepage-components/ScheduleSection";
 import LocationSection from "../components/homepage-components/LocationSection";
 import FAQ from "../components/homepage-components/FAQ";
+import Footer from "../components/general-components/Footer";
 
 function HomePage() {
     return(
@@ -17,7 +18,8 @@ function HomePage() {
         <GallerySection/>
         <ScheduleSection/>
         <LocationSection/>
-        <FAQ/>        
+        <FAQ/>    
+        <Footer/>    
         </>
     );
 }
