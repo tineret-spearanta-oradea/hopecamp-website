@@ -16,10 +16,10 @@ export default function FAQ() {
           </h2>
 
           <div className="flex flex-col gap-2">
-            <Question question="intrebarea numarul unu" />
-            <Question question="intrebarea numarul doi" />
-            <Question question="intrebarea numarul trei" />
-            <Question question="intrebarea numarul patru" />
+            <Question question="intrebarea numarul unu" answer="raspuns" />
+            <Question question="intrebarea numarul doi" answer="raspuns" />
+            <Question question="intrebarea numarul trei" answer="raspuns" />
+            <Question question="intrebarea numarul patru" answer="raspuns" />
           </div>
         </div>
       </section>
