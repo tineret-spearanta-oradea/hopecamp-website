@@ -41,7 +41,6 @@ const ConfirmedUser = ({ userData }) => {
   };
 
   const handleMessageSend = async () => {
-    console.log("Sending message...");
     const messageText = document.querySelector("textarea").value;
     const messageData = new MessageData(userData.uid, messageText);
     await writeMessageData(messageData);
@@ -101,12 +100,6 @@ const ConfirmedUser = ({ userData }) => {
       </p>
       {/* TODO: implement the expandable data field or maybe a popup that contains the data? */}
       <div className="text-center">
-        {/* <button
-          onClick={seeMyDetails}
-          className="mt-2 py-1 px-4 bg-gray-300 text-white rounded-md"
-        >
-          {isOpenDetails ? "Ascunde 🔼" : "Vezi datele tale 🔽"}
-        </button> */}
         <FormButton action="back" onClick={seeMyDetails} extraStyles="mt-2">
           {isOpenDetails ? "Ascunde 🔼" : "Vezi datele tale 🔽 "}
         </FormButton>
