@@ -8,20 +8,22 @@ import LocationSection from "../components/homepage-components/LocationSection";
 import FAQ from "../components/homepage-components/FAQ";
 import Footer from "../components/general-components/Footer";
 
+import "/src/styles/backgrounds.css";
+
 function HomePage() {
-    return(
-        <>
-        <Navbar/>
-        <HeroSection/>
-        <AboutSection/>
-        <SignUpSection/>
-        <GallerySection/>
-        <ScheduleSection/>
-        <LocationSection/>
-        <FAQ/>    
-        <Footer/>    
-        </>
-    );
+  return (
+    <>
+      <Navbar />
+        <HeroSection />
+        <AboutSection />
+        <SignUpSection />
+        <GallerySection />
+        <ScheduleSection />
+        <LocationSection />
+        <FAQ />
+      <Footer />
+    </>
+  );
 }
 
-export default HomePage
+export default HomePage;
