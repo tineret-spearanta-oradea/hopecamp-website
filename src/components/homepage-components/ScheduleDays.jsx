@@ -9,25 +9,32 @@ ScheduleDays.propTypes = {
 function ScheduleDays(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [relativeHeight, setRelativeHeight] = useState("h-14");
-  const [relativeJustify, setrelativeJustify] = useState("justify-center")
+  const [relativeJustify, setrelativeJustify] = useState("justify-center");
+  const [differentIcon, setDifferentIcon] = useState("down")
 
   const toggleOpen = () => {
     setIsOpen(!isOpen);
     setRelativeHeight(isOpen ? "h-14" : "h-52");
-    setrelativeJustify(isOpen ? "justify-center" : "justify-around")
+    setrelativeJustify(isOpen ? "justify-center" : "justify-around");
+    setDifferentIcon(isOpen ? "down" : "up")
   };
 
   return (
     <>
-      <div
-        onClick={toggleOpen}
-        className={`bg-hope-darkcyan w-full ${relativeHeight} rounded-lg flex flex-col ${relativeJustify} px-3 py-2`}
-      >
-        <div className="flex justify-between">
-          <p className="text-white font-bold opacity-50">{props.day}</p>
-          <p className="text-white text-sm opacity-50">{props.date}</p>
+      <div className="flex gap-2">
+        <div
+          onClick={toggleOpen}
+          className={`bg-hope-darkcyan w-full ${relativeHeight} rounded-lg flex flex-col ${relativeJustify} px-3 py-2`}
+        >
+          <div className="flex justify-between">
+            <p className="text-white font-bold opacity-50">{props.day}</p>
+            <p className="text-white text-sm opacity-50">{props.date}</p>
+          </div>
+          {isOpen && (
+            <div className="bg-hope-orange w-full h-32 rounded-lg"></div>
+          )}
         </div>
-        {isOpen && <div className="bg-hope-orange w-full h-32 rounded-lg"></div>}
+        <div onClick={toggleOpen} className="bg-hope-orange text-white flex items-center justify-center w-8 h-14 rounded-lg"><i className={`bi bi-caret-${differentIcon}-fill`}></i></div>
       </div>
     </>
   );
