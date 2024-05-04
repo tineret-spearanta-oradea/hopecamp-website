@@ -3,8 +3,8 @@ import YoutubeVideo from "./YoutubeVideo";
 function LocationSection() {
   return (
     <>
-      <section>
-        <div className="flex justify-center">
+      <section className="py-14">
+        <div className="flex justify-center lg:pt-14 lg:pb-32">
           <YoutubeVideo />
         </div>
         <div className="spacer location-divider-up z-0 relative inset-0" />
