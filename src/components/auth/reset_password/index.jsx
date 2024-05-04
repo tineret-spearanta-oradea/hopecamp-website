@@ -6,8 +6,9 @@ import { pages } from "../../../constants";
 
 const ResetPassword = () => {
   const { authData, userData, userLoggedIn, loading, error } = useAuth();
-  const [email, setEmail] = useState("");
-  const [errorMessages, setErrorMessages] = useState("");
+  const [emailInput, setEmailInput] = useState("");
+  const [emailSentTo, setEmailSentTo] = useState("");
+  const [errorMessages, setErrorMessages] = useState([]);
   const [isResetting, setIsResetting] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(false);
 
@@ -16,13 +17,14 @@ const ResetPassword = () => {
     // Call firebase reset password
     setIsResetting(true);
     try {
-      await doPasswordReset(email);
+      await doPasswordReset(emailInput);
       setErrorMessages("");
     } catch (error) {
-      setErrorMessages("A apărut o eroare. Încearcă din nou.");
+      setErrorMessages(["Eroare: " + error.code]);
     }
     setIsResetting(false);
     setIsEmailSent(true);
+    setEmailSentTo(emailInput);
   };
 
   return (
@@ -37,15 +39,15 @@ const ResetPassword = () => {
                 Resetare parola
               </h3>
             </div>
-            {!isEmailSent ? (
+            {isEmailSent && emailInput === emailSentTo ? (
+              <p className="mt-4 text-sm text-indigo-600">
+                Un email a fost trimis la adresa {emailInput}. Verifică-ți
+                inbox-ul pentru a reseta parola.
+              </p>
+            ) : (
               <p className="mt-4 text-sm text-gray-600">
                 Introdu adresa de email pentru a primi un link de resetare a
                 parolei.
-              </p>
-            ) : (
-              <p className="mt-4 text-sm text-indigo-600">
-                Un email a fost trimis la adresa {email}. Verifică-ți inbox-ul
-                pentru a reseta parola.
               </p>
             )}
           </div>
@@ -57,9 +59,9 @@ const ResetPassword = () => {
                 autoComplete="email"
                 required
                 disabled={isResetting}
-                value={email}
+                value={emailInput}
                 onChange={(e) => {
-                  setEmail(e.target.value);
+                  setEmailInput(e.target.value);
                 }}
                 className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg transition duration-300"
               />
