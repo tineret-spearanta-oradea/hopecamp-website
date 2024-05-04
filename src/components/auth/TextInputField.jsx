@@ -8,7 +8,7 @@ const TextInputField = ({
   disabled,
   value,
   onChange,
-  errorMessage,
+  validationErrorMessage,
 }) => (
   <div>
     <label className="text-sm text-gray-600 font-bold">{label}</label>
@@ -18,14 +18,14 @@ const TextInputField = ({
       autoComplete={autoComplete}
       required
       disabled={disabled}
-      value={value || ''}
+      value={value || ""}
       onChange={onChange}
       className={`${
-        errorMessage ? "border-red-500" : ""
+        validationErrorMessage ? "border-red-500" : ""
       } w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg transition duration-300`}
     />
-    {errorMessage && (
-      <p className="text-red-500 text-xs italic">{errorMessage}</p>
+    {validationErrorMessage && (
+      <p className="text-red-500 text-xs italic">{validationErrorMessage}</p>
     )}
   </div>
 );

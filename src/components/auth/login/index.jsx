@@ -2,25 +2,43 @@ import React, { useState } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { doSignInWithEmailAndPassword } from "../../../firebase/auth";
 import { useAuth } from "../../../contexts/authContext";
-import NavigationBar from "../../navigationBar";
+import ErrorAlert from "../../ErrorAlert";
+import { contactInfo, pages } from "../../../constants";
 
 const Login = () => {
   const { authData, userData, userLoggedIn, loading, error } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSigningIn, setIsSigningIn] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessages, setErrorMessages] = useState([]);
 
   if (userLoggedIn) {
-    return <Navigate to={"/cont"} replace={true} />;
+    return <Navigate to={pages.account} replace={true} />;
   }
 
   const onSubmit = async (e) => {
     e.preventDefault();
     if (!isSigningIn) {
       setIsSigningIn(true);
-      await doSignInWithEmailAndPassword(email, password);
-      // doSendEmailVerification()
+      try {
+        await doSignInWithEmailAndPassword(email, password);
+      } catch (error) {
+        if (error.code === "auth/invalid-credential") {
+          setErrorMessages([
+            <Link
+              to={pages.register}
+              className="hover:underline font-bold text-blue-700"
+            >
+              Email sau parolă greșită. Daca nu te-ai înscris, o poți face aici.
+            </Link>,
+          ]);
+        } else {
+          setErrorMessages([
+            `Eroare: ${authError.code}. \n Dacǎ problema persistǎ, te rugǎm sǎ ne contactezi la ${contactInfo.phone}.`,
+          ]);
+        }
+      }
+      setIsSigningIn(false);
     }
   };
 
@@ -66,15 +84,15 @@ const Login = () => {
             </div>
             <div className="text-right text-sm">
               <Link
-                to={"/resetare-parola"}
+                to={pages.resetPassword}
                 className="hover:underline font-bold text-blue-700"
               >
                 Am uitat parola
               </Link>
             </div>
 
-            {errorMessage && (
-              <span className="text-red-600 font-bold">{errorMessage}</span>
+            {errorMessages && errorMessages.length > 0 && (
+              <ErrorAlert messages={errorMessages} />
             )}
 
             <button
@@ -92,7 +110,7 @@ const Login = () => {
           <p className="text-center text-sm ">
             Nu te-ai înscris încă în tabără?{" "}
             <Link
-              to={"/inscrie-te"}
+              to={pages.register}
               className="hover:underline font-bold text-blue-700"
             >
               Înscrie-te aici

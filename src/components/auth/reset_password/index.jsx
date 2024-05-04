@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { useAuth } from "../../../contexts/authContext";
 import { doPasswordReset } from "../../../firebase/auth";
+import { pages } from "../../../constants";
 
 const ResetPassword = () => {
   const { authData, userData, userLoggedIn, loading, error } = useAuth();
   const [email, setEmail] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessages, setErrorMessages] = useState("");
   const [isResetting, setIsResetting] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(false);
 
@@ -83,7 +84,7 @@ const ResetPassword = () => {
           <p className="text-center text-sm ">
             Nu te-ai înscris încă în tabără?{" "}
             <Link
-              to={"/inscrie-te"}
+              to={pages.register}
               className="hover:underline font-bold text-blue-700"
             >
               Înscrie-te aici

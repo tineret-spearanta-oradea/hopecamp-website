@@ -6,6 +6,7 @@ import UserData from "../../../models/UserData";
 import ConfirmedUser from "./ConfirmedUser";
 import PendingUser from "./PendingUser";
 import LoadingIcon from "../../LoadingIcon";
+import { pages } from "../../../constants";
 
 //TODO: Style this component and the children components
 
@@ -17,11 +18,11 @@ const Account = () => {
   const navigate = useNavigate();
 
   const goToLogout = () => {
-    navigate("/logout");
+    navigate(pages.logout);
   };
 
   if (!userLoggedIn) {
-    return <Navigate to={"/inscrie-te"} replace={true} />;
+    return <Navigate to={pages.login} replace={true} />;
   }
 
   if (userData === null || userData === undefined || loading) {

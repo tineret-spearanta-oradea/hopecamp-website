@@ -5,6 +5,7 @@ import { useAuth } from "../../contexts/authContext";
 import { Navigate, Link, useNavigate } from "react-router-dom";
 import { getNumberOfUnreadMessages } from "../../firebase/database";
 import ManageAdminsSection from "./ManageAdminsSection";
+import { pages } from "../../constants";
 
 const AdminDashboard = () => {
   //TODO: add identity validation
@@ -38,7 +39,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     if (!loading && (userData === null || !userData.isAdmin)) {
-      navigate("/cont");
+      navigate(pages.account);
     }
   }, [loading, userData, navigate]);
 

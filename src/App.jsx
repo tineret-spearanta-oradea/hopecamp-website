@@ -7,19 +7,20 @@ import Home from "./components/home";
 import ResetPassword from "./components/auth/reset_password";
 import Account from "./components/auth/account";
 import Logout from "./components/auth/logout";
+import { pages } from "./constants";
 import "./index.css";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/inscrie-te" element={<Register />} />
-        <Route path="/resetare-parola" element={<ResetPassword />} />
-        <Route path="/cont" element={<Account />} />
-        <Route path="/logout" element={<Logout />} />
-        <Route path="/admins" element={<AdminsDashboard />} />
+        <Route path={pages.home} element={<Home />} />
+        <Route path={pages.login} element={<Login />} />
+        <Route path={pages.register} element={<Register />} />
+        <Route path={pages.resetPassword} element={<ResetPassword />} />
+        <Route path={pages.account} element={<Account />} />
+        <Route path={pages.logout} element={<Logout />} />
+        <Route path={pages.adminsDashboard} element={<AdminsDashboard />} />
       </Routes>
     </Router>
   );

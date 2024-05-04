@@ -4,9 +4,12 @@ import CheckboxInputField from "../CheckboxInputField";
 import ImageInputField from "../ImageInputField";
 import RadioInputField from "../RadioInputField";
 import DateInputField from "../DateInputField";
-import { churchOptions } from "../../../models/Options";
-import { payTaxToOptions } from "../../../models/Options";
-import { transportOptions } from "../../../models/Options";
+import ErrorAlert from "../../ErrorAlert";
+import {
+  churchOptions,
+  payTaxToOptions,
+  transportOptions,
+} from "../../../constants";
 
 // TODO: Add diacritics to the text
 const Step = ({
@@ -19,7 +22,8 @@ const Step = ({
   agreementChecked,
   handleAgreementChange,
   handleImageChange,
-  errors,
+  validationErrors,
+  errorMessages,
 }) => {
   return (
     <div>
@@ -40,6 +44,9 @@ const Step = ({
       <h5 className="text-sm my-4 text-center">
         {stepNumber === 2 ? "Ajuta-ne să te (re)cunoaștem!" : ""}
       </h5>
+      {errorMessages && errorMessages.length > 0 && (
+        <ErrorAlert messages={errorMessages} />
+      )}
       {stepNumber === 1 && (
         <>
           <TextInputField
@@ -49,7 +56,7 @@ const Step = ({
             autoComplete="email"
             value={formData.authData.email}
             onChange={(e) => handleChange("authData", e.target)}
-            errorMessage={errors.email}
+            validationErrorMessage={validationErrors.email}
           />
           <TextInputField
             label="Parola *"
@@ -57,7 +64,7 @@ const Step = ({
             name="password"
             value={formData.authData.password}
             onChange={(e) => handleChange("authData", e.target)}
-            errorMessage={errors.password}
+            validationErrorMessage={validationErrors.password}
           />
           <TextInputField
             label="Confirma parola *"
@@ -65,7 +72,7 @@ const Step = ({
             name="confirmPassword"
             value={formData.authData.confirmPassword}
             onChange={(e) => handleChange("authData", e.target)}
-            errorMessage={errors.confirmPassword}
+            validationErrorMessage={validationErrors.confirmPassword}
           />
         </>
       )}
@@ -77,7 +84,7 @@ const Step = ({
             name="name"
             value={formData.userData.name}
             onChange={(e) => handleChange("userData", e.target)}
-            errorMessage={errors.name}
+            validationErrorMessage={validationErrors.name}
           />
           <TextInputField
             label="Varsta:"
@@ -85,7 +92,7 @@ const Step = ({
             name="age"
             value={formData.userData.age}
             onChange={(e) => handleChange("userData", e.target)}
-            errorMessage={errors.age}
+            validationErrorMessage={validationErrors.age}
           />
           <TextInputField
             label="Numar de telefon:"
@@ -93,7 +100,7 @@ const Step = ({
             name="phone"
             value={formData.userData.phone}
             onChange={(e) => handleChange("userData", e.target)}
-            errorMessage={errors.phone}
+            validationErrorMessage={validationErrors.phone}
           />
           <RadioInputField
             label="Biserica din care provii:"
@@ -101,7 +108,7 @@ const Step = ({
             options={churchOptions}
             value={formData.userData.church}
             onChange={(e) => handleChange("userData", e.target)}
-            errorMessage={errors.church}
+            validationErrorMessage={validationErrors.church}
           />
           <RadioInputField
             label="Cui platesti taxa de inscriere:"
@@ -109,7 +116,7 @@ const Step = ({
             options={payTaxToOptions}
             value={formData.userData.payTaxTo}
             onChange={(e) => handleChange("userData", e.target)}
-            errorMessage={errors.payTaxTo}
+            validationErrorMessage={validationErrors.payTaxTo}
           />
           <RadioInputField
             label="Mijloc de transport:"
@@ -117,7 +124,7 @@ const Step = ({
             options={transportOptions}
             value={formData.userData.transport}
             onChange={(e) => handleChange("userData", e.target)}
-            errorMessage={errors.transport}
+            validationErrorMessage={validationErrors.transport}
           />
           <DateInputField
             label="Perioada care stai în tabără:"
@@ -125,7 +132,7 @@ const Step = ({
             startDateValue={formData.userData.startDate}
             endDateValue={formData.userData.endDate}
             onChange={(e) => handleChange("userData", e)}
-            errorMessage={errors.dateRange}
+            validationErrorMessage={validationErrors.dateRange}
           />
           <ImageInputField
             label="Poza cu tine" // TODO: maybe make this optional (?) to be discussed
