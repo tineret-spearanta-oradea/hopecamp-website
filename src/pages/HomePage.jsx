@@ -5,6 +5,7 @@ import SignUpSection from "../components/homepage-components/SignUpSection";
 import GallerySection from "../components/homepage-components/GallerySection";
 import ScheduleSection from "../components/homepage-components/ScheduleSection";
 import LocationSection from "../components/homepage-components/LocationSection";
+import { JoinWhatsappSection } from "../components/homepage-components/JoinWhatsappSection";
 
 function HomePage() {
     return(
@@ -16,6 +17,7 @@ function HomePage() {
         <GallerySection/>
         <ScheduleSection/>
         <LocationSection/>
+        <JoinWhatsappSection/>
         
         </>
     );
