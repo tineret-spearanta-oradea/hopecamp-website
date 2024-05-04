@@ -7,7 +7,7 @@ export default function YoutubeVideo() {
           src="https://www.youtube.com/embed/Mf2VL8RWjq0?si=ZGsuLUM_za1veZvy"
           title="YouTube video player"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen="true"
+          allowFullScreen={true}
         ></iframe>
       </div>
     </>
