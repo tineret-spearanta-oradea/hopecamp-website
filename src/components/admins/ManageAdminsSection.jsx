@@ -51,8 +51,11 @@ const ManageAdminsSection = (loggedInUserData) => {
       try {
         updateUserData(userToUpdate);
         setAddAdminEmail("");
-        //TODO: there is a bug with duplicates in the userList. Have to fix it later. but the functionality is there
-        setUserList([...userList, userToUpdate]);
+        setUserList(
+          userList.map((user) =>
+            user.uid === userToUpdate.uid ? userToUpdate : user
+          )
+        );
         // TODO: change alert with ui component
         alert("Userul a fost adaugat ca admin");
       } catch (e) {
@@ -71,14 +74,20 @@ const ManageAdminsSection = (loggedInUserData) => {
     }
 
     if (
-      confirm(`Esti sigur ca vrei sa adaugi pe ${userToUpdate.name} ca admin?`)
+      confirm(
+        `Esti sigur ca vrei sa adaugi pe ${userToUpdate.name} ca SUPER admin?`
+      )
     ) {
       userToUpdate.isConfirmed = true;
       userToUpdate.isAdmin = true;
       userToUpdate.isSuperAdmin = true;
       try {
         updateUserData(userToUpdate);
-        setUserList([...userList, userToUpdate]);
+        setUserList(
+          userList.map((user) =>
+            user.uid === userToUpdate.uid ? userToUpdate : user
+          )
+        );
         // TODO: change alerts with ui component
         alert("Userul a fost adaugat ca SUPER admin");
       } catch (e) {
@@ -98,12 +107,16 @@ const ManageAdminsSection = (loggedInUserData) => {
     }
 
     if (
-      confirm(`Esti sigur ca vrei sa adaugi pe ${userToUpdate.name} ca admin?`)
+      confirm(`Esti sigur ca vrei sa stergi pe ${userToUpdate.name} ca admin?`)
     ) {
       userToUpdate.isAdmin = false;
       try {
         updateUserData(userToUpdate);
-        setUserList([...userList, userToUpdate]);
+        setUserList(
+          userList.map((user) =>
+            user.uid === userToUpdate.uid ? userToUpdate : user
+          )
+        );
         // TODO: change alerts with ui component
         alert("Userul a fost scos din lista de admini.");
       } catch (e) {
@@ -122,12 +135,18 @@ const ManageAdminsSection = (loggedInUserData) => {
     }
 
     if (
-      confirm(`Esti sigur ca vrei sa adaugi pe ${userToUpdate.name} ca admin?`)
+      confirm(
+        `Esti sigur ca vrei sa stergi pe ${userToUpdate.name} ca SUPER admin?`
+      )
     ) {
       userToUpdate.isSuperAdmin = false;
       try {
         updateUserData(userToUpdate);
-        setUserList([...userList, userToUpdate]);
+        setUserList(
+          userList.map((user) =>
+            user.uid === userToUpdate.uid ? userToUpdate : user
+          )
+        );
         // TODO: change alerts with ui component
         alert(
           "Userul a fost scos din lista de SUPER admini. Acum este doar admin normal."
