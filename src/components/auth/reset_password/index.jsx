@@ -42,13 +42,27 @@ const ResetPassword = () => {
             {isEmailSent && emailInput === emailSentTo ? (
               <p className="mt-4 text-sm text-indigo-600">
                 Un email a fost trimis la adresa {emailInput}. Verifică-ți
-                inbox-ul pentru a reseta parola.
+                inbox-ul sau folderul de spam pentru a reseta parola.
               </p>
             ) : (
               <p className="mt-4 text-sm text-gray-600">
                 Introdu adresa de email pentru a primi un link de resetare a
                 parolei.
               </p>
+            )}
+            {isEmailSent && (
+              <Link
+                to={pages.login}
+                className="hover:underline font-bold text-blue-700"
+              >
+                <button
+                  type="submit"
+                  disabled={isResetting}
+                  className="px-4 py-2 mt-4 text-indigo-700 font-medium rounded-lg bg-gray-200 hover:bg-gray-400 hover:shadow-xl transition duration-300"
+                >
+                  ← Înapoi la login
+                </button>
+              </Link>
             )}
           </div>
           <form onSubmit={onSubmit} className="space-y-5">
