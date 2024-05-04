@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage.jsx";
+import GalleryPage from "./pages/GalleryPage.jsx";
 import Login from "./components/auth/login";
 import Register from "./components/auth/register";
 import AdminsDashboard from "./components/admins";
@@ -23,6 +24,7 @@ function App() {
           <Route path="/cont" element={<Account />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/admins" element={<AdminsDashboard />} />
+          <Route path="/galerie" element={<GalleryPage/>}></Route>
         </Routes>
       </BrowserRouter>
     </>
