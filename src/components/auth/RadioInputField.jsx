@@ -75,6 +75,7 @@ const RadioInputField = ({
                 type="text"
                 className="w-56 px-3 py-1 mx-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg transition duration-300"
                 value={otherValue}
+                maxLength={32}
                 onChange={handleOtherChange}
               />
             )}

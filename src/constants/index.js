@@ -21,11 +21,14 @@ export const transportOptions = [
 export const dateRange = {
   startDate: new Date(2024, 6, 20),
   endDate: new Date(2024, 6, 25),
+  depositPaymentDueDate: new Date(2024, 5, 1),
 };
 
 export const sumToPay = {
   normal: 700,
   withFamilyMember: 600,
+  deposit: 150,
+  perDay: 150,
 };
 
 export const contactInfo = {

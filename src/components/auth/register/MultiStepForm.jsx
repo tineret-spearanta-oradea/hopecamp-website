@@ -10,6 +10,8 @@ const MultiStepForm = ({
   formData,
   setFormData,
   handleTryAutofillUserData,
+  downloadCampRules,
+  isLoading,
   errorMessages,
   setErrorMessages,
 }) => {
@@ -80,6 +82,8 @@ const MultiStepForm = ({
 
       if (!userData.age || userData.age.length === 0) {
         newValidationErrors.age = "Vârsta este necesară.";
+      } else if (userData.age.length > 2) {
+        newValidationErrors.age = "Vârsta este invalidǎ.";
       }
 
       if (!userData.phone || userData.phone.length === 0) {
@@ -139,6 +143,8 @@ const MultiStepForm = ({
           handleSubmit={handleSubmit}
           agreementChecked={agreementChecked}
           handleAgreementChange={handleAgreementChange}
+          downloadCampRules={downloadCampRules}
+          isLoading={isLoading}
           validationErrors={validationErrors}
           errorMessages={errorMessages}
         />

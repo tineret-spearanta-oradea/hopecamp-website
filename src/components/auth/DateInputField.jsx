@@ -20,6 +20,11 @@ const DateInputField = ({
       onChange({ name: "startDate", value: null });
       onChange({ name: "endDate", value: null });
     } else {
+      const startDate = dates[0];
+      const endDate = dates[1];
+      //Setting the time of startDate to 00:00:00, else it will be set to the current time
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(0, 0, 0, 0);
       onChange({ name: "startDate", value: dates[0] });
       onChange({ name: "endDate", value: dates[1] });
     }

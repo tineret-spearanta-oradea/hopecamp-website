@@ -5,13 +5,15 @@ import ImageInputField from "../ImageInputField";
 import RadioInputField from "../RadioInputField";
 import DateInputField from "../DateInputField";
 import ErrorAlert from "../../ErrorAlert";
-import { Link } from "react-router-dom";
+import { Form, Link } from "react-router-dom";
 import FormButton from "../FormButton";
 import {
   churchOptions,
   payTaxToOptions,
   transportOptions,
   pages,
+  sumToPay,
+  dateRange,
 } from "../../../constants";
 
 // TODO: Add diacritics to the text
@@ -25,9 +27,17 @@ const Step = ({
   agreementChecked,
   handleAgreementChange,
   handleImageChange,
+  downloadCampRules,
+  isLoading,
   validationErrors,
   errorMessages,
 }) => {
+  const checkIfUserSelectedFullTime = () => {
+    const { startDate, endDate } = formData.userData;
+    const days = (endDate - startDate) / (1000 * 60 * 60 * 24);
+    return days === 5;
+  };
+
   return (
     <div>
       <h2 className="text-xl font-black text-center mb-4">
@@ -60,6 +70,7 @@ const Step = ({
             value={formData.authData.email}
             onChange={(e) => handleChange("authData", e.target)}
             validationErrorMessage={validationErrors.email}
+            maxLength={64}
           />
           <TextInputField
             label="Parola *"
@@ -68,6 +79,7 @@ const Step = ({
             value={formData.authData.password}
             onChange={(e) => handleChange("authData", e.target)}
             validationErrorMessage={validationErrors.password}
+            maxLength={64}
           />
           <TextInputField
             label="Confirma parola *"
@@ -76,6 +88,7 @@ const Step = ({
             value={formData.authData.confirmPassword}
             onChange={(e) => handleChange("authData", e.target)}
             validationErrorMessage={validationErrors.confirmPassword}
+            maxLength={64}
           />
         </>
       )}
@@ -96,6 +109,7 @@ const Step = ({
             value={formData.userData.age}
             onChange={(e) => handleChange("userData", e.target)}
             validationErrorMessage={validationErrors.age}
+            maxLength={2}
           />
           <TextInputField
             label="Numar de telefon:"
@@ -104,6 +118,7 @@ const Step = ({
             value={formData.userData.phone}
             onChange={(e) => handleChange("userData", e.target)}
             validationErrorMessage={validationErrors.phone}
+            maxLength={16}
           />
           <RadioInputField
             label="Biserica din care provii:"
@@ -152,13 +167,59 @@ const Step = ({
         </>
       )}
       {stepNumber === 3 && (
-        <>
+        <div className="text-sm space-y-2">
+          <div className="text-center">
+            {" "}
+            <FormButton
+              onClick={downloadCampRules}
+              action="back"
+              extraStyles="text-sm"
+            >
+              Descarcă regulament
+            </FormButton>
+          </div>
+          <p>
+            - Am citit si sunt de acord cu <strong>regulamentul</strong>{" "}
+            taberei.
+          </p>
+          {checkIfUserSelectedFullTime() ? (
+            <>
+              <p>
+                - Taxa de înscriere pentru persoanele care vin full-time este de{" "}
+                <strong>{sumToPay.normal} RON </strong> (cazare + mâncare).
+                Pentru persoanele care au <strong>membru de familie </strong>
+                (frați, surori, soț, soție) în tabără taxa este de{" "}
+                <strong> {sumToPay.withFamilyMember} RON</strong>.
+              </p>
+              <p>
+                - Voi plăti avansul de {sumToPay.deposit} RON până la data de{" "}
+                <strong>
+                  {dateRange.depositPaymentDueDate.toISOString().split("T")[0]}
+                </strong>
+                .
+              </p>
+            </>
+          ) : (
+            <p>
+              - Taxa de înscriere pentru persoanele care NU vin full-time este
+              de {sumToPay.perDay} lei/zi (cazare + mâncare).
+            </p>
+          )}
+
+          {formData.userData.age < 18 && (
+            <p>
+              - Deoarece ai <span className="text-hope-orange">sub 18 ani</span>
+              , trebuie să descarci regulamentul, și să îl semnezi tu și
+              părintele tău (tutorele legal) și să îl aduci în tabără împreuna
+              cu copia buletinului tău.
+            </p>
+          )}
           <CheckboxInputField
-            label="Agreez cu regulile taberei, si cu prelucrarea datelor personale."
+            label="Am citit si sunt de acord cu cele de mai sus."
             checked={agreementChecked}
             onChange={handleAgreementChange}
           />
-        </>
+        </div>
       )}
       {stepNumber === 3 && !agreementChecked && (
         <p className="mt-4 text-red-500 text-xs text-center italic">
@@ -181,7 +242,7 @@ const Step = ({
         {stepNumber === 3 && (
           <FormButton
             onClick={handleSubmit}
-            disabled={!agreementChecked}
+            disabled={!agreementChecked || isLoading}
             action="submit"
           >
             Înscrie-te ↗
@@ -199,7 +260,7 @@ const Step = ({
               Du-te la contul tǎu.
             </Link>
           </p>
-          <h5 className="text-sm text-hope-lightcyan">
+          <h5 className="text-xs text-hope-lightcyan">
             * Emailul si parola vor fi folosite pentru a te conecta la platforma
             noastrǎ. Acestea sunt necesare pentru înscriere.
           </h5>
