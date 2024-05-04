@@ -1,3 +1,4 @@
+import Navbar from "../components/general-components/Navbar";
 import HeroSection from "../components/homepage-components/HeroSection";
 import AboutSection from "../components/homepage-components/AboutSection";
 import SignUpSection from "../components/homepage-components/SignUpSection";
@@ -8,6 +9,7 @@ import LocationSection from "../components/homepage-components/LocationSection";
 function HomePage() {
     return(
         <>
+        <Navbar/>
         <HeroSection/>
         <AboutSection/>
         <SignUpSection/>
