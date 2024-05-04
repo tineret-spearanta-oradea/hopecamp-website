@@ -6,7 +6,7 @@ function SignUpSection() {
     <section>
         <div className="spacer button-divider-up"/>
         <div className='bg-hope-beige h-24 flex justify-center items-center'>
-        <FilledButton text="Înscrie-te"></FilledButton>
+        <FilledButton text="Înscrie-te" route="/inscrie-te"></FilledButton>
         </div>
         <div className="spacer button-divider-down"/>
     </section>

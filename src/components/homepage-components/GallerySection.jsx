@@ -20,7 +20,7 @@ function GallerySection() {
               <div className="bg-gray-500 w-32 h-44 sm:w-44 sm:h-52 md:w-48 md:h-64 lg:w-56 lg:h-80 xl:w-64 xl:h-88 2xl:w-72 2xl:h-80 bg-cover bg-center rounded-lg"></div>
             </div>
           </div>
-          <FilledButton text="Vezi galerie"/>
+          <FilledButton text="Vezi galerie" route="/galerie"/>
         </div>
       </section>
     </>

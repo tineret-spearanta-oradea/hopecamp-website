@@ -10,7 +10,7 @@ function FilledButton(props) {
   return (
     <>
       <Link
-        className="bg-hope-orange font-semibold rounded-full px-8 py-2"
+        className="bg-hope-orange text-white text-base font-semibold rounded-full px-8 py-2 lg:text-xl"
         to={props.route}
       >
         {props.text}

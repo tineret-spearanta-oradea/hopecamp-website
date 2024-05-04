@@ -10,7 +10,7 @@ function HeroSection() {
           <p className="text-black text-center text-sm font-semibold max-w-44 sm:text-sm md:text-md lg:text-lg lg:max-w-lg xl:text-xl 2xl:text-2xl">
             The one camp you don&apos;t want to miss
           </p>
-          <FilledButton text="Înscrie-te" />
+          <FilledButton text="Înscrie-te" route="/login" />
         </div>
       </section>
       <div className="spacer hero-divider"></div>
