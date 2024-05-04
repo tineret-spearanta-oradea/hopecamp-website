@@ -10,9 +10,13 @@ const MultiStepForm = ({
   formData,
   setFormData,
   handleTryAutofillUserData,
+  downloadCampRules,
+  isLoading,
+  errorMessages,
+  setErrorMessages,
 }) => {
   const [step, setStep] = useState(1);
-  const [errors, setErrors] = useState({});
+  const [validationErrors, setValidationErrors] = useState({});
 
   const handleAgreementChange = (e) => {
     const { checked } = e.target;
@@ -40,72 +44,76 @@ const MultiStepForm = ({
   };
 
   const handlePrev = () => {
+    setErrorMessages([]);
+    setValidationErrors({});
     setStep((prevStep) => prevStep - 1);
   };
 
   const areFieldsValid = (step) => {
-    let newErrors = {};
+    let newValidationErrors = {};
 
     if (step === 1) {
       const authData = formData.authData;
 
       if (!authData.email || authData.email.length === 0) {
-        newErrors.email = "Adresa de email este necesară.";
+        newValidationErrors.email = "Adresa de email este necesară.";
       } else if (!/\S+@\S+\.\S+/.test(authData.email)) {
-        newErrors.email = "Adresa de email este invalidă.";
+        newValidationErrors.email = "Adresa de email este invalidă.";
       }
 
       if (!authData.password || authData.password.length === 0) {
-        newErrors.password = "Parola este necesară.";
+        newValidationErrors.password = "Parola este necesară.";
       } else if (authData.password.length < 6) {
-        newErrors.password = "Parola trebuie să aibă cel puțin 6 caractere.";
+        newValidationErrors.password =
+          "Parola trebuie să aibă cel puțin 6 caractere.";
       }
 
       if (authData.password !== authData.confirmPassword) {
-        newErrors.confirmPassword = "Parolele nu se potrivesc.";
+        newValidationErrors.confirmPassword = "Parolele nu se potrivesc.";
       }
     }
+
     if (step === 2) {
       const userData = formData.userData;
 
       if (!userData.name || userData.name.length === 0) {
-        newErrors.name = "Numele este necesar.";
+        newValidationErrors.name = "Numele este necesar.";
       }
 
       if (!userData.age || userData.age.length === 0) {
-        newErrors.age = "Vârsta este necesară.";
+        newValidationErrors.age = "Vârsta este necesară.";
+      } else if (userData.age.length > 2) {
+        newValidationErrors.age = "Vârsta este invalidǎ.";
       }
 
       if (!userData.phone || userData.phone.length === 0) {
-        newErrors.phone = "Numărul de telefon este necesar.";
+        newValidationErrors.phone = "Numărul de telefon este necesar.";
       }
 
       if (!userData.church || userData.church.length === 0) {
-        newErrors.church = "Biserica este necesară.";
+        newValidationErrors.church = "Biserica este necesară.";
       }
 
       if (!userData.payTaxTo || userData.payTaxTo.length === 0) {
-        newErrors.payTaxTo = "Alege o persoana căruia sa plătești.";
+        newValidationErrors.payTaxTo = "Alege o persoana căruia sa plătești.";
       }
 
       if (!userData.transport || userData.transport.length === 0) {
-        newErrors.transport = "Mijlocul de transport este necesar.";
+        newValidationErrors.transport = "Mijlocul de transport este necesar.";
       }
 
       if (userData.startDate === null || userData.endDate === null) {
-        newErrors.dateRange = "Perioada este necesară.";
+        newValidationErrors.dateRange = "Perioada este necesară.";
       }
-
-      // TODO: implement errors for all new required fields (including radio buttons and date pickers and file input)
-      // this should be done after implemeting the new fields first.
     }
-    setErrors(newErrors);
 
-    return Object.keys(newErrors).length === 0;
+    setValidationErrors(newValidationErrors);
+
+    return Object.keys(newValidationErrors).length === 0;
   };
 
   return (
-    <div className="max-w-lg mx-auto p-4">
+    <div className="max-w-lg mx-auto">
       {step === 1 && (
         <Step
           stepNumber={1}
@@ -113,7 +121,7 @@ const MultiStepForm = ({
           handleChange={handleChange}
           handleNext={handleNext}
           handlePrev={handlePrev}
-          errors={errors}
+          validationErrors={validationErrors}
         />
       )}
       {step === 2 && (
@@ -124,7 +132,7 @@ const MultiStepForm = ({
           handleNext={handleNext}
           handlePrev={handlePrev}
           handleImageChange={handleImageChange}
-          errors={errors}
+          validationErrors={validationErrors}
         />
       )}
       {step === 3 && (
@@ -135,6 +143,10 @@ const MultiStepForm = ({
           handleSubmit={handleSubmit}
           agreementChecked={agreementChecked}
           handleAgreementChange={handleAgreementChange}
+          downloadCampRules={downloadCampRules}
+          isLoading={isLoading}
+          validationErrors={validationErrors}
+          errorMessages={errorMessages}
         />
       )}
     </div>

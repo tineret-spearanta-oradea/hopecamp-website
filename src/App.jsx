@@ -6,6 +6,7 @@ import AdminsDashboard from "./components/admins";
 import ResetPassword from "./components/auth/reset_password";
 import Account from "./components/auth/account";
 import Logout from "./components/auth/logout";
+import { pages } from "./constants";
 import "./index.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 

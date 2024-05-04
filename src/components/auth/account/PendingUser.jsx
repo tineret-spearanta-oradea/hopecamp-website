@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { contactInfo } from "../../../models/Options";
+import { contactInfo } from "../../../constants";
 
 const PendingUser = ({ userData }) => {
   return (

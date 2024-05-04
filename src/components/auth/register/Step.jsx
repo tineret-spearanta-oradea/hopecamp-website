@@ -4,9 +4,17 @@ import CheckboxInputField from "../CheckboxInputField";
 import ImageInputField from "../ImageInputField";
 import RadioInputField from "../RadioInputField";
 import DateInputField from "../DateInputField";
-import { churchOptions } from "../../../models/Options";
-import { payTaxToOptions } from "../../../models/Options";
-import { transportOptions } from "../../../models/Options";
+import ErrorAlert from "../../ErrorAlert";
+import { Form, Link } from "react-router-dom";
+import FormButton from "../FormButton";
+import {
+  churchOptions,
+  payTaxToOptions,
+  transportOptions,
+  pages,
+  sumToPay,
+  dateRange,
+} from "../../../constants";
 
 // TODO: Add diacritics to the text
 const Step = ({
@@ -19,27 +27,41 @@ const Step = ({
   agreementChecked,
   handleAgreementChange,
   handleImageChange,
-  errors,
+  downloadCampRules,
+  isLoading,
+  validationErrors,
+  errorMessages,
 }) => {
+  const retrieveNumberOfDays = () => {
+    const { startDate, endDate } = formData.userData;
+    const numberOfDaysSelected = (endDate - startDate) / (1000 * 60 * 60 * 24);
+    const numberOfDaysCamp =
+      (dateRange.endDate - dateRange.startDate) / (1000 * 60 * 60 * 24);
+    return [numberOfDaysSelected, numberOfDaysCamp];
+  };
+
   return (
     <div>
-      <h2 className="text-lg font-bold mb-4">
-        Pasul {stepNumber}:{" "}
+      <h2 className="text-xl font-black text-center mb-4">
+        Pasul {stepNumber}/3:{" "}
         {stepNumber === 1
           ? "Autentificare"
           : stepNumber === 2
           ? "Detalii personale"
           : "Confirmare"}
       </h2>
-      <h3 className="mb-4 text-center">
+      <h3 className="mb-4 text-center text-sm">
         {stepNumber === 1
           ? `Hope Camp #5 este o tabară creștină de tineret, organizată de Tineret Speranța Oradea.
-          Mai multe detalii despre noi și tabără găsiți in pagina principala.` //TODO: add link to the index page
+          Mai multe detalii despre noi și tabără găsiți in pagina principalǎ.` //TODO: add link to the index page
           : ""}
       </h3>
       <h5 className="text-sm my-4 text-center">
         {stepNumber === 2 ? "Ajuta-ne să te (re)cunoaștem!" : ""}
       </h5>
+      {errorMessages && errorMessages.length > 0 && (
+        <ErrorAlert messages={errorMessages} />
+      )}
       {stepNumber === 1 && (
         <>
           <TextInputField
@@ -49,7 +71,8 @@ const Step = ({
             autoComplete="email"
             value={formData.authData.email}
             onChange={(e) => handleChange("authData", e.target)}
-            errorMessage={errors.email}
+            validationErrorMessage={validationErrors.email}
+            maxLength={64}
           />
           <TextInputField
             label="Parola *"
@@ -57,7 +80,8 @@ const Step = ({
             name="password"
             value={formData.authData.password}
             onChange={(e) => handleChange("authData", e.target)}
-            errorMessage={errors.password}
+            validationErrorMessage={validationErrors.password}
+            maxLength={64}
           />
           <TextInputField
             label="Confirma parola *"
@@ -65,7 +89,8 @@ const Step = ({
             name="confirmPassword"
             value={formData.authData.confirmPassword}
             onChange={(e) => handleChange("authData", e.target)}
-            errorMessage={errors.confirmPassword}
+            validationErrorMessage={validationErrors.confirmPassword}
+            maxLength={64}
           />
         </>
       )}
@@ -77,7 +102,7 @@ const Step = ({
             name="name"
             value={formData.userData.name}
             onChange={(e) => handleChange("userData", e.target)}
-            errorMessage={errors.name}
+            validationErrorMessage={validationErrors.name}
           />
           <TextInputField
             label="Varsta:"
@@ -85,7 +110,8 @@ const Step = ({
             name="age"
             value={formData.userData.age}
             onChange={(e) => handleChange("userData", e.target)}
-            errorMessage={errors.age}
+            validationErrorMessage={validationErrors.age}
+            maxLength={2}
           />
           <TextInputField
             label="Numar de telefon:"
@@ -93,7 +119,8 @@ const Step = ({
             name="phone"
             value={formData.userData.phone}
             onChange={(e) => handleChange("userData", e.target)}
-            errorMessage={errors.phone}
+            validationErrorMessage={validationErrors.phone}
+            maxLength={16}
           />
           <RadioInputField
             label="Biserica din care provii:"
@@ -101,7 +128,7 @@ const Step = ({
             options={churchOptions}
             value={formData.userData.church}
             onChange={(e) => handleChange("userData", e.target)}
-            errorMessage={errors.church}
+            validationErrorMessage={validationErrors.church}
           />
           <RadioInputField
             label="Cui platesti taxa de inscriere:"
@@ -109,7 +136,7 @@ const Step = ({
             options={payTaxToOptions}
             value={formData.userData.payTaxTo}
             onChange={(e) => handleChange("userData", e.target)}
-            errorMessage={errors.payTaxTo}
+            validationErrorMessage={validationErrors.payTaxTo}
           />
           <RadioInputField
             label="Mijloc de transport:"
@@ -117,7 +144,7 @@ const Step = ({
             options={transportOptions}
             value={formData.userData.transport}
             onChange={(e) => handleChange("userData", e.target)}
-            errorMessage={errors.transport}
+            validationErrorMessage={validationErrors.transport}
           />
           <DateInputField
             label="Perioada care stai în tabără:"
@@ -125,66 +152,125 @@ const Step = ({
             startDateValue={formData.userData.startDate}
             endDateValue={formData.userData.endDate}
             onChange={(e) => handleChange("userData", e)}
-            errorMessage={errors.dateRange}
+            validationErrorMessage={validationErrors.dateRange}
           />
           <ImageInputField
-            label="Poza cu tine" // TODO: maybe make this optional (?) to be discussed
+            label="Încarcǎ pozǎ cu tine" // TODO: maybe make this optional (?) to be discussed
             handleImageChange={handleImageChange}
           />
           <TextInputField
-            label="Preferinte cazare:"
+            label="Preferințe colegi de camerǎ:"
             type="text"
             name="preferences"
             value={formData.userData.preferences}
             onChange={(e) => handleChange("userData", e.target)}
+            isOptional={true}
           />
         </>
       )}
       {stepNumber === 3 && (
-        <>
+        <div className="text-sm space-y-2">
+          <div className="text-center">
+            {" "}
+            <FormButton
+              onClick={downloadCampRules}
+              action="back"
+              extraStyles="text-sm"
+            >
+              Descarcă regulament
+            </FormButton>
+          </div>
+          <p>
+            - Am citit si sunt de acord cu <strong>regulamentul</strong>{" "}
+            taberei.
+          </p>
+          {retrieveNumberOfDays()[0] === retrieveNumberOfDays()[1] ? (
+            <>
+              <p>
+                - Taxa de înscriere pentru persoanele care vin full-time este de{" "}
+                <strong>{sumToPay.normal} RON </strong> (cazare + mâncare).
+                Pentru persoanele care au <strong>membru de familie </strong>
+                (frați, surori, soț, soție) în tabără taxa este de{" "}
+                <strong> {sumToPay.withFamilyMember} RON</strong>.
+              </p>
+              <p>
+                - Voi plăti avansul de {sumToPay.deposit} RON până la data de{" "}
+                <strong>
+                  {dateRange.depositPaymentDueDate.toISOString().split("T")[0]}
+                </strong>
+                .
+              </p>
+            </>
+          ) : (
+            <p>
+              - Taxa de înscriere pentru persoanele care NU vin full-time este
+              de {sumToPay.perDay} lei/zi (cazare + mâncare). Totalul tǎu este
+              de{" "}
+              <strong>{sumToPay.perDay * retrieveNumberOfDays()[0]} RON</strong>{" "}
+              (pentru {retrieveNumberOfDays()[0]} zile).
+            </p>
+          )}
+
+          {formData.userData.age < 18 && (
+            <p>
+              - Deoarece ai <span className="text-hope-orange">sub 18 ani</span>
+              , trebuie să descarci regulamentul, și să îl semnezi tu și
+              părintele tău (tutorele legal) și să îl aduci în tabără împreuna
+              cu copia buletinului tău.
+            </p>
+          )}
           <CheckboxInputField
-            label="Agreez cu regulile taberei, si cu prelucrarea datelor personale."
+            label="Am citit si sunt de acord cu cele de mai sus."
             checked={agreementChecked}
             onChange={handleAgreementChange}
           />
-        </>
+        </div>
+      )}
+      {stepNumber === 3 && !agreementChecked && (
+        <p className="mt-4 text-red-500 text-xs text-center italic">
+          Trebuie sa fii de-acord cu regulamentul taberei
+        </p>
       )}
       <div className="mt-4 flex justify-between">
-        {stepNumber !== 1 && (
-          <button
-            onClick={handlePrev}
-            className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
-          >
-            Previous
-          </button>
+        {stepNumber !== 1 ? (
+          <FormButton onClick={handlePrev} disabled={false} action="back">
+            ← Înapoi
+          </FormButton>
+        ) : (
+          <div></div>
         )}
         {stepNumber !== 3 && (
-          <button
-            onClick={handleNext}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            Next
-          </button>
+          <FormButton onClick={handleNext} disabled={false} action="next">
+            Continuǎ →
+          </FormButton>
         )}
         {stepNumber === 3 && (
-          <button
-            // TODO: Fix bug when agreement is not checked, the button should still be visible
-            // with different color, but it's not visible at all at this moment
+          <FormButton
             onClick={handleSubmit}
-            disabled={!agreementChecked}
-            className={`bg-${
-              agreementChecked === true ? "green-500" : "neutral-500"
-            } text-white px-4 py-2 rounded`}
+            disabled={!agreementChecked || isLoading}
+            action="submit"
           >
-            Submit
-          </button>
+            Înscrie-te ↗
+          </FormButton>
         )}
       </div>
-      <h5 className="text-sm mt-4 text-yellow-600">
-        {stepNumber === 1
-          ? "* Emailul si parola vor fi folosite pentru a te conecta la platforma noastrǎ. Acestea sunt necesare pentru înscriere."
-          : ""}
-      </h5>
+      {stepNumber === 1 && (
+        <div>
+          <p className=" my-6 text-center text-sm ">
+            Te-ai înscris deja?{" "}
+            <Link
+              to={pages.account}
+              className="hover:underline font-bold text-hope-lightcyan"
+            >
+              Du-te la contul tǎu.
+            </Link>
+          </p>
+          <h5 className="text-xs text-hope-lightcyan">
+            * Emailul si parola vor fi folosite pentru a te conecta la platforma
+            noastrǎ. Acestea sunt necesare pentru înscriere.
+          </h5>
+        </div>
+      )}
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect, useRef } from "react";
 import { useTable, useSortBy, useFilters } from "react-table";
 import classNames from "classnames";
 import { getAllUsers } from "../../firebase/database";
-import { sumToPay } from "../../models/Options";
+import { sumToPay } from "../../constants";
 import TableRow from "./TableRow";
 import { updateUserData } from "../../firebase/database";
 import LoadingIcon from "../LoadingIcon";
@@ -352,7 +352,7 @@ const UserTable = (loggedInUserData) => {
         <h1 className="text-3xl font-bold mb-4 mx-4">Lista participanților</h1>
         <div className="mb-4 mx-4">
           <button
-            className="p-2 bg-cyan-500 text-white rounded-full flex items-center"
+            className="p-2 bg-hope-lightcyan text-white rounded-full flex items-center"
             onClick={handleDownloadTableAsCsv}
           >
             <svg
