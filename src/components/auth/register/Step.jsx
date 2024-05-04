@@ -32,10 +32,12 @@ const Step = ({
   validationErrors,
   errorMessages,
 }) => {
-  const checkIfUserSelectedFullTime = () => {
+  const retrieveNumberOfDays = () => {
     const { startDate, endDate } = formData.userData;
-    const days = (endDate - startDate) / (1000 * 60 * 60 * 24);
-    return days === 5;
+    const numberOfDaysSelected = (endDate - startDate) / (1000 * 60 * 60 * 24);
+    const numberOfDaysCamp =
+      (dateRange.endDate - dateRange.startDate) / (1000 * 60 * 60 * 24);
+    return [numberOfDaysSelected, numberOfDaysCamp];
   };
 
   return (
@@ -182,7 +184,7 @@ const Step = ({
             - Am citit si sunt de acord cu <strong>regulamentul</strong>{" "}
             taberei.
           </p>
-          {checkIfUserSelectedFullTime() ? (
+          {retrieveNumberOfDays()[0] === retrieveNumberOfDays()[1] ? (
             <>
               <p>
                 - Taxa de înscriere pentru persoanele care vin full-time este de{" "}
@@ -202,7 +204,10 @@ const Step = ({
           ) : (
             <p>
               - Taxa de înscriere pentru persoanele care NU vin full-time este
-              de {sumToPay.perDay} lei/zi (cazare + mâncare).
+              de {sumToPay.perDay} lei/zi (cazare + mâncare). Totalul tǎu este
+              de{" "}
+              <strong>{sumToPay.perDay * retrieveNumberOfDays()[0]} RON</strong>{" "}
+              (pentru {retrieveNumberOfDays()[0]} zile).
             </p>
           )}
 
