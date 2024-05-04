@@ -8,7 +8,7 @@ function LocationSection() {
         <div className="spacer location-divider-up z-0 relative inset-0" />
         <div className="bg-hope-darkcyan">
           <div className="container mx-auto flex flex-col items-center py-14 px-8 gap-5 sm:py-8 lg:flex-row lg:justify-around lg:gap-0 xl:py-0">
-            <div className="flex flex-col items-center gap-3 lg:items-start">
+            <div className="flex flex-col items-center gap-3 lg:items-start lg:order-last">
               <h2 className="text-white text-3xl font-bold sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">
                 Locație
               </h2>
