@@ -19,8 +19,8 @@ export const transportOptions = [
 ];
 
 export const dateRange = {
-  startDate: new Date(2024, 6, 20),
-  endDate: new Date(2024, 6, 25),
+  startDate: new Date(2024, 6, 17),
+  endDate: new Date(2024, 6, 22),
 };
 
 export const sumToPay = {
