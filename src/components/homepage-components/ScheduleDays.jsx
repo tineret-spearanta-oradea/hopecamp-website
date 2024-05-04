@@ -34,7 +34,7 @@ function ScheduleDays(props) {
             <div className="bg-hope-orange w-full h-32 rounded-lg"></div>
           )}
         </div>
-        <div onClick={toggleOpen} className="bg-hope-orange text-white flex items-center justify-center w-8 h-14 rounded-lg"><i className={`bi bi-caret-${differentIcon}-fill`}></i></div>
+        <div onClick={toggleOpen} className={`bg-hope-orange text-white flex items-center justify-center w-8 ${relativeHeight} rounded-lg`}><i className={`bi bi-caret-${differentIcon}-fill`}></i></div>
       </div>
     </>
   );
