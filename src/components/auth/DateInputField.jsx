@@ -1,7 +1,7 @@
 import React from "react";
 import { DateRangePicker } from "rsuite";
 import "rsuite/DateRangePicker/styles/index.css"; //this causes an error, but the component works
-import { dateRange } from "../../models/Options";
+import { dateRange } from "../../constants";
 
 const DateInputField = ({
   label,
@@ -9,7 +9,7 @@ const DateInputField = ({
   startDateValue,
   endDateValue,
   onChange,
-  errorMessage,
+  validationErrorMessage,
 }) => {
   const { combine, allowedRange, beforeToday } = DateRangePicker;
   const minDate = dateRange.startDate;
@@ -37,8 +37,8 @@ const DateInputField = ({
         shouldDisableDate={allowedRange(minDate, maxDate)}
         onChange={handleChange}
       />
-      {errorMessage && (
-        <p className="text-red-500 text-xs italic">{errorMessage}</p>
+      {validationErrorMessage && (
+        <p className="text-red-500 text-xs italic">{validationErrorMessage}</p>
       )}
     </div>
   );

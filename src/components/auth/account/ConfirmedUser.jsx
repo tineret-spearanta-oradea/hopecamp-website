@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Navigate, Link, useNavigate } from "react-router-dom";
 import { writeMessageData, getMessageData } from "../../../firebase/database";
 import MessageData from "../../../models/MessageData";
+import { pages } from "../../../constants";
 
 const ConfirmedUser = ({ userData }) => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const ConfirmedUser = ({ userData }) => {
   }, [userData.uid]);
 
   const navigateToAdminsDashboard = () => {
-    navigate("/admins");
+    navigate(pages.adminsDashboard);
   };
 
   const getRemainingDays = () => {

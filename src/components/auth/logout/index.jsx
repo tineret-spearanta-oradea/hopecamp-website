@@ -1,21 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { doSignOut } from "../../../firebase/auth";
 import { useAuth } from "../../../contexts/authContext";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import LoadingIcon from "../../LoadingIcon";
+import { pages } from "../../../constants";
 
 const Logout = () => {
   const { authData, userData, userLoggedIn, loading, error } = useAuth();
+  const navigate = useNavigate();
 
-  if (userLoggedIn) {
-    doSignOut();
-  }
+  useEffect(() => {
+    const handleLogout = async () => {
+      if (userLoggedIn) {
+        await doSignOut();
+      }
+      navigate(pages.login);
+    };
 
-  return (
-    <>
-      {!loading && <div></div>}
-      <Navigate to={"/login"} replace={true} />
-    </>
-  );
+    handleLogout();
+  }, []);
+
+  return <LoadingIcon />;
 };
 
 export default Logout;

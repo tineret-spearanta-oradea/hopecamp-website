@@ -5,7 +5,7 @@ import { getArchivedUserData } from "../../../firebase/database";
 import { registerAndCreateUser } from "../../../firebase";
 import UserData from "../../../models/UserData";
 import AuthData from "../../../models/AuthData";
-import { payTaxToOptions } from "../../../models/Options";
+import { payTaxToOptions, pages } from "../../../constants";
 import { useAuth } from "../../../contexts/authContext";
 import LoadingIcon from "../../LoadingIcon";
 
@@ -23,19 +23,18 @@ const Register = () => {
   const [imageFile, setImageFile] = useState(null);
   const [agreementChecked, setAgreementChecked] = useState(false);
   const [hasAlreadyAutoFilled, setHasAlreadyAutoFilled] = useState(false);
-  const [errorAuthMessages, setErrorAuthMessages] = useState([]);
+  const [errorMessages, setErrorMessages] = useState([]);
 
   const handleSubmit = async () => {
     setIsLoading(true);
     if (agreementChecked) {
       const result = await registerAndCreateUser(formData, imageFile);
       if (!result.success) {
-        setErrorAuthMessages([result.message]);
+        setErrorMessages((prevMessages) => [...prevMessages, result.message]);
       } else {
-        setErrorAuthMessages([]);
-        // handle success
+        setErrorMessages([]);
+        navigate(pages.account);
       }
-      navigate("/cont");
     }
     setIsLoading(false);
   };
@@ -81,7 +80,8 @@ const Register = () => {
             formData={formData}
             setFormData={setFormData}
             handleTryAutofillUserData={handleTryAutofillUserData}
-            errorAuthMessages={errorAuthMessages}
+            errorMessages={errorMessages}
+            setErrorMessages={setErrorMessages}
           />
         </div>
       </main>

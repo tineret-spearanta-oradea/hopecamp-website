@@ -6,7 +6,7 @@ const RadioInputField = ({
   options,
   value,
   onChange,
-  errorMessage,
+  validationErrorMessage,
 }) => {
   const [otherValue, setOtherValue] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
@@ -77,8 +77,8 @@ const RadioInputField = ({
           </div>
         ))}
       </div>
-      {errorMessage && (
-        <p className="text-red-500 text-xs italic">{errorMessage}</p>
+      {validationErrorMessage && (
+        <p className="text-red-500 text-xs italic">{validationErrorMessage}</p>
       )}
     </div>
   );

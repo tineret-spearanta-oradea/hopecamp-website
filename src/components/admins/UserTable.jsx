@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect, useRef } from "react";
 import { useTable, useSortBy, useFilters } from "react-table";
 import classNames from "classnames";
 import { getAllUsers } from "../../firebase/database";
-import { sumToPay } from "../../models/Options";
+import { sumToPay } from "../../constants";
 import TableRow from "./TableRow";
 import { updateUserData } from "../../firebase/database";
 import LoadingIcon from "../LoadingIcon";

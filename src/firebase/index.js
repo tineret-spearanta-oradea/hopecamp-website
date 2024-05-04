@@ -5,9 +5,9 @@
 import { doCreateUserWithEmailAndPassword, doDeleteAuthUser } from "./auth";
 import { writeUserData, deleteUserData } from "./database";
 import { uploadImageAndGetUrl } from "./storage";
-
+import { contactInfo } from "../constants";
 //TODO [Optional]: Log errors in a log file
-
+//TODO: Instead of returning a message, throw an error and catch it in the component. Then, in the component, display the error message to the user.
 export const registerAndCreateUser = async (formData, imageFile) => {
   const authData = formData.authData;
   const userData = formData.userData;
@@ -15,7 +15,10 @@ export const registerAndCreateUser = async (formData, imageFile) => {
 
   // Sanity check, but this should be checked at the form level
   if (authData["password"] !== authData["confirmPassword"]) {
-    return { success: false, message: "Parola și confirmarea parolei nu sunt la fel!" };
+    return {
+      success: false,
+      message: "Parola și confirmarea parolei nu sunt la fel!",
+    };
   }
 
   try {
@@ -45,14 +48,24 @@ export const registerAndCreateUser = async (formData, imageFile) => {
       return { success: true };
     } catch (createError) {
       console.error("Error creating user data:", createError);
-      await doDeleteAuthUser().catch(deleteError => {
+      await doDeleteAuthUser().catch((deleteError) => {
         console.error("Error deleting auth user:", deleteError);
       });
       return { success: false, message: "Error creating user!" };
     }
   } catch (authError) {
-    console.error("Error creating user data:", authError);
-    return { success: false, message: "Error creating user!" };
+    if (authError.code === "auth/email-already-in-use") {
+      return {
+        success: false,
+        message:
+          "Adresa de email este deja folosită! Te rugǎm sa folosesti altǎ adresǎ de email",
+      };
+    }
+    console.error("Error creating auth user:", authError);
+    return {
+      success: false,
+      message: `Eroare de autentificare. ${authError.code}. \n Dacǎ problema persistǎ, te rugǎm sǎ ne contactezi la ${contactInfo.phone}.`,
+    };
   }
 };
 
