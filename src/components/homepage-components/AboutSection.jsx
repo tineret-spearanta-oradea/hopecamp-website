@@ -7,7 +7,7 @@ function AboutSection() {
             <h2 className="text-black text-3xl font-bold sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">
               Despre noi
             </h2>
-            <p className="text-center font-medium max-w-sm sm:text-sm md:max-w-md md:text-md lg:max-w-lg lg:text-lg lg:text-start xl:max-w-xl xl:text-xl">
+            <p className="text-center max-w-sm sm:text-sm md:max-w-md md:text-md lg:max-w-lg lg:text-lg lg:text-start xl:max-w-xl xl:text-xl">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quod
               porro sapiente doloremque, beatae necessitatibus libero. Debitis
               error atque iste alias, distinctio doloribus magni, doloremque,
@@ -15,7 +15,7 @@ function AboutSection() {
             </p>
           </div>
           <div
-            className="h-40 w-full max-w-xl rounded-lg bg-center bg-no-repeat bg-cover lg:h-80 lg:w-1/2 xl:h-96"
+            className="h-40 w-full max-w-xl rounded-lg bg-center bg-no-repeat bg-cover  lg:h-80 lg:w-1/2 xl:h-96"
             style={{
               backgroundImage: "url('/src/assets/images/ZVE03429.jpg')",
             }}

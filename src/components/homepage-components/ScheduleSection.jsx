@@ -11,7 +11,7 @@ function ScheduleSection() {
             <h2 className="text-black text-3xl font-bold sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">
               Program
             </h2>
-            <p className="text-center font-medium max-w-sm sm:text-sm md:max-w-md md:text-md lg:max-w-lg lg:text-lg lg:text-start xl:max-w-xl xl:text-xl">
+            <p className="text-center max-w-sm sm:text-sm md:max-w-md md:text-md lg:max-w-lg lg:text-lg lg:text-start xl:max-w-xl xl:text-xl">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt
               ex numquam aliquam modi corporis. Quod ex enim perferendis eos
               repudiandae recusandae totam corrupti aperiam illo, optio amet
