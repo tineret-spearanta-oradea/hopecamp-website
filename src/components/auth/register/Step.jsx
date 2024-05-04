@@ -5,10 +5,13 @@ import ImageInputField from "../ImageInputField";
 import RadioInputField from "../RadioInputField";
 import DateInputField from "../DateInputField";
 import ErrorAlert from "../../ErrorAlert";
+import { Link } from "react-router-dom";
+import FormButton from "../FormButton";
 import {
   churchOptions,
   payTaxToOptions,
   transportOptions,
+  pages,
 } from "../../../constants";
 
 // TODO: Add diacritics to the text
@@ -27,18 +30,18 @@ const Step = ({
 }) => {
   return (
     <div>
-      <h2 className="text-lg font-bold mb-4">
-        Pasul {stepNumber}:{" "}
+      <h2 className="text-xl font-black text-center mb-4">
+        Pasul {stepNumber}/3:{" "}
         {stepNumber === 1
           ? "Autentificare"
           : stepNumber === 2
           ? "Detalii personale"
           : "Confirmare"}
       </h2>
-      <h3 className="mb-4 text-center">
+      <h3 className="mb-4 text-center text-sm">
         {stepNumber === 1
           ? `Hope Camp #5 este o tabară creștină de tineret, organizată de Tineret Speranța Oradea.
-          Mai multe detalii despre noi și tabără găsiți in pagina principala.` //TODO: add link to the index page
+          Mai multe detalii despre noi și tabără găsiți in pagina principalǎ.` //TODO: add link to the index page
           : ""}
       </h3>
       <h5 className="text-sm my-4 text-center">
@@ -135,15 +138,16 @@ const Step = ({
             validationErrorMessage={validationErrors.dateRange}
           />
           <ImageInputField
-            label="Poza cu tine" // TODO: maybe make this optional (?) to be discussed
+            label="Încarcǎ pozǎ cu tine" // TODO: maybe make this optional (?) to be discussed
             handleImageChange={handleImageChange}
           />
           <TextInputField
-            label="Preferinte cazare:"
+            label="Preferințe colegi de camerǎ:"
             type="text"
             name="preferences"
             value={formData.userData.preferences}
             onChange={(e) => handleChange("userData", e.target)}
+            isOptional={true}
           />
         </>
       )}
@@ -156,42 +160,51 @@ const Step = ({
           />
         </>
       )}
+      {stepNumber === 3 && !agreementChecked && (
+        <p className="mt-4 text-red-500 text-xs text-center italic">
+          Trebuie sa fii de-acord cu regulamentul taberei
+        </p>
+      )}
       <div className="mt-4 flex justify-between">
-        {stepNumber !== 1 && (
-          <button
-            onClick={handlePrev}
-            className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
-          >
-            Previous
-          </button>
+        {stepNumber !== 1 ? (
+          <FormButton onClick={handlePrev} disabled={false} action="back">
+            ← Înapoi
+          </FormButton>
+        ) : (
+          <div></div>
         )}
         {stepNumber !== 3 && (
-          <button
-            onClick={handleNext}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            Next
-          </button>
+          <FormButton onClick={handleNext} disabled={false} action="next">
+            Continuǎ →
+          </FormButton>
         )}
         {stepNumber === 3 && (
-          <button
-            // TODO: Fix bug when agreement is not checked, the button should still be visible
-            // with different color, but it's not visible at all at this moment
+          <FormButton
             onClick={handleSubmit}
             disabled={!agreementChecked}
-            className={`bg-${
-              agreementChecked === true ? "green-500" : "neutral-500"
-            } text-white px-4 py-2 rounded`}
+            action="submit"
           >
-            Submit
-          </button>
+            Înscrie-te ↗
+          </FormButton>
         )}
       </div>
-      <h5 className="text-sm mt-4 text-yellow-600">
-        {stepNumber === 1
-          ? "* Emailul si parola vor fi folosite pentru a te conecta la platforma noastrǎ. Acestea sunt necesare pentru înscriere."
-          : ""}
-      </h5>
+      {stepNumber === 1 && (
+        <div>
+          <p className=" my-6 text-center text-sm ">
+            Te-ai înscris deja?{" "}
+            <Link
+              to={pages.account}
+              className="hover:underline font-bold text-hope-lightcyan"
+            >
+              Du-te la contul tǎu.
+            </Link>
+          </p>
+          <h5 className="text-sm text-hope-lightcyan">
+            * Emailul si parola vor fi folosite pentru a te conecta la platforma
+            noastrǎ. Acestea sunt necesare pentru înscriere.
+          </h5>
+        </div>
+      )}
     </div>
   );
 };

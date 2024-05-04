@@ -70,6 +70,7 @@ const MultiStepForm = ({
         newValidationErrors.confirmPassword = "Parolele nu se potrivesc.";
       }
     }
+
     if (step === 2) {
       const userData = formData.userData;
 
@@ -100,17 +101,15 @@ const MultiStepForm = ({
       if (userData.startDate === null || userData.endDate === null) {
         newValidationErrors.dateRange = "Perioada este necesară.";
       }
-
-      // TODO: implement errors for all new required fields (including radio buttons and date pickers and file input)
-      // this should be done after implemeting the new fields first.
     }
+
     setValidationErrors(newValidationErrors);
 
     return Object.keys(newValidationErrors).length === 0;
   };
 
   return (
-    <div className="max-w-lg mx-auto p-4">
+    <div className="max-w-lg mx-auto">
       {step === 1 && (
         <Step
           stepNumber={1}
@@ -140,6 +139,7 @@ const MultiStepForm = ({
           handleSubmit={handleSubmit}
           agreementChecked={agreementChecked}
           handleAgreementChange={handleAgreementChange}
+          validationErrors={validationErrors}
           errorMessages={errorMessages}
         />
       )}

@@ -55,7 +55,7 @@ const AdminDashboard = () => {
     <div className="flex min-h-screen">
       {/* Sidebar */}
       <aside
-        className={`bg-gray-900 text-white p-4 w-64 ${
+        className={`bg-gray-900 text-white w-64 ${
           isSidebarOpen ? "" : "hidden"
         }`}
       >
@@ -64,7 +64,7 @@ const AdminDashboard = () => {
             <li key={index}>
               <button
                 onClick={() => handleSectionClick(section.value)}
-                className={`py-2 px-4 block w-full text-left ${
+                className={`py-2 px-4 block w-full text-left h-14 ${
                   selectedSection === section.value
                     ? "bg-gray-800"
                     : "hover:bg-gray-800"

@@ -8,6 +8,7 @@ import AuthData from "../../../models/AuthData";
 import { payTaxToOptions, pages } from "../../../constants";
 import { useAuth } from "../../../contexts/authContext";
 import LoadingIcon from "../../LoadingIcon";
+import FormCard from "../FormCard";
 
 const Register = () => {
   const { authData, userData, userLoggedIn, loading, error } = useAuth();
@@ -68,25 +69,22 @@ const Register = () => {
   };
 
   return (
-    <>
+    <FormCard>
       {userLoggedIn && <Navigate to={"/cont?alreadyLoggedIn"} replace={true} />}
-      <main className="flex flex-col justify-center items-center min-h-screen p-6">
-        <div className="w-full max-w-md text-gray-600 space-y-5 p-4 shadow-xl border rounded-xl">
-          <MultiStepForm
-            handleSubmit={handleSubmit}
-            handleImageChange={handleImageChange}
-            agreementChecked={agreementChecked}
-            setAgreementChecked={setAgreementChecked}
-            formData={formData}
-            setFormData={setFormData}
-            handleTryAutofillUserData={handleTryAutofillUserData}
-            errorMessages={errorMessages}
-            setErrorMessages={setErrorMessages}
-          />
-        </div>
-      </main>
+
+      <MultiStepForm
+        handleSubmit={handleSubmit}
+        handleImageChange={handleImageChange}
+        agreementChecked={agreementChecked}
+        setAgreementChecked={setAgreementChecked}
+        formData={formData}
+        setFormData={setFormData}
+        handleTryAutofillUserData={handleTryAutofillUserData}
+        errorMessages={errorMessages}
+        setErrorMessages={setErrorMessages}
+      />
       {isLoading && <LoadingIcon />}
-    </>
+    </FormCard>
   );
 };
 

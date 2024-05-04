@@ -3,6 +3,7 @@ import { Navigate, Link, useNavigate } from "react-router-dom";
 import { writeMessageData, getMessageData } from "../../../firebase/database";
 import MessageData from "../../../models/MessageData";
 import { contactInfo, dateRange, pages } from "../../../constants";
+import FormButton from "../FormButton";
 
 const ConfirmedUser = ({ userData }) => {
   const navigate = useNavigate();
@@ -40,30 +41,29 @@ const ConfirmedUser = ({ userData }) => {
   };
 
   const handleMessageSend = async () => {
+    console.log("Sending message...");
     const messageText = document.querySelector("textarea").value;
     const messageData = new MessageData(userData.uid, messageText);
     await writeMessageData(messageData);
+    setMessageText(messageText);
   };
 
   return (
-    <div className="mt-2">
+    <div className="mt-2 space-y-2">
       {userData.isAdmin && (
         //TODO: extract this in a component?
         <div className="text-center">
-          <button
-            onClick={navigateToAdminsDashboard}
-            className="w-60 py-1 px-4 bg-green-500 text-white rounded-md"
-          >
+          <FormButton action="submit" onClick={navigateToAdminsDashboard}>
             ADMINS DASHBOARD
-          </button>
+          </FormButton>
         </div>
       )}
       <p>
-        Ne bucurăm că ai ales să vii cu noi in tabără! Au mai ramas{" "}
-        {getRemainingDays()} zile până la tabară! (Yayy🎉)
+        🗓️ Ne bucurăm că ai ales să vii cu noi in tabără! Au mai ramas{" "}
+        {getRemainingDays()} zile până la tabară, abia aşteptǎm!
       </p>
       <p>
-        Între timp, dacă vrei, ne poți lăsa aici un gând sau o sugestie
+        💭Între timp, dacă vrei, ne poți lăsa aici un gând sau o sugestie
         referitoare la tabără:
       </p>
       {messageText ? (
@@ -81,35 +81,35 @@ const ConfirmedUser = ({ userData }) => {
 
       <div className="text-right">
         {messageText ? (
-          <button
-            onClick={handleMessageSend}
-            className="m-2 py-1 px-4 bg-gray-500 text-white rounded-md"
-            disabled
-          >
+          <FormButton action="submit" disabled>
             Ai trimis deja 🔒
-          </button>
+          </FormButton>
         ) : (
-          <button
+          <FormButton
+            action="submit"
             onClick={handleMessageSend}
-            className="m-2 py-1 px-4 bg-blue-500 text-white rounded-md"
+            extraStyles="mb-2"
           >
             Trimite mesaj
-          </button>
+          </FormButton>
         )}
       </div>
       <p>
         📝 Mai jos poți sǎ vezi datele cu care te-ai înscris in tabără. Daca
         doreşti să le modifici scrie-ne folosind câmpul și butonul de mai sus,
-        sau pe Whatsapp la {contactInfo.phone}.
+        sau pe WhatsApp la {contactInfo.phone}.
       </p>
       {/* TODO: implement the expandable data field or maybe a popup that contains the data? */}
       <div className="text-center">
-        <button
+        {/* <button
           onClick={seeMyDetails}
           className="mt-2 py-1 px-4 bg-gray-300 text-white rounded-md"
         >
           {isOpenDetails ? "Ascunde 🔼" : "Vezi datele tale 🔽"}
-        </button>
+        </button> */}
+        <FormButton action="back" onClick={seeMyDetails} extraStyles="mt-2">
+          {isOpenDetails ? "Ascunde 🔼" : "Vezi datele tale 🔽 "}
+        </FormButton>
       </div>
       {isOpenDetails && (
         <div>
