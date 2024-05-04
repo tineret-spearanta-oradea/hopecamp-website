@@ -8,7 +8,7 @@ export default function Question(props) {
   return (
     <>
       <div className="bg-hope-darkcyan flex items-center rounded-lg w-full h-14 pl-3">
-        <p className="text-sm">{props.question}</p>
+        <p className="text-white text-xs lg:text-sm">{props.question}</p>
       </div>
     </>
   );
