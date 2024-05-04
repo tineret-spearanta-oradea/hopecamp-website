@@ -17,9 +17,9 @@ const ResetPassword = () => {
     setIsResetting(true);
     try {
       await doPasswordReset(email);
-      setErrorMessage("");
+      setErrorMessages("");
     } catch (error) {
-      setErrorMessage("A apărut o eroare. Încearcă din nou.");
+      setErrorMessages("A apărut o eroare. Încearcă din nou.");
     }
     setIsResetting(false);
     setIsEmailSent(true);
@@ -56,7 +56,7 @@ const ResetPassword = () => {
                 type="email"
                 autoComplete="email"
                 required
-                disabled={isResetting || isEmailSent}
+                disabled={isResetting}
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
@@ -65,8 +65,8 @@ const ResetPassword = () => {
               />
             </div>
 
-            {errorMessage && (
-              <span className="text-red-600 font-bold">{errorMessage}</span>
+            {errorMessages && errorMessages.length > 0 && (
+              <ErrorAlert messages={errorMessages} />
             )}
 
             <button
