@@ -5,7 +5,7 @@ import SignUpSection from "../components/homepage-components/SignUpSection";
 import GallerySection from "../components/homepage-components/GallerySection";
 import ScheduleSection from "../components/homepage-components/ScheduleSection";
 import LocationSection from "../components/homepage-components/LocationSection";
-import FAQ from "../components/homepage-components/FAQ";
+import FaqSection from "../components/homepage-components/FaqSection";
 import Footer from "../components/general-components/Footer";
 
 import "/src/styles/backgrounds.css";
@@ -20,7 +20,7 @@ function HomePage() {
         <GallerySection />
         <ScheduleSection />
         <LocationSection />
-        <FAQ />
+        <FaqSection />
       <Footer />
     </>
   );
