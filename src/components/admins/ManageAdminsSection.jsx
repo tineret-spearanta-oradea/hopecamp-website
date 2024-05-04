@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import LoadingIcon from "../LoadingIcon";
 import { getAllUsers } from "../../firebase/database";
 import { updateUserData } from "../../firebase/database";
+import FormButton from "../auth/FormButton";
 
 const ManageAdminsSection = (loggedInUserData) => {
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
@@ -225,19 +226,15 @@ const ManageAdminsInput = ({
       <input
         type="text"
         placeholder="introdu emailul user-ului"
-        className="p-2 border"
+        className="p-2 border rounded-lg mr-2"
         onChange={(e) => manageEmailToAdd(e.target.value)}
       />
-      <button
+      <FormButton
         onClick={() => manageAdminAction()}
-        className={`mr-2 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white ${
-          buttonText === "Adaugǎ"
-            ? "bg-green-500 hover:bg-green-700 focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-            : "bg-red-500 hover:bg-red-700 focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-        }`}
+        action={buttonText === "Adaugǎ" ? "next" : "delete"}
       >
         {buttonText}
-      </button>
+      </FormButton>
     </div>
   );
 };

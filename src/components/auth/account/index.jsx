@@ -7,6 +7,8 @@ import ConfirmedUser from "./ConfirmedUser";
 import PendingUser from "./PendingUser";
 import LoadingIcon from "../../LoadingIcon";
 import { pages } from "../../../constants";
+import FormCard from "../FormCard";
+import FormButton from "../FormButton";
 
 //TODO: Style this component and the children components
 
@@ -16,10 +18,6 @@ import { pages } from "../../../constants";
 const Account = () => {
   const { authData, userData, userLoggedIn, loading, error } = useAuth();
   const navigate = useNavigate();
-
-  const goToLogout = () => {
-    navigate(pages.logout);
-  };
 
   if (!userLoggedIn) {
     return <Navigate to={pages.login} replace={true} />;
@@ -33,37 +31,29 @@ const Account = () => {
   return (
     <>
       {!loading && (
-        <div>
-          <main className="w-full h-screen flex self-center place-content-center place-items-center">
-            <div className="w-96 text-gray-600 space-y-5 p-4 pb-8 shadow-xl border rounded-xl">
-              <div className="text-right">
-                <button
-                  onClick={goToLogout}
-                  className="m-2 py-1 px-4 bg-red-400 text-white rounded-md"
-                >
-                  Logout
-                </button>
-              </div>
-              <div className="mt-2 text-center">
-                <h3 className="text-gray-800 text-xl font-semibold sm:text-2xl">
-                  Contul meu
-                </h3>
-              </div>
-              <div className="mt-4">
-                <p>
-                  <span className="font-semibold">Hello, </span>
-                  {userData.name}!
-                </p>
-                {!userData.isConfirmed && (
-                  <PendingUser userData={userData}></PendingUser>
-                )}
-                {userData.isConfirmed && (
-                  <ConfirmedUser userData={userData}></ConfirmedUser>
-                )}
-              </div>
-            </div>
-          </main>
-        </div>
+        <FormCard>
+          {/* <div className="w-96 text-gray-600 space-y-5 p-4 pb-8 shadow-xl border rounded-xl"> */}
+          <div className="text-right">
+            <Link to={pages.logout}>
+              <FormButton action="delete">Logout</FormButton>
+            </Link>
+          </div>
+          <div className="text-center">
+            <h2 className="text-xl font-black text-center ">Contul meu</h2>
+          </div>
+          <div>
+            <p>
+              <span className="font-semibold">Hello, </span>
+              {userData.name}!
+            </p>
+            {!userData.isConfirmed && (
+              <PendingUser userData={userData}></PendingUser>
+            )}
+            {userData.isConfirmed && (
+              <ConfirmedUser userData={userData}></ConfirmedUser>
+            )}
+          </div>
+        </FormCard>
       )}
     </>
   );
