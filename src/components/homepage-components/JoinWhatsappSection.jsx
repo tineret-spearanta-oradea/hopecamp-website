@@ -1,6 +1,6 @@
 import FilledButton from "../general-components/FilledButton"
 
-export function JoinWhatsappSection() {
+export default function JoinWhatsappSection() {
     return <>
     <section className="flex justify-center items-center px-8 my-24">
         <div className="bg-hope-darkcyan flex items-center justify-around rounded-lg w-96 h-32">
