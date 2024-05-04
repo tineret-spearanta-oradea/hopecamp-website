@@ -1,4 +1,4 @@
-import Question from "./Question,";
+import Question from "./Question";
 import JoinWhatsappSection from "./JoinWhatsappSection";
 
 export default function FAQ() {
