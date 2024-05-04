@@ -31,7 +31,9 @@ const Register = () => {
     if (agreementChecked) {
       const result = await registerAndCreateUser(formData, imageFile);
       if (!result.success) {
-        setErrorMessages((prevMessages) => [...prevMessages, result.message]);
+        if (!errorMessages.includes(result.message)) {
+          setErrorMessages((prevMessages) => [...prevMessages, result.message]);
+        }
       } else {
         setErrorMessages([]);
         navigate(pages.account);
@@ -68,6 +70,13 @@ const Register = () => {
     }
   };
 
+  const downloadCampRules = () => {
+    const link = document.createElement("a");
+    link.href = "/src/assets/Regulament_HopeCamp.pdf";
+    link.download = "Regulament_HopeCamp.pdf";
+    link.click();
+  };
+
   return (
     <FormCard>
       {userLoggedIn && <Navigate to={"/cont?alreadyLoggedIn"} replace={true} />}
@@ -80,6 +89,8 @@ const Register = () => {
         formData={formData}
         setFormData={setFormData}
         handleTryAutofillUserData={handleTryAutofillUserData}
+        downloadCampRules={downloadCampRules}
+        isLoading={isLoading}
         errorMessages={errorMessages}
         setErrorMessages={setErrorMessages}
       />

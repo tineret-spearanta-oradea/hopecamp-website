@@ -31,7 +31,6 @@ const ConfirmedUser = ({ userData }) => {
 
   const getRemainingDays = () => {
     const today = new Date();
-    //TODO: *kind of optional* add this date to an env or settings file?
     const campDate = dateRange.startDate;
     const timeDifference = campDate - today;
     const timeDifferenceInDays = Math.ceil(
@@ -50,7 +49,6 @@ const ConfirmedUser = ({ userData }) => {
   return (
     <div className="mt-2 space-y-2">
       {userData.isAdmin && (
-        //TODO: extract this in a component?
         <div className="text-center">
           <FormButton action="submit" onClick={navigateToAdminsDashboard}>
             ADMINS DASHBOARD
@@ -98,7 +96,6 @@ const ConfirmedUser = ({ userData }) => {
         doreşti să le modifici scrie-ne folosind câmpul și butonul de mai sus,
         sau pe WhatsApp la {contactInfo.phone}.
       </p>
-      {/* TODO: implement the expandable data field or maybe a popup that contains the data? */}
       <div className="text-center">
         <FormButton action="back" onClick={seeMyDetails} extraStyles="mt-2">
           {isOpenDetails ? "Ascunde 🔼" : "Vezi datele tale 🔽 "}
