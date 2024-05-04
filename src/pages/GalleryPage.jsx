@@ -4,7 +4,7 @@ export default function GalleryPage() {
   return (
     <>
       <Navbar />
-      <h1>Gallery page</h1>
+      <div className="bg-hope-beige min-h-screen flex items-center justify-center text-3xl uppercase text-hope-darkcyan">in lucru</div>
     </>
   );
 }
