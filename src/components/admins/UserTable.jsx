@@ -78,10 +78,13 @@ const UserTable = (loggedInUserData) => {
   }, []);
 
   const handleMoreInfo = (row) => {
-    if (selectedRowRef.current === null) {
-      selectedRowRef.current = row.original.uid;
-    } else {
+    if (
+      row.original === undefined ||
+      selectedRowRef.current === row.original.uid
+    ) {
       selectedRowRef.current = null;
+    } else {
+      selectedRowRef.current = row.original.uid;
     }
     forceRender();
   };
