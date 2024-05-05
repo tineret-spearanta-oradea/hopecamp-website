@@ -1,7 +1,7 @@
 import Question from "./Question";
 import JoinWhatsappSection from "./JoinWhatsappSection";
 
-export default function FAQ() {
+export default function FaqSection() {
   return (
     <>
       <section className="container mx-auto px-8 py-14 lg:flex lg:justify-around lg:items-end">
