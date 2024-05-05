@@ -1,0 +1,8 @@
+.background-one{
+    background-image: url('/src/assets/svgs/background-one.svg');
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    
+}

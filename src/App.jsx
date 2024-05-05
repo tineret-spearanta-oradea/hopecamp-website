@@ -1,28 +1,33 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage.jsx";
+import GalleryPage from "./pages/GalleryPage.jsx";
 import Login from "./components/auth/login";
 import Register from "./components/auth/register";
 import AdminsDashboard from "./components/admins";
-import Home from "./components/home";
 import ResetPassword from "./components/auth/reset_password";
 import Account from "./components/auth/account";
 import Logout from "./components/auth/logout";
 import { pages } from "./constants";
 import "./index.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path={pages.home} element={<Home />} />
-        <Route path={pages.login} element={<Login />} />
-        <Route path={pages.register} element={<Register />} />
-        <Route path={pages.resetPassword} element={<ResetPassword />} />
-        <Route path={pages.account} element={<Account />} />
-        <Route path={pages.logout} element={<Logout />} />
-        <Route path={pages.adminsDashboard} element={<AdminsDashboard />} />
-      </Routes>
-    </Router>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route index element={<HomePage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/inscrie-te" element={<Register />} />
+          <Route path="/resetare-parola" element={<ResetPassword />} />
+          <Route path="/cont" element={<Account />} />
+          <Route path="/logout" element={<Logout />} />
+          <Route path="/admins" element={<AdminsDashboard />} />
+          <Route path="/galerie" element={<GalleryPage/>}></Route>
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 

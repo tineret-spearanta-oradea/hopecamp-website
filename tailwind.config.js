@@ -14,6 +14,9 @@ export default {
         "hope-darkgray": "#5F5F5F",
         "hope-beige": "#FFF0C8",
       },
+      spacing: {
+        100: "30rem",
+      },
     },
   },
   plugins: [],
