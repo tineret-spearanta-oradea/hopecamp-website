@@ -8,6 +8,7 @@ import ErrorAlert from "../../ErrorAlert";
 import { Form, Link } from "react-router-dom";
 import FormButton from "../FormButton";
 import {
+  CampTitle,
   churchOptions,
   payTaxToOptions,
   transportOptions,
@@ -52,7 +53,7 @@ const Step = ({
       </h2>
       <h3 className="mb-4 text-center text-sm">
         {stepNumber === 1
-          ? `Hope Camp #5 este o tabară creștină de tineret, organizată de Tineret Speranța Oradea.
+          ? `${CampTitle.CoreName} ${CampTitle.Edition} este o tabară creștină de tineret, organizată de Tineret Speranța Oradea.
           Mai multe detalii despre noi și tabără găsiți in pagina principalǎ.` //TODO: add link to the index page
           : ""}
       </h3>

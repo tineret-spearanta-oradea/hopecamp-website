@@ -1,3 +1,25 @@
+// This file contains constants that are used throughout the app.
+// These constants can change from edition to edition.
+// The idea is to have a single place where these constants are defined and can be easily changed.
+// TODO: In the future, we can add a settings page where the SuperAdmin can change these constants.
+export const CampTitle = {
+  CoreName: "Hope Camp",
+  Edition: "#5",
+};
+
+//TODO: use capital letters for the first letter of each word, since these are constants
+
+export const pages = {
+  home: "/",
+  login: "/login",
+  logout: "/logout",
+  resetPassword: "/resetare-parola",
+  register: "/inscrie-te",
+  account: "/cont",
+  adminsDashboard: "/admin",
+  gallery: "/galerie",
+};
+
 export const churchOptions = [
   { label: "Speranța, Oradea", value: "Speranta" },
   { label: "Muntele Sionului, Aleșd", value: "Muntele Sionului" },
@@ -33,15 +55,4 @@ export const sumToPay = {
 
 export const contactInfo = {
   phone: "0000 000 000",
-};
-
-export const pages = {
-  home: "/",
-  login: "/login",
-  logout: "/logout",
-  resetPassword: "/resetare-parola",
-  register: "/inscrie-te",
-  account: "/cont",
-  adminsDashboard: "/admin",
-  gallery: "/galerie",
 };

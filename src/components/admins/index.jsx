@@ -6,6 +6,7 @@ import { Navigate, Link, useNavigate } from "react-router-dom";
 import { getNumberOfUnreadMessages } from "../../firebase/database";
 import ManageAdminsSection from "./ManageAdminsSection";
 import { pages } from "../../constants";
+import { CampTitle } from "../../constants";
 
 const AdminDashboard = () => {
   //TODO: add identity validation
@@ -59,39 +60,59 @@ const AdminDashboard = () => {
           isSidebarOpen ? "" : "hidden"
         }`}
       >
-        <ul>
-          {sections.map((section, index) => (
-            <li key={index}>
-              <button
-                onClick={() => handleSectionClick(section.value)}
-                className={`py-2 px-4 block w-full text-left h-14 ${
-                  selectedSection === section.value
-                    ? "bg-gray-800"
-                    : "hover:bg-gray-800"
-                }`}
+        <ul className="flex flex-col justify-between h-full">
+          <div>
+            {sections.map((section, index) => (
+              <li key={index}>
+                <button
+                  onClick={() => handleSectionClick(section.value)}
+                  className={`py-2 px-4 block w-full text-left h-14 ${
+                    selectedSection === section.value
+                      ? "bg-gray-800"
+                      : "hover:bg-gray-800"
+                  }`}
+                >
+                  <div className="flex">
+                    {section.label}
+                    {section.value === "messages" &&
+                      numbersForLabels.unreadMessages !== undefined &&
+                      numbersForLabels.unreadMessages !== null &&
+                      numbersForLabels.unreadMessages !== "0" && (
+                        <span className="mx-2 rounded-full bg-red-500 flex items-center justify-center font-mono w-7 text-sm">
+                          {numbersForLabels.unreadMessages}
+                        </span>
+                      )}
+                    {section.value === "users" &&
+                      numbersForLabels.users !== undefined &&
+                      numbersForLabels.users !== null &&
+                      numbersForLabels.users !== "0" && (
+                        <span className="mx-2 rounded-full bg-red-500 flex items-center justify-center font-mono w-7 text-sm">
+                          {numbersForLabels.users}
+                        </span>
+                      )}
+                  </div>
+                </button>
+              </li>
+            ))}
+          </div>
+          <div className="flex flex-col justify-end">
+            <li>
+              <Link
+                to={pages.account}
+                className="py-2 px-4 block w-full text-left h-14 hover:bg-gray-800"
               >
-                <div className="flex">
-                  {section.label}{" "}
-                  {section.value === "messages" &&
-                    numbersForLabels.unreadMessages !== undefined &&
-                    numbersForLabels.unreadMessages !== null &&
-                    numbersForLabels.unreadMessages !== "0" && (
-                      <span className="mx-2 rounded-full bg-red-500 flex items-center justify-center font-mono w-7 text-sm">
-                        {numbersForLabels.unreadMessages}
-                      </span>
-                    )}
-                  {section.value === "users" &&
-                    numbersForLabels.users !== undefined &&
-                    numbersForLabels.users !== null &&
-                    numbersForLabels.users !== "0" && (
-                      <span className="mx-2 rounded-full bg-red-500 flex items-center justify-center font-mono w-7 text-sm">
-                        {numbersForLabels.users}
-                      </span>
-                    )}
-                </div>
-              </button>
+                Contul meu
+              </Link>
             </li>
-          ))}
+            <li>
+              <Link
+                to={pages.logout}
+                className="py-2 px-4 block w-full text-red-500 text-left h-14 hover:bg-gray-800"
+              >
+                Logout
+              </Link>
+            </li>
+          </div>
         </ul>
       </aside>
 
@@ -116,9 +137,22 @@ const AdminDashboard = () => {
               />
             </svg>
           </button>
+          <div className="font-black text-lg uppercase">
+            {CampTitle.CoreName} {CampTitle.Edition}
+          </div>
+          <div className="text-sm flex items-center">
+            <p className="mr-2">Admins Dashboard</p>
+            {userData.imageUrl && userData.imageUrl !== "" && (
+              <Link to={pages.account}>
+                <img
+                  src={userData.imageUrl}
+                  alt="User"
+                  style={{ height: "30px", borderRadius: "50%" }}
+                />
+              </Link>
+            )}
+          </div>
         </nav>
-
-        {/* Main section based on selected section */}
         {userData !== null && userData.isAdmin ? (
           <>
             {selectedSection === "users" && (

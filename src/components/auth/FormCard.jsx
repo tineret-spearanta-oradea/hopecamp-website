@@ -3,7 +3,7 @@ import React from "react";
 const FormCard = ({ children }) => {
   return (
     <div
-      className="bg-scroll bg-cover bg-center bg-no-repeat w-full h-screen flex place-content-center place-items-center"
+      className="bg-scroll bg-cover bg-center bg-no-repeat w-full h-screen flex place-content-center place-items-center bg-hope-lightcyan"
       style={{ backgroundImage: 'url("assets/images/bg-auth.png")' }}
     >
       <main className="w-full h-screen flex self-center place-content-center place-items-center">

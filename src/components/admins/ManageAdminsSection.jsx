@@ -83,6 +83,7 @@ const ManageAdminsSection = (loggedInUserData) => {
       userToUpdate.isSuperAdmin = true;
       try {
         updateUserData(userToUpdate);
+        setAddSuperAdminEmail("");
         setUserList(
           userList.map((user) =>
             user.uid === userToUpdate.uid ? userToUpdate : user
@@ -112,6 +113,7 @@ const ManageAdminsSection = (loggedInUserData) => {
       userToUpdate.isAdmin = false;
       try {
         updateUserData(userToUpdate);
+        setDeleteAdminEmail("");
         setUserList(
           userList.map((user) =>
             user.uid === userToUpdate.uid ? userToUpdate : user
@@ -142,6 +144,7 @@ const ManageAdminsSection = (loggedInUserData) => {
       userToUpdate.isSuperAdmin = false;
       try {
         updateUserData(userToUpdate);
+        setDeleteSuperAdminEmail("");
         setUserList(
           userList.map((user) =>
             user.uid === userToUpdate.uid ? userToUpdate : user
@@ -165,12 +168,14 @@ const ManageAdminsSection = (loggedInUserData) => {
         <div>
           <ManageAdminsInput
             manageAdminAction={addAdmin}
+            value={addAdminEmail}
             manageEmailToAdd={setAddAdminEmail}
             label="Adaugǎ admin"
             buttonText="Adaugǎ"
           />
           <ManageAdminsInput
             manageAdminAction={deleteAdmin}
+            value={deleteAdminEmail}
             manageEmailToAdd={setDeleteAdminEmail}
             label="Şterge admin"
             buttonText="Şterge"
@@ -187,12 +192,14 @@ const ManageAdminsSection = (loggedInUserData) => {
         <div>
           <ManageAdminsInput
             manageAdminAction={addSuperAdmin}
+            value={addSuperAdminEmail}
             manageEmailToAdd={setAddSuperAdminEmail}
             label="Adaugǎ SUPER admin"
             buttonText="Adaugǎ"
           />
           <ManageAdminsInput
             manageAdminAction={deleteSuperAdmin}
+            value={deleteSuperAdminEmail}
             manageEmailToAdd={setDeleteSuperAdminEmail}
             label="Şterge SUPER admin"
             buttonText="Şterge"
@@ -235,6 +242,7 @@ const AdminsList = ({
 
 const ManageAdminsInput = ({
   manageAdminAction,
+  value,
   manageEmailToAdd,
   label,
   buttonText,
@@ -246,6 +254,7 @@ const ManageAdminsInput = ({
         type="text"
         placeholder="introdu emailul user-ului"
         className="p-2 border rounded-lg mr-2"
+        value={value}
         onChange={(e) => manageEmailToAdd(e.target.value)}
       />
       <FormButton
