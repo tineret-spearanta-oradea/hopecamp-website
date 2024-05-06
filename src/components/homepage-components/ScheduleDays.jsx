@@ -24,7 +24,7 @@ function ScheduleDays(props) {
       <div className="flex gap-2">
         <div
           onClick={toggleOpen}
-          className={`bg-hope-darkcyan w-full ${relativeHeight} rounded-lg flex flex-col ${relativeJustify} px-3 py-2`}
+          className={`bg-hope-darkcyan w-full ${relativeHeight} rounded-lg cursor-pointer flex flex-col ${relativeJustify}  px-3 py-2`}
         >
           <div className="flex justify-between">
             <p className="text-white font-bold opacity-50">{props.day}</p>
@@ -34,7 +34,7 @@ function ScheduleDays(props) {
             <div className="bg-hope-orange w-full h-32 rounded-lg"></div>
           )}
         </div>
-        <div onClick={toggleOpen} className={`bg-hope-orange text-white flex items-center justify-center w-8 ${relativeHeight} rounded-lg`}><i className={`bi bi-caret-${differentIcon}-fill`}></i></div>
+        <div onClick={toggleOpen} className={`bg-hope-orange text-white flex items-center justify-center cursor-pointer w-8 ${relativeHeight} rounded-lg`}><i className={`bi bi-caret-${differentIcon}-fill`}></i></div>
       </div>
     </>
   );

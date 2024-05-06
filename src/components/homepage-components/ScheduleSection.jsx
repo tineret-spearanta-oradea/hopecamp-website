@@ -1,7 +1,14 @@
 import "/src/styles/dividers.css";
-import ScheduleDay from "./ScheduleDays";
+// import ScheduleDay from "./ScheduleDays";
 
 function ScheduleSection() {
+  // const scheduleDays = [
+  //   { day: "Day #1", date: "20 Iulie" },
+  //   { day: "Day #2", date: "21 Iulie" },
+  //   { day: "Day #3", date: "22 Iulie" },
+  //   { day: "Day #4", date: "23 Iulie" },
+  //   { day: "Day #5", date: "24 Iulie" },
+  // ];
   return (
     <>
       <div className="spacer schedule-divider-up" />
@@ -23,12 +30,18 @@ function ScheduleSection() {
             </p>
           </div>
 
-          <div className="mt-8 flex flex-col gap-2 w-full lg:w-1/2 lg:mt-0">
-            <ScheduleDay day="Day #1" date="7 aprilie" />
-            <ScheduleDay day="Day #2" date="7 aprilie" />
-            <ScheduleDay day="Day #3" date="7 aprilie" />
-            <ScheduleDay day="Day #4" date="7 aprilie" />
-            <ScheduleDay day="Day #5" date="7 aprilie" />
+          <div className="mt-8 flex flex-col items-center gap-2 w-full lg:w-1/2 lg:mt-0">
+            <div className="flex flex-col items-center">
+              <p className="text-3xl lg:text-5xl xl:text-6xl">🫢</p>
+              <p className="text-hope-blackcyan text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl">coming soon</p>
+            </div>
+            {/* {scheduleDays.map((schedule, index) => (
+              <ScheduleDay
+                key={index}
+                day={schedule.day}
+                date={schedule.date}
+              />
+            ))} */}
           </div>
         </div>
       </section>
