@@ -43,4 +43,5 @@ export const pages = {
   register: "/inscrie-te",
   account: "/cont",
   adminsDashboard: "/admin",
+  gallery: "/galerie",
 };

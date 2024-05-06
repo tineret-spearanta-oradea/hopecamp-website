@@ -11,20 +11,19 @@ import { pages } from "./constants";
 import "./index.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
           <Route index element={<HomePage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/inscrie-te" element={<Register />} />
-          <Route path="/resetare-parola" element={<ResetPassword />} />
-          <Route path="/cont" element={<Account />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/admins" element={<AdminsDashboard />} />
-          <Route path="/galerie" element={<GalleryPage/>}></Route>
+          <Route path={pages.login} element={<Login />} />
+          <Route path={pages.register} element={<Register />} />
+          <Route path={pages.resetPassword} element={<ResetPassword />} />
+          <Route path={pages.account} element={<Account />} />
+          <Route path={pages.logout} element={<Logout />} />
+          <Route path={pages.adminsDashboard} element={<AdminsDashboard />} />
+          <Route path={pages.gallery} element={<GalleryPage />}></Route>
         </Routes>
       </BrowserRouter>
     </>

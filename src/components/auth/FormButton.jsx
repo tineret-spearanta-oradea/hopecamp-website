@@ -7,7 +7,7 @@ const FormButton = ({
   action,
   extraStyles = "",
 }) => {
-  let buttonColor = "gray-700";
+  let buttonColor = "bg-gray-700";
   let textColor = "text-white";
   if (disabled === false) {
     if (action === "submit") {
