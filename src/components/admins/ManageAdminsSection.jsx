@@ -255,6 +255,7 @@ const ManageAdminsInput = ({
         placeholder="introdu emailul user-ului"
         className="p-2 border rounded-lg mr-2"
         value={value}
+        autoComplete="off"
         onChange={(e) => manageEmailToAdd(e.target.value)}
       />
       <FormButton
