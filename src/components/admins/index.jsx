@@ -8,13 +8,13 @@ import {
   getNumberOfUnreadMessages,
 } from "../../firebase/database";
 import ManageAdminsSection from "./ManageAdminsSection";
-import StatisticsSection from "./StatisticsSection";
+import StatsSection from "./StatsSection";
 import { pages } from "../../constants";
 import { CampTitle } from "../../constants";
 
 const AdminDashboard = () => {
   //TODO: add identity validation
-  const [selectedSection, setSelectedSection] = useState("statistics");
+  const [selectedSection, setSelectedSection] = useState("stats");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const navigate = useNavigate();
   const { authData, userData, userLoggedIn, loading, error } = useAuth();
@@ -24,7 +24,7 @@ const AdminDashboard = () => {
   });
 
   const sections = [
-    { label: "Statistici", value: "statistics" },
+    { label: "Statistici", value: "stats" },
     { label: "Participanti", value: "users" },
     { label: "Mesaje", value: "messages" },
     { label: "Admins", value: "admins" },
@@ -151,11 +151,11 @@ const AdminDashboard = () => {
               />
             </svg>
           </button>
-          <div className="font-black text-lg uppercase">
+          <div className="font-black text-lg uppercase ">
             {CampTitle.CoreName} {CampTitle.Edition}
           </div>
           <div className="text-sm flex items-center">
-            <p className="mr-2">Admins Dashboard</p>
+            <p className="mr-2 hidden sm:block text-xs">Admins Dashboard</p>
             {userData.imageUrl && userData.imageUrl !== "" && (
               <Link to={pages.account}>
                 <img
@@ -176,8 +176,8 @@ const AdminDashboard = () => {
             {selectedSection === "admins" && (
               <ManageAdminsSection loggedInUserData={userData} />
             )}
-            {selectedSection === "statistics" && (
-              <StatisticsSection setSelectedSection={setSelectedSection} />
+            {selectedSection === "stats" && (
+              <StatsSection setSelectedSection={setSelectedSection} />
             )}
           </>
         ) : (
