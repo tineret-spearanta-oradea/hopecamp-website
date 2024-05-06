@@ -15,7 +15,6 @@ const UserTable = (loggedInUserData) => {
   const [filteredUserList, setFilteredUserList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const selectedRowRef = useRef(null);
-  const [filterValue, setFilterValue] = useState(""); // Added state for filter input
 
   // i use this method because the table doesn't rerender when i change the selectedRowRef.current
   // if i used useRef for the selectedRow, it would have rerendered, but i would have lost the selectedRowRef.current value, since it only updates after a rerender
@@ -90,19 +89,13 @@ const UserTable = (loggedInUserData) => {
     forceRender();
   };
 
-  // Added function to handle filter input change
-  const handleFilterChange = (e) => {
-    setFilterValue(e.target.value);
-    setFilteredUserList(
-      userList.filter((user) =>
-        user.name.toLowerCase().includes(e.target.value.toLowerCase())
-      )
-    );
-  };
-
-  const handleRefreshTable = () => {
-    setFilterValue("");
-    setFilteredUserList(userList);
+  const handleRefreshTable = async () => {
+    setIsLoading(true);
+    setFilteredUserList([]);
+    const allUsersData = await getAllUsers();
+    setUserList(allUsersData);
+    setFilteredUserList(allUsersData);
+    setIsLoading(false);
   };
 
   const handleDownloadTableAsCsv = () => {
