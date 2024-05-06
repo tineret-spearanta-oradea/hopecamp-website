@@ -15,10 +15,7 @@ function LocationSection() {
                 Locație
               </h2>
               <p className="text-white text-center  max-w-sm sm:text-sm md:max-w-md md:text-md lg:max-w-lg lg:text-lg lg:text-start xl:max-w-xl xl:text-xl">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi
-                dolore mollitia, numquam nesciunt omnis est excepturi nostrum.
-                Tempora debitis veniam nihil eos? Tempora, dignissimos ducimus
-                quidem corporis pariatur deserunt blanditiis?
+              Tabăra se va desfășura în localitatea Someșu Rece din județul Cluj, oferind un cadru ideal pentru relaxare, reflecție și socializare. Cu peisaje fermecătoare și atmosferă relaxantă, vei avea ocazia să te reconectezi cu &ldquo;tine din vacanță&ldquo; 🤭 și să îți încarci bateriile în mijlocul naturii. În plus, atmosfera prietenoasă și plină de bucurie a taberei va facilita interacțiunea și legăturile cu ceilalți participanți, creând amintiri de neuitat și relații noi.
               </p>
             </div>
             <iframe
