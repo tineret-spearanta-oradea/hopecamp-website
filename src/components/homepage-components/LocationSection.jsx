@@ -14,7 +14,7 @@ function LocationSection() {
               <h2 className="text-white text-3xl font-bold sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">
                 Locație
               </h2>
-              <p className="text-white text-center  max-w-sm sm:text-sm md:max-w-md md:text-md lg:max-w-lg lg:text-lg lg:text-start xl:max-w-xl xl:text-xl">
+              <p className="text-white text-center  max-w-sm sm:text-sm md:max-w-md md:text-md lg: lg:text-lg lg:text-start xl:max-w-xl xl:text-xl">
                 Tabăra se va desfășura în localitatea Someșu Rece din județul
                 Cluj, oferind un cadru ideal pentru relaxare, reflecție și
                 socializare. Cu peisaje fermecătoare și atmosferă relaxantă, vei
