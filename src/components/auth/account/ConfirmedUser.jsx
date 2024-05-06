@@ -136,7 +136,7 @@ const ConfirmedUser = ({ userData }) => {
             {userData.startDate} - {userData.endDate}
           </p>
           <p>
-            <span className="font-bold">Preferințe:</span>{" "}
+            <span className="font-bold">Preferințe cazare:</span>{" "}
             {userData.preferences || "nicio preferință"}
           </p>
         </div>
