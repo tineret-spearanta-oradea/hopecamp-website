@@ -7,6 +7,7 @@ import TableRow from "./TableRow";
 import { updateUserData } from "../../firebase/database";
 import LoadingIcon from "../LoadingIcon";
 import { deleteUserFromSystem } from "../../firebase";
+import FilterTable from "./FilterTable";
 
 const UserTable = (loggedInUserData) => {
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
@@ -167,13 +168,6 @@ const UserTable = (loggedInUserData) => {
         isExpandable: true,
       },
       {
-        Header: "Email",
-        accessor: "email",
-        width: 0,
-        isHidden: true,
-        isExpandable: true,
-      },
-      {
         Header: "Nume",
         accessor: "name",
         width: 125,
@@ -188,6 +182,15 @@ const UserTable = (loggedInUserData) => {
         ),
         isEditable: true,
         isExpandable: true,
+        isFilterable: true,
+      },
+      {
+        Header: "Email",
+        accessor: "email",
+        width: 0,
+        isHidden: true,
+        isExpandable: true,
+        isFilterable: true,
       },
       {
         Header: "Confirmat",
@@ -236,6 +239,7 @@ const UserTable = (loggedInUserData) => {
         width: 125,
         isEditable: true,
         isExpandable: true,
+        isFilterable: true,
       },
       {
         Header: "Biserică",
@@ -243,6 +247,7 @@ const UserTable = (loggedInUserData) => {
         width: 125,
         isEditable: true,
         isExpandable: true,
+        isFilterable: true,
       },
       {
         Header: "Casier",
@@ -250,6 +255,7 @@ const UserTable = (loggedInUserData) => {
         width: 75,
         isEditable: true,
         isExpandable: true,
+        isFilterable: true,
       },
       {
         Header: "Plătit",
@@ -307,6 +313,7 @@ const UserTable = (loggedInUserData) => {
         width: 100,
         isEditable: true,
         isExpandable: true,
+        isFilterable: true,
       },
       {
         Header: "Preferinte cazare",
@@ -315,6 +322,7 @@ const UserTable = (loggedInUserData) => {
         isHidden: true,
         isEditable: true,
         isExpandable: true,
+        isFilterable: true,
       },
       {
         Header: "Data inscrierii",
@@ -377,14 +385,15 @@ const UserTable = (loggedInUserData) => {
         </div>
       </div>
       {isLoading && <LoadingIcon />}
-      <div className="w-100">
-        {/* TODO: add filter text input */}{" "}
-        <input
-          type="text"
-          className="w-60 px-2 py-1 border rounded-md m-2"
-          value={filterValue}
-          onChange={handleFilterChange}
-          placeholder="Cautǎ după nume..."
+      <div className="flex place-items-center">
+        <FilterTable
+          properties={userProperties.filter(
+            (property) => property.isFilterable
+          )}
+          operators={["="]}
+          data={userList}
+          setData={setFilteredUserList}
+          forceRender={forceRender}
         />
       </div>
       <div className="overflow-x-auto max-w-full">
