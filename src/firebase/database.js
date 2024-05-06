@@ -10,6 +10,7 @@ import {
   getDocs,
   getDoc,
   deleteDoc,
+  orderBy,
 } from "firebase/firestore";
 
 export const writeUserData = async (userData) => {
@@ -72,13 +73,13 @@ export const getArchivedUserData = async (email) => {
   }
   return null;
 };
-
 export const getAllUsers = async () => {
   const docRef = collection(db, "users");
-  const docSnap = await getDocs(docRef);
+  const q = query(docRef, orderBy("signupDate"));
+  const docSnap = await getDocs(q);
   const users = docSnap.docs.map((doc) => doc.data());
 
-  // transforming the data to march the structure of the table
+  // transforming the data to match the structure of the table
   users.forEach((user, index) => {
     user.uid = docSnap.docs[index].id;
 
