@@ -1,4 +1,5 @@
 import FilledButton from "./FilledButton";
+import { pages } from "../../constants";
 
 export default function Footer() {
   return (
@@ -20,7 +21,7 @@ export default function Footer() {
             </div>
           </div>
           <div className="flex justify-center items-center gap-5 sm:flex-col">
-            <FilledButton text="Înscrie-te" route="/inscrie-te" />
+            <FilledButton text="Înscrie-te" route={pages.register} />
             <div className="flex items-center gap-2">
               <span className="text-xl">
                 <i className="bi bi-instagram"></i>

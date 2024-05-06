@@ -1,6 +1,6 @@
 import FilledButton from "../general-components/FilledButton";
 import "/src/styles/dividers.css";
-import { CampTitle } from "../../constants";
+import { CampTitle, pages } from "../../constants";
 
 function HeroSection() {
   return (
@@ -17,7 +17,7 @@ function HeroSection() {
             00:00:00
           </p>
           <div className="pt-10">
-            <FilledButton text="Înscrie-te" route="/login" />
+            <FilledButton text="Înscrie-te" route={pages.register} />
           </div>
         </div>
       </section>
