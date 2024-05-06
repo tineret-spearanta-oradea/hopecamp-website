@@ -1,7 +1,11 @@
 import Question from "./Question";
-import FilledButton from "../general-components/FilledButton";
+
 
 export default function FaqSection() {
+  const handleDownloadPDF = () => {
+    const pdfPath = "/src/assets/Regulament_HopeCamp.pdf";
+    window.open(pdfPath);
+  };
   const faqData = [
     { question: "Cum pot să mă înscriu?", answer: "raspuns" },
     { question: "După ce mă înscriu ce trebuie să fac?", answer: "raspuns" },
@@ -46,8 +50,12 @@ export default function FaqSection() {
               />
             ))}
           </div>
-          <FilledButton text="Descarca regulament"></FilledButton>
-
+          <button
+            onClick={handleDownloadPDF}
+            className="bg-hope-orange text-white text-base font-semibold rounded-full px-8 py-2 lg:text-lg xl:text-xl"
+          >
+            Descarcă regulamentul
+          </button>
         </div>
       </section>
     </>
