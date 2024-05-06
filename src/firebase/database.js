@@ -82,6 +82,7 @@ export const getAllUsers = async () => {
   // transforming the data to match the structure of the table
   users.forEach((user, index) => {
     user.uid = docSnap.docs[index].id;
+    user.age = parseInt(user.age);
 
     var signupDate, startDate, endDate;
     if (user.signupDate instanceof Timestamp) {

@@ -1,13 +1,7 @@
 import React, { useState } from "react";
 
 //TODO #80: Add multiple filter options
-const FilterTable = ({
-  properties,
-  operators = ["="],
-  data,
-  setData,
-  forceRender,
-}) => {
+const FilterTable = ({ properties, operators = ["="], data, setData }) => {
   const [column, setColumn] = useState(properties[0].accessor);
   const [operator, setOperator] = useState(operators[0]);
   const [value, setValue] = useState("");

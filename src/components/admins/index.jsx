@@ -3,14 +3,18 @@ import UserTable from "./UserTable";
 import MessagesTable from "./MessagesTable";
 import { useAuth } from "../../contexts/authContext";
 import { Navigate, Link, useNavigate } from "react-router-dom";
-import { getNumberOfUnreadMessages } from "../../firebase/database";
+import {
+  getAllUsers,
+  getNumberOfUnreadMessages,
+} from "../../firebase/database";
 import ManageAdminsSection from "./ManageAdminsSection";
+import StatisticsSection from "./StatisticsSection";
 import { pages } from "../../constants";
 import { CampTitle } from "../../constants";
 
 const AdminDashboard = () => {
   //TODO: add identity validation
-  const [selectedSection, setSelectedSection] = useState("users");
+  const [selectedSection, setSelectedSection] = useState("statistics");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const navigate = useNavigate();
   const { authData, userData, userLoggedIn, loading, error } = useAuth();
@@ -20,10 +24,10 @@ const AdminDashboard = () => {
   });
 
   const sections = [
+    { label: "Statistici", value: "statistics" },
     { label: "Participanti", value: "users" },
     { label: "Mesaje", value: "messages" },
     { label: "Admins", value: "admins" },
-    { label: "Statistici", value: "statistics" },
   ];
 
   const getNumberForLabels = async (section) => {
@@ -36,6 +40,16 @@ const AdminDashboard = () => {
     } catch (error) {
       console.error("Error fetching number of unread messages:", error);
     }
+    try {
+      const allUsersData = await getAllUsers();
+      const unconfirmedUsers = allUsersData.filter((user) => !user.isConfirmed);
+      setNumberForLabels((prevData) => ({
+        ...prevData,
+        users: unconfirmedUsers.length.toString(),
+      }));
+    } catch (error) {
+      console.error("Error fetching number of users:", error);
+    }
   };
 
   useEffect(() => {
@@ -45,7 +59,7 @@ const AdminDashboard = () => {
   }, [loading, userData, navigate]);
 
   useEffect(() => {
-    getNumberForLabels("messages");
+    getNumberForLabels();
   }, [selectedSection]);
 
   const handleSectionClick = (section) => {
@@ -78,7 +92,7 @@ const AdminDashboard = () => {
                       numbersForLabels.unreadMessages !== undefined &&
                       numbersForLabels.unreadMessages !== null &&
                       numbersForLabels.unreadMessages !== "0" && (
-                        <span className="mx-2 rounded-full bg-red-500 flex items-center justify-center font-mono w-7 text-sm">
+                        <span className="mx-2 rounded-full bg-hope-orange flex items-center justify-center font-mono w-7 text-sm">
                           {numbersForLabels.unreadMessages}
                         </span>
                       )}
@@ -86,7 +100,7 @@ const AdminDashboard = () => {
                       numbersForLabels.users !== undefined &&
                       numbersForLabels.users !== null &&
                       numbersForLabels.users !== "0" && (
-                        <span className="mx-2 rounded-full bg-red-500 flex items-center justify-center font-mono w-7 text-sm">
+                        <span className="mx-2 rounded-full bg-hope-orange flex items-center justify-center font-mono w-7 text-sm">
                           {numbersForLabels.users}
                         </span>
                       )}
@@ -162,7 +176,9 @@ const AdminDashboard = () => {
             {selectedSection === "admins" && (
               <ManageAdminsSection loggedInUserData={userData} />
             )}
-            {selectedSection === "statistics" && <StatisticsSection />}
+            {selectedSection === "statistics" && (
+              <StatisticsSection setSelectedSection={setSelectedSection} />
+            )}
           </>
         ) : (
           <div></div> // ???
@@ -170,11 +186,6 @@ const AdminDashboard = () => {
       </main>
     </div>
   );
-};
-
-const StatisticsSection = () => {
-  // Placeholder for Remove User Section
-  return <h2>❗️aceasta pagina este inca in lucru❗️</h2>;
 };
 
 export default AdminDashboard;

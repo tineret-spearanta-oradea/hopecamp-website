@@ -100,6 +100,11 @@ const UserTable = (loggedInUserData) => {
     );
   };
 
+  const handleRefreshTable = () => {
+    setFilterValue("");
+    setFilteredUserList(userList);
+  };
+
   const handleDownloadTableAsCsv = () => {
     //TODO: Implement this feature
     // alert("This feature is not implemented yet.");
@@ -168,27 +173,27 @@ const UserTable = (loggedInUserData) => {
         isExpandable: true,
       },
       {
+        Header: "Email",
+        accessor: "email",
+        width: 0,
+        isHidden: true,
+        isExpandable: true,
+        isFilterable: true,
+      },
+      {
         Header: "Nume",
         accessor: "name",
         width: 125,
         Cell: ({ value, row }) => (
           <span
             className={classNames({
-              "text-green-500": row.original.isAdmin,
+              "text-hope-orange": !row.original.isConfirmed,
             })}
           >
             {value}
           </span>
         ),
         isEditable: true,
-        isExpandable: true,
-        isFilterable: true,
-      },
-      {
-        Header: "Email",
-        accessor: "email",
-        width: 0,
-        isHidden: true,
         isExpandable: true,
         isFilterable: true,
       },
@@ -360,8 +365,32 @@ const UserTable = (loggedInUserData) => {
   return (
     <div className="">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold mb-4 mx-4">Lista participanților</h1>
-        <div className="mb-4 mx-4">
+        <div className="flex items-center justify-center">
+          <h1 className="text-3xl font-bold mb-4 mx-4">
+            Lista participanților
+          </h1>
+        </div>
+        <div className="mb-4 mx-4 flex items-center justify-center">
+          <button
+            className="text-violet-500 rounded-full flex items-center m-4"
+            onClick={handleRefreshTable}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
+              class="bi bi-arrow-clockwise"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"
+              />
+              <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466" />
+            </svg>
+          </button>
+
           <button
             className="p-2 bg-hope-lightcyan text-white rounded-full flex items-center"
             onClick={handleDownloadTableAsCsv}
@@ -391,9 +420,8 @@ const UserTable = (loggedInUserData) => {
             (property) => property.isFilterable
           )}
           operators={["="]}
-          data={userList}
+          data={filteredUserList}
           setData={setFilteredUserList}
-          forceRender={forceRender}
         />
       </div>
       <div className="overflow-x-auto max-w-full">

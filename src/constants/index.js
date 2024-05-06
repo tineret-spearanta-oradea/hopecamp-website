@@ -26,6 +26,8 @@ export const churchOptions = [
   { label: "alta: ", value: "biserica...", isOther: true },
 ];
 
+export const MaxOccupancy = 150;
+
 export const payTaxToOptions = [
   { label: "Carina Ban", value: "Carina", isDefault: true },
   { label: "Rebeca Gros", value: "Rebeca" },
