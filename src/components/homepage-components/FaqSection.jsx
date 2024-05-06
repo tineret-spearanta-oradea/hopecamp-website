@@ -1,4 +1,5 @@
 import Question from "./Question";
+import FilledButton from "../general-components/FilledButton";
 
 export default function FaqSection() {
   const faqData = [
@@ -45,6 +46,8 @@ export default function FaqSection() {
               />
             ))}
           </div>
+          <FilledButton text="Descarca regulament"></FilledButton>
+
         </div>
       </section>
     </>
