@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { pages } from "../../constants"
 
 function MobileNavbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,10 +44,10 @@ function MobileNavbar() {
           </div>
           <div className="flex flex-col items-center justify-center h-full">
             <div className="flex flex-col items-center -mt-5">
-              <Link onClick={toggleNavbar} to="/" className="text-xl mb-4">
+              <Link onClick={toggleNavbar} to={pages.home} className="text-xl mb-4">
                 acasă
               </Link>
-              <Link to="/inscrie-te" className="text-xl">
+              <Link to={pages.register} className="text-xl">
                 înscrie-te
               </Link>
             </div>
