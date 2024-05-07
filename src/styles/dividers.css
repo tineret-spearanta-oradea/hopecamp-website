@@ -9,7 +9,7 @@
 }
 
 .hero-divider {
-    background-image: url('public/assets/svgs/wave-herosection.svg');
+    background-image: url('./assets/svgs/wave-herosection.svg');
 }
 
 .button-divider-up {
