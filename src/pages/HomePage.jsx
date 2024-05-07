@@ -8,7 +8,6 @@ import LocationSection from "../components/homepage-components/LocationSection";
 import FaqSection from "../components/homepage-components/FaqSection";
 import Footer from "../components/general-components/Footer";
 
-import "/src/styles/backgrounds.css";
 
 function HomePage() {
   return (
