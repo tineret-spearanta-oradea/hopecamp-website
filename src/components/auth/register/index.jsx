@@ -89,6 +89,7 @@ const Register = () => {
         formData={formData}
         setFormData={setFormData}
         handleTryAutofillUserData={handleTryAutofillUserData}
+        hasAlreadyAutoFilled={hasAlreadyAutoFilled}
         downloadCampRules={downloadCampRules}
         isLoading={isLoading}
         errorMessages={errorMessages}

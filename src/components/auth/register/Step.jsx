@@ -24,6 +24,7 @@ const Step = ({
   handleChange,
   handleNext,
   handlePrev,
+  hasAlreadyAutoFilled,
   handleSubmit,
   agreementChecked,
   handleAgreementChange,
@@ -52,14 +53,38 @@ const Step = ({
           : "Confirmare"}
       </h2>
       <h3 className="mb-4 text-center text-sm">
-        {stepNumber === 1
-          ? `${CampTitle.CoreName} ${CampTitle.Edition} este o tabară creștină de tineret, organizată de Tineret Speranța Oradea.
-          Mai multe detalii despre noi și tabără găsiți in pagina principalǎ.` //TODO: add link to the index page
-          : ""}
+        {stepNumber === 1 && (
+          <div>
+            <p>
+              {CampTitle.CoreName} {CampTitle.Edition} este o tabară creștină de
+              tineret, organizată de Tineret Speranța Oradea. Mai multe detalii
+              despre noi și tabără găsiți în{" "}
+              <Link
+                to={pages.home}
+                className="hover:underline font-bold text-hope-lightcyan"
+              >
+                pagina principalǎ.
+              </Link>
+            </p>
+            <p className="mt-2 italic text-xs ">
+              Chiar dacă ai mai fost cu noi în tabără în anii trecuți, trebuie
+              să îți faci cont nou.
+            </p>
+          </div>
+        )}
       </h3>
-      <h5 className="text-sm my-4 text-center">
-        {stepNumber === 2 ? "Ajuta-ne să te (re)cunoaștem!" : ""}
-      </h5>
+
+      {stepNumber === 2 && !hasAlreadyAutoFilled && (
+        <p className="text-sm my-4 text-center">
+          Ajutǎ-ne să te (re)cunoaștem!
+        </p>
+      )}
+      {stepNumber === 2 && hasAlreadyAutoFilled && (
+        <p className="text-sm my-4 text-center text-hope-lightcyan">
+          Te-am recunoscut din taberele trecute! Verificǎ şi completează
+          câmpurile lipsă.
+        </p>
+      )}
       {errorMessages && errorMessages.length > 0 && (
         <ErrorAlert messages={errorMessages} />
       )}

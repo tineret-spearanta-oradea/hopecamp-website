@@ -10,6 +10,7 @@ const MultiStepForm = ({
   formData,
   setFormData,
   handleTryAutofillUserData,
+  hasAlreadyAutoFilled,
   downloadCampRules,
   isLoading,
   errorMessages,
@@ -131,6 +132,7 @@ const MultiStepForm = ({
           handleChange={handleChange}
           handleNext={handleNext}
           handlePrev={handlePrev}
+          hasAlreadyAutoFilled={hasAlreadyAutoFilled}
           handleImageChange={handleImageChange}
           validationErrors={validationErrors}
         />
