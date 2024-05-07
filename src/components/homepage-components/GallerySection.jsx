@@ -1,12 +1,15 @@
 import FilledButton from "../general-components/FilledButton";
 import "/src/styles/gallery-routes.css";
+import { pages } from "../../constants";
+
+
 
 function GallerySection() {
   return (
     <>
       <section className="py-14">
         <div className="container mx-auto flex flex-col items-center gap-5">
-          <h2 className="text-black text-3xl font-bold sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">
+          <h2 className="text-hope-blackcyan text-3xl font-bold sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">
             Galerie
           </h2>
           <div className="grid grid-cols-2 gap-3">
@@ -21,7 +24,7 @@ function GallerySection() {
               <div className="photo6 w-32 h-44 sm:w-44 sm:h-52 md:w-48 md:h-64 lg:w-56 lg:h-80 xl:w-64 xl:h-88 2xl:w-72 2xl:h-80 bg-cover bg-center rounded-lg"></div>
             </div>
           </div>
-          <FilledButton text="Vezi galerie" route="/galerie" />
+          <FilledButton text="Vezi galerie" route={pages.gallery} />
         </div>
       </section>
     </>

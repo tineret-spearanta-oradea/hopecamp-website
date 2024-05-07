@@ -1,4 +1,5 @@
 import FilledButton from "./FilledButton";
+import { pages } from "../../constants";
 
 export default function Footer() {
   return (
@@ -8,7 +9,7 @@ export default function Footer() {
         <div className="container mx-auto flex flex-col justify-around gap-5 px-8 py-14 sm:flex-row">
           <div className="flex flex-col items-center gap-5">
             <img
-              src="src/assets/images/footer-logo.png"
+              src="/assets/images/footer-logo.png"
               alt="footer logo"
               className="lg:h-24"
             />
@@ -20,7 +21,7 @@ export default function Footer() {
             </div>
           </div>
           <div className="flex justify-center items-center gap-5 sm:flex-col">
-            <FilledButton text="Înscrie-te" route="/inscrie-te" />
+            <FilledButton text="Înscrie-te" route={pages.register} />
             <div className="flex items-center gap-2">
               <span className="text-xl">
                 <i className="bi bi-instagram"></i>

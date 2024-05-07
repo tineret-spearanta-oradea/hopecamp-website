@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { pages } from "../../constants"
 
 function MobileNavbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,7 +9,7 @@ function MobileNavbar() {
     setIsOpen(!isOpen);
   };
 
-//   prevent scrolling when open
+  //   prevent scrolling when open
   useEffect(() => {
     const handleScroll = (event) => {
       if (isOpen) {
@@ -20,7 +21,7 @@ function MobileNavbar() {
       document.body.style.overflow = "hidden";
       window.addEventListener("scroll", handleScroll);
     } else {
-      document.body.style.overflow = ""; // Reset overflow style when navbar is closed
+      document.body.style.overflow = "";
       window.removeEventListener("scroll", handleScroll);
     }
 
@@ -28,7 +29,6 @@ function MobileNavbar() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [isOpen]);
-
 
   return (
     <>
@@ -38,10 +38,20 @@ function MobileNavbar() {
         </span>
       </div>
       {isOpen && (
-        <div className="bg-hope-darkcyan text-white font-bold absolute flex flex-col -mt-16 items-center justify-center w-full h-96">
-          <span onClick={toggleNavbar} className="text-4xl"><i className="bi bi-x"></i></span>
-          <Link to="/">home</Link>
-          <Link to="/inscrie-te">inscrie-te</Link>
+        <div className="bg-hope-darkcyan min-h-screen text-white font-bold flex flex-col absolute top-0 left-0 w-full h-full">
+          <div  className="text-5xl flex justify-center pt-5">
+            <i onClick={toggleNavbar} className="bi bi-x"></i>
+          </div>
+          <div className="flex flex-col items-center justify-center h-full">
+            <div className="flex flex-col items-center -mt-5">
+              <Link onClick={toggleNavbar} to={pages.home} className="text-xl mb-4">
+                acasă
+              </Link>
+              <Link to={pages.register} className="text-xl">
+                înscrie-te
+              </Link>
+            </div>
+          </div>
         </div>
       )}
     </>
