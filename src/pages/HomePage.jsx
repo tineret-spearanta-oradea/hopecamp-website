@@ -5,21 +5,21 @@ import SignUpSection from "../components/homepage-components/SignUpSection";
 import GallerySection from "../components/homepage-components/GallerySection";
 import ScheduleSection from "../components/homepage-components/ScheduleSection";
 import LocationSection from "../components/homepage-components/LocationSection";
+import JoinSocialsSection from "../components/homepage-components/JoinSocialsSection";
 import FaqSection from "../components/homepage-components/FaqSection";
 import Footer from "../components/general-components/Footer";
-
 
 function HomePage() {
   return (
     <>
       <Navbar />
-        <HeroSection />
-        <AboutSection />
-        <SignUpSection />
-        <GallerySection />
-        <ScheduleSection />
-        <LocationSection />
-        <FaqSection />
+      <HeroSection />
+      <AboutSection />
+      <SignUpSection />
+      <GallerySection />
+      <ScheduleSection />
+      <LocationSection />
+      <FaqSection />
       <Footer />
     </>
   );

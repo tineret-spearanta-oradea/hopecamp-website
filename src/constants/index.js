@@ -56,5 +56,11 @@ export const sumToPay = {
 };
 
 export const contactInfo = {
-  phone: "0000 000 000",
+  email: "tsomediateam@gmail.com",
+  phone: "+40 773 311 577",
+  instagram: "https://www.instagram.com/tineret_speranta_oradea/",
+  facebook: "https://www.facebook.com/tineretsperantaoradea",
+  whatsapp: "https://wa.me/40773311577",
+  whatsappCommunity: "https://chat.whatsapp.com/KQLxA8YnH5l5Yfk5p2Ko0W",
+  youtube: "https://www.youtube.com/@TineretSperantaOradea",
 };

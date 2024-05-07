@@ -72,7 +72,7 @@ const Register = () => {
 
   const downloadCampRules = () => {
     const link = document.createElement("a");
-    link.href = "/src/assets/Regulament_HopeCamp.pdf";
+    link.href = "/assets/Regulament_HopeCamp.pdf";
     link.download = "Regulament_HopeCamp.pdf";
     link.click();
   };

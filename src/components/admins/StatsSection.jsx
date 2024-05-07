@@ -172,7 +172,7 @@ const StatsSection = ({ setSelectedSection }) => {
           <h2 className="text-lg font-bold ">Locuri ocupate</h2>
           <h2 className="text-md mb-2">pe zile</h2>
           <div>
-            {console.log(usersPerCampDay)}
+            {/* {console.log(usersPerCampDay)} */}
             {/* <ResponsiveContainer width="100%" height="90%"> */}
             <BarChart data={usersPerCampDay} height={300} width={300}>
               <CartesianGrid strokeDasharray="3 3" />
