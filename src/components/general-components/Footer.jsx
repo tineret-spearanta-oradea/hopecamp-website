@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="container mx-auto flex flex-col justify-around gap-5 px-8 py-14 sm:flex-row">
           <div className="flex flex-col items-center gap-5">
             <img
-              src="./assets/images/footer-logo.png"
+              src="/assets/images/footer-logo.png"
               alt="footer logo"
               className="lg:h-24"
             />
