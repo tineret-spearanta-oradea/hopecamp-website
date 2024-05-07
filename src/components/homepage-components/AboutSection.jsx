@@ -22,7 +22,7 @@ function AboutSection() {
           <div
             className="h-40 w-full max-w-xl rounded-lg bg-center bg-no-repeat bg-cover lg:h-96 lg:w-1/2 xl:h-96"
             style={{
-              backgroundImage: "url('/src/assets/images/ZVE03429.jpg')",
+              backgroundImage: "url('./assets/images/gallery/ZVE03429.jpg')",
             }}
           />
         </div>
