@@ -10,7 +10,7 @@ function HeroSection() {
     const difference = targetDate - currentDate;
 
     if (difference <= 0) {
-      return "Hope Camp in progress!";
+      return CampTitle.CoreName + " " + CampTitle.Edition + " is in progress!";
     }
 
     const seconds = Math.floor((difference / 1000) % 60);
@@ -41,7 +41,7 @@ function HeroSection() {
           <p className="text-hope-blackcyan text-center text-sm  max-w-44 sm:text-base  lg:text-lg lg:max-w-lg xl:text-xl 2xl:text-2xl">
             Tabăra pe care nu vrei să o ratezi
           </p>
-          <p className="text-hope-lightcyan font-black text-2xl md:text-3xl lg:text-5xl xl:text-7xl">
+          <p className="text-hope-lightcyan font-black text-center text-2xl md:text-3xl lg:text-5xl xl:text-7xl">
             {countdown}
           </p>
           <div className="pt-10">
