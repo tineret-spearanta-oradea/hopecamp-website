@@ -4,8 +4,16 @@ import Question from "./Question";
 export default function FaqSection() {
   //TODO: move this to a config file or database
   const faqData = [
-    { question: "Cum pot să mă înscriu?", answer: "raspuns" },
-    { question: "După ce mă înscriu ce trebuie să fac?", answer: "raspuns" },
+    {
+      question: "Cum pot să mă înscriu?",
+      answer:
+        "Click pe butonul de inscrie-te și urmează pașii necesari. E simplu. Trebuie doar să-ți dorești!",
+    },
+    {
+      question: "După ce mă înscriu ce trebuie să fac?",
+      answer:
+        "După ce te înscrii aștepți confirmarea de la noi printr-un mesaj pe care trebuie să-l primești în maxim 3 zile.",
+    },
     {
       question: "Care este taxa taberei și ce include aceasta?",
       answer: "raspuns",
