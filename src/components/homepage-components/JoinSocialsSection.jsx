@@ -8,7 +8,7 @@ export default function JoinSocialsSection() {
         className="mb-10 w-60 h-32 sm:w-80 sm:h-40 md:w-96 md:h-52 lg:w-80 lg:h-48 xl:w-96 xl:h-60 mx-auto bg-gradient-to-r 
                     from-hope-darkcyan  to-hope-orange shadow-lg p-0.5 rounded-lg"
       >
-        <div class="h-full w-full bg-hope-beige flex flex-col justify-center items-center content-center rounded-lg">
+        <div className="h-full w-full bg-hope-beige flex flex-col justify-center items-center content-center rounded-lg">
           <p className="text-hope-blackcyan text-xl font-bold sm:text-2xl md:text-3xl mb-2">
             Urmăreşte-ne!
           </p>
