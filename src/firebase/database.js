@@ -12,6 +12,7 @@ import {
   deleteDoc,
   orderBy,
 } from "firebase/firestore";
+import { formatDate } from "../utils";
 
 export const writeUserData = async (userData) => {
   const normalizedUserData = Object.fromEntries(
@@ -105,12 +106,9 @@ export const getAllUsers = async () => {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     user.numberOfDays = diffDays;
     // Changing the format of these dates might break the updateUser function
-    user.signupDate =
-      signupDate.toISOString().split("T")[0] +
-      " " +
-      signupDate.toTimeString().split(" ")[0];
-    user.startDate = startDate.toISOString().split("T")[0];
-    user.endDate = endDate.toISOString().split("T")[0];
+    user.signupDate = formatDate(signupDate, "yyyy-mm-dd hh:mm:ss");
+    user.startDate = formatDate(startDate);
+    user.endDate = formatDate(endDate);
   });
 
   return users;

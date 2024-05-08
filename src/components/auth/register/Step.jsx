@@ -7,6 +7,7 @@ import DateInputField from "../DateInputField";
 import ErrorAlert from "../../ErrorAlert";
 import { Form, Link } from "react-router-dom";
 import FormButton from "../FormButton";
+import { formatDate } from "../../../utils";
 import {
   CampTitle,
   churchOptions,
@@ -221,10 +222,7 @@ const Step = ({
               </p>
               <p>
                 - Voi plăti avansul de {sumToPay.deposit} RON până la data de{" "}
-                <strong>
-                  {dateRange.depositPaymentDueDate.toISOString().split("T")[0]}
-                </strong>
-                .
+                <strong>{formatDate(dateRange.depositPaymentDueDate)}</strong>.
               </p>
             </>
           ) : (
