@@ -16,4 +16,9 @@ const formatDate = (date, format = "yyyy-mm-dd") => {
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 };
 
-export { formatDate };
+const getNumberOfDays = (startDate, endDate) => {
+  const oneDay = 24 * 60 * 60 * 1000;
+  return Math.round(Math.abs((startDate - endDate) / oneDay));
+};
+
+export { formatDate, getNumberOfDays };

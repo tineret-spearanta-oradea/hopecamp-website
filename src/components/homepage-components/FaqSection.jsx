@@ -1,13 +1,29 @@
 import React, { useState } from "react";
 import Question from "./Question";
+import { Link } from "react-router-dom";
+import {
+  MinimumAge,
+  contactInfo,
+  dateRange,
+  pages,
+  payTaxToOptions,
+  sumToPay,
+} from "../../constants";
+import { getNumberOfDays } from "../../utils";
 
 export default function FaqSection() {
   //TODO: move this to a config file or database
   const faqData = [
     {
       question: "Cum pot să mă înscriu?",
-      answer:
-        "Click pe butonul de inscrie-te și urmează pașii necesari. E simplu. Trebuie doar să-ți dorești!",
+      answer: (
+        <>
+          <Link className="text-hope-darkcyan" to={pages.register}>
+            Click pe butonul de înscrie-te
+          </Link>{" "}
+          și urmează pașii necesari. E simplu. Trebuie doar să-ți dorești!
+        </>
+      ),
     },
     {
       question: "După ce mă înscriu ce trebuie să fac?",
@@ -16,13 +32,29 @@ export default function FaqSection() {
     },
     {
       question: "Care este taxa taberei și ce include aceasta?",
-      answer:
-        "Taxa taberei este de 700RON. Dacă ești în situația în care din cauza prețului mare nu îți permiți să vii în tabără cu noi, te rugăm să ne contactezi pe numărul de WhatsApp al tineretului sau să-i scrii liderului Adelin Duca. Taxa include 3 nopți de cazare, mâncarea, participarea la toate sesiunile taberei și toate activitățile de echipă și distractive ale Hope Camp.",
+      answer: (
+        <>
+          Taxa taberei este de {sumToPay.normal} RON. Dacă ești în situația în
+          care din cauza prețului mare nu îți permiți să vii în tabără cu noi,
+          te rugăm să ne contactezi pe numărul de WhatsApp al tineretului sau
+          să-i scrii liderului Adelin Duca. Taxa include{" "}
+          {getNumberOfDays(dateRange.startDate, dateRange.endDate)} nopți de
+          cazare, mâncarea, participarea la toate sesiunile taberei și toate
+          activitățile de echipă și distractive ale Hope Camp.
+        </>
+      ),
     },
     {
       question: "Care sunt modalitățile de plată?",
-      answer:
-        "Poți plăti cash la Rebeca Gros sau la Carina Ban. De asemenea, poți plăti prin transfer pe Revolut sau BT Pay la Eugen Petrila sau una din fetele amintite.  Pentru alte variante sau ajutor te rugăm să ne scrii pe whatsapp pe numărul de la tineret:",
+      answer: (
+        <>
+          Poți plăti cash la {payTaxToOptions[0].label} sau la{" "}
+          {payTaxToOptions[1].label}. De asemenea, poți plăti prin transfer pe
+          Revolut sau BT Pay la Eugen Petrila sau una din fetele amintite.
+          Pentru alte variante sau ajutor te rugăm să ne scrii pe whatsapp pe
+          numărul de la tineret:
+        </>
+      ),
     },
     {
       question: "Sunt chestiuni diferite dacă sunt minor?",
@@ -31,8 +63,13 @@ export default function FaqSection() {
     },
     {
       question: "Care este vârsta minimă pentru participarea în tabără?",
-      answer:
-        "Vârsta minimă pentru participarea în tabără este 16 ani împliniți in prima zi de tabara sau 15 ani dacă participantul face parte din Biserica Penticostală Speranța Oradea",
+      answer: (
+        <>
+          Vârsta minimă pentru participarea în tabără este {MinimumAge} ani
+          împliniți in prima zi de tabara sau 15 ani dacă participantul face
+          parte din Biserica Penticostală Speranța Oradea
+        </>
+      ),
     },
     {
       question: "Cum pot să ajung în tabără?",
@@ -52,8 +89,15 @@ export default function FaqSection() {
     },
     {
       question: "Doresc să donez. Cum pot face asta?",
-      answer:
-        "Poți plăti taxa pentru un participant care nu își permite asta sau poți dona pentru suportul altor cheltuieli ale taberei precum sunet sau invitați. Scrie-ne pe Whatsapp la 0773 311 577 sau dăruiește direct cash, Revolut sau BT pay conform posibilităților de plată a taberei.",
+      answer: (
+        <>
+          Poți plăti taxa pentru un participant care nu își permite asta sau
+          poți dona pentru suportul altor cheltuieli ale taberei precum sunet
+          sau invitați. Scrie-ne pe <a href={contactInfo.whatsapp}>Whatsapp</a>{" "}
+          la {contactInfo.phone} sau dăruiește direct cash, Revolut sau BT pay
+          conform posibilităților de plată a taberei."
+        </>
+      ),
     },
   ];
 
