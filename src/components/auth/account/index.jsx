@@ -24,24 +24,29 @@ const Account = () => {
   const { authData, userData, userLoggedIn, loading, error } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (
-      !loading &&
-      (userData === null || userData.undefined || !userLoggedIn) &&
-      alreadyLoggedIn
-    ) {
-      return (
+  if (
+    !loading &&
+    (userData === null || userData === undefined || !userLoggedIn) &&
+    alreadyLoggedIn !== null
+  ) {
+    return (
+      <div className="text-center">
         <ErrorAlert
-          message={
+          messages={[
             <>
-              Am întampinat o eroare. Te rugam sa iei legatura cu noi la{" "}
-              {contactInfo.whatsapp}
-            </>
-          }
+              Am întampinat o eroare. Dacǎ eroarea insistǎ, te rugam sa iei
+              legatura cu noi la
+              <br />
+              <a className="text-hope-lightcyan" href={contactInfo.whatsapp}>
+                {contactInfo.phone}
+              </a>{" "}
+            </>,
+          ]}
+          displayMode={"popup"}
         />
-      );
-    }
-  }, [loading, userData, navigate, userLoggedIn]);
+      </div>
+    );
+  }
 
   if (!userLoggedIn) {
     return <Navigate to={pages.login} replace={true} />;

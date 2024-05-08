@@ -157,15 +157,17 @@ const AdminDashboard = () => {
           </div>
           <div className="text-sm flex items-center">
             <p className="mr-2 hidden sm:block text-xs">Admins Dashboard</p>
-            {userData.imageUrl && userData.imageUrl !== "" && (
-              <Link to={pages.account}>
-                <img
-                  src={userData.imageUrl}
-                  alt="User"
-                  style={{ height: "30px", borderRadius: "50%" }}
-                />
-              </Link>
-            )}
+            {userData !== null &&
+              userData.imageUrl !== null &&
+              userData.imageUrl !== "" && (
+                <Link to={pages.account}>
+                  <img
+                    src={userData.imageUrl}
+                    alt="User"
+                    style={{ height: "30px", borderRadius: "50%" }}
+                  />
+                </Link>
+              )}
           </div>
         </nav>
         {userData !== null && userData.isAdmin ? (
