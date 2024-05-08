@@ -35,7 +35,7 @@ export default function GalleryPage() {
           <GalleryCard
             imageUrl={"/assets/images/gallery/HC2.jpg"}
             title={"Hope Camp #2.1"}
-            description={"iulie 2021, Lacul Surduc"}
+            description={"euCRED - iulie 2021, Lacul Surduc"}
             buttonUrl={
               "https://drive.google.com/drive/folders/1qpsH-D8pn3VRIv7KY6paIYG6dLbFu-4h?usp=drive_link"
             }

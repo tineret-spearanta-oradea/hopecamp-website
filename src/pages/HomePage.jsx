@@ -26,8 +26,8 @@ function HomePage() {
   //TODO: Maybe add the animations in the components themselves
   return (
     <>
-      <Navbar />
       <animated.div style={heroProps}>
+        <Navbar />
         <HeroSection />
       </animated.div>
       <animated.div style={aboutProps}>

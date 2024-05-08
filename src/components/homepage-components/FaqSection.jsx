@@ -109,8 +109,11 @@ export default function FaqSection() {
 
   const filteredFaqData = faqData.filter(
     (faq) =>
-      faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      faq.answer.toLowerCase().includes(searchTerm.toLowerCase())
+      faq.question
+        .toString()
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      faq.answer.toString().toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleDownloadPDF = () => {
