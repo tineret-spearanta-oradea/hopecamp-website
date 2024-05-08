@@ -58,13 +58,13 @@ export const registerAndCreateUser = async (formData, imageFile) => {
       return {
         success: false,
         message:
-          "Adresa de email este deja folosită! Te rugǎm sa folosesti altǎ adresǎ de email",
+          "Adresa de email este deja folosită! Te rugăm sa folosesti altă adresă de email",
       };
     }
     console.error("Error creating auth user:", authError);
     return {
       success: false,
-      message: `Eroare de autentificare. ${authError.code}. \n Dacǎ problema persistǎ, te rugǎm sǎ ne contactezi la ${contactInfo.phone}.`,
+      message: `Eroare de autentificare. ${authError.code}. \n Dacă problema persistă, te rugăm să ne contactezi la ${contactInfo.phone}.`,
     };
   }
 };

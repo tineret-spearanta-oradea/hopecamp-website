@@ -1,19 +1,29 @@
+import React, { useState } from "react";
 import Question from "./Question";
+import { Link } from "react-router-dom";
+import {
+  MinimumAge,
+  contactInfo,
+  dateRange,
+  pages,
+  payTaxToOptions,
+  sumToPay,
+} from "../../constants";
+import { getNumberOfDays } from "../../utils";
 
 export default function FaqSection() {
-  const handleDownloadPDF = () => {
-    const link = document.createElement("a");
-    const pdfPath = "/assets/Regulament_HopeCamp.pdf";
-    link.href = pdfPath;
-    link.download = "Regulament_HopeCamp.pdf";
-    link.click();
-    window.open(pdfPath);
-  };
+  //TODO: move this to a config file or database
   const faqData = [
     {
       question: "Cum pot să mă înscriu?",
-      answer:
-        "Click pe butonul de inscrie-te și urmează pașii necesari. E simplu. Trebuie doar să-ți dorești!",
+      answer: (
+        <>
+          <Link className="text-hope-darkcyan" to={pages.register}>
+            Click pe butonul de înscrie-te
+          </Link>{" "}
+          și urmează pașii necesari. E simplu. Trebuie doar să-ți dorești!
+        </>
+      ),
     },
     {
       question: "După ce mă înscriu ce trebuie să fac?",
@@ -22,13 +32,29 @@ export default function FaqSection() {
     },
     {
       question: "Care este taxa taberei și ce include aceasta?",
-      answer:
-        "Taxa taberei este de 700RON. Dacă ești în situația în care din cauza prețului mare nu îți permiți să vii în tabără cu noi, te rugăm să ne contactezi pe numărul de WhatsApp al tineretului sau să-i scrii liderului Adelin Duca. Taxa include 3 nopți de cazare, mâncarea, participarea la toate sesiunile taberei și toate activitățile de echipă și distractive ale Hope Camp.",
+      answer: (
+        <>
+          Taxa taberei este de {sumToPay.normal} RON. Dacă ești în situația în
+          care din cauza prețului mare nu îți permiți să vii în tabără cu noi,
+          te rugăm să ne contactezi pe numărul de WhatsApp al tineretului sau
+          să-i scrii liderului Adelin Duca. Taxa include{" "}
+          {getNumberOfDays(dateRange.startDate, dateRange.endDate)} nopți de
+          cazare, mâncarea, participarea la toate sesiunile taberei și toate
+          activitățile de echipă și distractive ale Hope Camp.
+        </>
+      ),
     },
     {
       question: "Care sunt modalitățile de plată?",
-      answer:
-        "Poți plăti cash la Rebeca Gros sau la Carina Ban. De asemenea, poți plăti prin transfer pe Revolut sau BT Pay la Eugen Petrila sau una din fetele amintite.  Pentru alte variante sau ajutor te rugăm să ne scrii pe whatsapp pe numărul de la tineret:",
+      answer: (
+        <>
+          Poți plăti cash la {payTaxToOptions[0].label} sau la{" "}
+          {payTaxToOptions[1].label}. De asemenea, poți plăti prin transfer pe
+          Revolut sau BT Pay la Eugen Petrila sau una din fetele amintite.
+          Pentru alte variante sau ajutor te rugăm să ne scrii pe whatsapp pe
+          numărul de la tineret:
+        </>
+      ),
     },
     {
       question: "Sunt chestiuni diferite dacă sunt minor?",
@@ -37,8 +63,13 @@ export default function FaqSection() {
     },
     {
       question: "Care este vârsta minimă pentru participarea în tabără?",
-      answer:
-        "Vârsta minimă pentru participarea în tabără este 16 ani împliniți in prima zi de tabara sau 15 ani dacă participantul face parte din Biserica Penticostală Speranța Oradea",
+      answer: (
+        <>
+          Vârsta minimă pentru participarea în tabără este {MinimumAge} ani
+          împliniți in prima zi de tabara sau 15 ani dacă participantul face
+          parte din Biserica Penticostală Speranța Oradea
+        </>
+      ),
     },
     {
       question: "Cum pot să ajung în tabără?",
@@ -58,10 +89,39 @@ export default function FaqSection() {
     },
     {
       question: "Doresc să donez. Cum pot face asta?",
-      answer:
-        "Poți plăti taxa pentru un participant care nu își permite asta sau poți dona pentru suportul altor cheltuieli ale taberei precum sunet sau invitați. Scrie-ne pe Whatsapp la 0773 311 577 sau dăruiește direct cash, Revolut sau BT pay conform posibilităților de plată a taberei.",
+      answer: (
+        <>
+          Poți plăti taxa pentru un participant care nu își permite asta sau
+          poți dona pentru suportul altor cheltuieli ale taberei precum sunet
+          sau invitați. Scrie-ne pe <a href={contactInfo.whatsapp}>Whatsapp</a>{" "}
+          la {contactInfo.phone} sau dăruiește direct cash, Revolut sau BT pay
+          conform posibilităților de plată a taberei."
+        </>
+      ),
     },
   ];
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredFaqData = faqData.filter(
+    (faq) =>
+      faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      faq.answer.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleDownloadPDF = () => {
+    const link = document.createElement("a");
+    const pdfPath = "/assets/Regulament_HopeCamp.pdf";
+    link.href = pdfPath;
+    link.download = "Regulament_HopeCamp.pdf";
+    link.click();
+    window.open(pdfPath);
+  };
+
   return (
     <>
       <section className="container mx-auto px-8 py-10 lg:flex lg:justify-around">
@@ -81,9 +141,16 @@ export default function FaqSection() {
               <i className="bi bi-download"></i>
             </span>
           </button>
+          <input
+            type="text"
+            placeholder="caută..."
+            value={searchTerm}
+            onChange={handleSearch}
+            className="border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hope-orange"
+          />
 
-          <div className=" flex flex-col justify-center lg:grid lg:grid-cols-2  black gap-5">
-            {faqData.map((faq, index) => (
+          <div className="flex flex-col justify-center lg:flex-wrap  black gap-5">
+            {filteredFaqData.map((faq, index) => (
               <Question
                 key={index}
                 question={faq.question}

@@ -170,8 +170,8 @@ const ManageAdminsSection = (loggedInUserData) => {
             manageAdminAction={addAdmin}
             value={addAdminEmail}
             manageEmailToAdd={setAddAdminEmail}
-            label="Adaugǎ admin"
-            buttonText="Adaugǎ"
+            label="Adaugă admin"
+            buttonText="Adaugă"
           />
           <ManageAdminsInput
             manageAdminAction={deleteAdmin}
@@ -194,8 +194,8 @@ const ManageAdminsSection = (loggedInUserData) => {
             manageAdminAction={addSuperAdmin}
             value={addSuperAdminEmail}
             manageEmailToAdd={setAddSuperAdminEmail}
-            label="Adaugǎ SUPER admin"
-            buttonText="Adaugǎ"
+            label="Adaugă SUPER admin"
+            buttonText="Adaugă"
           />
           <ManageAdminsInput
             manageAdminAction={deleteSuperAdmin}
@@ -260,7 +260,7 @@ const ManageAdminsInput = ({
       />
       <FormButton
         onClick={() => manageAdminAction()}
-        action={buttonText === "Adaugǎ" ? "next" : "delete"}
+        action={buttonText === "Adaugă" ? "next" : "delete"}
       >
         {buttonText}
       </FormButton>

@@ -40,7 +40,7 @@ const Login = () => {
           ]);
         } else {
           setErrorMessages([
-            `Eroare: ${authError.code}. \n Dacǎ problema persistǎ, te rugǎm sǎ ne contactezi la ${contactInfo.phone}.`,
+            `Eroare: ${authError.code}. \n Dacă problema persistă, te rugăm să ne contactezi la ${contactInfo.phone}.`,
           ]);
         }
       }

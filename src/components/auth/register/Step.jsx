@@ -7,6 +7,7 @@ import DateInputField from "../DateInputField";
 import ErrorAlert from "../../ErrorAlert";
 import { Form, Link } from "react-router-dom";
 import FormButton from "../FormButton";
+import { formatDate } from "../../../utils";
 import {
   CampTitle,
   churchOptions,
@@ -17,7 +18,7 @@ import {
   dateRange,
 } from "../../../constants";
 
-// TODO: Add diacritics to the text
+// TODO: Refactor this component. It's too big. Make separate components for each step, I think
 const Step = ({
   stepNumber,
   formData,
@@ -63,7 +64,7 @@ const Step = ({
                 to={pages.home}
                 className="hover:underline font-bold text-hope-lightcyan"
               >
-                pagina principalǎ.
+                pagina principală.
               </Link>
             </p>
             <p className="mt-2 italic text-xs ">
@@ -76,12 +77,12 @@ const Step = ({
 
       {stepNumber === 2 && !hasAlreadyAutoFilled && (
         <p className="text-sm my-4 text-center">
-          Ajutǎ-ne să te (re)cunoaștem!
+          Ajută-ne să te (re)cunoaștem!
         </p>
       )}
       {stepNumber === 2 && hasAlreadyAutoFilled && (
         <p className="text-sm my-4 text-center text-hope-lightcyan">
-          Te-am recunoscut din taberele trecute! Verificǎ şi completează
+          Te-am recunoscut din taberele trecute! Verifică şi completează
           câmpurile lipsă.
         </p>
       )}
@@ -148,6 +149,14 @@ const Step = ({
             validationErrorMessage={validationErrors.phone}
             maxLength={16}
           />
+          <DateInputField
+            label="Perioada care stai în tabără:"
+            name="dateRange"
+            startDateValue={formData.userData.startDate}
+            endDateValue={formData.userData.endDate}
+            onChange={(e) => handleChange("userData", e)}
+            validationErrorMessage={validationErrors.dateRange}
+          />
           <RadioInputField
             label="Biserica din care provii:"
             name="church"
@@ -172,20 +181,12 @@ const Step = ({
             onChange={(e) => handleChange("userData", e.target)}
             validationErrorMessage={validationErrors.transport}
           />
-          <DateInputField
-            label="Perioada care stai în tabără:"
-            name="dateRange"
-            startDateValue={formData.userData.startDate}
-            endDateValue={formData.userData.endDate}
-            onChange={(e) => handleChange("userData", e)}
-            validationErrorMessage={validationErrors.dateRange}
-          />
           <ImageInputField
-            label="Încarcǎ pozǎ cu tine" // TODO: maybe make this optional (?) to be discussed
+            label="Încarcă poză cu tine" // TODO: maybe make this optional (?) to be discussed
             handleImageChange={handleImageChange}
           />
           <TextInputField
-            label="Preferințe colegi de camerǎ:"
+            label="Preferințe colegi de cameră:"
             type="text"
             name="preferences"
             value={formData.userData.preferences}
@@ -222,7 +223,7 @@ const Step = ({
               <p>
                 - Voi plăti avansul de {sumToPay.deposit} RON până la data de{" "}
                 <strong>
-                  {dateRange.depositPaymentDueDate.toISOString().split("T")[0]}
+                  {formatDate(dateRange.depositPaymentDueDate, "dd mmm yyyy")}
                 </strong>
                 .
               </p>
@@ -230,7 +231,7 @@ const Step = ({
           ) : (
             <p>
               - Taxa de înscriere pentru persoanele care NU vin full-time este
-              de {sumToPay.perDay} lei/zi (cazare + mâncare). Totalul tǎu este
+              de {sumToPay.perDay} lei/zi (cazare + mâncare). Totalul tău este
               de{" "}
               <strong>{sumToPay.perDay * retrieveNumberOfDays()[0]} RON</strong>{" "}
               (pentru {retrieveNumberOfDays()[0]} zile).
@@ -267,7 +268,7 @@ const Step = ({
         )}
         {stepNumber !== 3 && (
           <FormButton onClick={handleNext} disabled={false} action="next">
-            Continuǎ →
+            Continuă →
           </FormButton>
         )}
         {stepNumber === 3 && (
@@ -288,12 +289,12 @@ const Step = ({
               to={pages.account}
               className="hover:underline font-bold text-hope-lightcyan"
             >
-              Du-te la contul tǎu.
+              Du-te la contul tău.
             </Link>
           </p>
           <h5 className="text-xs text-hope-lightcyan">
             * Emailul si parola vor fi folosite pentru a te conecta la platforma
-            noastrǎ. Acestea sunt necesare pentru înscriere.
+            noastră. Acestea sunt necesare pentru înscriere.
           </h5>
         </div>
       )}

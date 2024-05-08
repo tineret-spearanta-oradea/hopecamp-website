@@ -17,13 +17,13 @@ function Question(props) {
           onClick={toggleOpen}
           className="bg-hope-darkcyan max-w-100 flex items-center cursor-pointer justify-between rounded-lg overflow-hidden w-full h-14  px-3 lg:w-96 lg:h-20 xl:w-100  "
         >
-          <p className="text-white text-xs lg:text-sm">{props.question}</p>
+          <p className="text-white text-sm lg:text-base ">{props.question}</p>
           <span className="text-white">
             <i className={`bi bi-caret-${iconDirection}-fill`}></i>
           </span>
         </div>
         {isOpen && (
-          <div className="bg-hope-orange flex text-xs max-w-100 rounded-lg h-32 p-3 my-1 lg:text-sm lg:h-40">
+          <div className="bg-hope-orange flex text-lg max-w-100 rounded-lg p-3 my-1 lg:text-sm w-full lg:w-96 xl:w-100">
             <p className="text-hope-blackcyan">{props.answer}</p>
           </div>
         )}

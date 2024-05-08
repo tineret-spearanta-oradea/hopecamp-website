@@ -14,12 +14,6 @@ const NavigationBar = () => {
         </Link>
         <div className="flex space-x-4">
           <Link
-            to="/login"
-            className="text-lg font-semibold hover:text-blue-200 transition-colors py-2 px-4 rounded bg-blue-700 hover:bg-blue-600"
-          >
-            Login
-          </Link>
-          <Link
             to="/inscrie-te"
             className="text-lg font-semibold hover:text-blue-200 transition-colors py-2 px-4 rounded bg-blue-700 hover:bg-blue-600"
           >

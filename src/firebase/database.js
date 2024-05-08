@@ -12,6 +12,7 @@ import {
   deleteDoc,
   orderBy,
 } from "firebase/firestore";
+import { formatDate } from "../utils";
 
 export const writeUserData = async (userData) => {
   const normalizedUserData = Object.fromEntries(
@@ -104,9 +105,10 @@ export const getAllUsers = async () => {
     const diffTime = Math.abs(endDate - startDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     user.numberOfDays = diffDays;
-    user.signupDate = signupDate.toLocaleString();
-    user.startDate = startDate.toLocaleDateString();
-    user.endDate = endDate.toLocaleDateString();
+    // Changing the format of these dates might break the updateUser function
+    user.signupDate = formatDate(signupDate, "yyyy-mm-dd hh:mm:ss");
+    user.startDate = formatDate(startDate);
+    user.endDate = formatDate(endDate);
   });
 
   return users;
@@ -124,14 +126,19 @@ export const updateUserData = async (userToUpdate) => {
       .filter(([key]) => key !== "numberOfDays")
   );
   // transform date fields
-  normalizedUserData.startDate = Timestamp.fromDate(
-    new Date(normalizedUserData.startDate)
-  );
-  normalizedUserData.endDate = Timestamp.fromDate(
-    new Date(normalizedUserData.endDate)
-  );
-  // for debugging:
-  // console.log(uid);
+  const startDate = new Date(normalizedUserData.startDate);
+  const endDate = new Date(normalizedUserData.endDate);
+  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    throw new Error(
+      "Invalid date range: " +
+        normalizedUserData.startDate +
+        " - " +
+        normalizedUserData.endDate
+    );
+  }
+  normalizedUserData.startDate = Timestamp.fromDate(startDate);
+  normalizedUserData.endDate = Timestamp.fromDate(endDate);
+
   const docRef = doc(db, "users", uid);
   const docSnap = await getDoc(docRef);
 

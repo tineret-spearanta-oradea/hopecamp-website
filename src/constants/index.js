@@ -28,6 +28,8 @@ export const churchOptions = [
 
 export const MaxOccupancy = 150;
 
+export const MinimumAge = 16;
+
 export const payTaxToOptions = [
   { label: "Carina Ban", value: "Carina", isDefault: true },
   { label: "Rebeca Gros", value: "Rebeca" },
@@ -43,16 +45,16 @@ export const transportOptions = [
 ];
 
 export const dateRange = {
-  startDate: new Date(2024, 6, 20),
-  endDate: new Date(2024, 6, 25),
-  depositPaymentDueDate: new Date(2024, 5, 1),
+  startDate: new Date(2024, 6, 17),
+  endDate: new Date(2024, 6, 22),
+  depositPaymentDueDate: new Date(2024, 5, 15),
 };
 
 export const sumToPay = {
   normal: 700,
-  withFamilyMember: 600,
-  deposit: 150,
-  perDay: 150,
+  withFamilyMember: 650,
+  deposit: 300,
+  perDay: 200,
 };
 
 export const contactInfo = {

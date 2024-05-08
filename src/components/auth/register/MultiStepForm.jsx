@@ -84,7 +84,7 @@ const MultiStepForm = ({
       if (!userData.age || userData.age.length === 0) {
         newValidationErrors.age = "Vârsta este necesară.";
       } else if (userData.age.length > 2) {
-        newValidationErrors.age = "Vârsta este invalidǎ.";
+        newValidationErrors.age = "Vârsta este invalidă.";
       }
 
       if (!userData.phone || userData.phone.length === 0) {

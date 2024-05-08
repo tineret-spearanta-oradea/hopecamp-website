@@ -57,7 +57,7 @@ const ConfirmedUser = ({ userData }) => {
       )}
       <p>
         🗓️ Ne bucurăm că ai ales să vii cu noi in tabără! Au mai ramas{" "}
-        {getRemainingDays()} zile până la tabară, abia aşteptǎm!
+        {getRemainingDays()} zile până la tabară, abia aşteptăm!
       </p>
       <p>
         💭Între timp, dacă vrei, ne poți lăsa aici un gând sau o sugestie
@@ -92,7 +92,7 @@ const ConfirmedUser = ({ userData }) => {
         )}
       </div>
       <p>
-        📝 Mai jos poți sǎ vezi datele cu care te-ai înscris in tabără. Daca
+        📝 Mai jos poți să vezi datele cu care te-ai înscris in tabără. Daca
         doreşti să le modifici scrie-ne folosind câmpul și butonul de mai sus,
         sau pe WhatsApp la {contactInfo.phone}.
       </p>
@@ -120,7 +120,7 @@ const ConfirmedUser = ({ userData }) => {
             <span className="font-bold">Biserica:</span> {userData.church}
           </p>
           <p>
-            <span className="font-bold">Plǎtit:</span> {userData.amountPaid} RON
+            <span className="font-bold">Plătit:</span> {userData.amountPaid} RON
           </p>
           <p>
             <span className="font-bold">Cui achit taxa:</span>{" "}
@@ -130,7 +130,7 @@ const ConfirmedUser = ({ userData }) => {
             <span className="font-bold">Transport:</span> {userData.transport}
           </p>
           <p>
-            <span className="font-bold">Perioada in care eşti în tabǎrǎ:</span>{" "}
+            <span className="font-bold">Perioada in care eşti în tabără:</span>{" "}
           </p>
           <p>
             {userData.startDate} - {userData.endDate}
