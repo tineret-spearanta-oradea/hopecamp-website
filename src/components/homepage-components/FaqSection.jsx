@@ -19,22 +19,37 @@ export default function FaqSection() {
       answer: "raspuns",
     },
     { question: "Care sunt modalitățile de plată?", answer: "raspuns" },
-    { question: "Sunt chestiuni diferite dacă sunt minor?", answer: "raspuns" },
+    {
+      question: "Sunt chestiuni diferite dacă sunt minor?",
+      answer:
+        "Dacă ești minor și vrei să vii în tabără, în primul rând, trebuie ca părinții tăi să fie de acord. Apoi, trebuie ca părinții tăi să citească regulamentul și să îl semneze (ai citit bine, părintele să îl semneze!). Atașat îți vom cere o copie după buletinul tău si un număr de telefon al unuia dintre parinti",
+    },
     {
       question: "Care este vârsta minimă pentru participarea în tabără?",
-      answer: "raspuns",
+      answer:
+        "Vârsta minimă pentru participarea în tabără este 16 ani împliniți in prima zi de tabara sau 15 ani dacă participantul face parte din Biserica Penticostală Speranța Oradea",
     },
-    { question: "Cum pot să ajung în tabără?", answer: "raspuns" },
+    {
+      question: "Cum pot să ajung în tabără?",
+      answer:
+        "Poti să vii cu mașina personală, cu un prieten cu mașina sau cu autocarul pe care îl vom avea la dispoziție. Indiferent de varianta pentru care optezi, trebuie să specifici la înscriere!",
+    },
     {
       question:
-        "Dacă în tabără vreau suc sau o gustare pot să caut magazin să-mi iau?",
-      answer: "raspuns",
+        "Dacă în tabără vreau să merg până la un magazin din apropiere pentru o gustare, pot ieși din tabără să fac asta?",
+      answer:
+        "Pe cât e posibil încercăm să descurajăm deplasarea afară din tabără. Prin urmare, în cadrul taberei oferim tot felul de produse de vânzare, la prețuri de foarte bune: snacksuri, semințe, croissante, sucuri, apă, înghețată, cafea, limonadă, clătite.",
     },
     {
       question: "Există o ținută pentru băieți/fete la slujbele din tabără?",
-      answer: "raspuns",
+      answer:
+        "Nu impunem o ținută, însă insistăm pe ținuta decentă pe toată durata taberei, nu doar la slujbe. Nu este permisă ținuta de plajă atât în campusul taberei, cât nici în deplasările din afara taberei, indiferent dacă ești într-un grup mai mare sau mai restrâns. Nu este permisă purtarea maiourilor mulate, foarte largi sau transparente, de asemenea, nici purtarea de rochii/fuste/pantaloni prea scurți(e).",
     },
-    { question: "Doresc să donez. Cum pot face asta?", answer: "raspuns" },
+    {
+      question: "Doresc să donez. Cum pot face asta?",
+      answer:
+        "Poți plăti taxa pentru un participant care nu își permite asta sau poți dona pentru suportul altor cheltuieli ale taberei precum sunet sau invitați. Scrie-ne pe Whatsapp la 0773 311 577 sau dăruiește direct cash, Revolut sau BT pay conform posibilităților de plată a taberei.",
+    },
   ];
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -73,18 +88,9 @@ export default function FaqSection() {
             className="flex bg-hope-orange text-white text-base font-semibold rounded-full px-8 py-2 lg:text-lg xl:text-xl"
           >
             Descarcă regulamentul
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="currentColor"
-              class="bi bi-download"
-              className="ml-2"
-              viewBox="0 0 16 16"
-            >
-              <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
-              <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z" />
-            </svg>
+            <span className="pl-2">
+              <i className="bi bi-download"></i>
+            </span>
           </button>
           <input
             type="text"
