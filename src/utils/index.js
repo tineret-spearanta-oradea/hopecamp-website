@@ -8,6 +8,11 @@ const formatDate = (date, format = "yyyy-mm-dd") => {
       date.getMonth() + 1
     }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
   }
+  if (format === "dd mmm yyyy") {
+    return `${date.getDate()} ${date.toLocaleString("default", {
+      month: "short",
+    })} ${date.getFullYear()}`;
+  }
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 };
 

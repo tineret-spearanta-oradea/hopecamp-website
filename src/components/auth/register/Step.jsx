@@ -18,7 +18,7 @@ import {
   dateRange,
 } from "../../../constants";
 
-// TODO: Add diacritics to the text
+// TODO: Refactor this component. It's too big. Make separate components for each step, I think
 const Step = ({
   stepNumber,
   formData,
@@ -149,6 +149,14 @@ const Step = ({
             validationErrorMessage={validationErrors.phone}
             maxLength={16}
           />
+          <DateInputField
+            label="Perioada care stai în tabără:"
+            name="dateRange"
+            startDateValue={formData.userData.startDate}
+            endDateValue={formData.userData.endDate}
+            onChange={(e) => handleChange("userData", e)}
+            validationErrorMessage={validationErrors.dateRange}
+          />
           <RadioInputField
             label="Biserica din care provii:"
             name="church"
@@ -172,14 +180,6 @@ const Step = ({
             value={formData.userData.transport}
             onChange={(e) => handleChange("userData", e.target)}
             validationErrorMessage={validationErrors.transport}
-          />
-          <DateInputField
-            label="Perioada care stai în tabără:"
-            name="dateRange"
-            startDateValue={formData.userData.startDate}
-            endDateValue={formData.userData.endDate}
-            onChange={(e) => handleChange("userData", e)}
-            validationErrorMessage={validationErrors.dateRange}
           />
           <ImageInputField
             label="Încarcă poză cu tine" // TODO: maybe make this optional (?) to be discussed
@@ -222,7 +222,10 @@ const Step = ({
               </p>
               <p>
                 - Voi plăti avansul de {sumToPay.deposit} RON până la data de{" "}
-                <strong>{formatDate(dateRange.depositPaymentDueDate)}</strong>.
+                <strong>
+                  {formatDate(dateRange.depositPaymentDueDate, "dd mmm yyyy")}
+                </strong>
+                .
               </p>
             </>
           ) : (

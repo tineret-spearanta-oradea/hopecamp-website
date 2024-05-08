@@ -31,8 +31,8 @@ const DateInputField = ({
   };
 
   return (
-    <div>
-      <label className="text-sm text-gray-600 font-bold">{label}</label>
+    <div className="my-4">
+      <label className="text-sm text-gray-600 font-bold ">{label}</label>
       <DateRangePicker
         showOneCalendar
         block
@@ -41,6 +41,7 @@ const DateInputField = ({
         defaultCalendarValue={[startDateValue, endDateValue]}
         shouldDisableDate={allowedRange(minDate, maxDate)}
         onChange={handleChange}
+        editable={false}
       />
       {validationErrorMessage && (
         <p className="text-red-500 text-xs italic">{validationErrorMessage}</p>
