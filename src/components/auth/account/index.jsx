@@ -6,9 +6,10 @@ import UserData from "../../../models/UserData";
 import ConfirmedUser from "./ConfirmedUser";
 import PendingUser from "./PendingUser";
 import LoadingIcon from "../../LoadingIcon";
-import { pages } from "../../../constants";
+import { contactInfo, pages } from "../../../constants";
 import FormCard from "../FormCard";
 import FormButton from "../FormButton";
+import ErrorAlert from "../../ErrorAlert";
 
 //TODO: Style this component and the children components
 
@@ -16,8 +17,31 @@ import FormButton from "../FormButton";
 // In this case we should show a warning message that the user is already logged in, and for registering another user, they should log themselves out first.
 
 const Account = () => {
+  //get the alreadyLoggedIn parameter from the url
+  const urlParams = new URLSearchParams(window.location.search);
+  const alreadyLoggedIn = urlParams.get("alreadyLoggedIn");
+
   const { authData, userData, userLoggedIn, loading, error } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (
+      !loading &&
+      (userData === null || userData.undefined || !userLoggedIn) &&
+      alreadyLoggedIn
+    ) {
+      return (
+        <ErrorAlert
+          message={
+            <>
+              Am întampinat o eroare. Te rugam sa iei legatura cu noi la{" "}
+              {contactInfo.whatsapp}
+            </>
+          }
+        />
+      );
+    }
+  }, [loading, userData, navigate, userLoggedIn]);
 
   if (!userLoggedIn) {
     return <Navigate to={pages.login} replace={true} />;
