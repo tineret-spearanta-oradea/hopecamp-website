@@ -10,8 +10,16 @@ export default function FaqSection() {
     window.open(pdfPath);
   };
   const faqData = [
-    { question: "Cum pot să mă înscriu?", answer: "raspuns" },
-    { question: "După ce mă înscriu ce trebuie să fac?", answer: "raspuns" },
+    {
+      question: "Cum pot să mă înscriu?",
+      answer:
+        "Click pe butonul de inscrie-te și urmează pașii necesari. E simplu. Trebuie doar să-ți dorești!",
+    },
+    {
+      question: "După ce mă înscriu ce trebuie să fac?",
+      answer:
+        "După ce te înscrii aștepți confirmarea de la noi printr-un mesaj pe care trebuie să-l primești în maxim 3 zile.",
+    },
     {
       question: "Care este taxa taberei și ce include aceasta?",
       answer: "raspuns",
@@ -63,7 +71,7 @@ export default function FaqSection() {
             </svg>
           </button>
 
-          <div className=" flex flex-col justify-center lg:flex-wrap lg:flex-row black gap-5">
+          <div className=" flex flex-col justify-center lg:grid lg:grid-cols-2  black gap-5">
             {faqData.map((faq, index) => (
               <Question
                 key={index}
