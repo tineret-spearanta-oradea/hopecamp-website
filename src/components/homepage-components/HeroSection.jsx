@@ -51,7 +51,7 @@ function HeroSection() {
             {countdown}
           </p>
           <div className="pt-10">
-            <FilledButton text="Înscrie-te" route={pages.register} />
+            <FilledButton text="ÎNSCRIE-TE" route={pages.register} />
           </div>
         </div>
       </section>

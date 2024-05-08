@@ -1,14 +1,8 @@
+import React, { useState } from "react";
 import Question from "./Question";
 
 export default function FaqSection() {
-  const handleDownloadPDF = () => {
-    const link = document.createElement("a");
-    const pdfPath = "/assets/Regulament_HopeCamp.pdf";
-    link.href = pdfPath;
-    link.download = "Regulament_HopeCamp.pdf";
-    link.click();
-    window.open(pdfPath);
-  };
+  //TODO: move this to a config file or database
   const faqData = [
     { question: "Cum pot să mă înscriu?", answer: "raspuns" },
     { question: "După ce mă înscriu ce trebuie să fac?", answer: "raspuns" },
@@ -34,6 +28,28 @@ export default function FaqSection() {
     },
     { question: "Doresc să donez. Cum pot face asta?", answer: "raspuns" },
   ];
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredFaqData = faqData.filter(
+    (faq) =>
+      faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      faq.answer.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleDownloadPDF = () => {
+    const link = document.createElement("a");
+    const pdfPath = "/assets/Regulament_HopeCamp.pdf";
+    link.href = pdfPath;
+    link.download = "Regulament_HopeCamp.pdf";
+    link.click();
+    window.open(pdfPath);
+  };
+
   return (
     <>
       <section className="container mx-auto px-8 py-10 lg:flex lg:justify-around">
@@ -62,9 +78,16 @@ export default function FaqSection() {
               <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z" />
             </svg>
           </button>
+          <input
+            type="text"
+            placeholder="caută..."
+            value={searchTerm}
+            onChange={handleSearch}
+            className="border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-hope-orange"
+          />
 
-          <div className=" flex flex-col justify-center lg:flex-wrap lg:flex-row black gap-5">
-            {faqData.map((faq, index) => (
+          <div className="flex flex-col justify-center lg:flex-wrap  black gap-5">
+            {filteredFaqData.map((faq, index) => (
               <Question
                 key={index}
                 question={faq.question}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { pages } from "../../constants"
+import { pages } from "../../constants";
 
 function MobileNavbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,16 +39,26 @@ function MobileNavbar() {
       </div>
       {isOpen && (
         <div className="bg-hope-darkcyan min-h-screen text-white font-bold flex flex-col absolute top-0 left-0 w-full h-full">
-          <div  className="text-5xl flex justify-center pt-5">
+          <div className="text-5xl flex justify-center pt-5">
             <i onClick={toggleNavbar} className="bi bi-x"></i>
           </div>
           <div className="flex flex-col items-center justify-center h-full">
             <div className="flex flex-col items-center -mt-5">
-              <Link onClick={toggleNavbar} to={pages.home} className="text-xl mb-4">
+              <Link
+                onClick={toggleNavbar}
+                to={pages.home}
+                className="text-xl m-4  "
+              >
                 acasă
               </Link>
-              <Link to={pages.register} className="text-xl">
+              <Link to={pages.register} className="text-xl m-4">
                 înscrie-te
+              </Link>
+              <Link to={pages.account} className="text-xl m-4">
+                contul meu
+              </Link>
+              <Link to={pages.gallery} className="text-xl m-4">
+                galerie
               </Link>
             </div>
           </div>

@@ -33,12 +33,15 @@ const Account = () => {
       {!loading && (
         <FormCard>
           {/* <div className="w-96 text-gray-600 space-y-5 p-4 pb-8 shadow-xl border rounded-xl"> */}
-          <div className="text-right">
+          <div className="flex justify-between">
+            <Link to={pages.home}>
+              <FormButton action="back">Home</FormButton>
+            </Link>
             <Link to={pages.logout}>
               <FormButton action="delete">Logout</FormButton>
             </Link>
           </div>
-          <div className="text-center">
+          <div className="t</Link>ext-center">
             <h2 className="text-xl font-black text-center ">Contul meu</h2>
           </div>
           <div>
