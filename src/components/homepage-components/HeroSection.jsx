@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import FilledButton from "../general-components/FilledButton";
 import "/src/styles/dividers.css";
-import { CampTitle, pages } from "../../constants";
+import { CampTitle, pages, dateRange } from "../../constants";
 
 function HeroSection() {
   const calculateCountdown = () => {
     const currentDate = new Date();
-    const targetDate = new Date("July 20, 2024");
+    const targetDate = dateRange.startDate;
     const difference = targetDate - currentDate;
 
     if (difference <= 0) {
@@ -51,11 +51,7 @@ function HeroSection() {
             {countdown}
           </p>
           <div className="pt-10">
-            <FilledButton
-              text="Înscrie-te"
-              route={pages.register}
-              isHeroButton={true}
-            />
+            <FilledButton text="Înscrie-te" route={pages.register} />
           </div>
         </div>
       </section>
