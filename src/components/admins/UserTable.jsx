@@ -40,12 +40,9 @@ const UserTable = (loggedInUserData) => {
         );
       });
     } catch (error) {
-      console.log(error);
-      console.log(updatedUser);
-      alert();
       setErrorAlertMessages((prevMessages) => [
         ...prevMessages,
-        "Eroare la actualizarea datelor utilizatorului: " + error,
+        "Eroare la actualizarea datelor: " + error,
       ]);
     }
   };
@@ -62,10 +59,9 @@ const UserTable = (loggedInUserData) => {
         return prevUserList.filter((user) => user.uid !== uid);
       });
     } catch (error) {
-      //TODO: show UI component error
       setErrorAlertMessages((prevMessages) => [
         ...prevMessages,
-        "Eroare la actualizarea datelor utilizatorului: " + error,
+        "Eroare la actualizarea datelor: " + error,
       ]);
     }
   };
@@ -86,6 +82,10 @@ const UserTable = (loggedInUserData) => {
     }
     fetchData();
   }, []);
+
+  const handleCloseAlert = () => {
+    setErrorAlertMessages([]);
+  };
 
   const handleMoreInfo = (row) => {
     if (
@@ -368,7 +368,11 @@ const UserTable = (loggedInUserData) => {
   return (
     <div className="">
       {errorAlertMessages && (
-        <ErrorAlert messages={errorAlertMessages} displayMode={"popup"} />
+        <ErrorAlert
+          messages={errorAlertMessages}
+          displayMode={"popup"}
+          handleClose={handleCloseAlert}
+        />
       )}
       <div className="flex justify-between items-center">
         <div className="flex items-center justify-center">

@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 
-const ErrorAlert = ({ messages, displayMode }) => {
-  const [showAlert, setShowAlert] = useState(true);
-
-  if (!messages || messages.length === 0 || !showAlert) return null;
+const ErrorAlert = ({ messages, displayMode, handleClose = () => {} }) => {
+  if (!messages || messages.length === 0) return null;
 
   const WarningIcon = () => (
     <svg
@@ -21,10 +19,6 @@ const ErrorAlert = ({ messages, displayMode }) => {
       />
     </svg>
   );
-
-  const handleClose = () => {
-    setShowAlert(false);
-  };
 
   if (displayMode === "popup") {
     return (

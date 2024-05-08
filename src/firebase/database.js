@@ -104,9 +104,13 @@ export const getAllUsers = async () => {
     const diffTime = Math.abs(endDate - startDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     user.numberOfDays = diffDays;
-    user.signupDate = signupDate.toLocaleString();
-    user.startDate = startDate.toLocaleDateString();
-    user.endDate = endDate.toLocaleDateString();
+    // Changing the format of these dates might break the updateUser function
+    user.signupDate =
+      signupDate.toISOString().split("T")[0] +
+      " " +
+      signupDate.toTimeString().split(" ")[0];
+    user.startDate = startDate.toISOString().split("T")[0];
+    user.endDate = endDate.toISOString().split("T")[0];
   });
 
   return users;
