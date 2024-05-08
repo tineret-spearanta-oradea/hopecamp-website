@@ -15,10 +15,10 @@ export default function Footer() {
               className="lg:h-24"
             />
             <div className="text-sm sm:text-base md:text-lg lg:text-xl">
-              <p className="text-center sm:text-left font-medium">
+              <p className="text-hope-blackcyan text-center sm:text-left font-medium">
                 {contactInfo.email}
               </p>
-              <p className="text-center sm:text-left font-medium">
+              <p className="text-hope-blackcyan text-center sm:text-left font-medium">
                 {contactInfo.phone}
               </p>
             </div>
@@ -26,32 +26,34 @@ export default function Footer() {
           <div className="flex justify-center items-center gap-5 sm:flex-col">
             <FilledButton text="Înscrie-te" route={pages.register} />
             <div className="flex items-center gap-2">
-              <span className="text-xl">
+              <span className="text-hope-blackcyan text-xl">
                 <Link to={contactInfo.instagram}>
                   <i className="bi bi-instagram"></i>
                 </Link>
               </span>
-              <span className="text-xl">
+              <span className="text-hope-blackcyan text-xl">
                 <Link to={contactInfo.facebook}>
                   <i className="bi bi-facebook"></i>
                 </Link>
               </span>
-              <span className="text-xl">
+              <span className="text-hope-blackcyan text-xl">
                 <Link to={contactInfo.whatsapp}>
                   <i className="bi bi-whatsapp"></i>
                 </Link>
               </span>
-              <span className="text-xl">
+              <span className="text-hope-blackcyan text-xl">
                 <Link to={contactInfo.youtube}>
                   <i className="bi bi-youtube"></i>
                 </Link>
               </span>
             </div>
           </div>
-          <div className="flex justify-between pt-2">
-            <p className="text-sm">&#169; 2024 copyright</p>
-            <p className="text-sm">Tineret Speranta Oradea</p>
-          </div>
+        </div>
+        <div className="flex justify-center  pt-2">
+          <p className="text-hope-darkcyan text-xs text-center mb-2 mt-5">
+            &#169; 2024 copyright
+            <br /> Tineret Speranta Oradea
+          </p>
         </div>
       </footer>
     </>
