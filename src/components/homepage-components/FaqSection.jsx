@@ -22,9 +22,14 @@ export default function FaqSection() {
     },
     {
       question: "Care este taxa taberei și ce include aceasta?",
-      answer: "raspuns",
+      answer:
+        "Taxa taberei este de 700RON. Dacă ești în situația în care din cauza prețului mare nu îți permiți să vii în tabără cu noi, te rugăm să ne contactezi pe numărul de WhatsApp al tineretului sau să-i scrii liderului Adelin Duca. Taxa include 3 nopți de cazare, mâncarea, participarea la toate sesiunile taberei și toate activitățile de echipă și distractive ale Hope Camp.",
     },
-    { question: "Care sunt modalitățile de plată?", answer: "raspuns" },
+    {
+      question: "Care sunt modalitățile de plată?",
+      answer:
+        "Poți plăti cash la Rebeca Gros sau la Carina Ban. De asemenea, poți plăti prin transfer pe Revolut sau BT Pay la Eugen Petrila sau una din fetele amintite.  Pentru alte variante sau ajutor te rugăm să ne scrii pe whatsapp pe numărul de la tineret:",
+    },
     {
       question: "Sunt chestiuni diferite dacă sunt minor?",
       answer:
@@ -72,7 +77,9 @@ export default function FaqSection() {
             className="flex bg-hope-orange text-white text-base font-semibold rounded-full px-8 py-2 lg:text-lg xl:text-xl"
           >
             Descarcǎ regulamentul
-            <span className="pl-2"><i className="bi bi-download"></i></span>
+            <span className="pl-2">
+              <i className="bi bi-download"></i>
+            </span>
           </button>
 
           <div className=" flex flex-col justify-center lg:grid lg:grid-cols-2  black gap-5">
