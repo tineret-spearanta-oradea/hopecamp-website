@@ -296,14 +296,14 @@ const UserTable = (loggedInUserData) => {
         ),
       },
       {
-        Header: "Vine in tabarǎ",
+        Header: "Vine in tabară",
         accessor: "startDate",
         width: 0,
         isHidden: true,
         isExpandable: true,
       },
       {
-        Header: "Pleacǎ din tabara",
+        Header: "Pleacă din tabara",
         accessor: "endDate",
         width: 0,
         isHidden: true,

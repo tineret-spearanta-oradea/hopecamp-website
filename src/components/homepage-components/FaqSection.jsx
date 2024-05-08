@@ -64,7 +64,7 @@ export default function FaqSection() {
             onClick={handleDownloadPDF}
             className="flex bg-hope-orange text-white text-base font-semibold rounded-full px-8 py-2 lg:text-lg xl:text-xl"
           >
-            Descarcǎ regulamentul
+            Descarcă regulamentul
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"

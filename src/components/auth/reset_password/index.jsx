@@ -87,7 +87,7 @@ const ResetPassword = () => {
             disabled={isResetting}
             extraStyles="w-full"
           >
-            {isResetting ? "Trimitem mail..." : "Resetare parolǎ"}
+            {isResetting ? "Trimitem mail..." : "Resetare parolă"}
           </FormButton>
         </form>
         <p className="text-center text-sm ">

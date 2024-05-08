@@ -9,8 +9,8 @@ export default function JoinSocialsSection() {
                     from-hope-darkcyan  to-hope-orange shadow-lg p-0.5 rounded-lg"
       >
         <div class="h-full w-full bg-hope-beige flex flex-col justify-center items-center content-center rounded-lg">
-          <p className="text-hope-blackcyan text-xl font-semibold sm:text-2xl md:text-3xl mb-2">
-            Urmǎreşte-ne!
+          <p className="text-hope-blackcyan text-xl font-bold sm:text-2xl md:text-3xl mb-2">
+            Urmăreşte-ne!
           </p>
           <div className="flex items-center gap-4 text-hope-blackcyan ">
             <span className="text-xl hover:text-hope-orange">
