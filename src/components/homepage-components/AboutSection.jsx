@@ -37,15 +37,19 @@ function AboutSection() {
               />
             )}
             <p className="text-hope-blackcyan text-center max-w-sm sm:text-md md:max-w-md md:text-md lg:max-w-lg lg:text-lg lg:text-start xl:max-w-xl xl:text-xl leading-relaxed">
-              Bine ai venit în minunata noastră comunitate plină de entuziasm și
-              bucurie! 🎉 Suntem echipa taberei crestine din cadrul Tineret
-              Speranța Oradea, alcătuită din tineri din diverse biserici locale.
-              Ne-am unit cu viziunea de a crea un mediu plăcut lui Dumnezeu și
-              propice pentru socializare! 🙏 Lucrăm cu drag și entuziasm pentru
-              a oferi experiențe memorabile și motivate, unde fiecare se simte
+              Bine ai venit în comunitatea noastră de tineri pasionați și plini
+              de energie. Suntem echipa taberei creștine Hope Camp din cadrul
+              Tineret Speranța Oradea, alcătuită din tineri din diverse biserici
+              locale. 🙏 Noi creăm un mediu plăcut tinerilor pentru distracție
+              și socializare, dar și un spațiu propice pentru închinare și
+              cunoașterea lui Dumnezeu! Lucrăm cu drag și entuziasm pentru a
+              oferi experiențe memorabile și motivante unde fiecare se simte
               acasă. Aici, fiecare este binevenit și contribuie la o atmosferă
-              plăcută. Te așteptăm să ni te alături și să creăm împreună
-              amintiri frumoase și momente spirituale de neuitat! 🌟
+              plăcută. Scopul nostru este ca tinerii să aibă o experiență
+              personală și autentică cu Dumnezeu, să-L aleagă pe Hristos ca Domn
+              al vieții personale și să să crească spiritual prin ucenicie. Te
+              aștptăm să ni te alături și să creăm împreună amintiri frumoase și
+              momente spirituale de neuitat!🎉
             </p>
           </div>
           {!imageLoaded && (
