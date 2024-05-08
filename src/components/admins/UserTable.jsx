@@ -8,6 +8,7 @@ import { updateUserData } from "../../firebase/database";
 import LoadingIcon from "../LoadingIcon";
 import { deleteUserFromSystem } from "../../firebase";
 import FilterTable from "./FilterTable";
+import ErrorAlert from "../ErrorAlert";
 
 const UserTable = (loggedInUserData) => {
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
@@ -15,6 +16,7 @@ const UserTable = (loggedInUserData) => {
   const [filteredUserList, setFilteredUserList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const selectedRowRef = useRef(null);
+  const [errorAlertMessages, setErrorAlertMessages] = useState([]);
 
   // i use this method because the table doesn't rerender when i change the selectedRowRef.current
   // if i used useRef for the selectedRow, it would have rerendered, but i would have lost the selectedRowRef.current value, since it only updates after a rerender
@@ -39,7 +41,10 @@ const UserTable = (loggedInUserData) => {
       });
     } catch (error) {
       //TODO: show UI component error
-      alert(error);
+      setErrorAlertMessages((prevMessages) => [
+        ...prevMessages,
+        "Eroare la actualizarea datelor utilizatorului: " + error,
+      ]);
     }
   };
 
@@ -56,7 +61,10 @@ const UserTable = (loggedInUserData) => {
       });
     } catch (error) {
       //TODO: show UI component error
-      alert(error);
+      setErrorAlertMessages((prevMessages) => [
+        ...prevMessages,
+        "Eroare la actualizarea datelor utilizatorului: " + error,
+      ]);
     }
   };
 
@@ -357,6 +365,9 @@ const UserTable = (loggedInUserData) => {
     );
   return (
     <div className="">
+      {errorAlertMessages && (
+        <ErrorAlert messages={errorAlertMessages} displayMode={"popup"} />
+      )}
       <div className="flex justify-between items-center">
         <div className="flex items-center justify-center">
           <h1 className="text-3xl font-bold mb-4 mx-4">

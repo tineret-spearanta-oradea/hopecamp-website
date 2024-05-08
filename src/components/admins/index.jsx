@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useMediaQuery } from "react-responsive";
 import UserTable from "./UserTable";
 import MessagesTable from "./MessagesTable";
 import { useAuth } from "../../contexts/authContext";
@@ -13,9 +14,9 @@ import { pages } from "../../constants";
 import { CampTitle } from "../../constants";
 
 const AdminDashboard = () => {
-  //TODO: add identity validation
   const [selectedSection, setSelectedSection] = useState("stats");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
+  const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
   const navigate = useNavigate();
   const { authData, userData, userLoggedIn, loading, error } = useAuth();
   const [numbersForLabels, setNumberForLabels] = useState({
