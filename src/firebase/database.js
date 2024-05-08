@@ -127,7 +127,12 @@ export const updateUserData = async (userToUpdate) => {
   const startDate = new Date(normalizedUserData.startDate);
   const endDate = new Date(normalizedUserData.endDate);
   if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-    throw new Error("Invalid date range: " + startDate + " - " + endDate);
+    throw new Error(
+      "Invalid date range: " +
+        normalizedUserData.startDate +
+        " - " +
+        normalizedUserData.endDate
+    );
   }
   normalizedUserData.startDate = Timestamp.fromDate(startDate);
   normalizedUserData.endDate = Timestamp.fromDate(endDate);
