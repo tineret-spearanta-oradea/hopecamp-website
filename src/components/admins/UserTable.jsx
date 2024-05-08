@@ -34,14 +34,15 @@ const UserTable = (loggedInUserData) => {
 
     try {
       await updateUserData(updatedUser);
-      // setFilteredUserList((prevUserList) => {
-      //   return prevUserList.map((user) =>
-      //     user.uid === updatedUser.uid ? updatedUser : user
-      //   );
-      // });
+      setFilteredUserList((prevUserList) => {
+        return prevUserList.map((user) =>
+          user.uid === updatedUser.uid ? updatedUser : user
+        );
+      });
     } catch (error) {
       console.log(error);
       console.log(updatedUser);
+      alert();
       setErrorAlertMessages((prevMessages) => [
         ...prevMessages,
         "Eroare la actualizarea datelor utilizatorului: " + error,

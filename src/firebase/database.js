@@ -124,14 +124,14 @@ export const updateUserData = async (userToUpdate) => {
       .filter(([key]) => key !== "numberOfDays")
   );
   // transform date fields
-  normalizedUserData.startDate = Timestamp.fromDate(
-    new Date(normalizedUserData.startDate)
-  );
-  normalizedUserData.endDate = Timestamp.fromDate(
-    new Date(normalizedUserData.endDate)
-  );
-  // for debugging:
-  // console.log(uid);
+  const startDate = new Date(normalizedUserData.startDate);
+  const endDate = new Date(normalizedUserData.endDate);
+  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    throw new Error("Invalid date rangeee");
+  }
+  normalizedUserData.startDate = Timestamp.fromDate(startDate);
+  normalizedUserData.endDate = Timestamp.fromDate(endDate);
+
   const docRef = doc(db, "users", uid);
   const docSnap = await getDoc(docRef);
 
