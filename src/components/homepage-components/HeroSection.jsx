@@ -35,7 +35,7 @@ function HeroSection() {
     <>
       <section className="bg-hope-beige py-14 px-8">
         <div className="container mx-auto flex flex-col justify-center items-center gap-2 lg:gap-4">
-          <h1 className="text-hope-darkcyan text-4xl font-black sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl">
+          <h1 className="text-hope-darkcyan text-center text-4xl font-black sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl">
             {CampTitle.CoreName} {CampTitle.Edition}
           </h1>
           <p
