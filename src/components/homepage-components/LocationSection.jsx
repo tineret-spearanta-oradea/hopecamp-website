@@ -17,12 +17,8 @@ function LocationSection() {
               <p className="text-white text-center  max-w-sm sm:text-sm md:max-w-md md:text-md lg: lg:text-lg lg:text-start xl:max-w-xl xl:text-xl">
                 Tabăra se va desfășura în localitatea Someșu Rece din județul
                 Cluj, oferind un cadru ideal pentru relaxare, reflecție și
-                socializare. Cu peisaje fermecătoare și atmosferă relaxantă, vei
-                avea ocazia să te reconectezi cu &ldquo;tine din vacanță&ldquo;
-                🤭 și să îți încarci bateriile în mijlocul naturii. În plus,
-                atmosfera prietenoasă și plină de bucurie a taberei va facilita
-                interacțiunea și legăturile cu ceilalți participanți, creând
-                amintiri de neuitat și relații noi.
+                socializare. Cu aer limpede de natură și cu o echipă de prieteni
+                în jur, vei putea trăi cele mai intense momente de vacanță.
               </p>
             </div>
 

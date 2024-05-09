@@ -31,7 +31,7 @@ export const MaxOccupancy = 150;
 export const MinimumAge = 16;
 
 export const payTaxToOptions = [
-  { label: "Carina Ban", value: "Carina", isDefault: true },
+  { label: "Someone", value: "Someone", isDefault: true },
   { label: "Rebeca Gros", value: "Rebeca" },
 ];
 

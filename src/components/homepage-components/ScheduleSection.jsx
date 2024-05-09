@@ -20,20 +20,22 @@ function ScheduleSection() {
             </h2>
             <p className="text-hope-blackcyan text-center max-w-sm sm:text-sm md:max-w-md md:text-md lg:max-w-lg lg:text-lg lg:text-start xl:max-w-xl xl:text-xl">
               Bucură-te de fiecare moment al zilei în cadrul taberei! 🌅 Fiecare
-              seară aduce cu sine o experiență specială de închinare și
-              învățătură biblică. Împreună, ne ridicăm în cântare și rugăciune,
-              descoperind frumusețea și înțelepciunea Cuvântului lui Dumnezeu și
-              crescând în legătură cu El și unii cu alții. Fiecare seară este
-              unică, plină de emoții și încărcată cu inspirație divină. Hai să
-              ne întâlnim și să trăim împreună aceste momente spirituale de
-              neuitat! 🙏✨
+              seară este unică, plină de emoții și aduce cu sine o experiență
+              specială de închinare și învățătură biblică și momente
+              distractive. În Hope Camp avem momente de rugăciune, închinare,
+              ascultarea mesajului biblic, întâlniri pe grupe, activități
+              distractive, quizz, momente de relaxare, activități sportive,
+              ieșiri, drumeție etc. Hai să ne întâlnim și să trăim împreună
+              aceste momente spirituale de neuitat! 🙏✨
             </p>
           </div>
 
           <div className="mt-8 flex flex-col items-center gap-2 w-full lg:w-1/2 lg:mt-0">
             <div className="flex flex-col items-center">
               <p className="text-3xl lg:text-5xl xl:text-6xl">🫢</p>
-              <p className="text-hope-blackcyan text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl">coming soon</p>
+              <p className="text-hope-blackcyan text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl">
+                coming soon
+              </p>
             </div>
             {/* {scheduleDays.map((schedule, index) => (
               <ScheduleDay
