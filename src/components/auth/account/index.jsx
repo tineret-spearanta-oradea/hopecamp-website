@@ -24,29 +24,31 @@ const Account = () => {
   const { authData, userData, userLoggedIn, loading, error } = useAuth();
   const navigate = useNavigate();
 
-  if (
-    !loading &&
-    (userData === null || userData === undefined || !userLoggedIn) &&
-    alreadyLoggedIn !== null
-  ) {
-    return (
-      <div className="text-center">
-        <ErrorAlert
-          messages={[
-            <>
-              Am întampinat o eroare. Dacǎ eroarea insistǎ, te rugam sa iei
-              legatura cu noi la
-              <br />
-              <a className="text-hope-lightcyan" href={contactInfo.whatsapp}>
-                {contactInfo.phone}
-              </a>{" "}
-            </>,
-          ]}
-          displayMode={"popup"}
-        />
-      </div>
-    );
-  }
+  // I'm commenting this since the error appears before the data, at register time.
+  // TODO: Review this and make it work as expected
+  // if (
+  //   !loading &&
+  //   (userData === null || userData === undefined || !userLoggedIn) &&
+  //   alreadyLoggedIn !== null
+  // ) {
+  //   return (
+  //     <div className="text-center">
+  //       <ErrorAlert
+  //         messages={[
+  //           <>
+  //             Am întampinat o eroare. Dacǎ eroarea insistǎ, te rugam sa iei
+  //             legatura cu noi la
+  //             <br />
+  //             <a className="text-hope-lightcyan" href={contactInfo.whatsapp}>
+  //               {contactInfo.phone}
+  //             </a>{" "}
+  //           </>,
+  //         ]}
+  //         displayMode={"popup"}
+  //       />
+  //     </div>
+  //   );
+  // }
 
   if (!userLoggedIn) {
     return <Navigate to={pages.login} replace={true} />;
