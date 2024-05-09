@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Question from "./Question";
 import { Link } from "react-router-dom";
 import {
@@ -95,7 +95,7 @@ export default function FaqSection() {
           poți dona pentru suportul altor cheltuieli ale taberei precum sunet
           sau invitați. Scrie-ne pe <a href={contactInfo.whatsapp}>Whatsapp</a>{" "}
           la {contactInfo.phone} sau dăruiește direct cash, Revolut sau BT pay
-          conform posibilităților de plată a taberei."
+          conform posibilităților de plată a taberei.&quot;
         </>
       ),
     },
