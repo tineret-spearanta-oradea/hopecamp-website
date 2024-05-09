@@ -45,7 +45,7 @@ function HeroSection() {
             Tabăra pe care nu vrei să o ratezi
           </p>
           <p
-            class="bg-gradient-to-r from-hope-darkcyan to-hope-orange inline-block text-transparent bg-clip-text
+            className="bg-gradient-to-r from-hope-darkcyan to-hope-orange inline-block text-transparent bg-clip-text
             text-xl md:text-2xl lg:text-3xl xl:text-5xl"
           >
             {countdown}
