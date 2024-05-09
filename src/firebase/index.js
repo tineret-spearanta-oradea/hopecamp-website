@@ -73,7 +73,7 @@ export const deleteUserFromSystem = async (uid) => {
   try {
     // TODO: find a proper solution for this
     // await doDeleteAuthUser(); // this is not supported. right now we'll let the auth user be
-    await deleteUserData(uid);
+    // await deleteUserData(uid);
   } catch (authError) {
     console.error("Error deleting auth user:", authError);
   }
