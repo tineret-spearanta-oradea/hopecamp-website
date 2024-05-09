@@ -48,9 +48,10 @@ export const registerAndCreateUser = async (formData, imageFile) => {
       return { success: true };
     } catch (createError) {
       console.error("Error creating user data:", createError);
-      await doDeleteAuthUser().catch((deleteError) => {
-        console.error("Error deleting auth user:", deleteError);
-      });
+      //TODO: Rethink this logic
+      // await doDeleteAuthUser().catch((deleteError) => {
+      //   console.error("Error deleting auth user:", deleteError);
+      // });
       return { success: false, message: "Error creating user!" };
     }
   } catch (authError) {
