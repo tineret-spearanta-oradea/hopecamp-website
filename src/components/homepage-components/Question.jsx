@@ -23,7 +23,7 @@ function Question(props) {
           </span>
         </div>
         {isOpen && (
-          <div className="bg-hope-orange flex text-lg max-w-100 rounded-lg p-3 my-1 lg:text-sm w-full lg:w-96 xl:w-100">
+          <div className="bg-hope-orange flex max-w-100 rounded-lg p-3 my-1  w-full lg:w-96 xl:w-100 text-sm lg:text-base">
             <p className="text-hope-blackcyan">{props.answer}</p>
           </div>
         )}
