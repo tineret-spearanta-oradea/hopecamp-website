@@ -34,7 +34,7 @@ function Question(props) {
 
 Question.propTypes = {
   question: PropTypes.string.isRequired,
-  answer: PropTypes.string.isRequired,
+  answer: PropTypes.object.isRequired,
 };
 
 export default Question;
