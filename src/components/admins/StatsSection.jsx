@@ -41,7 +41,7 @@ const StatsSection = ({ setSelectedSection }) => {
 
       setAverageAge((totalAge / allUsersResponse.length).toFixed(2) || 0);
       setOccupancyPercentage(
-        ((confirmedUsersNumber / MaxOccupancy) * 100).toFixed(2)
+        ((allUsersResponse.length / MaxOccupancy) * 100).toFixed(2)
       );
 
       const groupedBySignupDate = allUsersResponse.reduce((acc, user) => {

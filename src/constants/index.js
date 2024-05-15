@@ -26,7 +26,7 @@ export const churchOptions = [
   { label: "alta: ", value: "biserica...", isOther: true },
 ];
 
-export const MaxOccupancy = 150;
+export const MaxOccupancy = 130;
 
 export const MinimumAge = 16;
 
