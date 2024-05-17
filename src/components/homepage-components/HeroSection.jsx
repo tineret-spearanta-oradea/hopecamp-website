@@ -38,21 +38,26 @@ function HeroSection() {
           <h1 className="text-hope-darkcyan text-center text-4xl font-black sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl">
             {CampTitle.CoreName} {CampTitle.Edition}
           </h1>
+          <h3 className="text-hope-orange text-lg font-bold sm:text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4ßxl">
+            {dateRange.startDate.getDate()}-{dateRange.endDate.getDate()}{" "}
+            {dateRange.startDate.toLocaleString("ro", { month: "long" })} @
+            Someșu Rece - Cluj
+          </h3>
           <p
             className="text-hope-blackcyan text-center text-sm  max-w-44 sm:text-base  lg:text-lg lg:max-w-lg xl:text-xl 2xl:text-2xl
             m-2 md:m-4"
           >
             Tabăra pe care nu vrei să o ratezi
           </p>
+          <div className="pt-8">
+            <FilledButton text="ÎNSCRIE-TE" route={pages.register} />
+          </div>
           <p
             className="bg-gradient-to-r from-hope-darkcyan to-hope-orange inline-block text-transparent bg-clip-text
             text-xl md:text-2xl lg:text-3xl xl:text-5xl"
           >
             {countdown}
           </p>
-          <div className="pt-10">
-            <FilledButton text="ÎNSCRIE-TE" route={pages.register} />
-          </div>
         </div>
       </section>
       <div className="spacer hero-divider"></div>
