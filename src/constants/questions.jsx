@@ -23,11 +23,12 @@ const faqData = [
   },
   {
     question: "După ce mă înscriu ce trebuie să fac?",
-    answer: (
-      <>
-        {" "}
-        După ce te înscrii aștepți confirmarea de la noi printr-un mesaj pe care
-        trebuie să-l primești în maxim 3 zile.
+    answer:(
+      <> 
+        După ce te înscrii aștepți confirmarea de la noi printr-un mesaj pe care trebuie să-l primești în maxim 3 zile. 
+        Dupa asta, trebuie sa achiti avansul de {sumToPay.deposit} RON pana la data de {" "}
+        {dateRange.depositPaymentDueDate.getDate()}{" "}
+        {dateRange.depositPaymentDueDate.toLocaleString("ro", { month: "long" })}
       </>
     ),
   },
@@ -35,13 +36,21 @@ const faqData = [
     question: "Care este taxa taberei și ce include aceasta?",
     answer: (
       <>
-        Taxa taberei este de {sumToPay.normal} RON. Dacă ești în situația în
-        care din cauza prețului mare nu îți permiți să vii în tabără cu noi, te
-        rugăm să ne contactezi pe numărul de WhatsApp al tineretului sau să-i
-        scrii liderului Adelin Duca. Taxa include{" "}
+        - Taxa taberei este de <strong>{sumToPay.normal} RON.</strong><br/>
+        - Pentru persoanele care au <strong>membru de familie in tabara</strong> (sot sau frate/sora) suma este de <strong>{sumToPay.withFamilyMember} RON.</strong><br/>
+        - Dacă ești în situația în
+        care din cauza prețului mare nu îți permiți să vii în tabără cu noi,
+        te rugăm să ne contactezi pe numărul de WhatsApp al tineretului sau
+        să-i scrii liderului Adelin Duca. <br/>
+        - Taxa include{" "}
         {getNumberOfDays(dateRange.startDate, dateRange.endDate)} nopți de
         cazare, mâncarea, participarea la toate sesiunile taberei și toate
-        activitățile de echipă și distractive ale Hope Camp.
+        activitățile de echipă și distractive ale Hope Camp.<br/>
+        - <strong>Avansul de {sumToPay.deposit} RON</strong> trebuie achitat pana la data de {" "}
+        <strong>
+          {dateRange.depositPaymentDueDate.getDate()}{" "}
+          {dateRange.depositPaymentDueDate.toLocaleString("ro", { month: "long" })}
+        </strong>
       </>
     ),
   },
@@ -50,11 +59,10 @@ const faqData = [
     question: "Care sunt modalitățile de plată?",
     answer: (
       <>
-        Poți plăti cash la {payTaxToOptions[0].label} sau la{" "}
-        {payTaxToOptions[1].label}. De asemenea, poți plăti prin transfer pe
-        Revolut sau BT Pay la Eugen Petrila sau una din fetele amintite. Pentru
-        alte variante sau ajutor te rugăm să ne scrii pe whatsapp pe numărul de
-        la tineret:
+        - Poți plăti cash / Revolut / BT Pay la {payTaxToOptions[0].label}. <br/>
+        - Poți plăti la {payTaxToOptions[1].label}.<br/>
+        - Pentru alte variante sau ajutor te rugăm să ne scrii pe numărul de la tineret: {" "}
+        <Link to={contactInfo.whatsapp}>{contactInfo.phone}</Link>
       </>
     ),
   },
