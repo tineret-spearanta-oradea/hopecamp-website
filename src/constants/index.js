@@ -32,7 +32,7 @@ export const MinimumAge = 16;
 
 export const payTaxToOptions = [
   { label: "Rebeca Gros", value: "Rebeca", isDefault: true },
-  { label: "Eugen Petrila", value: "Eugen" },
+  { label: "Eugen Petrila (pe Revolut)", value: "Eugen" },
 ];
 
 export const transportOptions = [
