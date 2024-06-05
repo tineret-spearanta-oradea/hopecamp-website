@@ -430,7 +430,7 @@ const UserTable = (loggedInUserData) => {
             (property) => property.isFilterable
           )}
           operators={["="]}
-          data={filteredUserList}
+          unfilteredData={userList}
           setData={setFilteredUserList}
         />
       </div>

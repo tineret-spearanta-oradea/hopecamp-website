@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 
 //TODO #80: Add multiple filter options
-const FilterTable = ({ properties, operators = ["="], data, setData }) => {
+const FilterTable = ({
+  properties,
+  operators = ["="],
+  unfilteredData,
+  setData,
+}) => {
   const [column, setColumn] = useState(properties[0].accessor);
   const [operator, setOperator] = useState(operators[0]);
   const [value, setValue] = useState("");
@@ -31,7 +36,7 @@ const FilterTable = ({ properties, operators = ["="], data, setData }) => {
   const handleValueChange = (e) => {
     setValue(e.target.value);
 
-    const filteredData = data.filter((row) => {
+    const filteredData = unfilteredData.filter((row) => {
       return row[column].toLowerCase().includes(e.target.value.toLowerCase());
     });
 
@@ -49,7 +54,7 @@ const FilterTable = ({ properties, operators = ["="], data, setData }) => {
     // ]);
     // setCreatedFilters([]);
 
-    const filteredData = data.filter((row) => {
+    const filteredData = unfilteredData.filter((row) => {
       return row[column].toLowerCase().includes(value.toLowerCase());
     });
 
@@ -58,12 +63,12 @@ const FilterTable = ({ properties, operators = ["="], data, setData }) => {
 
   const handleRemoveCreatedFilter = () => {
     setCreatedFilters([]);
-    setData(data);
+    setData(unfilteredData);
   };
 
   const handleRemoveAppliedFilter = () => {
     setAppliedFilters([]);
-    setData(data);
+    setData(unfilteredData);
   };
 
   return (
