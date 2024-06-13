@@ -196,7 +196,8 @@ export const getAllMessages = async () => {
   messages.forEach(async (message, index) => {
     message.uid = docSnap.docs[index].id;
     message.sentDate = message.sentDate.toDate().toLocaleString();
-
+    
+    console.log(message.isRead);
     // Join on the users table to retrieve user name and phone
     const userData = await getUserData(message.uid);
     if (userData) {
