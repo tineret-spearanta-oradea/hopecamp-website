@@ -7,7 +7,7 @@ const FilterTable = ({
   unfilteredData,
   setData,
 }) => {
-  const [column, setColumn] = useState(properties[0].accessor);
+  const [column, setColumn] = useState(properties[1].accessor); // sets the default to name
   const [operator, setOperator] = useState(operators[0]);
   const [value, setValue] = useState("");
   const [createdFilters, setCreatedFilters] = useState([]);

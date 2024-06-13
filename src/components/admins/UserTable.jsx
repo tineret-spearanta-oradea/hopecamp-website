@@ -174,6 +174,7 @@ const UserTable = (loggedInUserData) => {
         width: 0,
         isHidden: true,
         isExpandable: true,
+        isFilterable: true,
       },
       {
         Header: "Email",
