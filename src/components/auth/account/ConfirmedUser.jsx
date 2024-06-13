@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Navigate, Link, useNavigate } from "react-router-dom";
 import { writeMessageData, getMessageData } from "../../../firebase/database";
 import MessageData from "../../../models/MessageData";
-import { contactInfo, dateRange, pages } from "../../../constants";
+import { contactInfo, dateRange, pages, MaxMessageLength } from "../../../constants";
 import FormButton from "../FormButton";
+
 
 const ConfirmedUser = ({ userData }) => {
   const navigate = useNavigate();
   const [messageText, setMessageText] = useState("");
   const [isOpenDetails, setIsOpenDetails] = useState(false);
+  const [messageError, setMessageError] = useState("");
 
   const seeMyDetails = () => {
     setIsOpenDetails(!isOpenDetails);
@@ -40,7 +42,11 @@ const ConfirmedUser = ({ userData }) => {
   };
 
   const handleMessageSend = async () => {
-    const messageText = document.querySelector("textarea").value;
+    if (messageText.length > MaxMessageLength) {
+      setMessageError(`Mesajul nu poate depăși ${MaxMessageLength} caractere.`);
+      return;
+    }
+    setMessageError(""); // Clear previous error messages
     const messageData = new MessageData(userData.uid, messageText);
     await writeMessageData(messageData);
     setMessageText(messageText);
