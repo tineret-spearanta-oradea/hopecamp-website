@@ -27,8 +27,8 @@ const Register = () => {
   const [agreementChecked, setAgreementChecked] = useState(false);
   const [hasAlreadyAutoFilled, setHasAlreadyAutoFilled] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
-  //when disabling the registration, this should be set to true (or get the boolean from the db and set it in useEffect)
-  const [isRegistrationDisabled, setIsRegistrationDisabled] = useState(false);
+  //when disabling the registration, this should be set to true (or get the boolean from the db and set it in useEffect). When enabling do the opposite.
+  const [isRegistrationDisabled, setIsRegistrationDisabled] = useState(true);
 
   //getting the 'mode' url param
   const location = useLocation();
