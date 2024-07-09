@@ -15,8 +15,16 @@ const Login = () => {
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
 
+  const queryParameters = new URLSearchParams(window.location.search);
+  const origin = queryParameters.get("origin");
+
   if (userLoggedIn) {
-    return <Navigate to={pages.account} replace={true} />;
+    console.log(origin);
+    return origin ? (
+      <Navigate to={`/${origin}`} replace={true} />
+    ) : (
+      <Navigate to={pages.account} replace={true} />
+    );
   }
 
   const onSubmit = async (e) => {
@@ -72,7 +80,11 @@ const Login = () => {
         />
         <div className="text-right text-sm">
           <Link
-            to={pages.resetPassword}
+            to={
+              origin
+                ? pages.resetPassword + `?origin=${origin}`
+                : pages.resetPassword
+            }
             className="hover:underline font-bold text-hope-darkcyan"
           >
             Am uitat parola

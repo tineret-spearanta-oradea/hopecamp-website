@@ -10,6 +10,7 @@ import Logout from "./components/auth/logout";
 import { pages } from "./constants";
 import "./index.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import UploadPhoto from "./pages/UploadPhoto.jsx";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path={pages.logout} element={<Logout />} />
           <Route path={pages.adminsDashboard} element={<AdminsDashboard />} />
           <Route path={pages.gallery} element={<GalleryPage />}></Route>
+          <Route path={pages.uploadPhoto} element={<UploadPhoto />}></Route>
         </Routes>
       </BrowserRouter>
     </>

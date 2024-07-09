@@ -10,16 +10,23 @@ import {
 // This file will call the functions related to the Firebase Storage
 
 const storage = getStorage();
-const usersRef = ref(storage, "users");
 
 export const uploadImageAndGetUrl = async (
   file,
   uid,
   email = null,
-  name = null
+  name = null,
+  folder = "users"
 ) => {
   try {
-    const imageRef = ref(usersRef, uid + ".jpg"); // add .jpg to the end of the filename
+    let imageRef;
+    if (folder === "users") {
+      const usersRef = ref(storage, "users");
+      imageRef = ref(usersRef, uid + ".jpg"); // add .jpg to the end of the filename
+    } else {
+      const daysRef = ref(storage, `days/${folder}`);
+      imageRef = ref(daysRef, uid + ".jpg");
+    }
     const snapshot = await uploadBytes(imageRef, file);
     const downloadUrl = await getDownloadURL(snapshot.ref);
 

@@ -14,6 +14,9 @@ const ResetPassword = () => {
   const [isResetting, setIsResetting] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(false);
 
+  const queryParameters = new URLSearchParams(window.location.search);
+  const origin = queryParameters.get("origin");
+
   const onSubmit = async (e) => {
     e.preventDefault();
     // Call firebase reset password
@@ -51,7 +54,10 @@ const ResetPassword = () => {
             </p>
           )}
           {isEmailSent && (
-            <Link to={pages.login} className="">
+            <Link
+              to={origin ? pages.login + `?origin=${origin}` : pages.login}
+              className=""
+            >
               <FormButton
                 action="back"
                 disabled={isResetting}

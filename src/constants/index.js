@@ -18,6 +18,7 @@ export const pages = {
   account: "/cont",
   adminsDashboard: "/admin",
   gallery: "/galerie",
+  uploadPhoto: "/momente",
 };
 
 export const churchOptions = [
