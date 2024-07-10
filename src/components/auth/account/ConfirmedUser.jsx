@@ -68,11 +68,13 @@ const ConfirmedUser = ({ userData }) => {
           className="w-full h-24 p-2 mt-2 border rounded-md resize-none"
           placeholder={messageText}
           disabled
+          maxLength="500" 
         ></textarea>
       ) : (
         <textarea
           className="w-full h-24 p-2 mt-2 border rounded-md resize-none"
           placeholder="Gând sau sugestie... (opțional)"
+          maxLength="500"
         ></textarea>
       )}
 
