@@ -50,54 +50,72 @@ const ConfirmedUser = ({ userData }) => {
     <div className="mt-2 space-y-2">
       {userData.isAdmin && (
         <div className="text-center">
-          <FormButton action="submit" onClick={navigateToAdminsDashboard}>
-            ADMINS DASHBOARD
+          <FormButton action="next" onClick={navigateToAdminsDashboard}>
+            ADMINS DASHBOARD 📊
           </FormButton>
         </div>
       )}
-      <p>
-        🗓️ Ne bucurăm că ai ales să vii cu noi in tabără! Au mai ramas{" "}
-        {getRemainingDays()} zile până la tabară, abia aşteptăm!
-      </p>
-      <p>
-        💭Între timp, dacă vrei, ne poți lăsa aici un gând sau o sugestie
-        referitoare la tabără:
-      </p>
-      {messageText ? (
-        <textarea
-          className="w-full h-24 p-2 mt-2 border rounded-md resize-none"
-          placeholder={messageText}
-          disabled
-          maxLength="500" 
-        ></textarea>
-      ) : (
-        <textarea
-          className="w-full h-24 p-2 mt-2 border rounded-md resize-none"
-          placeholder="Gând sau sugestie... (opțional)"
-          maxLength="500"
-        ></textarea>
-      )}
+      {new Date() > dateRange.startDate ? (
+        <div>
+          <p className="">
+            📷 Pe butonul de mai jos poti incarca poze din tabara!
+          </p>
+          <div className="text-center">
+            <FormButton action="submit" onClick={navigateToAdminsDashboard}>
+              ÎNCARCĂ POZE
+            </FormButton>
+          </div>
 
-      <div className="text-right">
-        {messageText ? (
-          <FormButton action="submit" disabled>
-            Ai trimis deja 🔒
-          </FormButton>
-        ) : (
-          <FormButton
-            action="submit"
-            onClick={handleMessageSend}
-            extraStyles="mb-2"
-          >
-            Trimite mesaj
-          </FormButton>
-        )}
-      </div>
-      <p>
-        📝 Mai jos poți să vezi datele cu care te-ai înscris in tabără. Daca
-        doreşti să le modifici scrie-ne folosind câmpul și butonul de mai sus,
-        sau pe WhatsApp la {contactInfo.phone}.
-      </p>
+          <p className="">
+            ⛺️ Tabăra a început deja! ai intrebări sau nelămuriri, te rugăm să
+            ne contactezi la {contactInfo.phone}.
+          </p>
+        </div>
+      ) : (
+        <>
+          <p>
+            🗓️ Ne bucurăm că ai ales să vii cu noi in tabără! Au mai ramas{" "}
+            {getRemainingDays()} zile până la tabară, abia aşteptăm!
+          </p>
+          <p>
+            💭Între timp, dacă vrei, ne poți lăsa aici un gând sau o sugestie
+            referitoare la tabără:
+          </p>
+          {messageText ? (
+            <textarea
+              className="w-full h-24 p-2 mt-2 border rounded-md resize-none"
+              placeholder={messageText}
+              disabled
+            ></textarea>
+          ) : (
+            <textarea
+              className="w-full h-24 p-2 mt-2 border rounded-md resize-none"
+              placeholder="Gând sau sugestie... (opțional)"
+            ></textarea>
+          )}
+
+          <div className="text-right">
+            {messageText ? (
+              <FormButton action="submit" disabled>
+                Ai trimis deja 🔒
+              </FormButton>
+            ) : (
+              <FormButton
+                action="submit"
+                onClick={handleMessageSend}
+                extraStyles="mb-2"
+              >
+                Trimite mesaj
+              </FormButton>
+            )}
+          </div>
+          <p>
+            📝 Mai jos poți să vezi datele cu care te-ai înscris in tabără. Daca
+            doreşti să le modifici scrie-ne folosind câmpul și butonul de mai
+            sus, sau pe WhatsApp la {contactInfo.phone}.
+          </p>
+        </>
+      )}
       <div className="text-center">
         <FormButton action="back" onClick={seeMyDetails} extraStyles="mt-2">
           {isOpenDetails ? "Ascunde 🔼" : "Vezi datele tale 🔽 "}
