@@ -66,5 +66,3 @@ export const contactInfo = {
   whatsappCommunity: "https://chat.whatsapp.com/KQLxA8YnH5l5Yfk5p2Ko0W",
   youtube: "https://www.youtube.com/@TineretSperantaOradea",
 };
-
-export const MaxMessageLength = 300;
