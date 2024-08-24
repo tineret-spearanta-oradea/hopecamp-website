@@ -6,11 +6,16 @@ import { CampTitle, pages, dateRange } from "../../constants";
 function HeroSection() {
   const calculateCountdown = () => {
     const currentDate = new Date();
-    const targetDate = dateRange.startDate;
-    const difference = targetDate - currentDate;
+    const difference = dateRange.startDate - currentDate;
 
-    if (difference <= 0) {
-      return CampTitle.CoreName + " " + CampTitle.Edition + " is in progress!";
+    if (difference <= 0 && dateRange.endDate >= currentDate) {
+      return <p className="text-sm text-hope-blackcyan">Tabăra a început!</p>;
+    } else if (dateRange.endDate < currentDate) {
+      return (
+        <p className="text-sm text-hope-blackcyan">
+          Apasă butonul de mai sus pentru a vedea galeria din tabără!
+        </p>
+      );
     }
 
     const seconds = Math.floor((difference / 1000) % 60);
@@ -50,7 +55,12 @@ function HeroSection() {
             Tabăra pe care nu vrei să o ratezi
           </p>
           <div className="pt-8">
-            <FilledButton text="ÎNSCRIE-TE" route={pages.register} />
+            <FilledButton
+              text="GALERIE HC#5"
+              route={
+                "https://drive.google.com/drive/u/1/folders/1eh_ifVkcLBtLQSwsrnO7iNoe1uyUpyj_"
+              }
+            />
           </div>
           <p
             className="bg-gradient-to-r from-hope-darkcyan to-hope-orange inline-block text-transparent bg-clip-text

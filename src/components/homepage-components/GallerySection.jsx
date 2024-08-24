@@ -59,8 +59,8 @@ function GallerySection() {
               )}
             </div>
           </div>
-          <FilledButton text="Vezi galerie" route={pages.gallery} />
-          <p className="text-xs">din tabere trecute</p>
+          <FilledButton text="Galerie tabere trecute" route={pages.gallery} />
+          {/* <p className="text-xs">din tabere trecute</p> */}
         </div>
       </section>
     </>
