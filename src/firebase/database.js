@@ -10,7 +10,9 @@ import {
   getDocs,
   getDoc,
   deleteDoc,
+  orderBy,
 } from "firebase/firestore";
+import { formatDate } from "../utils";
 
 export const writeUserData = async (userData) => {
   const normalizedUserData = Object.fromEntries(
@@ -28,10 +30,34 @@ export const getUserData = async (uid) => {
   const docRef = doc(db, "users", uid);
   const docSnap = await getDoc(docRef);
 
+  //TODO: *kind of optional*: Add this to a transformation function
   if (docSnap.exists()) {
     //add uid to the returned data
     const userData = docSnap.data();
     userData.uid = docSnap.id;
+    var signupDate, startDate, endDate;
+    if (userData.signupDate instanceof Timestamp) {
+      signupDate = userData.signupDate.toDate();
+    } else {
+      signupDate = new Date(userData.signupDate);
+    }
+    if (userData.startDate instanceof Timestamp) {
+      startDate = userData.startDate.toDate();
+    } else {
+      startDate = new Date(userData.startDate);
+    }
+    if (userData.endDate instanceof Timestamp) {
+      endDate = userData.endDate.toDate();
+    } else {
+      endDate = new Date(userData.endDate);
+    }
+
+    const diffTime = Math.abs(endDate - startDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    userData.numberOfDays = diffDays;
+    userData.signupDate = signupDate.toLocaleString();
+    userData.startDate = startDate.toLocaleDateString();
+    userData.endDate = endDate.toLocaleDateString();
     return userData;
   }
   return null;
@@ -48,15 +74,16 @@ export const getArchivedUserData = async (email) => {
   }
   return null;
 };
-
 export const getAllUsers = async () => {
   const docRef = collection(db, "users");
-  const docSnap = await getDocs(docRef);
+  const q = query(docRef, orderBy("signupDate"));
+  const docSnap = await getDocs(q);
   const users = docSnap.docs.map((doc) => doc.data());
 
-  // transforming the data to march the structure of the table
+  // transforming the data to match the structure of the table
   users.forEach((user, index) => {
     user.uid = docSnap.docs[index].id;
+    user.age = parseInt(user.age);
 
     var signupDate, startDate, endDate;
     if (user.signupDate instanceof Timestamp) {
@@ -78,9 +105,10 @@ export const getAllUsers = async () => {
     const diffTime = Math.abs(endDate - startDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     user.numberOfDays = diffDays;
-    user.signupDate = signupDate.toLocaleString();
-    user.startDate = startDate.toLocaleDateString();
-    user.endDate = endDate.toLocaleDateString();
+    // Changing the format of these dates might break the updateUser function
+    user.signupDate = formatDate(signupDate, "yyyy-mm-dd hh:mm:ss");
+    user.startDate = formatDate(startDate);
+    user.endDate = formatDate(endDate);
   });
 
   return users;
@@ -98,14 +126,19 @@ export const updateUserData = async (userToUpdate) => {
       .filter(([key]) => key !== "numberOfDays")
   );
   // transform date fields
-  normalizedUserData.startDate = Timestamp.fromDate(
-    new Date(normalizedUserData.startDate)
-  );
-  normalizedUserData.endDate = Timestamp.fromDate(
-    new Date(normalizedUserData.endDate)
-  );
-  // for debugging:
-  // console.log(uid);
+  const startDate = new Date(normalizedUserData.startDate);
+  const endDate = new Date(normalizedUserData.endDate);
+  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    throw new Error(
+      "Invalid date range: " +
+        normalizedUserData.startDate +
+        " - " +
+        normalizedUserData.endDate
+    );
+  }
+  normalizedUserData.startDate = Timestamp.fromDate(startDate);
+  normalizedUserData.endDate = Timestamp.fromDate(endDate);
+
   const docRef = doc(db, "users", uid);
   const docSnap = await getDoc(docRef);
 
@@ -163,7 +196,8 @@ export const getAllMessages = async () => {
   messages.forEach(async (message, index) => {
     message.uid = docSnap.docs[index].id;
     message.sentDate = message.sentDate.toDate().toLocaleString();
-
+    
+    console.log(message.isRead);
     // Join on the users table to retrieve user name and phone
     const userData = await getUserData(message.uid);
     if (userData) {

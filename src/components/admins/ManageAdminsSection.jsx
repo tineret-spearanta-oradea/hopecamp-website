@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import LoadingIcon from "../LoadingIcon";
 import { getAllUsers } from "../../firebase/database";
 import { updateUserData } from "../../firebase/database";
+import FormButton from "../auth/FormButton";
 
 const ManageAdminsSection = (loggedInUserData) => {
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
@@ -50,8 +51,11 @@ const ManageAdminsSection = (loggedInUserData) => {
       try {
         updateUserData(userToUpdate);
         setAddAdminEmail("");
-        //TODO: there is a bug with duplicates in the userList. Have to fix it later. but the functionality is there
-        setUserList([...userList, userToUpdate]);
+        setUserList(
+          userList.map((user) =>
+            user.uid === userToUpdate.uid ? userToUpdate : user
+          )
+        );
         // TODO: change alert with ui component
         alert("Userul a fost adaugat ca admin");
       } catch (e) {
@@ -70,14 +74,21 @@ const ManageAdminsSection = (loggedInUserData) => {
     }
 
     if (
-      confirm(`Esti sigur ca vrei sa adaugi pe ${userToUpdate.name} ca admin?`)
+      confirm(
+        `Esti sigur ca vrei sa adaugi pe ${userToUpdate.name} ca SUPER admin?`
+      )
     ) {
       userToUpdate.isConfirmed = true;
       userToUpdate.isAdmin = true;
       userToUpdate.isSuperAdmin = true;
       try {
         updateUserData(userToUpdate);
-        setUserList([...userList, userToUpdate]);
+        setAddSuperAdminEmail("");
+        setUserList(
+          userList.map((user) =>
+            user.uid === userToUpdate.uid ? userToUpdate : user
+          )
+        );
         // TODO: change alerts with ui component
         alert("Userul a fost adaugat ca SUPER admin");
       } catch (e) {
@@ -97,12 +108,17 @@ const ManageAdminsSection = (loggedInUserData) => {
     }
 
     if (
-      confirm(`Esti sigur ca vrei sa adaugi pe ${userToUpdate.name} ca admin?`)
+      confirm(`Esti sigur ca vrei sa stergi pe ${userToUpdate.name} ca admin?`)
     ) {
       userToUpdate.isAdmin = false;
       try {
         updateUserData(userToUpdate);
-        setUserList([...userList, userToUpdate]);
+        setDeleteAdminEmail("");
+        setUserList(
+          userList.map((user) =>
+            user.uid === userToUpdate.uid ? userToUpdate : user
+          )
+        );
         // TODO: change alerts with ui component
         alert("Userul a fost scos din lista de admini.");
       } catch (e) {
@@ -121,12 +137,19 @@ const ManageAdminsSection = (loggedInUserData) => {
     }
 
     if (
-      confirm(`Esti sigur ca vrei sa adaugi pe ${userToUpdate.name} ca admin?`)
+      confirm(
+        `Esti sigur ca vrei sa stergi pe ${userToUpdate.name} ca SUPER admin?`
+      )
     ) {
       userToUpdate.isSuperAdmin = false;
       try {
         updateUserData(userToUpdate);
-        setUserList([...userList, userToUpdate]);
+        setDeleteSuperAdminEmail("");
+        setUserList(
+          userList.map((user) =>
+            user.uid === userToUpdate.uid ? userToUpdate : user
+          )
+        );
         // TODO: change alerts with ui component
         alert(
           "Userul a fost scos din lista de SUPER admini. Acum este doar admin normal."
@@ -145,12 +168,14 @@ const ManageAdminsSection = (loggedInUserData) => {
         <div>
           <ManageAdminsInput
             manageAdminAction={addAdmin}
+            value={addAdminEmail}
             manageEmailToAdd={setAddAdminEmail}
-            label="Adaugǎ admin"
-            buttonText="Adaugǎ"
+            label="Adaugă admin"
+            buttonText="Adaugă"
           />
           <ManageAdminsInput
             manageAdminAction={deleteAdmin}
+            value={deleteAdminEmail}
             manageEmailToAdd={setDeleteAdminEmail}
             label="Şterge admin"
             buttonText="Şterge"
@@ -167,12 +192,14 @@ const ManageAdminsSection = (loggedInUserData) => {
         <div>
           <ManageAdminsInput
             manageAdminAction={addSuperAdmin}
+            value={addSuperAdminEmail}
             manageEmailToAdd={setAddSuperAdminEmail}
-            label="Adaugǎ SUPER admin"
-            buttonText="Adaugǎ"
+            label="Adaugă SUPER admin"
+            buttonText="Adaugă"
           />
           <ManageAdminsInput
             manageAdminAction={deleteSuperAdmin}
+            value={deleteSuperAdminEmail}
             manageEmailToAdd={setDeleteSuperAdminEmail}
             label="Şterge SUPER admin"
             buttonText="Şterge"
@@ -215,6 +242,7 @@ const AdminsList = ({
 
 const ManageAdminsInput = ({
   manageAdminAction,
+  value,
   manageEmailToAdd,
   label,
   buttonText,
@@ -225,19 +253,17 @@ const ManageAdminsInput = ({
       <input
         type="text"
         placeholder="introdu emailul user-ului"
-        className="p-2 border"
+        className="p-2 border rounded-lg mr-2"
+        value={value}
+        autoComplete="off"
         onChange={(e) => manageEmailToAdd(e.target.value)}
       />
-      <button
+      <FormButton
         onClick={() => manageAdminAction()}
-        className={`mr-2 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white ${
-          buttonText === "Adaugǎ"
-            ? "bg-green-500 hover:bg-green-700 focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-            : "bg-red-500 hover:bg-red-700 focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-        }`}
+        action={buttonText === "Adaugă" ? "next" : "delete"}
       >
         {buttonText}
-      </button>
+      </FormButton>
     </div>
   );
 };

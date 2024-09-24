@@ -1,9 +1,9 @@
 import {
   createUserWithEmailAndPassword,
   deleteUser,
-  fetchSignInMethodsForEmail,
   signInWithEmailAndPassword,
   signOut,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "./firebase-config";
 

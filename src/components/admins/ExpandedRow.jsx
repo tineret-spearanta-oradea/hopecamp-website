@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import FormButton from "../auth/FormButton";
 
 const ExpandedRow = ({
   row,
@@ -28,12 +29,12 @@ const ExpandedRow = ({
           <div className="flex place-content-between">
             <h2 className="text-xl font-bold">Detalii: {row.original.name}</h2>
             {isSuperAdmin && (
-              <button
+              <FormButton
                 onClick={() => deleteUser(row.original.uid)}
-                className="mr-2 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                action="delete"
               >
-                Sterge
-              </button>
+                Şterge
+              </FormButton>
             )}
           </div>
           {row.original.imageUrl && (
@@ -87,29 +88,30 @@ const ExpandedRow = ({
           </div>
           <div className="mt-4 flex justify-end">
             {editingRowId === row.original.uid ? (
-              <button
+              <FormButton
                 onClick={() => {
                   updateUser(editedUser);
                   setEditingRowId(null);
                 }}
-                className="mr-2 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                action="submit"
               >
                 Save
-              </button>
+              </FormButton>
             ) : (
-              <button
+              <FormButton
                 onClick={() => setEditingRowId(row.original.uid)}
-                className="mr-2 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-cyan-500 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                action="next"
               >
                 Edit
-              </button>
+              </FormButton>
             )}
-            <button
-              onClick={() => handleMoreInfo()}
-              className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-400 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            <FormButton
+              onClick={handleMoreInfo}
+              action="back"
+              extraStyles="ml-4"
             >
               Close
-            </button>
+            </FormButton>
           </div>
         </div>
       </td>

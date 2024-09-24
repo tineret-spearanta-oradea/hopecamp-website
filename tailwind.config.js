@@ -5,7 +5,20 @@ export default {
     "./src/**/*.{js,jsx,ts,tsx,html}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "hope-orange": "#F58726",
+        "hope-lightcyan": "#31A595",
+        "hope-darkcyan": "#0E7E6F",
+        "hope-blackcyan": "#094841",
+        "hope-lightgray": "#D9D9D9",
+        "hope-darkgray": "#5F5F5F",
+        "hope-beige": "#FFF0C8",
+      },
+      spacing: {
+        100: "30rem",
+      },
+    },
   },
   plugins: [],
 };

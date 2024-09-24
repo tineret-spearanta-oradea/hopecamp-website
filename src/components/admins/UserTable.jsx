@@ -2,11 +2,13 @@ import React, { useMemo, useState, useEffect, useRef } from "react";
 import { useTable, useSortBy, useFilters } from "react-table";
 import classNames from "classnames";
 import { getAllUsers } from "../../firebase/database";
-import { sumToPay } from "../../models/Options";
+import { sumToPay } from "../../constants";
 import TableRow from "./TableRow";
 import { updateUserData } from "../../firebase/database";
 import LoadingIcon from "../LoadingIcon";
 import { deleteUserFromSystem } from "../../firebase";
+import FilterTable from "./FilterTable";
+import ErrorAlert from "../ErrorAlert";
 
 const UserTable = (loggedInUserData) => {
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
@@ -14,7 +16,7 @@ const UserTable = (loggedInUserData) => {
   const [filteredUserList, setFilteredUserList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const selectedRowRef = useRef(null);
-  const [filterValue, setFilterValue] = useState(""); // Added state for filter input
+  const [errorAlertMessages, setErrorAlertMessages] = useState([]);
 
   // i use this method because the table doesn't rerender when i change the selectedRowRef.current
   // if i used useRef for the selectedRow, it would have rerendered, but i would have lost the selectedRowRef.current value, since it only updates after a rerender
@@ -38,8 +40,10 @@ const UserTable = (loggedInUserData) => {
         );
       });
     } catch (error) {
-      //TODO: show UI component error
-      alert(error);
+      setErrorAlertMessages((prevMessages) => [
+        ...prevMessages,
+        "Eroare la actualizarea datelor: " + error,
+      ]);
     }
   };
 
@@ -55,8 +59,10 @@ const UserTable = (loggedInUserData) => {
         return prevUserList.filter((user) => user.uid !== uid);
       });
     } catch (error) {
-      //TODO: show UI component error
-      alert(error);
+      setErrorAlertMessages((prevMessages) => [
+        ...prevMessages,
+        "Eroare la actualizarea datelor: " + error,
+      ]);
     }
   };
 
@@ -77,23 +83,29 @@ const UserTable = (loggedInUserData) => {
     fetchData();
   }, []);
 
+  const handleCloseAlert = () => {
+    setErrorAlertMessages([]);
+  };
+
   const handleMoreInfo = (row) => {
-    if (selectedRowRef.current === null) {
-      selectedRowRef.current = row.original.uid;
-    } else {
+    if (
+      row.original === undefined ||
+      selectedRowRef.current === row.original.uid
+    ) {
       selectedRowRef.current = null;
+    } else {
+      selectedRowRef.current = row.original.uid;
     }
     forceRender();
   };
 
-  // Added function to handle filter input change
-  const handleFilterChange = (e) => {
-    setFilterValue(e.target.value);
-    setFilteredUserList(
-      userList.filter((user) =>
-        user.name.toLowerCase().includes(e.target.value.toLowerCase())
-      )
-    );
+  const handleRefreshTable = async () => {
+    setIsLoading(true);
+    setFilteredUserList([]);
+    const allUsersData = await getAllUsers();
+    setUserList(allUsersData);
+    setFilteredUserList(allUsersData);
+    setIsLoading(false);
   };
 
   const handleDownloadTableAsCsv = () => {
@@ -162,6 +174,7 @@ const UserTable = (loggedInUserData) => {
         width: 0,
         isHidden: true,
         isExpandable: true,
+        isFilterable: true,
       },
       {
         Header: "Email",
@@ -169,6 +182,7 @@ const UserTable = (loggedInUserData) => {
         width: 0,
         isHidden: true,
         isExpandable: true,
+        isFilterable: true,
       },
       {
         Header: "Nume",
@@ -177,7 +191,7 @@ const UserTable = (loggedInUserData) => {
         Cell: ({ value, row }) => (
           <span
             className={classNames({
-              "text-green-500": row.original.isAdmin,
+              "text-hope-orange": !row.original.isConfirmed,
             })}
           >
             {value}
@@ -185,6 +199,7 @@ const UserTable = (loggedInUserData) => {
         ),
         isEditable: true,
         isExpandable: true,
+        isFilterable: true,
       },
       {
         Header: "Confirmat",
@@ -233,6 +248,7 @@ const UserTable = (loggedInUserData) => {
         width: 125,
         isEditable: true,
         isExpandable: true,
+        isFilterable: true,
       },
       {
         Header: "Biserică",
@@ -240,6 +256,7 @@ const UserTable = (loggedInUserData) => {
         width: 125,
         isEditable: true,
         isExpandable: true,
+        isFilterable: true,
       },
       {
         Header: "Casier",
@@ -247,6 +264,7 @@ const UserTable = (loggedInUserData) => {
         width: 75,
         isEditable: true,
         isExpandable: true,
+        isFilterable: true,
       },
       {
         Header: "Plătit",
@@ -279,14 +297,14 @@ const UserTable = (loggedInUserData) => {
         ),
       },
       {
-        Header: "Vine in tabarǎ",
+        Header: "Vine in tabară",
         accessor: "startDate",
         width: 0,
         isHidden: true,
         isExpandable: true,
       },
       {
-        Header: "Pleacǎ din tabara",
+        Header: "Pleacă din tabara",
         accessor: "endDate",
         width: 0,
         isHidden: true,
@@ -304,6 +322,7 @@ const UserTable = (loggedInUserData) => {
         width: 100,
         isEditable: true,
         isExpandable: true,
+        isFilterable: true,
       },
       {
         Header: "Preferinte cazare",
@@ -312,6 +331,7 @@ const UserTable = (loggedInUserData) => {
         isHidden: true,
         isEditable: true,
         isExpandable: true,
+        isFilterable: true,
       },
       {
         Header: "Data inscrierii",
@@ -348,11 +368,42 @@ const UserTable = (loggedInUserData) => {
     );
   return (
     <div className="">
+      {errorAlertMessages && (
+        <ErrorAlert
+          messages={errorAlertMessages}
+          displayMode={"popup"}
+          handleClose={handleCloseAlert}
+        />
+      )}
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold mb-4 mx-4">Lista participanților</h1>
-        <div className="mb-4 mx-4">
+        <div className="flex items-center justify-center">
+          <h1 className="text-3xl font-bold mb-4 mx-4">
+            Lista participanților
+          </h1>
+        </div>
+        <div className="mb-4 mx-4 flex items-center justify-center">
           <button
-            className="p-2 bg-cyan-500 text-white rounded-full flex items-center"
+            className="text-violet-500 rounded-full flex items-center m-4"
+            onClick={handleRefreshTable}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
+              class="bi bi-arrow-clockwise"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"
+              />
+              <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466" />
+            </svg>
+          </button>
+
+          <button
+            className="p-2 bg-hope-lightcyan text-white rounded-full flex items-center"
             onClick={handleDownloadTableAsCsv}
           >
             <svg
@@ -374,14 +425,14 @@ const UserTable = (loggedInUserData) => {
         </div>
       </div>
       {isLoading && <LoadingIcon />}
-      <div className="w-100">
-        {/* TODO: add filter text input */}{" "}
-        <input
-          type="text"
-          className="w-60 px-2 py-1 border rounded-md m-2"
-          value={filterValue}
-          onChange={handleFilterChange}
-          placeholder="Cautǎ după nume..."
+      <div className="flex place-items-center">
+        <FilterTable
+          properties={userProperties.filter(
+            (property) => property.isFilterable
+          )}
+          operators={["="]}
+          unfilteredData={userList}
+          setData={setFilteredUserList}
         />
       </div>
       <div className="overflow-x-auto max-w-full">

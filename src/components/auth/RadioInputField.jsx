@@ -6,7 +6,7 @@ const RadioInputField = ({
   options,
   value,
   onChange,
-  errorMessage,
+  validationErrorMessage,
 }) => {
   const [otherValue, setOtherValue] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
@@ -49,9 +49,13 @@ const RadioInputField = ({
   };
 
   return (
-    <div>
+    <div className="mt-2">
       <span className="text-sm text-gray-600 font-bold">{label}</span>
-      <div className="mt-2 flex flex-col">
+      <div
+        className={`${
+          validationErrorMessage ? " border rounded-lg border-red-500" : ""
+        } px-2 flex flex-col text-sm`}
+      >
         {options.map((option) => (
           <div key={option.value} className="flex items-center my-2">
             <label>
@@ -69,16 +73,17 @@ const RadioInputField = ({
               <input
                 ref={otherInputRef} // Assign the ref to the input element
                 type="text"
-                className="w-60 px-3 py-1 mx-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg transition duration-300"
+                className="w-56 px-3 py-1 mx-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg transition duration-300"
                 value={otherValue}
+                maxLength={32}
                 onChange={handleOtherChange}
               />
             )}
           </div>
         ))}
       </div>
-      {errorMessage && (
-        <p className="text-red-500 text-xs italic">{errorMessage}</p>
+      {validationErrorMessage && (
+        <p className="text-red-500 text-xs italic">{validationErrorMessage}</p>
       )}
     </div>
   );
