@@ -476,6 +476,7 @@ const UserTable = (loggedInUserData) => {
             {rows.map((row, i) => {
               return (
                 <TableRow
+                  key={row.id}
                   row={row}
                   i={i}
                   prepareRow={prepareRow}
