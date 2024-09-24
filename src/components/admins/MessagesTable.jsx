@@ -4,9 +4,12 @@ import { getAllMessages } from "../../firebase/database";
 import LoadingIcon from "../LoadingIcon";
 import TableRow from "./TableRow";
 import ErrorAlert from "../ErrorAlert";
+import FilterTable from "./FilterTable";
 
 const MessagesTable = () => {
   const [messagesData, setMessagesData] = useState([]);
+  const [messageList, setMessageList] = useState([]);
+  const [filteredMessageList, setFilteredMessageList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorAlertMessages, setErrorAlertMessages] = useState([]);
   const selectedRowRef = useRef(null);
@@ -33,10 +36,10 @@ const MessagesTable = () => {
 
   const handleRefreshTable = async () => {
     setIsLoading(true);
-    setFilteredUserList([]);
-    const allUsersData = await getAllUsers();
-    setUserList(allUsersData);
-    setFilteredUserList(allUsersData);
+    setFilteredMessageList([]);
+    const allMessageData = await getAllMessages();
+    setMessageList(allMessageData);
+    setFilteredMessageList(allMessageData);
     setIsLoading(false);
   };
 
@@ -44,13 +47,13 @@ const MessagesTable = () => {
     //TODO: Implement this feature
     // alert("This feature is not implemented yet.");
 
-    const titleKeys = userProperties
-      //if there are more columns that should not be included in the csv, add a isExportable property in the userProperties object
+    const titleKeys = columns
+      //if there are more columns that should not be included in the csv, add a isExportable property in the columns object
       .filter((property) => property.Header !== "Id")
       .map((property) => property.accessor);
     const refinedData = [];
     refinedData.push(titleKeys);
-    userList.forEach((item) => {
+    messageList.forEach((item) => {
       const rowData = titleKeys.map((key) => item[key]);
       refinedData.push(rowData);
     });
@@ -70,7 +73,7 @@ const MessagesTable = () => {
     });
 
     const now = new Date();
-    const filename = `Participanti_HC_${now.getDay()}-${now.getMonth()}-${now.getFullYear()}_${now.getHours()}-${now.getMinutes()}`;
+    const filename = `Mesaje_HC_${now.getDay()}-${now.getMonth()}-${now.getFullYear()}_${now.getHours()}-${now.getMinutes()}`;
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     if (navigator.msSaveBlob) {
       navigator.msSaveBlob(blob, filename);
@@ -93,24 +96,35 @@ const MessagesTable = () => {
       {
         Header: "Nume",
         accessor: "userName",
+        isFilterable: true,
       },
       {
         Header: "Telefon",
         accessor: "phone",
+        isFilterable: true,
       },
       {
         Header: "Mesaj",
         accessor: "content",
+        isFilterable: true,
       },
       {
         Header: "Data",
         accessor: "sentDate",
         Cell: ({ value }) => new Date(value).toLocaleDateString(),
+        isFilterable: true,
       },
       {
         Header: "Citit",
         accessor: "isRead",
         Cell: ({ value }) => (value ? "Citit" : "Necitit"),
+        isFilterable: true,
+      },
+      {
+        Header: "More",
+        Cell: ({ row }) => (
+          <button onClick={() => handleMoreInfo(row)}>🔽</button>
+        ),
       },
     ],
     []
@@ -199,16 +213,14 @@ const MessagesTable = () => {
         </div>
       </div>
       {isLoading && <LoadingIcon />}
-      {/* <div className="flex place-items-center">
+      <div className="flex place-items-center">
         <FilterTable
-          properties={userProperties.filter(
-            (property) => property.isFilterable
-          )}
+          properties={columns.filter((property) => property.isFilterable)}
           operators={["="]}
-          unfilteredData={userList}
-          setData={setFilteredUserList}
+          unfilteredData={messageList}
+          setData={setFilteredMessageList}
         />
-      </div> */}
+      </div>
       <div className="overflow-x-auto max-w-full">
         <table
           {...getTableProps()}
