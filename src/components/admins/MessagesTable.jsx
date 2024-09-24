@@ -5,15 +5,11 @@ import LoadingIcon from "../LoadingIcon";
 import TableRow from "./TableRow";
 import ErrorAlert from "../ErrorAlert";
 
-//TODO: This should look similar to the UserTable component. Please adapt it accordingly.
-// the columns should be:  Nume, Telefon, Mesaj, Data, Citit
-
 const MessagesTable = () => {
   const [messagesData, setMessagesData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorAlertMessages, setErrorAlertMessages] = useState([]);
   const selectedRowRef = useRef(null);
-
   const [, updateState] = useState();
   const forceRender = React.useCallback(() => updateState({}), []);
 
@@ -34,6 +30,63 @@ const MessagesTable = () => {
 
     fetchMessages();
   }, []);
+
+  const handleRefreshTable = async () => {
+    setIsLoading(true);
+    setFilteredUserList([]);
+    const allUsersData = await getAllUsers();
+    setUserList(allUsersData);
+    setFilteredUserList(allUsersData);
+    setIsLoading(false);
+  };
+
+  const handleDownloadTableAsCsv = () => {
+    //TODO: Implement this feature
+    // alert("This feature is not implemented yet.");
+
+    const titleKeys = userProperties
+      //if there are more columns that should not be included in the csv, add a isExportable property in the userProperties object
+      .filter((property) => property.Header !== "Id")
+      .map((property) => property.accessor);
+    const refinedData = [];
+    refinedData.push(titleKeys);
+    userList.forEach((item) => {
+      const rowData = titleKeys.map((key) => item[key]);
+      refinedData.push(rowData);
+    });
+
+    let csvContent = "";
+    refinedData.forEach((row) => {
+      csvContent +=
+        row
+          .map((value) => {
+            if (typeof value === "string") {
+              return value.replace(",", "");
+            } else {
+              return value;
+            }
+          })
+          .join(",") + "\n";
+    });
+
+    const now = new Date();
+    const filename = `Participanti_HC_${now.getDay()}-${now.getMonth()}-${now.getFullYear()}_${now.getHours()}-${now.getMinutes()}`;
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    if (navigator.msSaveBlob) {
+      navigator.msSaveBlob(blob, filename);
+    } else {
+      var link = document.createElement("a");
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", filename);
+        link.style.visibility = "hidden";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
+  };
 
   const columns = useMemo(
     () => [
@@ -100,11 +153,9 @@ const MessagesTable = () => {
       )}
       <div className="flex justify-between items-center">
         <div className="flex items-center justify-center">
-          <h1 className="text-3xl font-bold mb-4 mx-4">
-            Lista participanților
-          </h1>
+          <h1 className="text-3xl font-bold mb-4 mx-4">Lista mesajelor</h1>
         </div>
-        {/* <div className="mb-4 mx-4 flex items-center justify-center">
+        <div className="mb-4 mx-4 flex items-center justify-center">
           <button
             className="text-violet-500 rounded-full flex items-center m-4"
             onClick={handleRefreshTable}
@@ -145,7 +196,7 @@ const MessagesTable = () => {
             </svg>
             <span className="text-xs">.csv</span>
           </button>
-        </div> */}
+        </div>
       </div>
       {isLoading && <LoadingIcon />}
       {/* <div className="flex place-items-center">
@@ -183,8 +234,8 @@ const MessagesTable = () => {
                     <span>
                       {column.isSorted
                         ? column.isSortedDesc
-                          ? " 🔽"
-                          : " 🔼"
+                          ? " ▼"
+                          : " ▲"
                         : ""}
                     </span>
                   </th>
