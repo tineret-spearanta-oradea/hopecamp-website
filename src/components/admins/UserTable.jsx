@@ -391,7 +391,7 @@ const UserTable = (loggedInUserData) => {
               width="24"
               height="24"
               fill="currentColor"
-              class="bi bi-arrow-clockwise"
+              className="bi bi-arrow-clockwise"
               viewBox="0 0 16 16"
             >
               <path
