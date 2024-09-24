@@ -75,7 +75,7 @@ const MessagesTable = () => {
             Lista participanților
           </h1>
         </div>
-        <div className="mb-4 mx-4 flex items-center justify-center">
+        {/* <div className="mb-4 mx-4 flex items-center justify-center">
           <button
             className="text-violet-500 rounded-full flex items-center m-4"
             onClick={handleRefreshTable}
@@ -116,10 +116,10 @@ const MessagesTable = () => {
             </svg>
             <span className="text-xs">.csv</span>
           </button>
-        </div>
+        </div> */}
       </div>
       {isLoading && <LoadingIcon />}
-      <div className="flex place-items-center">
+      {/* <div className="flex place-items-center">
         <FilterTable
           properties={userProperties.filter(
             (property) => property.isFilterable
@@ -128,20 +128,20 @@ const MessagesTable = () => {
           unfilteredData={userList}
           setData={setFilteredUserList}
         />
-      </div>
+      </div> */}
       <div className="overflow-x-auto max-w-full">
         <table
           {...getTableProps()}
           className="w-full divide-y divide-gray-200 rounded border border-gray-300"
         >
-          <colgroup>
+          {/* <colgroup>
             {visibleColumns.map((column, index) => (
               <col
                 key={index}
                 //style={{ maxWidth: column.width }} //this doesn't work
               />
             ))}
-          </colgroup>
+          </colgroup> */}
           <thead className="bg-gray-50">
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
@@ -154,8 +154,8 @@ const MessagesTable = () => {
                     <span>
                       {column.isSorted
                         ? column.isSortedDesc
-                          ? " ▼"
-                          : " ▲"
+                          ? " 🔽"
+                          : " 🔼"
                         : ""}
                     </span>
                   </th>
@@ -167,6 +167,22 @@ const MessagesTable = () => {
             {...getTableBodyProps()}
             className="bg-white divide-y divide-gray-200"
           >
+            {rows.map((row) => {
+              prepareRow(row);
+              return (
+                <tr
+                  {...row.getRowProps()}
+                  className="bg-gray-100 border-b border-gray-200"
+                >
+                  {row.cells.map((cell) => (
+                    <td {...cell.getCellProps()} className="py-2 px-4">
+                      {cell.render("Cell")}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
+
             {/* {rows.map((row, i) => {
               return (
                 <TableRow
@@ -187,5 +203,4 @@ const MessagesTable = () => {
     </div>
   );
 };
-
 export default MessagesTable;
