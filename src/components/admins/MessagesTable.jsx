@@ -7,7 +7,6 @@ import ErrorAlert from "../ErrorAlert";
 import FilterTable from "./FilterTable";
 
 const MessagesTable = () => {
-  const [messagesData, setMessagesData] = useState([]);
   const [messageList, setMessageList] = useState([]);
   const [filteredMessageList, setFilteredMessageList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -20,7 +19,9 @@ const MessagesTable = () => {
     const fetchMessages = async () => {
       try {
         const response = await getAllMessages();
-        setMessagesData(response);
+        setMessageList(response);
+        setFilteredMessageList(response);
+        console.log(response);
       } catch (error) {
         setErrorAlertMessages((prevMessages) => [
           ...prevMessages,
@@ -94,6 +95,11 @@ const MessagesTable = () => {
   const columns = useMemo(
     () => [
       {
+        Header: "ID",
+        accessor: "uid",
+        isFilterable: false,
+      },
+      {
         Header: "Nume",
         accessor: "userName",
         isFilterable: true,
@@ -105,13 +111,12 @@ const MessagesTable = () => {
       },
       {
         Header: "Mesaj",
-        accessor: "content",
+        accessor: "text",
         isFilterable: true,
       },
       {
         Header: "Data",
         accessor: "sentDate",
-        Cell: ({ value }) => new Date(value).toLocaleDateString(),
         isFilterable: true,
       },
       {
@@ -154,8 +159,9 @@ const MessagesTable = () => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(
       {
-        columns,
-        data: messagesData,
+        columns: visibleColumns,
+        data: filteredMessageList,
+        initialState: { sortBy: [{ id: "id", desc: true }] },
       },
       useFilters,
       useSortBy
