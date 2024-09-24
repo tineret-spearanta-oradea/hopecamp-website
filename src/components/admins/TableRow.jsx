@@ -16,8 +16,8 @@ const TableRow = ({
   return (
     <>
       <tr
-        {...row.getRowProps()}
         key={row.index}
+        {...row.getRowProps()}
         className={
           i % 2 === 0
             ? "bg-white hover:bg-gray-100"

@@ -11,12 +11,21 @@ import ErrorAlert from "../ErrorAlert";
 const MessagesTable = () => {
   const [messagesData, setMessagesData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [errorAlertMessages, setErrorAlertMessages] = useState(null);
 
   useEffect(() => {
     const fetchMessages = async () => {
-      const response = await getAllMessages();
-      setMessagesData(response);
-      setLoading(false);
+      try {
+        const response = await getAllMessages();
+        setMessagesData(response);
+      } catch (error) {
+        setErrorAlertMessages((prevMessages) => [
+          ...prevMessages,
+          "Eroare la actualizarea datelor: " + error,
+        ]);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchMessages();
@@ -59,6 +68,10 @@ const MessagesTable = () => {
     ],
     []
   );
+
+  const handleCloseAlert = () => {
+    setErrorAlertMessages(null);
+  };
 
   return (
     <div className="">
@@ -167,36 +180,14 @@ const MessagesTable = () => {
             {...getTableBodyProps()}
             className="bg-white divide-y divide-gray-200"
           >
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr
-                  {...row.getRowProps()}
-                  className="bg-gray-100 border-b border-gray-200"
-                >
-                  {row.cells.map((cell) => (
-                    <td {...cell.getCellProps()} className="py-2 px-4">
-                      {cell.render("Cell")}
-                    </td>
-                  ))}
-                </tr>
-              );
-            })}
-
-            {/* {rows.map((row, i) => {
-              return (
-                <TableRow
-                  key={row.id}
-                  row={row}
-                  i={i}
-                  {message.userName}
-                  {message.phone}
-                  {message.content}
-                  {new Date(message.sentDate).toLocaleDateString()}
-                  {message.isRead ? 'Citit' : 'Necitit'}
-                />
-              );
-            })} */}
+            {messagesData.map((message, i) => (
+              <TableRow
+                key={message.uid}
+                row={message}
+                i={i}
+                columns={columns}
+              />
+            ))}
           </tbody>
         </table>
       </div>
