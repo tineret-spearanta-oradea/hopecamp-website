@@ -146,6 +146,11 @@ const MessagesTable = () => {
     forceRender();
   };
 
+  const visibleColumns = useMemo(
+    () => columns.filter((column) => !column.isHidden),
+    [columns]
+  );
+
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(
       {
@@ -226,14 +231,14 @@ const MessagesTable = () => {
           {...getTableProps()}
           className="w-full divide-y divide-gray-200 rounded border border-gray-300"
         >
-          {/* <colgroup>
+          <colgroup>
             {visibleColumns.map((column, index) => (
               <col
                 key={index}
                 //style={{ maxWidth: column.width }} //this doesn't work
               />
             ))}
-          </colgroup> */}
+          </colgroup>
           <thead className="bg-gray-50">
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
