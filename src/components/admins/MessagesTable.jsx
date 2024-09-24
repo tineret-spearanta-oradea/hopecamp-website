@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
+import { useTable, useSortBy, useFilters } from "react-table";
 import { getAllMessages } from "../../firebase/database";
 import LoadingIcon from "../LoadingIcon";
-import { useTable, useFilters, useSortBy } from "react-table";
 import TableRow from "./TableRow";
 import ErrorAlert from "../ErrorAlert";
 
@@ -9,9 +9,13 @@ import ErrorAlert from "../ErrorAlert";
 // the columns should be:  Nume, Telefon, Mesaj, Data, Citit
 
 const MessagesTable = () => {
-  const [messagesData, setMessagesData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [errorAlertMessages, setErrorAlertMessages] = useState(null);
+  const [messagesData, setMessagesData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorAlertMessages, setErrorAlertMessages] = useState([]);
+  const selectedRowRef = useRef(null);
+
+  const [, updateState] = useState();
+  const forceRender = React.useCallback(() => updateState({}), []);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -24,22 +28,12 @@ const MessagesTable = () => {
           "Eroare la actualizarea datelor: " + error,
         ]);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
     fetchMessages();
   }, []);
-
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable(
-      {
-        columns,
-        data: messagesData || [],
-      },
-      useFilters,
-      useSortBy
-    );
 
   const columns = useMemo(
     () => [
@@ -70,8 +64,30 @@ const MessagesTable = () => {
   );
 
   const handleCloseAlert = () => {
-    setErrorAlertMessages(null);
+    setErrorAlertMessages([]);
   };
+
+  const handleMoreInfo = (row) => {
+    if (
+      row.original === undefined ||
+      selectedRowRef.current === row.original.uid
+    ) {
+      selectedRowRef.current = null;
+    } else {
+      selectedRowRef.current = row.original.uid;
+    }
+    forceRender();
+  };
+
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns,
+        data: messagesData,
+      },
+      useFilters,
+      useSortBy
+    );
 
   return (
     <div className="">
@@ -180,14 +196,20 @@ const MessagesTable = () => {
             {...getTableBodyProps()}
             className="bg-white divide-y divide-gray-200"
           >
-            {messagesData.map((message, i) => (
-              <TableRow
-                key={message.uid}
-                row={message}
-                i={i}
-                columns={columns}
-              />
-            ))}
+            {rows.map((row, i) => {
+              prepareRow(row);
+              return (
+                <TableRow
+                  key={row.id}
+                  row={row}
+                  i={i}
+                  prepareRow={prepareRow}
+                  selectedRowRef={selectedRowRef}
+                  handleMoreInfo={handleMoreInfo}
+                  columns={columns}
+                />
+              );
+            })}
           </tbody>
         </table>
       </div>
