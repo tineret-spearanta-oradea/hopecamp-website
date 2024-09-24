@@ -62,12 +62,12 @@ function HeroSection() {
               }
             />
           </div>
-          <p
+          <div
             className="bg-gradient-to-r from-hope-darkcyan to-hope-orange inline-block text-transparent bg-clip-text
             text-xl md:text-2xl lg:text-3xl xl:text-5xl"
           >
             {countdown}
-          </p>
+          </div>
         </div>
       </section>
       <div className="spacer hero-divider"></div>
