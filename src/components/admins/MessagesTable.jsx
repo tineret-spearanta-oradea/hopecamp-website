@@ -95,11 +95,6 @@ const MessagesTable = () => {
   const columns = useMemo(
     () => [
       {
-        Header: "ID",
-        accessor: "uid",
-        isFilterable: false,
-      },
-      {
         Header: "Nume",
         accessor: "userName",
         isFilterable: true,
