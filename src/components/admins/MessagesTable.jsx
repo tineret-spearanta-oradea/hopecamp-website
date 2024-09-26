@@ -12,8 +12,6 @@ const MessagesTable = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [errorAlertMessages, setErrorAlertMessages] = useState([]);
   const selectedRowRef = useRef(null);
-  const [, updateState] = useState();
-  const forceRender = React.useCallback(() => updateState({}), []);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -21,7 +19,6 @@ const MessagesTable = () => {
         const response = await getAllMessages();
         setMessageList(response);
         setFilteredMessageList(response);
-        console.log(response);
       } catch (error) {
         setErrorAlertMessages((prevMessages) => [
           ...prevMessages,
@@ -204,7 +201,6 @@ const MessagesTable = () => {
       <div className="flex place-items-center">
         <FilterTable
           properties={columns.filter((property) => property.isFilterable)}
-          operators={["="]}
           unfilteredData={messageList}
           setData={setFilteredMessageList}
         />
@@ -248,7 +244,6 @@ const MessagesTable = () => {
             className="bg-white divide-y divide-gray-200"
           >
             {rows.map((row, i) => {
-              prepareRow(row);
               return (
                 <TableRow
                   key={row.id}
