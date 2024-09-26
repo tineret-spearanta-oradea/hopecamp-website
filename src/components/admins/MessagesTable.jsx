@@ -120,30 +120,12 @@ const MessagesTable = () => {
         Cell: ({ value }) => (value ? "Citit" : "Necitit"),
         isFilterable: true,
       },
-      {
-        Header: "More",
-        Cell: ({ row }) => (
-          <button onClick={() => handleMoreInfo(row)}>🔽</button>
-        ),
-      },
     ],
     []
   );
 
   const handleCloseAlert = () => {
     setErrorAlertMessages([]);
-  };
-
-  const handleMoreInfo = (row) => {
-    if (
-      row.original === undefined ||
-      selectedRowRef.current === row.original.uid
-    ) {
-      selectedRowRef.current = null;
-    } else {
-      selectedRowRef.current = row.original.uid;
-    }
-    forceRender();
   };
 
   const visibleColumns = useMemo(
@@ -274,7 +256,6 @@ const MessagesTable = () => {
                   i={i}
                   prepareRow={prepareRow}
                   selectedRowRef={selectedRowRef}
-                  handleMoreInfo={handleMoreInfo}
                   columns={columns}
                 />
               );
