@@ -117,7 +117,7 @@ export default function Home() {
       <section className="bg-hope-beige">
         <div className="container mx-auto flex justify-center py-8">
           <div className="relative group">
-            <div className="absolute inset-0.5 bg-gradient-to-r from-hope-darkcyan to-hope-orange rounded-lg blur opacity-75"></div>
+            <div className="absolute inset-0.5 bg-gradient-to-r from-hope-darkcyan to-hope-orange rounded-lg blur opacity-75 "></div>
             <div
               className="w-60 h-32 sm:w-80 sm:h-40 md:w-96 md:h-52 lg:w-80 lg:h-48 xl:w-96 xl:h-60 
                           bg-hope-beige relative rounded-lg flex flex-col justify-center items-center"
