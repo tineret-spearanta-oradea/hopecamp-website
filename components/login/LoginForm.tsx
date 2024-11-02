@@ -6,6 +6,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/firebase/config";
 import { useRouter } from "next/navigation";
 import { FirebaseError } from "firebase/app";
+import { Button } from "../ui/button";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -67,7 +68,7 @@ export default function LoginForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400
-              focus:outline-none focus:border-hope-green focus:ring-1 focus:ring-hope-green"
+              focus:outline-none focus:border-hope-darkcyan focus:ring-1 focus:ring-hope-darkcyan"
             required
             disabled={loading}
           />
@@ -85,7 +86,7 @@ export default function LoginForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400
-              focus:outline-none focus:border-hope-green focus:ring-1 focus:ring-hope-green"
+              focus:outline-none focus:border-hope-dark-cyan focus:ring-1 focus:ring-hope-dark-cyan"
             required
             disabled={loading}
           />
@@ -93,25 +94,24 @@ export default function LoginForm() {
         <div className="flex items-center justify-end">
           <Link
             href="/reset-password"
-            className="text-sm text-hope-green hover:underline"
+            className="text-sm text-hope-darkcyan hover:underline"
           >
             Am uitat parola
           </Link>
         </div>
-        <button
+        <Button
           type="submit"
-          className="w-full bg-hope-green text-white py-2.5 px-4 rounded-md hover:bg-hope-green/90 transition-colors
-            disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm"
+          className="w-full bg-hope-dark-cyan bg-hope-darkcyan text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={loading}
         >
           {loading ? "Se procesează..." : "Autentificare"}
-        </button>
+        </Button>
       </form>
       <p className="mt-6 text-center text-sm text-gray-500">
         Nu te-ai înscris încă în tabără?{" "}
         <Link
           href="/inscrie-te"
-          className="text-hope-green hover:underline font-medium"
+          className="text-hope-darkcyan hover:underline font-medium"
         >
           Înscrie-te aici
         </Link>

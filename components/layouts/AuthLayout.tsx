@@ -5,7 +5,7 @@ export default function AuthLayout({
 }) {
   return (
     <main
-      className="min-h-screen bg-hope-green bg-[url('/assets/images/bg-auth.png')] bg-cover bg-center flex items-center"
+      className="min-h-screen bg-[url('/assets/images/bg-auth.png')] bg-cover bg-center flex items-center"
       style={{
         backgroundBlendMode: "soft-light",
       }}

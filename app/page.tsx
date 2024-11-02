@@ -4,13 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from "@/components/ui/accordion";
-import { faqData } from "./constants";
 import Footer from "@/components/Footer";
 import FaqSection from "@/components/FaqSection";
 

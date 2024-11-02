@@ -26,11 +26,24 @@ const initialFormData: FormData = {
   },
 };
 
+const initialValidationErrors: ValidationErrors = {
+  email: "",
+  password: "",
+  confirmPassword: "",
+  name: "",
+  age: "",
+  phone: "",
+  dateRange: "",
+  church: "",
+  payTaxTo: "",
+  transport: "",
+};
+
 export function useRegistrationForm() {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
-    {}
+    initialValidationErrors
   );
   const [agreementChecked, setAgreementChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -61,33 +74,35 @@ export function useRegistrationForm() {
   };
 
   const validateStep = (stepNumber: number): boolean => {
-    let errors: ValidationErrors = {};
+    let errors: ValidationErrors = { ...initialValidationErrors };
 
     switch (stepNumber) {
       case 1:
-        errors = validateAuthFields(formData.authData);
+        const authErrors = validateAuthFields(formData.authData);
+        errors = { ...errors, ...authErrors };
         break;
       case 2:
-        errors = validateUserFields(formData.userData);
+        const userErrors = validateUserFields(formData.userData);
+        errors = { ...errors, ...userErrors };
         break;
       default:
         return true;
     }
 
     setValidationErrors(errors);
-    return Object.keys(errors).length === 0;
+    return Object.keys(errors).every((key) => !errors[key]);
   };
 
   const handleNext = () => {
     if (validateStep(step)) {
       setStep((prev) => prev + 1);
-      setValidationErrors({});
+      setValidationErrors(initialValidationErrors);
     }
   };
 
   const handlePrev = () => {
     setStep((prev) => prev - 1);
-    setValidationErrors({});
+    setValidationErrors(initialValidationErrors);
   };
 
   const handleSubmit = async () => {

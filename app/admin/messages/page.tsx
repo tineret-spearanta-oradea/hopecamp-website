@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { columns } from "@/components/admin/messages/columns";
 import { DataTable } from "@/components/admin/messages/data-table";
 import { useMessages } from "@/hooks/use-messages";

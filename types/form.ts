@@ -22,17 +22,18 @@ export interface FormData {
   userData: UserData;
 }
 
-export interface ValidationErrors {
-  email?: string;
-  password?: string;
-  confirmPassword?: string;
-  name?: string;
-  age?: string;
-  phone?: string;
-  dateRange?: string;
-  church?: string;
-  payTaxTo?: string;
-  transport?: string;
+export interface ValidationErrors extends Record<string, string> {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  name: string;
+  age: string;
+  phone: string;
+  dateRange: string;
+  church: string;
+  payTaxTo: string;
+  transport: string;
+  [key: string]: string;
 }
 
 export interface StepProps {
@@ -48,5 +49,15 @@ export interface StepProps {
   agreementChecked?: boolean;
   setAgreementChecked?: (checked: boolean) => void;
   handleSubmit?: () => void;
+  isLoading?: boolean;
+}
+
+export interface Step3Props {
+  formData: FormData;
+  handlePrev: () => void;
+  handleSubmit: () => void;
+  agreementChecked: boolean;
+  setAgreementChecked: (checked: boolean) => void;
+  downloadCampRules: () => void;
   isLoading?: boolean;
 }

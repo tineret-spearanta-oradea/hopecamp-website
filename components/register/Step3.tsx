@@ -1,19 +1,9 @@
-import { FormData } from "./RegisterForm";
+import { FormData, Step3Props } from "@/types/form";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import { format } from "date-fns";
 import { sumToPay, dateRange } from "@/lib/constants";
 import { Download } from "lucide-react";
-
-interface Step3Props {
-  formData: FormData;
-  handlePrev: () => void;
-  handleSubmit: () => void;
-  agreementChecked: boolean;
-  setAgreementChecked: (checked: boolean) => void;
-  downloadCampRules: () => void;
-  isLoading?: boolean;
-}
 
 export default function Step3({
   formData,
@@ -136,9 +126,9 @@ export default function Step3({
         <Button
           onClick={handleSubmit}
           disabled={!agreementChecked || isLoading}
-          className="text-white"
+          className="text-white bg-hope-darkcyan"
         >
-          Înscrie-te ↗
+          {isLoading ? "Se procesează..." : "Înscrie-te ↗"}
         </Button>
       </div>
     </div>

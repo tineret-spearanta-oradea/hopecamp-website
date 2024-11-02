@@ -17,4 +17,5 @@ export interface User {
   amountPaid?: number;
   payTaxTo?: string;
   age?: number;
+  withFamilyMember?: boolean;
 }

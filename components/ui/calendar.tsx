@@ -47,23 +47,23 @@ function Calendar({
           "h-8 w-8 p-0 font-normal aria-selected:opacity-100"
         ),
         day_selected:
-          "bg-hope-green text-primary-foreground hover:bg-hope-green hover:text-primary-foreground focus:bg-hope-green focus:text-primary-foreground",
+          "bg-hope-dark-cyan text-primary-foreground hover:bg-hope-dark-cyan hover:text-primary-foreground focus:bg-hope-dark-cyan focus:text-primary-foreground",
         day_today: "bg-accent text-accent-foreground",
         day_outside:
-          "text-muted-foreground opacity-50 aria-selected:bg-hope-green/50 aria-selected:text-primary-foreground aria-selected:opacity-30",
+          "text-muted-foreground opacity-50 aria-selected:bg-hope-dark-cyan/50 aria-selected:text-primary-foreground aria-selected:opacity-30",
         day_disabled: "text-muted-foreground opacity-50",
         day_range_middle:
           "aria-selected:bg-hope-lightcyan aria-selected:text-primary-foreground",
         day_range_start:
-          "aria-selected:bg-hope-green aria-selected:text-primary-foreground",
+          "aria-selected:bg-hope-dark-cyan aria-selected:text-primary-foreground",
         day_range_end:
-          "aria-selected:bg-hope-green aria-selected:text-primary-foreground",
+          "aria-selected:bg-hope-dark-cyan aria-selected:text-primary-foreground",
         day_hidden: "invisible",
         ...classNames,
       }}
       components={{
-        IconLeft: ({ ...props }) => <ChevronLeftIcon className="h-4 w-4" />,
-        IconRight: ({ ...props }) => <ChevronRightIcon className="h-4 w-4" />,
+        IconLeft: () => <ChevronLeftIcon className="h-4 w-4" />,
+        IconRight: () => <ChevronRightIcon className="h-4 w-4" />,
       }}
       {...props}
     />

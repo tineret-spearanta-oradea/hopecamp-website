@@ -1,15 +1,27 @@
 import { FormData, ValidationErrors } from "@/types/form";
-import { dateRange } from "@/lib/constants";
+
+const initialValidationErrors: ValidationErrors = {
+  email: "",
+  password: "",
+  confirmPassword: "",
+  name: "",
+  age: "",
+  phone: "",
+  dateRange: "",
+  church: "",
+  payTaxTo: "",
+  transport: "",
+};
 
 export const validateAuthFields = (
   authData: FormData["authData"]
 ): ValidationErrors => {
-  const errors: ValidationErrors = {};
+  const errors: ValidationErrors = { ...initialValidationErrors };
 
   if (!authData.email) {
     errors.email = "Adresa de email este necesară.";
   } else if (!/\S+@\S+\.\S+/.test(authData.email)) {
-    errors.email = "Adresa de email este invalidă.";
+    errors.email = "Adresa de email nu este validă.";
   }
 
   if (!authData.password) {
@@ -18,7 +30,9 @@ export const validateAuthFields = (
     errors.password = "Parola trebuie să aibă cel puțin 6 caractere.";
   }
 
-  if (authData.password !== authData.confirmPassword) {
+  if (!authData.confirmPassword) {
+    errors.confirmPassword = "Te rugăm să confirmi parola.";
+  } else if (authData.password !== authData.confirmPassword) {
     errors.confirmPassword = "Parolele nu se potrivesc.";
   }
 
@@ -28,64 +42,38 @@ export const validateAuthFields = (
 export const validateUserFields = (
   userData: FormData["userData"]
 ): ValidationErrors => {
-  const errors: ValidationErrors = {};
+  const errors: ValidationErrors = { ...initialValidationErrors };
 
-  if (!userData.name?.trim()) {
+  if (!userData.name) {
     errors.name = "Numele este necesar.";
   }
 
   if (!userData.age) {
     errors.age = "Vârsta este necesară.";
-  } else {
-    const age = parseInt(userData.age);
-    if (age < 14 || age > 99) {
-      errors.age = "Vârsta trebuie să fie între 14 și 99 ani.";
-    }
+  } else if (parseInt(userData.age) < 7 || parseInt(userData.age) > 99) {
+    errors.age = "Vârsta trebuie să fie între 7 și 99 ani.";
   }
 
-  if (!userData.phone?.trim()) {
+  if (!userData.phone) {
     errors.phone = "Numărul de telefon este necesar.";
-  } else if (!/^[0-9+\s-]{10,}$/.test(userData.phone)) {
-    errors.phone = "Numărul de telefon este invalid.";
+  } else if (!/^[0-9]{10}$/.test(userData.phone)) {
+    errors.phone = "Numărul de telefon trebuie să aibă 10 cifre.";
   }
 
   if (!userData.startDate || !userData.endDate) {
-    errors.dateRange = "Perioada este necesară.";
-  } else {
-    const start = new Date(userData.startDate);
-    const end = new Date(userData.endDate);
-    if (start > end) {
-      errors.dateRange = "Data de început nu poate fi după data de sfârșit.";
-    }
-
-    const campStart = new Date(dateRange.startDate);
-    campStart.setHours(0, 0, 0, 0);
-
-    if (start < campStart || end > dateRange.endDate) {
-      errors.dateRange =
-        "Perioada selectată trebuie să fie în perioada taberei.";
-    }
+    errors.dateRange = "Te rugăm să selectezi perioada.";
   }
 
   if (!userData.church) {
-    errors.church = "Biserica este necesară.";
+    errors.church = "Te rugăm să selectezi biserica.";
   }
 
   if (!userData.payTaxTo) {
-    errors.payTaxTo = "Selectează cui vei plăti taxa.";
+    errors.payTaxTo = "Te rugăm să selectezi cui plătești taxa.";
   }
 
   if (!userData.transport) {
-    errors.transport = "Selectează mijlocul de transport.";
-  }
-
-  if (!userData.imageFile) {
-    errors.imageFile = "Poza este necesară.";
-  } else if (!userData.imageFile.type.startsWith("image/")) {
-    errors.imageFile = "Te rugăm să încarci o poză.";
-  } else if (userData.imageFile.size > 5 * 1024 * 1024) {
-    // 5MB limit
-    errors.imageFile = "Poza trebuie să fie mai mică de 5MB.";
+    errors.transport = "Te rugăm să selectezi mijlocul de transport.";
   }
 
   return errors;

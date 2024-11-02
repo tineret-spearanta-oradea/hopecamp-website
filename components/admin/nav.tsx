@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Home, Users, MessageSquare, Settings, LogOut } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 const menuItems = [
   {
@@ -68,13 +69,24 @@ export function AdminNav() {
       </div>
       <div className="border-t p-4">
         <div className="flex items-center gap-3 px-2">
-          {user?.imageUrl && (
-            <img
-              src={user.imageUrl}
-              alt={user.name}
-              className="h-8 w-8 rounded-full"
-            />
-          )}
+          <div className="relative h-10 w-10 overflow-hidden rounded-full">
+            {user?.imageUrl ? (
+              <Image
+                src={user.imageUrl}
+                alt={user.name}
+                fill
+                className="object-cover"
+                sizes="40px"
+                priority
+              />
+            ) : (
+              <div className="h-full w-full bg-muted flex items-center justify-center">
+                <span className="text-muted-foreground text-sm">
+                  {user?.name?.charAt(0)}
+                </span>
+              </div>
+            )}
+          </div>
           <div className="flex-1 overflow-hidden">
             <p className="truncate text-sm font-medium">{user?.name}</p>
             <p className="truncate text-xs text-muted-foreground">

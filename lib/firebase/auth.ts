@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { auth } from "./config";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, User } from "firebase/auth";
 
 export const createUserAccount = async (email: string, password: string) => {
   try {
@@ -13,3 +14,5 @@ export const createUserAccount = async (email: string, password: string) => {
     throw new Error(error.message);
   }
 };
+
+export const currentUser: User | null = auth.currentUser;

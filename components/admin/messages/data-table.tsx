@@ -8,6 +8,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   SortingState,
+  Row,
 } from "@tanstack/react-table";
 
 import {
@@ -21,16 +22,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { Message } from "@/types/message";
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+interface DataTableProps {
+  columns: ColumnDef<Message>[];
+  data: Message[];
 }
 
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
+export function DataTable({ columns, data }: DataTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
 
@@ -78,7 +77,7 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+              table.getRowModel().rows.map((row: Row<Message>) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}

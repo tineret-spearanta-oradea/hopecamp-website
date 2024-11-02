@@ -54,7 +54,7 @@ export default function ResetPasswordForm() {
           </p>
           <Link
             href="/login"
-            className="block w-full bg-hope-green text-white py-2.5 px-4 rounded-md hover:bg-hope-green/90 transition-colors text-sm font-medium text-center"
+            className="block w-full bg-hope-dark-cyan text-white py-2.5 px-4 rounded-md hover:bg-hope-dark-cyan/90 transition-colors text-sm font-medium text-center"
           >
             ← Înapoi la login
           </Link>
@@ -85,14 +85,14 @@ export default function ResetPasswordForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400
-                  focus:outline-none focus:border-hope-green focus:ring-1 focus:ring-hope-green"
+                  focus:outline-none focus:border-hope-dark-cyan focus:ring-1 focus:ring-hope-dark-cyan"
                 required
                 disabled={loading}
               />
             </div>
             <button
               type="submit"
-              className="w-full bg-hope-green text-white py-2.5 px-4 rounded-md hover:bg-hope-green/90 transition-colors
+              className="w-full bg-hope-dark-cyan text-white py-2.5 px-4 rounded-md hover:bg-hope-dark-cyan/90 transition-colors
                 disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm"
               disabled={loading}
             >
@@ -104,7 +104,7 @@ export default function ResetPasswordForm() {
             Nu te-ai înscris încă în tabără?{" "}
             <Link
               href="/inscrie-te"
-              className="text-hope-green hover:underline font-medium"
+              className="text-hope-dark-cyan hover:underline font-medium"
             >
               Înscrie-te aici
             </Link>

@@ -1,9 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { storage } from "./config";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  StorageReference,
+} from "firebase/storage";
 
 export const uploadImage = async (uid: string, imageFile: File) => {
   try {
-    const storageRef = ref(storage, `user-photos/${uid}`);
+    const storageRef: StorageReference = ref(storage, `user-photos/${uid}`);
     await uploadBytes(storageRef, imageFile);
     const downloadURL = await getDownloadURL(storageRef);
     return downloadURL;

@@ -91,8 +91,12 @@ export default function Step1({
       </div>
 
       <div className="mt-6 flex justify-end">
-        <Button onClick={handleNext} className="text-white">
-          Continuă →
+        <Button
+          onClick={handleNext}
+          className="text-white bg-hope-darkcyan"
+          disabled={isLoading}
+        >
+          {isLoading ? "Se procesează..." : "Continuă →"}
         </Button>
       </div>
 

@@ -39,11 +39,11 @@ export const columns = ({
   {
     accessorKey: "age",
     header: "Ani",
-    cell: ({ row }) => (
-      <span className={row.getValue("age") < 18 ? "text-purple-700" : ""}>
-        {row.getValue("age")}
-      </span>
-    ),
+    cell: ({ row }) => {
+      const age = row.getValue("age") as number | undefined;
+      if (!age) return "-";
+      return <span className={age < 18 ? "text-purple-700" : ""}>{age}</span>;
+    },
   },
   {
     accessorKey: "phone",

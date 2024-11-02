@@ -1,6 +1,10 @@
 import { db } from "./config";
 import { doc, setDoc } from "firebase/firestore";
 import { FormData } from "@/types/form";
+import { DocumentData } from "firebase/firestore";
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 export const createUserDocument = async (
   uid: string,

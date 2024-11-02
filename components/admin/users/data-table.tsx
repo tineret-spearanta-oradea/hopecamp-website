@@ -25,13 +25,11 @@ import { useState } from "react";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  onEdit?: (user: TData | null) => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  onEdit,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");

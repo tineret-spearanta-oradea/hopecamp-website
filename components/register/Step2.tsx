@@ -1,4 +1,4 @@
-import { FormData } from "./RegisterForm";
+import { FormData } from "@/types/form";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -247,7 +247,13 @@ export default function Step2({
         <Button onClick={handlePrev} variant="outline">
           ← Înapoi
         </Button>
-        <Button onClick={handleNext}>Continuă →</Button>
+        <Button
+          onClick={handleNext}
+          className="text-white bg-hope-darkcyan"
+          disabled={isLoading}
+        >
+          {isLoading ? "Se procesează..." : "Continuă →"}
+        </Button>
       </div>
     </div>
   );

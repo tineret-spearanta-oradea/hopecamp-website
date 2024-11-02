@@ -15,7 +15,10 @@ export default function PendingUser({ userData }: PendingUserProps) {
       </p>
       <p>
         👤 Dacă sunt probleme poți lua legatura cu noi la numărul de telefon{" "}
-        <a href="tel:+40754242094" className="text-hope-green hover:underline">
+        <a
+          href="tel:+40754242094"
+          className="text-hope-darkcyan hover:underline"
+        >
           0754 242 094
         </a>
       </p>
