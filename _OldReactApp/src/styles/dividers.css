@@ -1,0 +1,37 @@
+/* styles for the SVG section dividers */
+
+.spacer{
+    aspect-ratio: 960/106;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.hero-divider {
+    background-image: url('/assets/svgs/wave-herosection.svg');
+}
+
+.button-divider-up {
+    background-image: url('/assets/svgs/wave-buttonsection-up.svg');
+}
+
+.button-divider-down {
+    background-image: url('/assets/svgs/wave-buttonsection-down.svg');
+}
+
+.schedule-divider-up {
+    background-image: url('/assets/svgs/wave-schedulesection-up.svg');
+}
+
+.schedule-divider-down {
+    background-image: url('/assets/svgs/wave-schedulesection-down.svg');
+}
+
+.location-divider-up {
+    background-image: url('/assets/svgs/wave-locationsection-up.svg');
+}
+
+.location-divider-down {
+    background-image: url('/assets/svgs/wave-locationsection-down.svg');
+}
