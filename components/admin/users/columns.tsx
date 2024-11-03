@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { MoreHorizontal, Pencil, Trash2, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,12 +14,14 @@ import { User } from "@/types/user";
 interface ColumnProps {
   onEdit?: (user: User) => void;
   onDelete?: (user: User) => void;
+  onViewDetails?: (user: User) => void;
   isSuperAdmin?: boolean;
 }
 
 export const columns = ({
   onEdit,
   onDelete,
+  onViewDetails,
   isSuperAdmin,
 }: ColumnProps): ColumnDef<User>[] => [
   {
@@ -125,6 +127,13 @@ export const columns = ({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="bg-background">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={() => onViewDetails?.(user)}
+              className="cursor-pointer"
+            >
+              <Eye className="mr-2 h-4 w-4" />
+              View Details
+            </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => onEdit?.(user)}
               className="cursor-pointer"

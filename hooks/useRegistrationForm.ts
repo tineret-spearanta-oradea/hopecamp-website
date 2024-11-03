@@ -3,7 +3,6 @@ import { FormData, ValidationErrors } from "@/types/form";
 import { validateAuthFields, validateUserFields } from "@/utils/validation";
 import { dateRange, sumToPay } from "@/lib/constants";
 import { createUserAccount } from "@/lib/firebase/auth";
-import { uploadImage } from "@/lib/firebase/storage";
 import { createUserDocument } from "@/lib/firebase/firestore";
 
 const initialFormData: FormData = {
@@ -22,7 +21,7 @@ const initialFormData: FormData = {
     preferences: "",
     startDate: dateRange.startDate,
     endDate: dateRange.endDate,
-    imageFile: null,
+    imageUrl: "",
   },
 };
 
@@ -114,39 +113,34 @@ export function useRegistrationForm() {
         formData.authData.password
       );
 
-      // Upload image
-      const imageUrl = await uploadImage(
+      // Create user document with the image URL
+      await createUserDocument(
         user.uid,
-        formData.userData.imageFile!
+        formData,
+        formData.userData.imageUrl || ""
       );
-
-      // Create user document
-      await createUserDocument(user.uid, formData, imageUrl);
 
       // Log success
       console.group("Registration Success");
       console.log("User created:", user.uid);
-      console.log("Image uploaded:", imageUrl);
       console.log("Document created in Firestore");
       console.groupEnd();
 
-      // TODO: Redirect to success page or login
       window.location.href = "/cont";
     } catch (error: any) {
       console.error("Registration error:", error);
-      // TODO: Show error to user
       alert(error.message);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleImageChange = (file: File | null) => {
+  const handleImageChange = (imageUrl: string) => {
     setFormData((prevData) => ({
       ...prevData,
       userData: {
         ...prevData.userData,
-        imageFile: file,
+        imageUrl: imageUrl,
       },
     }));
   };

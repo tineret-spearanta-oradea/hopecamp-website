@@ -24,7 +24,7 @@ export const createUserDocument = async (
       preferences: formData.userData.preferences,
       startDate: formData.userData.startDate,
       endDate: formData.userData.endDate,
-      imageUrl,
+      imageUrl: formData.userData.imageUrl,
       signupDate: new Date(),
       isConfirmed: false,
       isAdmin: false,

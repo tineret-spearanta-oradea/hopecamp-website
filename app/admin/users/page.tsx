@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { columns } from "@/components/admin/users/columns";
 import { DataTable } from "@/components/admin/users/data-table";
-import { EditUserDrawer } from "@/components/admin/users/edit-user-drawer";
+import { EditUserSheet } from "@/components/admin/users/edit-user-sheet";
 import { useUsers } from "@/hooks/use-users";
 import { useAuth } from "@/contexts/auth-context";
 import { useToast } from "@/hooks/use-toast";
@@ -11,6 +11,7 @@ import { Loader2 } from "lucide-react";
 import { User } from "@/types/user";
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { UserDetailsDialog } from "@/components/admin/users/user-details-dialog";
 
 export default function UsersPage() {
   const { toast } = useToast();
@@ -18,6 +19,8 @@ export default function UsersPage() {
   const { users, isLoading, error } = useUsers();
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [selectedUserForDetails, setSelectedUserForDetails] =
+    useState<User | null>(null);
 
   const handleEditUser = (user: User | null) => {
     setSelectedUser(user);
@@ -67,6 +70,10 @@ export default function UsersPage() {
     }
   };
 
+  const handleViewDetails = (user: User) => {
+    setSelectedUserForDetails(user);
+  };
+
   if (isLoading) {
     return (
       <div className="flex h-[450px] items-center justify-center">
@@ -94,6 +101,7 @@ export default function UsersPage() {
           columns={columns({
             onEdit: handleEditUser,
             onDelete: handleDeleteUser,
+            onViewDetails: handleViewDetails,
             isSuperAdmin: currentUser?.isSuperAdmin,
           })}
           data={users || []}
@@ -101,7 +109,7 @@ export default function UsersPage() {
       </div>
 
       {selectedUser && (
-        <EditUserDrawer
+        <EditUserSheet
           user={selectedUser}
           isOpen={isDrawerOpen}
           onClose={() => {
@@ -110,6 +118,14 @@ export default function UsersPage() {
           }}
           onUpdate={handleUpdateUser}
           isSuperAdmin={currentUser?.isSuperAdmin}
+        />
+      )}
+
+      {selectedUserForDetails && (
+        <UserDetailsDialog
+          user={selectedUserForDetails}
+          isOpen={!!selectedUserForDetails}
+          onClose={() => setSelectedUserForDetails(null)}
         />
       )}
     </div>

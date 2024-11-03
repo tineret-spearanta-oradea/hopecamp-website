@@ -9,6 +9,7 @@ import {
   transportOptions,
 } from "@/lib/constants";
 import { DatePickerWithRange } from "../ui/date-picker";
+import { UploadButton } from "@/utils/uploadthing";
 
 interface Step2Props {
   formData: FormData;
@@ -19,7 +20,7 @@ interface Step2Props {
   handleNext: () => void;
   handlePrev: () => void;
   handleDateChange: (dates: { from: Date; to: Date }) => void;
-  handleImageChange: (file: File | null) => void;
+  handleImageChange: (imageUrl: string) => void;
   validationErrors: Record<string, string>;
   isLoading: boolean;
 }
@@ -39,11 +40,6 @@ export default function Step2({
     objectName: "authData" | "userData"
   ) => {
     handleChange(objectName, e.target);
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    handleImageChange(file);
   };
 
   return (
@@ -213,20 +209,20 @@ export default function Step2({
           <Label htmlFor="imageFile" className="block">
             Încarcă poză cu tine *
           </Label>
-          <Input
-            id="imageFile"
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            className={validationErrors.imageFile ? "border-destructive" : ""}
+          <UploadButton
+            endpoint="profileImage"
+            onClientUploadComplete={(res) => {
+              if (res?.[0]?.url) {
+                handleImageChange(res[0].url);
+              }
+            }}
+            onUploadError={(error: Error) => {
+              console.error("Upload error:", error);
+              alert(`Eroare la încărcare: ${error.message}`);
+            }}
           />
-          {validationErrors.imageFile && (
-            <p className="text-destructive text-xs">
-              {validationErrors.imageFile}
-            </p>
-          )}
           <p className="text-xs text-muted-foreground">
-            Poza trebuie să fie mai mică de 5MB
+            Poza trebuie să fie mai mică de 4MB
           </p>
         </div>
 

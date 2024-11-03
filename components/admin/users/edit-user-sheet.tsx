@@ -1,19 +1,16 @@
 "use client";
 
-import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-} from "@/components/ui/drawer";
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -28,6 +25,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { User } from "@/types/user";
+import React from "react";
 
 const userFormSchema = z.object({
   name: z.string().min(2, {
@@ -44,7 +42,7 @@ const userFormSchema = z.object({
 
 type UserFormValues = z.infer<typeof userFormSchema>;
 
-interface EditUserDrawerProps {
+interface EditUserSheetProps {
   user: User;
   isOpen: boolean;
   onClose: () => void;
@@ -52,13 +50,13 @@ interface EditUserDrawerProps {
   isSuperAdmin?: boolean;
 }
 
-export function EditUserDrawer({
+export function EditUserSheet({
   user,
   isOpen,
   onClose,
   onUpdate,
   isSuperAdmin,
-}: EditUserDrawerProps) {
+}: EditUserSheetProps) {
   const { toast } = useToast();
 
   const form = useForm<UserFormValues>({
@@ -73,7 +71,7 @@ export function EditUserDrawer({
     },
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (user) {
       form.reset({
         name: user.name,
@@ -97,7 +95,7 @@ export function EditUserDrawer({
         description: "User updated successfully",
       });
       onClose();
-    } catch (error) {
+    } catch {
       toast({
         title: "Error",
         description: "Failed to update user",
@@ -107,18 +105,18 @@ export function EditUserDrawer({
   }
 
   return (
-    <Drawer open={isOpen} onClose={onClose}>
-      <DrawerContent>
-        <DrawerHeader>
-          <DrawerTitle>Edit User</DrawerTitle>
-          <DrawerDescription>
+    <Sheet open={isOpen} onOpenChange={onClose}>
+      <SheetContent className="sm:max-w-[500px] overflow-y-auto">
+        <SheetHeader>
+          <SheetTitle>Edit User</SheetTitle>
+          <SheetDescription>
             Make changes to user information here. Click save when you&apos;re
             done.
-          </DrawerDescription>
-        </DrawerHeader>
-        <div className="p-4">
+          </SheetDescription>
+        </SheetHeader>
+        <div className="py-4">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
                 control={form.control}
                 name="name"
@@ -222,18 +220,18 @@ export function EditUserDrawer({
                 </>
               )}
 
-              <DrawerFooter>
+              <div className="flex justify-end space-x-4 pt-4">
+                <Button type="button" variant="outline" onClick={onClose}>
+                  Cancel
+                </Button>
                 <Button type="submit" className="bg-hope-darkcyan">
                   Save changes
                 </Button>
-                <DrawerClose asChild>
-                  <Button variant="outline">Cancel</Button>
-                </DrawerClose>
-              </DrawerFooter>
+              </div>
             </form>
           </Form>
         </div>
-      </DrawerContent>
-    </Drawer>
+      </SheetContent>
+    </Sheet>
   );
 }

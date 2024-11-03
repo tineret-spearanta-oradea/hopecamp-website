@@ -7,6 +7,7 @@ import { Home, Users, MessageSquare, Settings, LogOut } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { useState } from "react";
 
 const menuItems = [
   {
@@ -39,6 +40,18 @@ export function AdminNav() {
   const { user } = useAuth();
   const pathname = usePathname();
   const isSuperAdmin = user?.isSuperAdmin;
+  const [imageError, setImageError] = useState(false);
+  const [imageLoading, setImageLoading] = useState(true);
+
+  const initials =
+    user?.name
+      ?.split(" ")
+      .map((word) => word[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2) || "?";
+
+  console.log("User data in AdminNav:", user);
 
   return (
     <div className="flex h-full flex-col">
@@ -69,20 +82,31 @@ export function AdminNav() {
       </div>
       <div className="border-t p-4">
         <div className="flex items-center gap-3 px-2">
-          <div className="relative h-10 w-10 overflow-hidden rounded-full">
-            {user?.imageUrl ? (
-              <Image
-                src={user.imageUrl}
-                alt={user.name}
-                fill
-                className="object-cover"
-                sizes="40px"
-                priority
-              />
+          <div className="relative h-10 w-10 overflow-hidden rounded-full border bg-muted">
+            {user?.imageUrl && !imageError ? (
+              <>
+                {imageLoading && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-muted">
+                    <span className="text-sm font-semibold text-muted-foreground">
+                      {initials}
+                    </span>
+                  </div>
+                )}
+                <Image
+                  src={user.imageUrl}
+                  alt={user?.name || "User"}
+                  fill
+                  className="object-cover"
+                  sizes="40px"
+                  priority
+                  onLoadingComplete={() => setImageLoading(false)}
+                  onError={() => setImageError(true)}
+                />
+              </>
             ) : (
-              <div className="h-full w-full bg-muted flex items-center justify-center">
-                <span className="text-muted-foreground text-sm">
-                  {user?.name?.charAt(0)}
+              <div className="h-full w-full flex items-center justify-center">
+                <span className="text-sm font-semibold text-muted-foreground">
+                  {initials}
                 </span>
               </div>
             )}

@@ -14,7 +14,7 @@ export interface UserData {
   preferences?: string;
   startDate: Date | null;
   endDate: Date | null;
-  imageFile: File | null;
+  imageUrl?: string;
 }
 
 export interface FormData {

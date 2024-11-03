@@ -2,7 +2,8 @@
 const nextConfig = {
   images: {
     domains: [
-      "firebasestorage.googleapis.com", // Add Firebase Storage domain
+      "firebasestorage.googleapis.com",
+      "utfs.io", // Add UploadThing's domain
     ],
   },
   // other config options...
