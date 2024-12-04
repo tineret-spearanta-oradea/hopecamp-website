@@ -33,7 +33,7 @@ export default function FaqSection() {
     <section className="bg-white">
       <div className="container mx-auto px-8 py-16">
         <div className="flex flex-col gap-5 items-center">
-          <h2 className="text-[#1B4D3E] text-center text-3xl font-bold sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">
+          <h2 className="text-[#132C4B] text-center text-3xl font-bold sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">
             Întrebări
             <br />
             frecvente
@@ -63,7 +63,7 @@ export default function FaqSection() {
             placeholder="caută..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#F97316] max-w-sm w-full"
+            className="border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#5279A4] max-w-sm w-full"
           />
 
           <Accordion type="single" collapsible className="w-full max-w-2xl">

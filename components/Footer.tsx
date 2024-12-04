@@ -5,7 +5,7 @@ import { contactInfo } from "@/app/constants";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#FFF8E7]">
+    <footer className="bg-[5279A4] pt-10">
       <div className="container mx-auto flex flex-col justify-around gap-5 px-8 py-4 sm:flex-row">
         <div className="flex flex-col items-center gap-5">
           <Image
@@ -16,10 +16,10 @@ export default function Footer() {
             className="lg:h-24 w-auto"
           />
           <div className="text-sm sm:text-base md:text-lg lg:text-xl">
-            <p className="text-[#1B4D3E] text-center sm:text-left font-medium">
+            <p className="text-[#132C4B] text-center sm:text-left font-medium">
               {contactInfo.email}
             </p>
-            <p className="text-[#1B4D3E] text-center sm:text-left font-medium">
+            <p className="text-[#132C4B] text-center sm:text-left font-medium">
               {contactInfo.phone}
             </p>
           </div>
@@ -28,7 +28,7 @@ export default function Footer() {
         <div className="flex justify-center items-center gap-5 sm:flex-col">
           <Button
             asChild
-            className="bg-[#F97316] hover:bg-[#F97316]/90 text-white rounded-full px-8 py-2"
+            className="bg-[#5279A4] hover:bg-[#5279A4]/90 text-white rounded-full px-8 py-2"
           >
             <Link href="/inscrie-te">Înscrie-te</Link>
           </Button>
@@ -36,7 +36,7 @@ export default function Footer() {
           <div className="flex items-center gap-2">
             <Link
               href={contactInfo.instagram}
-              className="text-[#1B4D3E] hover:text-[#F97316] transition-colors text-xl"
+              className="text-[#132C4B] hover:text-[#5279A4] transition-colors text-xl"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -50,7 +50,7 @@ export default function Footer() {
             </Link>
             <Link
               href={contactInfo.facebook}
-              className="text-[#1B4D3E] hover:text-[#F97316] transition-colors text-xl"
+              className="text-[#132C4B] hover:text-[#5279A4] transition-colors text-xl"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +64,7 @@ export default function Footer() {
             </Link>
             <Link
               href={contactInfo.whatsapp}
-              className="text-[#1B4D3E] hover:text-[#F97316] transition-colors text-xl"
+              className="text-[#132C4B] hover:text-[#5279A4] transition-colors text-xl"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -78,7 +78,7 @@ export default function Footer() {
             </Link>
             <Link
               href={contactInfo.youtube}
-              className="text-[#1B4D3E] hover:text-[#F97316] transition-colors text-xl"
+              className="text-[#132C4B] hover:text-[#5279A4] transition-colors text-xl"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -95,7 +95,7 @@ export default function Footer() {
       </div>
 
       <div className="flex justify-center pt-2">
-        <p className="text-[#1B4D3E] text-xs text-center mb-2 mt-5">
+        <p className="text-[#132C4B] text-xs text-center mb-2 mt-5">
           © 2024 copyright
           <br /> Tineret Speranta Oradea
         </p>

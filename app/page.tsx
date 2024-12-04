@@ -6,40 +6,15 @@ import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FaqSection from "@/components/FaqSection";
+import Hero from "@/components/Hero";
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-hope-beige">
       <Navbar />
       {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center text-center px-4 pt-20 pb-32">
-        <div className="space-y-6">
-          <h1 className="text-5xl md:text-6xl font-bold text-hope-darkcyan">
-            Hope Camp #5
-          </h1>
-          <p className="text-xl text-hope-orange">
-            17-22 iulie @ Someșu Rece - Cluj
-          </p>
-          <p className="text-hope-darkcyan text-lg">
-            Tabăra pe care nu vrei să o ratezi
-          </p>
-          <Button
-            variant="default"
-            className="bg-hope-orange hover:bg-hope-orange/90 text-white rounded-full px-8 py-6 text-lg mt-4"
-            asChild
-          >
-            <Link
-              href="https://drive.google.com/drive/u/1/folders/1eh_ifVkcLBtLQSwsrnO7iNoe1uyUpyj_"
-              target="_blank"
-            >
-              GALERIE HC#5
-            </Link>
-          </Button>
-          <p className="text-sm text-hope-darkcyan/80 mt-2">
-            Apasă butonul de mai sus pentru a vedea galeria din tabără!
-          </p>
-        </div>
-      </section>
+      <Hero></Hero>
+      
       {/* Wave transition */}
       <div className="w-full">
         <svg
@@ -52,56 +27,14 @@ export default function Home() {
         </svg>
       </div>
       {/* About Section */}
-      <section className="bg-white">
-        <div className="container mx-auto px-4 py-16">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
-            <div className="lg:w-1/2 max-w-2xl">
-              <h2 className="text-4xl font-bold text-hope-darkcyan mb-6">
-                Despre noi
-              </h2>
-              <p className="text-hope-darkcyan text-lg leading-relaxed">
-                Bine ai venit în comunitatea noastră de tineri pasionați și
-                plini de energie. Suntem echipa taberei creștine Hope Camp din
-                cadrul Tineret Speranța Oradea, alcătuită din tineri din diverse
-                biserici locale. 🙏
-                <br />
-                <br />
-                Noi creăm un mediu plăcut tinerilor pentru distracție și
-                socializare, dar și un spațiu propice pentru închinare și
-                cunoașterea lui Dumnezeu! Lucrăm cu drag și entuziasm pentru a
-                oferi experiențe memorabile unde fiecare se simte acasă. Aici,
-                fiecare este binevenit și contribuie la o atmosferă plăcută.
-                <br />
-                <br />
-                Scopul nostru este ca tinerii să aibă o experiență personală și
-                autentică cu Dumnezeu, să-L aleagă pe Hristos ca Domn al vieții
-                personale și să crească spiritual prin ucenicie. Te așteptăm să
-                ni te alături și să creăm împreună amintiri frumoase și momente
-                spirituale de neuitat!🌟
-              </p>
-            </div>
-            <div className="lg:w-1/2 flex justify-center">
-              <div className="w-full max-w-xl">
-                <Image
-                  src="/assets/images/gallery/ZVE03429.jpg"
-                  alt="Group photo from Hope Camp"
-                  width={600}
-                  height={400}
-                  className="rounded-lg w-full h-auto object-cover shadow-lg"
-                  priority
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
       {/* Wave transition */}
       <div className="w-full bg-white">
         <svg
           viewBox="0 0 1440 320"
           className="w-full block"
           preserveAspectRatio="none"
-          fill="#FFF0C8"
+          fill="#A2BCCB"
         >
           <path d="M0,96L80,106.7C160,117,320,139,480,133.3C640,128,800,96,960,101.3C1120,107,1280,149,1360,154.7L1440,160L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path>
         </svg>
@@ -279,7 +212,7 @@ export default function Home() {
           viewBox="0 0 1440 320"
           className="w-full block"
           preserveAspectRatio="none"
-          fill="#FFF0C8"
+          fill="#A2BCCB"
         >
           <path d="M0,96L80,106.7C160,117,320,139,480,133.3C640,128,800,96,960,101.3C1120,107,1280,149,1360,154.7L1440,160L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path>
         </svg>
@@ -351,7 +284,7 @@ export default function Home() {
           viewBox="0 0 1440 320"
           className="w-full block"
           preserveAspectRatio="none"
-          fill="#0E7E6F"
+          fill="#132C4B"
         >
           <path d="M0,96L80,106.7C160,117,320,139,480,133.3C640,128,800,96,960,101.3C1120,107,1280,149,1360,154.7L1440,160L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path>
         </svg>
