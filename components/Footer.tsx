@@ -5,38 +5,31 @@ import { contactInfo } from "@/app/constants";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#FFF8E7]">
-      <div className="container mx-auto flex flex-col justify-around gap-5 px-8 py-4 sm:flex-row">
-        <div className="flex flex-col items-center gap-5">
+    <footer className="bg-hope-lightcyan pt-32 pb-5">
+      <div className="container mx-auto flex flex-col md:flex-row items-center gap-10">
+        <div className="w-1/2 flex flex-col items-center">
           <Image
-            src="/assets/images/footer-logo.png"
+            src="/assets/images/Full_Logo_White_PNG.png"
             alt="footer logo"
-            width={96}
-            height={96}
-            className="lg:h-24 w-auto"
+            width={600}
+            height={400}
+            className="w-52 h-52"
           />
-          <div className="text-sm sm:text-base md:text-lg lg:text-xl">
-            <p className="text-[#1B4D3E] text-center sm:text-left font-medium">
-              {contactInfo.email}
-            </p>
-            <p className="text-[#1B4D3E] text-center sm:text-left font-medium">
-              {contactInfo.phone}
-            </p>
+          <div className="text-center -mt-5">
+            <p className="text-white  font-medium">{contactInfo.email}</p>
+            <p className="text-white  font-medium">{contactInfo.phone}</p>
           </div>
         </div>
 
-        <div className="flex justify-center items-center gap-5 sm:flex-col">
-          <Button
-            asChild
-            className="bg-[#F97316] hover:bg-[#F97316]/90 text-white rounded-full px-8 py-2"
-          >
+        <div className="w-1/2 flex flex-col  items-center gap-5 ">
+          <Button className="hover:bg-[#A2BCCB]" asChild>
             <Link href="/inscrie-te">Înscrie-te</Link>
           </Button>
 
           <div className="flex items-center gap-2">
             <Link
               href={contactInfo.instagram}
-              className="text-[#1B4D3E] hover:text-[#F97316] transition-colors text-xl"
+              className="text-white hover:text-hope-darkcyan transition-colors text-xl"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -50,7 +43,7 @@ export default function Footer() {
             </Link>
             <Link
               href={contactInfo.facebook}
-              className="text-[#1B4D3E] hover:text-[#F97316] transition-colors text-xl"
+              className="text-white hover:text-hope-darkcyan transition-colors text-xl"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +57,7 @@ export default function Footer() {
             </Link>
             <Link
               href={contactInfo.whatsapp}
-              className="text-[#1B4D3E] hover:text-[#F97316] transition-colors text-xl"
+              className="text-white hover:text-hope-darkcyan transition-colors text-xl"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -78,7 +71,7 @@ export default function Footer() {
             </Link>
             <Link
               href={contactInfo.youtube}
-              className="text-[#1B4D3E] hover:text-[#F97316] transition-colors text-xl"
+              className="text-white hover:text-hope-darkcyan transition-colors text-xl"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -93,13 +86,15 @@ export default function Footer() {
           </div>
         </div>
       </div>
-
-      <div className="flex justify-center pt-2">
-        <p className="text-[#1B4D3E] text-xs text-center mb-2 mt-5">
+       <div className="flex justify-center pt-10">
+        <p className="text-white text-xs text-center  ">
           © 2024 copyright
           <br /> Tineret Speranta Oradea
         </p>
       </div>
     </footer>
   );
+}
+{
+  
 }

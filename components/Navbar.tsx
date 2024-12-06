@@ -28,7 +28,7 @@ export default function Navbar() {
   return (
     <>
       {/* Mobile Navbar */}
-      <div className="bg-hope-beige p-3 block lg:hidden">
+      <div className="p-3 block lg:hidden">
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="text-hope-darkcyan p-2"
@@ -96,7 +96,7 @@ export default function Navbar() {
       )}
 
       {/* Desktop Navbar */}
-      <nav className="bg-hope-beige text-hope-darkcyan hidden lowercase text-lg font-bold p-5 gap-5 lg:flex">
+      <nav className=" container mx-auto text-hope-darkcyan hidden lowercase text-lg font-bold p-5 gap-5 lg:flex">
         {navLinks.map((link) => (
           <Link
             key={link.href}

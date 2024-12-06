@@ -19,13 +19,13 @@ const config: Config = {
     },
     extend: {
       colors: {
-        "hope-orange": "#F58726",
-        "hope-lightcyan": "#31A595",
-        "hope-darkcyan": "#0E7E6F",
-        "hope-blackcyan": "#094841",
+        "hope-orange": "#5279A4",
+        "hope-lightcyan": "#436B9C",
+        "hope-darkcyan": "#132C4B",
+        "hope-blackcyan": "#132C4B",
         "hope-lightgray": "#D9D9D9",
         "hope-darkgray": "#5F5F5F",
-        "hope-beige": "#FFF0C8",
+        "hope-beige": "#A2BCCB",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -82,9 +82,12 @@ const config: Config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      fontFamily: {
+        lemon: ['Lemon', 'sans-serif'], 
+      },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [],
 };
 
 export default withUt(config);
