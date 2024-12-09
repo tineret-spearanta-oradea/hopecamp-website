@@ -20,11 +20,12 @@ const config: Config = {
     extend: {
       colors: {
         primary: "#132C4B",
-        secondary: "#5279A4",
-        contrast: "#436B9C",
+        secondary: "#547BAA",
+        third: "#A4C4EC",
+        contrast: "#2989FF",
         white: "#F9FCFF",
         black: "#1D1D1D",
-        gray: "#CCD3DB",
+        gray: "#EDF4FD",
 
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -84,6 +85,7 @@ const config: Config = {
       },
       fontFamily: {
         lemon: ['Lemon', 'sans-serif'], 
+        inter: ['Inter', 'sans-serif'],
       },
     },
   },
