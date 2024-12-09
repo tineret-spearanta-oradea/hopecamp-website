@@ -19,13 +19,13 @@ const config: Config = {
     },
     extend: {
       colors: {
-        "hope-orange": "#5279A4",
-        "hope-lightcyan": "#436B9C",
-        "hope-darkcyan": "#132C4B",
-        "hope-blackcyan": "#132C4B",
-        "hope-lightgray": "#D9D9D9",
-        "hope-darkgray": "#5F5F5F",
-        "hope-beige": "#A2BCCB",
+        "primary": "#132C4B",
+        "secondary": "#5279A4",
+        "contrast": "#436B9C",
+        "white": "#F9FCFF",
+        "black": "#1D1D1D",
+        "gray": "#CCD3DB",
+
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
