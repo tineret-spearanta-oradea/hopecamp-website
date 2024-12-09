@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const navLinks = [
     { href: "/", label: "acasă" },
@@ -25,14 +27,27 @@ export default function Navbar() {
     };
   }, [isOpen]);
 
+  // Handle scroll event
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <>
       {/* Mobile Navbar */}
-      <div className="p-3 block lg:hidden">
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="text-hope-darkcyan p-2"
-        >
+      <div className="bg-primary p-3 block lg:hidden fixed w-full top-0 z-50">
+        <button onClick={() => setIsOpen(!isOpen)} className="text-white p-2">
           {isOpen ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +79,7 @@ export default function Navbar() {
 
       {/* Mobile Menu Overlay */}
       {isOpen && (
-        <div className="bg-hope-darkcyan min-h-screen text-white font-bold flex flex-col fixed top-0 left-0 w-full h-full z-50">
+        <div className="bg-primary min-h-screen text-white font-bold flex flex-col fixed top-0 left-0 w-full h-full z-50">
           <div className="text-5xl flex justify-center pt-5">
             <button onClick={() => setIsOpen(false)} className="text-white">
               <svg
@@ -84,7 +99,7 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-xl m-4 hover:text-[#F97316] transition-colors"
+                  className="text-xl m-4 transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
                   {link.label}
@@ -96,16 +111,29 @@ export default function Navbar() {
       )}
 
       {/* Desktop Navbar */}
-      <nav className=" container mx-auto text-hope-darkcyan hidden lowercase text-lg font-bold p-5 gap-5 lg:flex">
-        {navLinks.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className="hover:text-hope-darkcyan/80 transition-colors"
-          >
-            {link.label}
-          </Link>
-        ))}
+      <nav
+        className={`hidden lg:block fixed w-full top-0 z-50 transition-colors duration-300 ${
+          isScrolled ? "bg-white text-primary" : "bg-primary text-white"
+        }`}
+      >
+        <div className="container mx-auto flex items-center justify-between text-lg font-inter p-5 gap-5 lg:flex">
+          <div className="flex gap-5">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="hover:text-third transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+          <Button variant="default" asChild>
+                <Link href="/galerie" target="_blank">
+                  <p>Înscrie-te</p>
+                </Link>
+              </Button>
+        </div>
       </nav>
     </>
   );
