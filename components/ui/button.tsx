@@ -5,20 +5,18 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center  rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center font-inter  rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
-        default:
-          "border border-2 border-hope-darkcyan bg-hope-darkcyan text-white hover:bg-hope-lightcyan hover:border-hope-lightcyan ",
-        destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline:
-          "border border-2  border-hope-lightcyan text-hope-lightcyan hover:border-hope-darkcyan hover:text-hope-darkcyan", // Changed border-2 to border
-        secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+        default: "bg-secondary border border-2 border-secondary text-white hover:bg-third hover:text-primary hover:border-third",
+        outline: "bg-transparent border border-2 border-third text-third hover:border-white hover:text-white",
+        link: "bg-transparent text-primary hover:text-secondary",
+        destructive: "bg-destructive text-white hover:bg-destructive-hover",
+        muted: "bg-muted text-white hover:bg-muted-hover",
+        accent: "bg-accent text-white hover:bg-accent-hover",
+        popover: "bg-popover text-white hover:bg-popover-hover",
+        card: "bg-card text-white hover:bg-card-hover",
       },
       size: {
         default: "px-4 py-2",

@@ -129,7 +129,7 @@ export default function Navbar() {
             ))}
           </div>
           <Button variant="default" asChild>
-                <Link href="/galerie" target="_blank">
+                <Link href="/inscrie-te" target="_blank">
                   <p>Înscrie-te</p>
                 </Link>
               </Button>
