@@ -8,7 +8,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "./ui/accordion";
-import { faqData } from "@/app/constants";
+import { faqData } from "@/lib/constants";
 
 // Helper function to remove diacritics
 const removeDiacritics = (str: string): string => {

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { contactInfo } from "@/app/constants";
+import { contactInfo } from "@/lib/constants";
 
 export default function Footer() {
   return (
