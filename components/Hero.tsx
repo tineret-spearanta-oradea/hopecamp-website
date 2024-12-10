@@ -22,12 +22,12 @@ export default function Hero() {
             </p>
             <div className="flex flex-col md:items-center md:flex-row gap-5">
               <Button variant="default" asChild>
-                <Link href="/galerie" target="_blank">
+                <Link href="/inscrie-te" target="_blank">
                   <p>Înscrie-te</p>
                 </Link>
               </Button>
               <Button variant="outline" asChild>
-                <Link href="/inscrie-te" className="flex gap-2">
+                <Link href="/galerie" className="flex gap-2">
                   <svg
                     width="20"
                     height="20"
