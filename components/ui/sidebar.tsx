@@ -20,7 +20,7 @@ export function Sidebar({ children, className, isCollapsed }: SidebarProps) {
       <Sheet>
         <SheetTrigger asChild>
           <Button
-            variant="ghost"
+            variant="muted"
             size="icon"
             className="fixed top-4 left-4 z-40 md:hidden"
           >

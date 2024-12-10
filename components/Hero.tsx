@@ -5,22 +5,28 @@ import Image from "next/image";
 export default function Hero() {
   return (
     <>
-      <section className="py-16 sm:py-32">
-        <div className="container mx-auto flex flex-col-reverse md:flex-row items-center gap-10">
-          <div className="w-full text-center md:text-start lg:w-1/2 flex flex-col gap-2 text-hope-darkcyan">
-            <h1 className="font-lemon text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl">
+      <section className="bg-primary py-16 sm:py-32">
+        <div className="container mx-auto flex flex-col-reverse lg:flex-row items-center gap-10">
+          <div className="w-full text-center lg:text-start lg:w-1/2 flex flex-col items-center lg:items-start gap-5 text-white">
+            <h1 className="font-lemon text-third text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
               Winter Camp
             </h1>
-            <h3 className="font-semibold text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">
-              20-23 feb 2025 @ Mărișel, jud. Cluj
-            </h3>
-            <p className="py-2">
+            <div className="bg-white text-secondary flex flex-col items-center sm:flex-row w-fit px-5 py-1 gap-1 rounded-lg">
+              <h3 className="font-semibold text-sm  lg:text-xl xl:text-xl">
+                20-23 Februarie 2025,
+              </h3>
+              <h3 className="font-semibold font-inter text-sm  lg:text-xl xl:text-xl">
+                Mărișel, jud. Cluj
+              </h3>
+            </div>
+
+            <p className="py-2 font-inter max-w-lg lg:w-full">
               Bine ai venit în comunitatea noastră de tineri pasionați și plini
               de energie. Suntem echipa taberei creștine Hope Camp din cadrul
               Tineret Speranța Oradea, alcătuită din tineri din diverse biserici
-              locale. 🙏
+              locale.
             </p>
-            <div className="flex flex-col md:items-center md:flex-row gap-5">
+            <div className="flex flex-col lg:items-center md:flex-row gap-5">
               <Button variant="default" asChild>
                 <Link href="/inscrie-te" target="_blank">
                   <p>Înscrie-te</p>
@@ -51,7 +57,7 @@ export default function Hero() {
           </div>
           <div className="w-full lg:w-1/2 h-auto">
             <Image
-              src="/assets/images/gallery/ZVE03429.jpg"
+              src="/assets/images/wintercamp/Day2-29.jpg"
               alt="Group photo from Hope Camp"
               width={800}
               height={600}
