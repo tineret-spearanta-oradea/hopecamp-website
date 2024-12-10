@@ -9,14 +9,17 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-secondary border border-2 border-secondary text-white hover:bg-third hover:text-primary hover:border-third",
-        outline: "bg-transparent border border-2 border-third text-third hover:border-white hover:text-white",
+        default:
+          "bg-secondary border border-2 border-secondary text-white hover:bg-third hover:text-primary hover:border-third",
+        outline:
+          "bg-transparent border border-2 border-third text-third hover:bg-third/10 hover:text-third hover:border-third",
         link: "bg-transparent text-primary hover:text-secondary",
         destructive: "bg-destructive text-white hover:bg-destructive-hover",
         muted: "bg-muted text-white hover:bg-muted-hover",
         accent: "bg-accent text-white hover:bg-accent-hover",
         popover: "bg-popover text-white hover:bg-popover-hover",
         card: "bg-card text-white hover:bg-card-hover",
+        ghost: "bg-transparent hover:bg-muted/10",
       },
       size: {
         default: "px-4 py-2",

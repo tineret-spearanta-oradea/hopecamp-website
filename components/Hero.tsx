@@ -28,7 +28,7 @@ export default function Hero() {
             </p>
             <div className="flex flex-col lg:items-center md:flex-row gap-5">
               <Button variant="default" asChild>
-                <Link href="/inscrie-te" target="_blank">
+                <Link href="/inscrie-te">
                   <p>Înscrie-te</p>
                 </Link>
               </Button>

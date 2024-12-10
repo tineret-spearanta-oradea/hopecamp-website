@@ -66,11 +66,8 @@ export function AdminNav() {
             return (
               <Link key={item.href} href={item.href}>
                 <Button
-                  variant={pathname === item.href ? "accent" : "muted"}
-                  className={cn(
-                    "w-full justify-start",
-                    pathname === item.href && "bg-accent"
-                  )}
+                  variant={pathname === item.href ? "default" : "ghost"}
+                  className={cn("w-full justify-start")}
                 >
                   <item.icon className="mr-2 h-4 w-4" />
                   {item.title}

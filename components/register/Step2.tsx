@@ -55,9 +55,11 @@ export default function Step2({
         </p>
       )}
 
-      <div className="space-y-6">
-        <div>
-          <Label htmlFor="name">Numele întreg:</Label>
+      <div className="space-y-8">
+        <div className="space-y-2">
+          <Label htmlFor="name" className="text-base font-semibold">
+            Numele întreg:
+          </Label>
           <Input
             id="name"
             type="text"
@@ -73,8 +75,10 @@ export default function Step2({
           )}
         </div>
 
-        <div>
-          <Label htmlFor="age">Vârsta:</Label>
+        <div className="space-y-2">
+          <Label htmlFor="age" className="text-base font-semibold">
+            Vârsta:
+          </Label>
           <Input
             id="age"
             type="number"
@@ -91,8 +95,10 @@ export default function Step2({
           )}
         </div>
 
-        <div>
-          <Label htmlFor="phone">Număr de telefon:</Label>
+        <div className="space-y-2">
+          <Label htmlFor="phone" className="text-base font-semibold">
+            Număr de telefon:
+          </Label>
           <Input
             id="phone"
             type="tel"
@@ -108,8 +114,10 @@ export default function Step2({
           )}
         </div>
 
-        <div>
-          <Label>Perioada care stai în tabără:</Label>
+        <div className="space-y-2">
+          <Label className="text-base font-semibold">
+            Perioada care stai în tabără:
+          </Label>
           <DatePickerWithRange
             onChange={handleDateChange}
             from={formData.userData.startDate}
@@ -122,14 +130,17 @@ export default function Step2({
           )}
         </div>
 
-        <div>
-          <Label>Biserica din care provii:</Label>
+        <div className="space-y-3">
+          <Label className="text-base font-semibold">
+            Biserica din care provii:
+          </Label>
           <RadioGroup
             name="church"
             value={formData.userData.church}
             onValueChange={(value) =>
               handleChange("userData", { name: "church", value })
             }
+            className="space-y-2"
           >
             {churchOptions.map((option) => (
               <div key={option.value} className="flex items-center space-x-2">
@@ -159,14 +170,17 @@ export default function Step2({
           )}
         </div>
 
-        <div>
-          <Label>Cui plătești taxa de înscriere:</Label>
+        <div className="space-y-3">
+          <Label className="text-base font-semibold">
+            Cui plătești taxa de înscriere:
+          </Label>
           <RadioGroup
             name="payTaxTo"
             value={formData.userData.payTaxTo}
             onValueChange={(value) =>
               handleChange("userData", { name: "payTaxTo", value })
             }
+            className="space-y-2"
           >
             {payTaxToOptions.map((option) => (
               <div key={option.value} className="flex items-center space-x-2">
@@ -182,14 +196,17 @@ export default function Step2({
           )}
         </div>
 
-        <div>
-          <Label>Mijloc de transport:</Label>
+        <div className="space-y-3">
+          <Label className="text-base font-semibold">
+            Mijloc de transport:
+          </Label>
           <RadioGroup
             name="transport"
             value={formData.userData.transport}
             onValueChange={(value) =>
               handleChange("userData", { name: "transport", value })
             }
+            className="space-y-2"
           >
             {transportOptions.map((option) => (
               <div key={option.value} className="flex items-center space-x-2">
@@ -206,9 +223,7 @@ export default function Step2({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="imageFile" className="block">
-            Încarcă poză cu tine *
-          </Label>
+          <Label className="text-lg font-bold">Încarcă poză cu tine *</Label>
           <UploadButton
             endpoint="profileImage"
             onClientUploadComplete={(res) => {
@@ -220,36 +235,39 @@ export default function Step2({
               console.error("Upload error:", error);
               alert(`Eroare la încărcare: ${error.message}`);
             }}
+            appearance={{
+              button:
+                "bg-secondary text-secondary-foreground hover:bg-secondary/90",
+              allowedContent: "text-sm text-muted-foreground",
+            }}
           />
           <p className="text-xs text-muted-foreground">
             Poza trebuie să fie mai mică de 4MB
           </p>
         </div>
 
-        <div>
-          <Label htmlFor="preferences">Preferințe colegi de cameră:</Label>
+        <div className="space-y-2">
+          <Label htmlFor="preferences" className="text-base font-semibold">
+            Preferințe colegi de cameră:
+          </Label>
           <Input
             id="preferences"
             type="text"
             name="preferences"
+            placeholder="optional"
             value={formData.userData.preferences}
             onChange={(e) => handleInputChange(e, "userData")}
-            placeholder="opțional"
           />
         </div>
-      </div>
 
-      <div className="mt-6 flex justify-between">
-        <Button onClick={handlePrev} variant="outline">
-          ← Înapoi
-        </Button>
-        <Button
-          onClick={handleNext}
-          className="text-white bg-hope-darkcyan"
-          disabled={isLoading}
-        >
-          {isLoading ? "Se procesează..." : "Continuă →"}
-        </Button>
+        <div className="flex justify-between pt-4">
+          <Button onClick={handlePrev} variant="outline">
+            ← Înapoi
+          </Button>
+          <Button onClick={handleNext} disabled={isLoading}>
+            {isLoading ? "Se procesează..." : "Continuă →"}
+          </Button>
+        </div>
       </div>
     </div>
   );

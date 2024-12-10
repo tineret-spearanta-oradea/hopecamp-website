@@ -101,7 +101,7 @@ export default function LoginForm() {
         </div>
         <Button
           type="submit"
-          className="w-full bg-hope-dark-cyan bg-hope-darkcyan text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={loading}
         >
           {loading ? "Se procesează..." : "Autentificare"}

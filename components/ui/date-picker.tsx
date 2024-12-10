@@ -45,10 +45,10 @@ export function DatePickerWithRange({
         <PopoverTrigger asChild>
           <Button
             id="date"
-            variant={"outline"}
             className={cn(
-              "w-full justify-start text-left font-normal",
-              !date && "text-muted-foreground"
+              "w-full justify-start text-left font-normal border-2",
+              !date && "text-muted-foreground",
+              "hover:bg-accent/10 focus:ring-2 focus:ring-ring focus:ring-offset-2"
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
@@ -66,18 +66,23 @@ export function DatePickerWithRange({
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start" side="bottom">
+        <PopoverContent
+          className="w-auto p-0 bg-card shadow-lg border-2"
+          align="start"
+          side="bottom"
+        >
           <Calendar
             mode="range"
             defaultMonth={dateRange.startDate}
             selected={date}
             onSelect={handleSelect}
-            numberOfMonths={2}
+            numberOfMonths={1}
             disabled={(date) => {
               const startDate = new Date(dateRange.startDate);
               startDate.setHours(0, 0, 0, 0);
               return date < startDate || date > dateRange.endDate;
             }}
+            className="rounded-md bg-card"
           />
         </PopoverContent>
       </Popover>

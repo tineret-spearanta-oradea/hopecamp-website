@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FormData, ValidationErrors } from "@/types/form";
 import { validateAuthFields, validateUserFields } from "@/utils/validation";
-import { dateRange, sumToPay } from "@/lib/constants";
+import { dateRange, sumToPay, payTaxToOptions } from "@/lib/constants";
 import { createUserAccount } from "@/lib/firebase/auth";
 import { createUserDocument } from "@/lib/firebase/firestore";
 
@@ -16,7 +16,7 @@ const initialFormData: FormData = {
     age: "",
     phone: "",
     church: "Speranta, Oradea",
-    payTaxTo: "Rebeca Gros",
+    payTaxTo: payTaxToOptions[0].value,
     transport: "personal",
     preferences: "",
     startDate: dateRange.startDate,

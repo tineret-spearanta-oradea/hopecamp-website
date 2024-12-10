@@ -27,7 +27,7 @@ export const sumToPay = {
   normal: 500,
   withFamilyMember: null,
   deposit: 250,
-  // perDay: 100,
+  perDay: 200,
 };
 
 export const dateRange = {
