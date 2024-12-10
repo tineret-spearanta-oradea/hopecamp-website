@@ -8,11 +8,14 @@ import { Check } from "lucide-react";
 import { sumToPay, dateRange } from "@/lib/constants";
 import { format } from "date-fns";
 
-interface Step3Props extends Omit<StepProps, "handleNext"> {
+interface Step3Props {
+  formData: StepProps["formData"];
+  handlePrev: () => void;
+  handleSubmit: () => void;
   agreementChecked: boolean;
   setAgreementChecked: (checked: boolean) => void;
   downloadCampRules: () => void;
-  handleSubmit: () => void;
+  isLoading: boolean;
 }
 
 export default function Step3({
