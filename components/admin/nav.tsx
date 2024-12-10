@@ -66,7 +66,7 @@ export function AdminNav() {
             return (
               <Link key={item.href} href={item.href}>
                 <Button
-                  variant={pathname === item.href ? "secondary" : "ghost"}
+                  variant={pathname === item.href ? "accent" : "muted"}
                   className={cn(
                     "w-full justify-start",
                     pathname === item.href && "bg-accent"
@@ -117,7 +117,7 @@ export function AdminNav() {
               {user?.email}
             </p>
           </div>
-          <Button variant="ghost" size="icon">
+          <Button variant="muted" size="icon">
             <LogOut className="h-4 w-4 text-red-500" />
           </Button>
         </div>

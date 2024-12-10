@@ -31,14 +31,14 @@ export default function About() {
               </p>
               <Button variant="default" asChild>
                 <a href="https://linktr.ee/tineretsperantaoradea">
-                  Conectează-te
+                  Urmărește-ne
                 </a>
               </Button>
             </div>
           </div>
           <div className="w-full lg:w-1/2 h-auto">
             <Image
-              src="/assets/images/gallery/ZVE03429.jpg"
+              src="/assets/images/gallery/ZVE08483.jpg"
               alt="Group photo from Hope Camp"
               width={800}
               height={600}
