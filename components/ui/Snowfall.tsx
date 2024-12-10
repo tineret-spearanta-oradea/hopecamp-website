@@ -9,11 +9,7 @@ interface SnowfallProps {
   style?: React.CSSProperties;
 }
 
-export function Snowfall({
-  color,
-  snowflakeCount = 150,
-  style,
-}: SnowfallProps) {
+export function Snowfall({ color, snowflakeCount = 50, style }: SnowfallProps) {
   return (
     <ReactSnowfall
       color={color}

@@ -5,7 +5,7 @@ import { contactInfo } from "@/app/constants";
 
 export default function Footer() {
   return (
-    <footer className="bg-hope-lightcyan pt-32 pb-5">
+    <footer className="bg-black pt-12 pb-5">
       <div className="container mx-auto flex flex-col md:flex-row items-center gap-10">
         <div className="w-1/2 flex flex-col items-center">
           <Image

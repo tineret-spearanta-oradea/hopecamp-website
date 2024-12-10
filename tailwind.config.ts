@@ -19,26 +19,27 @@ const config: Config = {
     },
     extend: {
       colors: {
-        "hope-orange": "#5279A4",
-        "hope-lightcyan": "#436B9C",
-        "hope-darkcyan": "#132C4B",
-        "hope-blackcyan": "#132C4B",
-        "hope-lightgray": "#D9D9D9",
-        "hope-darkgray": "#5F5F5F",
-        "hope-beige": "#A2BCCB",
+        primary: "#132C4B",
+        secondary: "#547BAA",
+        third: "#A4C4EC",
+        contrast: "#2989FF",
+        white: "#F9FCFF",
+        black: "#1D1D1D",
+        gray: "#EDF4FD",
+
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
+        // primary: {
+        //   DEFAULT: "hsl(var(--primary))",
+        //   foreground: "hsl(var(--primary-foreground))",
+        // },
+        // secondary: {
+        //   DEFAULT: "hsl(var(--secondary))",
+        //   foreground: "hsl(var(--secondary-foreground))",
+        // },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
@@ -84,6 +85,7 @@ const config: Config = {
       },
       fontFamily: {
         lemon: ['Lemon', 'sans-serif'], 
+        inter: ['Inter', 'sans-serif'],
       },
     },
   },
