@@ -4,9 +4,14 @@ import { columns } from "@/components/admin/messages/columns";
 import { DataTable } from "@/components/admin/messages/data-table";
 import { useMessages } from "@/hooks/use-messages";
 import { Loader2 } from "lucide-react";
+import { useEffect } from "react";
 
 export default function MessagesPage() {
-  const { messages, isLoading, error } = useMessages();
+  const { messages, isLoading, error, fetchMessages } = useMessages();
+
+  useEffect(() => {
+    fetchMessages();
+  }, [fetchMessages]);
 
   if (isLoading) {
     return (

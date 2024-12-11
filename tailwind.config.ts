@@ -19,26 +19,27 @@ const config: Config = {
     },
     extend: {
       colors: {
-        "hope-orange": "#F58726",
-        "hope-lightcyan": "#31A595",
-        "hope-darkcyan": "#0E7E6F",
-        "hope-blackcyan": "#094841",
-        "hope-lightgray": "#D9D9D9",
-        "hope-darkgray": "#5F5F5F",
-        "hope-beige": "#FFF0C8",
+        primary: "#132C4B",
+        secondary: "#547BAA",
+        third: "#A4C4EC",
+        contrast: "#2989FF",
+        white: "#F9FCFF",
+        black: "#1D1D1D",
+        gray: "#EDF4FD",
+
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
+        // primary: {
+        //   DEFAULT: "hsl(var(--primary))",
+        //   foreground: "hsl(var(--primary-foreground))",
+        // },
+        // secondary: {
+        //   DEFAULT: "hsl(var(--secondary))",
+        //   foreground: "hsl(var(--secondary-foreground))",
+        // },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
@@ -82,9 +83,13 @@ const config: Config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      fontFamily: {
+        lemon: ['Lemon', 'sans-serif'], 
+        inter: ['Inter', 'sans-serif'],
+      },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [],
 };
 
 export default withUt(config);

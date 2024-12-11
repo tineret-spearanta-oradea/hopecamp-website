@@ -9,15 +9,37 @@ import {
   CheckCircle,
   AlertCircle,
   ChevronRight,
+  Calendar,
+  Timer,
+  MessageSquare,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { dateRange } from "@/lib/constants";
+import { differenceInDays } from "date-fns";
+import { addDays, format, isSameDay, startOfDay } from "date-fns";
+import { ro } from "date-fns/locale";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+import { useMessages } from "@/hooks/use-messages";
 
 export default function AdminDashboardPage() {
-  const { users, isLoading, error } = useUsers();
+  const { users, isLoading: usersLoading, error: usersError } = useUsers();
+  const {
+    messages,
+    isLoading: messagesLoading,
+    error: messagesError,
+  } = useMessages();
   const router = useRouter();
 
-  if (isLoading) {
+  if (usersLoading || messagesLoading) {
     return (
       <div className="flex h-[450px] items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin" />
@@ -25,10 +47,10 @@ export default function AdminDashboardPage() {
     );
   }
 
-  if (error) {
+  if (usersError || messagesError) {
     return (
       <div className="flex h-[450px] items-center justify-center text-red-500">
-        Error loading data: {error.message}
+        Error loading data: {(usersError || messagesError)?.message}
       </div>
     );
   }
@@ -41,6 +63,62 @@ export default function AdminDashboardPage() {
     users?.reduce((sum, user) => sum + (user.amountPaid || 0), 0) || 0;
   const averageAge =
     users?.reduce((sum, user) => sum + (user.age || 0), 0) / totalUsers || 0;
+
+  // Calculate days distribution
+  const campDays = Array.from(
+    { length: differenceInDays(dateRange.endDate, dateRange.startDate) + 1 },
+    (_, i) => {
+      const date = new Date(dateRange.startDate);
+      date.setDate(date.getDate() + i);
+      return date;
+    }
+  );
+
+  const usersByDay = campDays.map((day) => {
+    return {
+      date: day,
+      count:
+        users?.filter((user) => {
+          if (!user.startDate || !user.endDate) return false;
+          const start = new Date(user.startDate);
+          const end = new Date(user.endDate);
+          return start <= day && end >= day;
+        }).length || 0,
+    };
+  });
+
+  // Calculate time remaining
+  const now = new Date();
+  const daysUntilCamp = differenceInDays(dateRange.startDate, now);
+  const isBeforeCamp = now < dateRange.startDate;
+  const isCampOngoing = now >= dateRange.startDate && now <= dateRange.endDate;
+  const isAfterCamp = now > dateRange.endDate;
+
+  let timeRemainingText = "";
+  if (isBeforeCamp) {
+    timeRemainingText = `${daysUntilCamp} zile până la tabără`;
+  } else if (isCampOngoing) {
+    timeRemainingText = "Tabăra este în desfășurare";
+  } else if (isAfterCamp) {
+    timeRemainingText = "Tabăra s-a încheiat";
+  }
+
+  // Calculate registrations per day
+  const registrationsByDay =
+    users?.reduce((acc: { date: Date; count: number }[], user) => {
+      const userDate = startOfDay(new Date(user.createdAt));
+      const existingDay = acc.find((item) => isSameDay(item.date, userDate));
+
+      if (existingDay) {
+        existingDay.count++;
+      } else {
+        acc.push({ date: userDate, count: 1 });
+      }
+
+      return acc.sort((a, b) => a.date.getTime() - b.date.getTime());
+    }, []) || [];
+
+  const maxRegistrations = Math.max(...registrationsByDay.map((d) => d.count));
 
   const UserCard = ({
     title,
@@ -128,32 +206,35 @@ export default function AdminDashboardPage() {
           iconColor="text-orange-500"
         />
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Suma Totală Plătită
-            </CardTitle>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="h-4 w-4 text-muted-foreground"
-            >
-              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-            </svg>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalAmountPaid} RON</div>
-            <p className="text-xs text-muted-foreground">
-              Media: {(totalAmountPaid / totalUsers).toFixed(0)} RON per
-              participant
-            </p>
-          </CardContent>
-        </Card>
+        <div
+          className="rounded-lg cursor-pointer"
+          onClick={() => router.push("/admin/messages")}
+        >
+          <Card className="group transition-all duration-300 hover:bg-accent/50">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Mesaje necitite
+              </CardTitle>
+              <div className="flex items-center gap-2">
+                <MessageSquare className="h-4 w-4 text-blue-500" />
+                <ChevronRight
+                  className={cn(
+                    "h-4 w-4 opacity-0 -ml-4 transition-all duration-300",
+                    "group-hover:opacity-100 group-hover:ml-0"
+                  )}
+                />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {messages?.filter((msg) => !msg.isRead).length || 0}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                din {messages?.length || 0} mesaje totale
+              </p>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -247,6 +328,147 @@ export default function AdminDashboardPage() {
                 Neplătit:{" "}
                 {users?.filter((user) => !user.amountPaid).length || 0}
               </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle>Distribuția pe Zile</CardTitle>
+            <Calendar className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {usersByDay.map(({ date, count }) => {
+                const maxUsers = Math.max(...usersByDay.map((d) => d.count));
+                const percentage = maxUsers > 0 ? (count / maxUsers) * 100 : 0;
+
+                return (
+                  <div key={date.toISOString()} className="space-y-1">
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="font-medium">
+                        {date.toLocaleDateString("ro", {
+                          weekday: "long",
+                          day: "numeric",
+                        })}
+                      </span>
+                      <span className="text-muted-foreground">
+                        {count} participanți
+                      </span>
+                    </div>
+                    <div className="relative h-2 w-full bg-muted rounded-full">
+                      <div
+                        className="absolute inset-y-0 left-0 bg-primary rounded-full transition-all duration-500 ease-out"
+                        style={{
+                          width: `${Math.max(percentage, 0)}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle>Timp Rămas</CardTitle>
+            <Timer className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {isBeforeCamp ? daysUntilCamp : "-"}
+            </div>
+            <p className="text-sm text-muted-foreground mt-2">
+              {timeRemainingText}
+            </p>
+            <div className="mt-4 space-y-2">
+              <p className="text-sm">
+                Data început:{" "}
+                {dateRange.startDate.toLocaleDateString("ro", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </p>
+              <p className="text-sm">
+                Data sfârșit:{" "}
+                {dateRange.endDate.toLocaleDateString("ro", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </p>
+              <p className="text-sm">
+                Durata:{" "}
+                {differenceInDays(dateRange.endDate, dateRange.startDate) + 1}{" "}
+                zile
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-1">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle>Înscrieri pe Zile</CardTitle>
+            <Calendar className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="h-[300px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  data={registrationsByDay.map(({ date, count }) => ({
+                    date: format(date, "d MMM", { locale: ro }),
+                    count,
+                  }))}
+                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                >
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    className="stroke-muted"
+                  />
+                  <XAxis
+                    dataKey="date"
+                    className="text-sm text-muted-foreground"
+                  />
+                  <YAxis className="text-sm text-muted-foreground" />
+                  <Tooltip
+                    content={({ active, payload, label }) => {
+                      if (active && payload && payload.length) {
+                        return (
+                          <div className="rounded-lg border bg-background p-2 shadow-sm">
+                            <div className="grid grid-cols-2 gap-2">
+                              <div className="font-medium">{label}</div>
+                              <div className="font-medium text-right">
+                                {payload[0].value}{" "}
+                                {payload[0].value === 1
+                                  ? "înscriere"
+                                  : "înscrieri"}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      }
+                      return null;
+                    }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="count"
+                    stroke="hsl(var(--primary))"
+                    strokeWidth={2}
+                    dot={{ fill: "hsl(var(--primary))" }}
+                    activeDot={{ r: 8 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
             </div>
           </CardContent>
         </Card>

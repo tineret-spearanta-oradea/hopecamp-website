@@ -8,13 +8,16 @@ export interface UserData {
   name: string;
   age: string;
   phone: string;
+  startDate: Date | undefined;
+  endDate: Date | undefined;
   church: string;
+  churchOther?: string;
+  churchContact?: string;
   payTaxTo: string;
   transport: string;
+  imageUrl: string;
   preferences?: string;
-  startDate: Date | null;
-  endDate: Date | null;
-  imageUrl?: string;
+  slopeActivity: string;
 }
 
 export interface FormData {
@@ -22,18 +25,19 @@ export interface FormData {
   userData: UserData;
 }
 
-export interface ValidationErrors extends Record<string, string> {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  name: string;
-  age: string;
-  phone: string;
-  dateRange: string;
-  church: string;
-  payTaxTo: string;
-  transport: string;
-  [key: string]: string;
+export interface ValidationErrors {
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+  name?: string;
+  age?: string;
+  phone?: string;
+  dateRange?: string;
+  church?: string;
+  payTaxTo?: string;
+  transport?: string;
+  image?: string;
+  slopeActivity?: string;
 }
 
 export interface StepProps {

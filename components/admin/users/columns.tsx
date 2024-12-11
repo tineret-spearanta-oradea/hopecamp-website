@@ -1,5 +1,14 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, Pencil, Trash2, Eye } from "lucide-react";
+import {
+  MoreHorizontal,
+  Pencil,
+  Trash2,
+  Eye,
+  Copy,
+  ArrowUpDown,
+  ArrowUp,
+  ArrowDown,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,6 +19,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User } from "@/types/user";
+import { cn } from "@/lib/utils";
+import { sortingFns } from "@tanstack/react-table";
 
 interface ColumnProps {
   onEdit?: (user: User) => void;
@@ -17,6 +28,41 @@ interface ColumnProps {
   onViewDetails?: (user: User) => void;
   isSuperAdmin?: boolean;
 }
+
+const SortButton = ({
+  column,
+  children,
+}: {
+  column: any;
+  children: React.ReactNode;
+}) => {
+  const sorted = column.getIsSorted();
+  return (
+    <Button
+      variant="ghost"
+      onClick={() => column.toggleSorting(sorted === "asc")}
+      className="-ml-4"
+    >
+      {children}
+      {sorted ? (
+        sorted === "asc" ? (
+          <ArrowUp className="ml-2 h-4 w-4 text-primary" />
+        ) : (
+          <ArrowDown className="ml-2 h-4 w-4 text-primary" />
+        )
+      ) : (
+        <ArrowUpDown className="ml-2 h-4 w-4 text-muted-foreground" />
+      )}
+    </Button>
+  );
+};
+
+const slopeActivityLabels: Record<string, string> = {
+  nu: "Nu merge",
+  vizita: "Doar vizită",
+  schi: "Ski/Snowboard",
+  sanie: "Sanie",
+};
 
 export const columns = ({
   onEdit,
@@ -31,21 +77,27 @@ export const columns = ({
   },
   {
     accessorKey: "name",
-    header: "Nume",
+    header: ({ column }) => <SortButton column={column}>Nume</SortButton>,
   },
   {
     accessorKey: "isConfirmed",
-    header: "Confirmat",
+    header: ({ column }) => <SortButton column={column}>Confirmat</SortButton>,
     cell: ({ row }) => <span>{row.getValue("isConfirmed") ? "Da" : "Nu"}</span>,
+    sortingFn: (rowA, rowB, columnId) => {
+      const a = rowA.getValue(columnId);
+      const b = rowB.getValue(columnId);
+      return a === b ? 0 : a ? -1 : 1;
+    },
   },
   {
     accessorKey: "age",
-    header: "Ani",
+    header: ({ column }) => <SortButton column={column}>Ani</SortButton>,
     cell: ({ row }) => {
       const age = row.getValue("age") as number | undefined;
       if (!age) return "-";
       return <span className={age < 18 ? "text-purple-700" : ""}>{age}</span>;
     },
+    sortingFn: sortingFns.alphanumeric,
   },
   {
     accessorKey: "phone",
@@ -53,7 +105,7 @@ export const columns = ({
   },
   {
     accessorKey: "church",
-    header: "Biserică",
+    header: ({ column }) => <SortButton column={column}>Biserică</SortButton>,
   },
   {
     accessorKey: "payTaxTo",
@@ -61,7 +113,7 @@ export const columns = ({
   },
   {
     accessorKey: "amountPaid",
-    header: "Plătit",
+    header: ({ column }) => <SortButton column={column}>Plătit</SortButton>,
     cell: ({ row }) => {
       const amount = (row.getValue("amountPaid") as number) || 0;
       const withFamily = row.original.withFamilyMember;
@@ -80,6 +132,7 @@ export const columns = ({
         </span>
       );
     },
+    sortingFn: sortingFns.alphanumeric,
   },
   {
     accessorKey: "numberOfDays",
@@ -113,49 +166,65 @@ export const columns = ({
     header: "Transport",
   },
   {
-    id: "actions",
+    accessorKey: "slopeActivity",
+    header: ({ column }) => <SortButton column={column}>Pârtie</SortButton>,
     cell: ({ row }) => {
-      const user = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-background">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => onViewDetails?.(user)}
-              className="cursor-pointer"
-            >
-              <Eye className="mr-2 h-4 w-4" />
-              View Details
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => onEdit?.(user)}
-              className="cursor-pointer"
-            >
-              <Pencil className="mr-2 h-4 w-4" />
-              Edit User
-            </DropdownMenuItem>
-            {isSuperAdmin && (
-              <>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={() => onDelete?.(user)}
-                  className="text-red-600 cursor-pointer focus:text-red-600 focus:bg-red-100"
-                >
-                  <Trash2 className="mr-2 h-4 w-4" />
-                  Delete User
-                </DropdownMenuItem>
-              </>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
+      const activity = row.getValue("slopeActivity") as string;
+      return <span>{slopeActivityLabels[activity] || activity}</span>;
     },
+    filterFn: (row, id, value) => {
+      return value.length === 0 || value.includes(row.getValue(id));
+    },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="bg-background">
+          <DropdownMenuLabel>Acțiuni</DropdownMenuLabel>
+          <DropdownMenuItem
+            onClick={() => {
+              navigator.clipboard.writeText(row.original.email);
+            }}
+            className="cursor-pointer"
+          >
+            <Copy className="mr-2 h-4 w-4" />
+            Copiază email
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => onViewDetails?.(row.original)}
+            className="cursor-pointer"
+          >
+            <Eye className="mr-2 h-4 w-4" />
+            Vezi detalii
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => onEdit?.(row.original)}
+            className="cursor-pointer"
+          >
+            <Pencil className="mr-2 h-4 w-4" />
+            Editează
+          </DropdownMenuItem>
+          {isSuperAdmin && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => onDelete?.(row.original)}
+                className="text-red-600 cursor-pointer focus:text-red-600 focus:bg-red-100"
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Șterge
+              </DropdownMenuItem>
+            </>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    ),
   },
 ];

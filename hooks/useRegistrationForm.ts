@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { FormData, ValidationErrors } from "@/types/form";
 import { validateAuthFields, validateUserFields } from "@/utils/validation";
-import { dateRange, sumToPay } from "@/lib/constants";
+import { dateRange, sumToPay, payTaxToOptions } from "@/lib/constants";
 import { createUserAccount } from "@/lib/firebase/auth";
 import { createUserDocument } from "@/lib/firebase/firestore";
+import { toast } from "sonner";
 
 const initialFormData: FormData = {
   authData: {
@@ -16,12 +17,15 @@ const initialFormData: FormData = {
     age: "",
     phone: "",
     church: "Speranta, Oradea",
-    payTaxTo: "Rebeca Gros",
+    churchOther: "",
+    churchContact: "",
+    payTaxTo: payTaxToOptions[0].value,
     transport: "personal",
     preferences: "",
     startDate: dateRange.startDate,
     endDate: dateRange.endDate,
     imageUrl: "",
+    slopeActivity: "no",
   },
 };
 
@@ -72,24 +76,19 @@ export function useRegistrationForm() {
     }));
   };
 
-  const validateStep = (stepNumber: number): boolean => {
-    let errors: ValidationErrors = { ...initialValidationErrors };
+  const validateStep = (step: number): boolean => {
+    let errors: ValidationErrors = {};
 
-    switch (stepNumber) {
-      case 1:
-        const authErrors = validateAuthFields(formData.authData);
-        errors = { ...errors, ...authErrors };
-        break;
-      case 2:
-        const userErrors = validateUserFields(formData.userData);
-        errors = { ...errors, ...userErrors };
-        break;
-      default:
-        return true;
+    if (step === 1) {
+      errors = validateAuthFields(formData.authData);
+    } else if (step === 2) {
+      errors = validateUserFields(formData.userData);
     }
 
     setValidationErrors(errors);
-    return Object.keys(errors).every((key) => !errors[key]);
+    return Object.keys(errors).every(
+      (key) => !errors[key as keyof ValidationErrors]
+    );
   };
 
   const handleNext = () => {
@@ -120,16 +119,53 @@ export function useRegistrationForm() {
         formData.userData.imageUrl || ""
       );
 
+      // Show success toast
+      toast.success("Cont creat cu succes! Te vom redirecționa în curând...");
+
       // Log success
       console.group("Registration Success");
       console.log("User created:", user.uid);
       console.log("Document created in Firestore");
       console.groupEnd();
 
-      window.location.href = "/cont";
+      // Delay redirect slightly to show success message
+      setTimeout(() => {
+        window.location.href = "/cont";
+      }, 1500);
     } catch (error: any) {
       console.error("Registration error:", error);
-      alert(error.message);
+
+      // Handle specific Firebase Auth errors
+      switch (error.code) {
+        case "auth/email-already-in-use":
+          toast.error("Acest email este deja folosit.", {
+            description: "Te rugăm să te conectezi sau să folosești alt email.",
+            action: {
+              label: "Conectare",
+              onClick: () => (window.location.href = "/login"),
+            },
+          });
+          break;
+        case "auth/invalid-email":
+          toast.error("Adresa de email nu este validă.", {
+            description: "Te rugăm să verifici adresa introdusă.",
+          });
+          break;
+        case "auth/operation-not-allowed":
+          toast.error("Înregistrarea nu este permisă momentan.", {
+            description: "Te rugăm să încerci mai târziu.",
+          });
+          break;
+        case "auth/weak-password":
+          toast.error("Parola este prea slabă.", {
+            description: "Te rugăm să alegi o parolă mai puternică.",
+          });
+          break;
+        default:
+          toast.error("A apărut o eroare la înregistrare.", {
+            description: "Te rugăm să încerci din nou.",
+          });
+      }
     } finally {
       setIsLoading(false);
     }

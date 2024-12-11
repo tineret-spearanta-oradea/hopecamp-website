@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/firebase/config";
+import { auth } from "@/lib/firebase/config";
 import LoadingSpinner from "../ui/LoadingSpinner";
 
 export default function RequireAuth({

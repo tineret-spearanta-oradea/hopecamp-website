@@ -56,16 +56,28 @@ export const validateUserFields = (
 
   if (!userData.phone) {
     errors.phone = "Numărul de telefon este necesar.";
-  } else if (!/^[0-9]{10}$/.test(userData.phone)) {
-    errors.phone = "Numărul de telefon trebuie să aibă 10 cifre.";
+  } else if (!/^[0-9]{7,15}$/.test(userData.phone)) {
+    errors.phone = "Numărul de telefon trebuie să aibă între 7 și 15 cifre.";
   }
 
-  if (!userData.startDate || !userData.endDate) {
+  if (
+    !userData.startDate ||
+    !userData.endDate ||
+    userData.startDate === null ||
+    userData.endDate === null
+  ) {
     errors.dateRange = "Te rugăm să selectezi perioada.";
   }
 
   if (!userData.church) {
     errors.church = "Te rugăm să selectezi biserica.";
+  } else if (userData.church === "alta") {
+    if (!userData.churchOther) {
+      errors.church = "Te rugăm să introduci numele bisericii.";
+    }
+    if (!userData.churchContact) {
+      errors.church = "Te rugăm să introduci numele unui prieten/unei cunoștințe.";
+    }
   }
 
   if (!userData.payTaxTo) {
@@ -74,6 +86,14 @@ export const validateUserFields = (
 
   if (!userData.transport) {
     errors.transport = "Te rugăm să selectezi mijlocul de transport.";
+  }
+
+  if (!userData.slopeActivity) {
+    errors.slopeActivity = "Te rugăm să selectezi o opțiune.";
+  }
+
+  if (!userData.imageUrl) {
+    errors.image = "Te rugăm să încarci o poză.";
   }
 
   return errors;

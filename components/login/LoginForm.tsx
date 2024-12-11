@@ -7,37 +7,49 @@ import { auth } from "@/firebase/config";
 import { useRouter } from "next/navigation";
 import { FirebaseError } from "firebase/app";
 import { Button } from "../ui/button";
+import { toast } from "@/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
       router.push("/cont");
-    } catch (error) {
-      if (error instanceof FirebaseError) {
-        switch (error.code) {
-          case "auth/invalid-email":
-            setError("Adresa de email este invalidă.");
-            break;
-          case "auth/user-not-found":
-            setError("Nu există niciun cont asociat cu acest email.");
-            break;
-          case "auth/wrong-password":
-            setError("Parola este incorectă.");
-            break;
-          default:
-            setError("A apărut o eroare. Te rugăm să încerci din nou.");
-        }
+    } catch (error: any) {
+      console.error("Error signing in:", error);
+      if (error.code === "auth/user-not-found") {
+        toast({
+          title: "Utilizator negăsit",
+          description: "Te rugăm să verifici emailul sau să te înregistrezi.",
+          action: (
+            <ToastAction
+              altText="Înregistrare"
+              onClick={() => router.push("/inscrie-te")}
+            >
+              Înregistrare
+            </ToastAction>
+          ),
+        });
+      } else if (error.code === "auth/wrong-password") {
+        toast({
+          title: "Parolă incorectă",
+          description: "Te rugăm să verifici parola și să încerci din nou.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Eroare",
+          description: "A apărut o eroare. Te rugăm să încerci din nou.",
+          variant: "destructive",
+        });
       }
     } finally {
       setLoading(false);
@@ -50,11 +62,6 @@ export default function LoginForm() {
         Conectare cont
       </h2>
       <form onSubmit={handleSubmit} className="space-y-6">
-        {error && (
-          <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-md text-sm">
-            {error}
-          </div>
-        )}
         <div>
           <label
             htmlFor="email"
@@ -101,7 +108,7 @@ export default function LoginForm() {
         </div>
         <Button
           type="submit"
-          className="w-full bg-hope-dark-cyan bg-hope-darkcyan text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={loading}
         >
           {loading ? "Se procesează..." : "Autentificare"}
