@@ -56,6 +56,13 @@ const SortButton = ({
   );
 };
 
+const slopeActivityLabels: Record<string, string> = {
+  nu: "Nu merge",
+  vizita: "Doar vizită",
+  schi: "Ski/Snowboard",
+  sanie: "Sanie",
+};
+
 export const columns = ({
   onEdit,
   onDelete,
@@ -152,6 +159,17 @@ export const columns = ({
   {
     accessorKey: "transport",
     header: "Transport",
+  },
+  {
+    accessorKey: "slopeActivity",
+    header: ({ column }) => <SortButton column={column}>Pârtie</SortButton>,
+    cell: ({ row }) => {
+      const activity = row.getValue("slopeActivity") as string;
+      return <span>{slopeActivityLabels[activity] || activity}</span>;
+    },
+    filterFn: (row, id, value) => {
+      return value.length === 0 || value.includes(row.getValue(id));
+    },
   },
   {
     id: "actions",

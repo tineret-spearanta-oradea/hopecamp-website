@@ -5,13 +5,14 @@ import { User } from "@/types/user";
 
 export function useUsers() {
   const [users, setUsers] = useState<User[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  useEffect(() => {
+  const fetchUsers = () => {
+    setIsLoading(true);
     const usersQuery = query(collection(db, "users"));
 
-    const unsubscribe = onSnapshot(
+    return onSnapshot(
       usersQuery,
       (snapshot) => {
         const usersData = snapshot.docs.map((doc) => {
@@ -61,7 +62,10 @@ export function useUsers() {
         setIsLoading(false);
       }
     );
+  };
 
+  useEffect(() => {
+    const unsubscribe = fetchUsers();
     return () => unsubscribe();
   }, []);
 

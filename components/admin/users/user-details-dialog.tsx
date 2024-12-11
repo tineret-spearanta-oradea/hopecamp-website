@@ -140,6 +140,13 @@ export function UserDetailsDialog({
           </div>
 
           <div className="space-y-4">
+            <InfoItem
+              label="Confirmare"
+              value={user.isConfirmed ? "Aprobat" : "În așteptare"}
+              className={
+                user.isConfirmed ? "text-emerald-600" : "text-yellow-500"
+              }
+            />
             <InfoItem label="Vârstă" value={user.age?.toString() || "-"} />
             <InfoItem label="Telefon" value={user.phone || "-"} />
             <InfoItem label="Biserică" value={user.church || "-"} />
@@ -182,13 +189,6 @@ export function UserDetailsDialog({
                       "dd MMM yyyy"
                     )} - ${format(new Date(user.endDate), "dd MMM yyyy")}`
                   : "-"
-              }
-            />
-            <InfoItem
-              label="Status"
-              value={user.isConfirmed ? "Confirmat" : "În așteptare"}
-              className={
-                user.isConfirmed ? "text-emerald-600" : "text-yellow-500"
               }
             />
             <InfoItem

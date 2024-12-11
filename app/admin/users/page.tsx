@@ -74,39 +74,33 @@ export default function UsersPage() {
     setSelectedUserForDetails(user);
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex h-[450px] items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex h-[450px] items-center justify-center text-red-500">
-        Error loading users: {error.message}
-      </div>
-    );
-  }
-
   return (
     <div className="w-full max-w-[90vw] mx-auto py-10 overflow-hidden">
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight">Users</h1>
       </div>
 
-      <div className="overflow-x-auto">
-        <DataTable
-          columns={columns({
-            onEdit: handleEditUser,
-            onDelete: handleDeleteUser,
-            onViewDetails: handleViewDetails,
-            isSuperAdmin: currentUser?.isSuperAdmin,
-          })}
-          data={users || []}
-        />
-      </div>
+      {isLoading ? (
+        <div className="flex h-[450px] items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+      ) : error ? (
+        <div className="flex h-[450px] items-center justify-center text-red-500">
+          Error loading users: {error.message}
+        </div>
+      ) : (
+        <div className="overflow-x-auto">
+          <DataTable
+            columns={columns({
+              onEdit: handleEditUser,
+              onDelete: handleDeleteUser,
+              onViewDetails: handleViewDetails,
+              isSuperAdmin: currentUser?.isSuperAdmin,
+            })}
+            data={users || []}
+          />
+        </div>
+      )}
 
       {selectedUser && (
         <EditUserSheet
