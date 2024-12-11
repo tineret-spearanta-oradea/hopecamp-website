@@ -317,7 +317,7 @@ export default function Step2({
 
         <div className="space-y-2">
           <Label className="text-base font-semibold">
-            Vei merge pe pârtia Vârtop? *
+            Vei merge pe pârtia Mărișel? *
           </Label>
           <RadioGroup
             value={formData.userData.slopeActivity}

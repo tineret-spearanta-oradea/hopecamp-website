@@ -56,8 +56,8 @@ export const validateUserFields = (
 
   if (!userData.phone) {
     errors.phone = "Numărul de telefon este necesar.";
-  } else if (!/^[0-9]{10}$/.test(userData.phone)) {
-    errors.phone = "Numărul de telefon trebuie să aibă 10 cifre.";
+  } else if (!/^[0-9]{7,15}$/.test(userData.phone)) {
+    errors.phone = "Numărul de telefon trebuie să aibă între 7 și 15 cifre.";
   }
 
   if (!userData.startDate || !userData.endDate) {

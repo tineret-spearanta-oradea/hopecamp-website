@@ -28,8 +28,3 @@ const initialFormData: FormData = {
     slopeActivity: "no",
   },
 };
-
-    imageUrl: "",
-    slopeActivity: "",
-  },
-};

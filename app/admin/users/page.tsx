@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { columns } from "@/components/admin/users/columns";
 import { DataTable } from "@/components/admin/users/data-table";
 import { EditUserSheet } from "@/components/admin/users/edit-user-sheet";
@@ -16,11 +16,15 @@ import { UserDetailsDialog } from "@/components/admin/users/user-details-dialog"
 export default function UsersPage() {
   const { toast } = useToast();
   const { user: currentUser } = useAuth();
-  const { users, isLoading, error } = useUsers();
+  const { users, isLoading, error, fetchUsers } = useUsers();
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedUserForDetails, setSelectedUserForDetails] =
     useState<User | null>(null);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
 
   const handleEditUser = (user: User | null) => {
     setSelectedUser(user);
