@@ -10,6 +10,8 @@ import {
 } from "@/lib/constants";
 import { DatePickerWithRange } from "../ui/date-picker";
 import { UploadButton } from "@/utils/uploadthing";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 interface Step2Props {
   formData: FormData;
@@ -35,6 +37,9 @@ export default function Step2({
   validationErrors,
   isLoading,
 }: Step2Props) {
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     objectName: "authData" | "userData"
@@ -223,27 +228,45 @@ export default function Step2({
         </div>
 
         <div className="space-y-2">
-          <Label className="text-lg font-bold">Încarcă poză cu tine *</Label>
+          <Label className="text-base font-semibold">
+            Încarcă poză cu tine *
+          </Label>
           <UploadButton
             endpoint="profileImage"
             onClientUploadComplete={(res) => {
               if (res?.[0]?.url) {
                 handleImageChange(res[0].url);
+                setIsUploading(false);
+                setUploadSuccess(true);
               }
             }}
             onUploadError={(error: Error) => {
               console.error("Upload error:", error);
               alert(`Eroare la încărcare: ${error.message}`);
+              setIsUploading(false);
+              setUploadSuccess(false);
+            }}
+            onUploadBegin={() => {
+              setIsUploading(true);
+              setUploadSuccess(false);
             }}
             appearance={{
-              button:
+              button: cn(
                 "bg-secondary text-secondary-foreground hover:bg-secondary/90",
+                uploadSuccess && "opacity-50 cursor-not-allowed"
+              ),
               allowedContent: "text-sm text-muted-foreground",
             }}
           />
-          <p className="text-xs text-muted-foreground">
-            Poza trebuie să fie mai mică de 4MB
-          </p>
+          {uploadSuccess ? (
+            <p className="text-xs text-emerald-600 font-medium">
+              ✓ Poza a fost încărcată cu succes!
+            </p>
+          ) : (
+            <p className="text-xs text-muted-foreground">
+              Poza trebuie să fie mai mică de 4MB
+            </p>
+          )}
         </div>
 
         <div className="space-y-2">
@@ -261,10 +284,10 @@ export default function Step2({
         </div>
 
         <div className="flex justify-between pt-4">
-          <Button onClick={handlePrev} variant="outline">
+          <Button variant="outline" onClick={handlePrev}>
             ← Înapoi
           </Button>
-          <Button onClick={handleNext} disabled={isLoading}>
+          <Button onClick={handleNext} disabled={isLoading || isUploading}>
             {isLoading ? "Se procesează..." : "Continuă →"}
           </Button>
         </div>

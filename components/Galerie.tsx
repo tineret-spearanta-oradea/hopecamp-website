@@ -1,5 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { contactInfo } from "@/lib/constants";
 
 export default function Galerie() {
   return (
@@ -11,8 +15,10 @@ export default function Galerie() {
             <h2 className="text-primary text-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-lemon">
               Galerie
             </h2>
-            <div className="flex justify-center mt-8">
-              <Button variant="default">Galerie Completă</Button>
+            <div className="flex justify-centerq mt-8">
+              <Button variant="default" asChild>
+                <Link href="/galerie">Galerie Completă</Link>
+              </Button>
             </div>
           </div>
 

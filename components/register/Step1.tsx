@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import Link from "next/link";
 import { StepWrapper } from "./StepWrapper";
+import { title } from "@/lib/constants";
 
 export default function Step1({
   formData,
@@ -23,9 +24,8 @@ export default function Step1({
       <div className="space-y-8">
         <div className="space-y-4 text-center">
           <p className="text-base">
-            Hope Camp #5 este o tabără creștină de tineret, organizată de
-            Tineret Speranța Oradea. Mai multe detalii despre noi și tabără
-            găsiți în{" "}
+            {title} este o tabără creștină de tineret, organizată de Tineret
+            Speranța Oradea. Mai multe găsiți în{" "}
             <Link
               href="/"
               className="hover:underline font-bold text-hope-lightcyan"

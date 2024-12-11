@@ -1,3 +1,5 @@
+export const title = "Hope Camp Winter #5";
+
 export const churchOptions = [
   { value: "Speranta, Oradea", label: "Speranța, Oradea" },
   { value: "Muntele Sionului, Alesd", label: "Muntele Sionului, Aleșd" },
@@ -45,9 +47,9 @@ export const contactInfo = {
   phone: "+40 773 311 577",
   email: "tsomediateam@gmail.com",
   whatsapp: "https://wa.me/40773311577",
-  instagram: "https://www.instagram.com/hopecamp",
-  facebook: "https://www.facebook.com/hopecamp",
-  youtube: "https://www.youtube.com/hopecamp",
+  instagram: "https://www.instagram.com/tineret_speranta_oradea",
+  facebook: "https://www.facebook.com/tineretsperantaoradea",
+  youtube: "https://www.youtube.com/@TineretSperantaOradea",
 };
 
 export const faqData = [
