@@ -7,9 +7,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { User } from "@/types/user";
+import { Message } from "@/types/message";
 import Image from "next/image";
 import { format } from "date-fns";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getUserMessages } from "@/lib/firebase/firestore";
+import { Loader2 } from "lucide-react";
 
 interface UserDetailsDialogProps {
   user: User | null;
@@ -24,6 +27,21 @@ export function UserDetailsDialog({
 }: UserDetailsDialogProps) {
   const [imageError, setImageError] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [messagesLoading, setMessagesLoading] = useState(false);
+
+  useEffect(() => {
+    async function fetchMessages() {
+      if (user) {
+        setMessagesLoading(true);
+        const userMessages = await getUserMessages(user.uid);
+        setMessages(userMessages);
+        setMessagesLoading(false);
+      }
+    }
+
+    fetchMessages();
+  }, [user]);
 
   if (!user) return null;
 
@@ -75,7 +93,49 @@ export function UserDetailsDialog({
 
             <div className="text-center">
               <h3 className="text-xl font-semibold">{user.name}</h3>
-              <p className="text-sm text-muted-foreground">{user.email}</p>
+              <p className="text-sm text-muted-foreground mb-4">{user.email}</p>
+
+              {/* Messages Section */}
+              <div className="text-left border rounded-lg p-4 mt-4">
+                <h4 className="text-sm font-semibold mb-2">Mesaje</h4>
+                {messagesLoading ? (
+                  <div className="flex items-center justify-center py-4">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  </div>
+                ) : messages.length > 0 ? (
+                  <div className="space-y-3">
+                    {messages.map((message) => (
+                      <div
+                        key={message.id}
+                        className="text-sm border-b last:border-b-0 pb-2 last:pb-0"
+                      >
+                        <p className="text-sm">{message.text}</p>
+                        <div className="flex justify-between items-center mt-1">
+                          <span className="text-xs text-muted-foreground">
+                            {format(
+                              new Date(message.sentDate),
+                              "dd MMM yyyy HH:mm"
+                            )}
+                          </span>
+                          <span
+                            className={`text-xs ${
+                              message.isRead
+                                ? "text-emerald-600"
+                                : "text-yellow-500"
+                            }`}
+                          >
+                            {message.isRead ? "Citit" : "Necitit"}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground text-center py-2">
+                    Nu există mesaje
+                  </p>
+                )}
+              </div>
             </div>
           </div>
 

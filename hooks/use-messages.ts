@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { db } from "@/lib/firebase";
-import { collection, onSnapshot, query, Timestamp } from "firebase/firestore";
+import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 import { Message } from "@/types/message";
 
 export function useMessages() {
@@ -9,7 +9,10 @@ export function useMessages() {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    const messagesQuery = query(collection(db, "messages"));
+    const messagesQuery = query(
+      collection(db, "messages"),
+      orderBy("sentDate", "desc")
+    );
 
     const unsubscribe = onSnapshot(
       messagesQuery,
@@ -18,11 +21,11 @@ export function useMessages() {
           const data = doc.data();
           return {
             id: doc.id,
-            ...data,
-            sentDate:
-              data.sentDate instanceof Timestamp
-                ? data.sentDate.toDate()
-                : null,
+            userId: data.userId || "",
+            userName: data.userName,
+            phone: data.phone,
+            text: data.text,
+            sentDate: data.sentDate?.toDate() || new Date(),
             isRead: Boolean(data.isRead),
           } as Message;
         });

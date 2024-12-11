@@ -1,27 +1,91 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { db } from "@/lib/firebase";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  serverTimestamp,
+  query,
+  where,
+  orderBy,
+  getDocs,
+} from "firebase/firestore";
 import Link from "next/link";
+import { differenceInHours, format } from "date-fns";
+import { Badge } from "@/components/ui/badge";
+import { CheckCircle2, Circle } from "lucide-react";
 
 type ConfirmedUserProps = {
   userData: {
+    uid: string;
     name: string;
     phone: string;
     isAdmin?: boolean;
     isSuperAdmin?: boolean;
-    // add other fields as needed
   };
 };
+
+const MESSAGE_COOLDOWN_HOURS = 24;
 
 export default function ConfirmedUser({ userData }: ConfirmedUserProps) {
   const [message, setMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
+  const [lastMessageTime, setLastMessageTime] = useState<Date | null>(null);
+  const [lastMessageText, setLastMessageText] = useState<string | null>(null);
+  const [lastMessageIsRead, setLastMessageIsRead] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+
+  // Fetch last message time on component mount
+  useEffect(() => {
+    async function fetchLastMessageTime() {
+      try {
+        const messagesRef = collection(db, "messages");
+        const q = query(
+          messagesRef,
+          where("userId", "==", userData.uid),
+          orderBy("sentDate", "desc"),
+          where("sentDate", "!=", null)
+        );
+
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          const lastMessage = querySnapshot.docs[0].data();
+          setLastMessageTime(lastMessage.sentDate.toDate());
+          setLastMessageText(lastMessage.text);
+          setLastMessageIsRead(lastMessage.isRead);
+        }
+      } catch (error) {
+        console.error("Error fetching last message time:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchLastMessageTime();
+  }, [userData.uid]);
+
+  const getHoursUntilNextMessage = () => {
+    if (!lastMessageTime) return null;
+
+    const now = new Date();
+    const hoursDiff = differenceInHours(now, lastMessageTime);
+
+    if (hoursDiff >= MESSAGE_COOLDOWN_HOURS) return null;
+
+    const hoursLeft = MESSAGE_COOLDOWN_HOURS - hoursDiff;
+    return Math.max(1, hoursLeft); // Always show at least 1 hour
+  };
+
+  const canSendMessage = () => {
+    if (!lastMessageTime) return true;
+    const hoursLeft = getHoursUntilNextMessage();
+    return !hoursLeft;
+  };
 
   const handleSendMessage = async () => {
     if (!message.trim()) {
@@ -33,21 +97,37 @@ export default function ConfirmedUser({ userData }: ConfirmedUserProps) {
       return;
     }
 
+    if (!canSendMessage()) {
+      const hoursLeft = getHoursUntilNextMessage();
+      toast({
+        title: "Nu poți trimite mesaj încă",
+        description: `Mai așteaptă ${hoursLeft} ore până să poți trimite alt mesaj.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSending(true);
     try {
-      await addDoc(collection(db, "messages"), {
+      const newMessage = {
+        userId: userData.uid,
         userName: userData.name,
         phone: userData.phone,
         text: message,
         sentDate: serverTimestamp(),
         isRead: false,
-      });
+      };
+
+      await addDoc(collection(db, "messages"), newMessage);
+      setLastMessageTime(new Date());
+      setLastMessageText(message);
+      setLastMessageIsRead(false);
 
       toast({
         title: "Succes",
         description: "Mesajul a fost trimis cu succes",
       });
-      setMessage(""); // Clear the message input
+      setMessage("");
     } catch (error) {
       console.error("Error sending message:", error);
       toast({
@@ -60,6 +140,8 @@ export default function ConfirmedUser({ userData }: ConfirmedUserProps) {
       setIsSending(false);
     }
   };
+
+  const hoursUntilNext = getHoursUntilNextMessage();
 
   return (
     <div className="space-y-6">
@@ -82,21 +164,70 @@ export default function ConfirmedUser({ userData }: ConfirmedUserProps) {
 
       <div className="space-y-4 pt-4 border-t">
         <h3 className="font-semibold">Ai întrebări? Trimite-ne un mesaj:</h3>
-        <div className="space-y-2">
-          <Textarea
-            placeholder="Scrie mesajul tău aici..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className="min-h-[100px] resize-none"
-          />
-          <Button
-            onClick={handleSendMessage}
-            disabled={isSending}
-            className="w-full"
-          >
-            {isSending ? "Se trimite..." : "Trimite mesaj"}
-          </Button>
-        </div>
+        {isLoading ? (
+          <p className="text-sm text-muted-foreground">Se încarcă...</p>
+        ) : (
+          <div className="space-y-4">
+            {lastMessageText && (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Ultimul tău mesaj:
+                  </p>
+                  <div className="flex items-center gap-2">
+                    {lastMessageIsRead ? (
+                      <div className="flex items-center gap-1 text-emerald-600">
+                        <CheckCircle2 className="h-4 w-4" />
+                        <span className="text-xs">Citit</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-1 text-yellow-600">
+                        <Circle className="h-4 w-4" />
+                        <span className="text-xs">Necitit</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="relative">
+                  <Textarea
+                    value={lastMessageText}
+                    className="min-h-[100px] resize-none bg-muted"
+                    disabled
+                  />
+                  <div className="absolute bottom-2 right-2">
+                    <span className="text-xs text-muted-foreground">
+                      {lastMessageTime &&
+                        format(lastMessageTime, "dd MMM yyyy HH:mm")}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {hoursUntilNext ? (
+              <p className="text-sm text-muted-foreground">
+                Mai poți trimite un mesaj în {hoursUntilNext}{" "}
+                {hoursUntilNext === 1 ? "oră" : "ore"}
+              </p>
+            ) : (
+              <div className="space-y-2">
+                <Textarea
+                  placeholder="Scrie mesajul tău aici..."
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  className="min-h-[100px] resize-none"
+                />
+                <Button
+                  onClick={handleSendMessage}
+                  disabled={isSending}
+                  className="w-full"
+                >
+                  {isSending ? "Se trimite..." : "Trimite mesaj"}
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

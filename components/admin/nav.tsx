@@ -3,7 +3,14 @@
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
-import { Home, Users, MessageSquare, Settings, LogOut } from "lucide-react";
+import {
+  Home,
+  Users,
+  MessageSquare,
+  Settings,
+  LogOut,
+  Shield,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
@@ -27,6 +34,12 @@ const menuItems = [
     icon: MessageSquare,
     href: "/admin/messages",
     superAdminOnly: false,
+  },
+  {
+    title: "Admins",
+    icon: Shield,
+    href: "/admin/admins",
+    superAdminOnly: true,
   },
   {
     title: "Settings",
