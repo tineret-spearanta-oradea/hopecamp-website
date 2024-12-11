@@ -11,7 +11,7 @@ export const createUserAccount = async (email: string, password: string) => {
     );
     return userCredential.user;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw error;
   }
 };
 

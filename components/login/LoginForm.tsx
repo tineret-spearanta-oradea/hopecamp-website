@@ -7,17 +7,16 @@ import { auth } from "@/firebase/config";
 import { useRouter } from "next/navigation";
 import { FirebaseError } from "firebase/app";
 import { Button } from "../ui/button";
+import { toast } from "@/hooks/use-toast";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
 
     try {
@@ -27,16 +26,41 @@ export default function LoginForm() {
       if (error instanceof FirebaseError) {
         switch (error.code) {
           case "auth/invalid-email":
-            setError("Adresa de email este invalidă.");
+            toast({
+              variant: "destructive",
+              title: "Adresa de email este invalidă.",
+              description: "Te rugăm să verifici adresa introdusă.",
+            });
             break;
           case "auth/user-not-found":
-            setError("Nu există niciun cont asociat cu acest email.");
+            toast({
+              variant: "destructive",
+              title: "Nu există niciun cont asociat cu acest email.",
+              description:
+                "Te rugăm să verifici emailul sau să te înregistrezi.",
+              action: {
+                label: "Înregistrare",
+                onClick: () => router.push("/inscrie-te"),
+              },
+            });
             break;
           case "auth/wrong-password":
-            setError("Parola este incorectă.");
+            toast({
+              variant: "destructive",
+              title: "Parola este incorectă.",
+              description: "Te rugăm să verifici parola introdusă.",
+              action: {
+                label: "Am uitat parola",
+                onClick: () => router.push("/reset-password"),
+              },
+            });
             break;
           default:
-            setError("A apărut o eroare. Te rugăm să încerci din nou.");
+            toast({
+              variant: "destructive",
+              title: "A apărut o eroare.",
+              description: "Te rugăm să încerci din nou.",
+            });
         }
       }
     } finally {
@@ -50,11 +74,6 @@ export default function LoginForm() {
         Conectare cont
       </h2>
       <form onSubmit={handleSubmit} className="space-y-6">
-        {error && (
-          <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-md text-sm">
-            {error}
-          </div>
-        )}
         <div>
           <label
             htmlFor="email"

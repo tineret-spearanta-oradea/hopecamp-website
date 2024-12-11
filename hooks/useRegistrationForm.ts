@@ -4,6 +4,7 @@ import { validateAuthFields, validateUserFields } from "@/utils/validation";
 import { dateRange, sumToPay, payTaxToOptions } from "@/lib/constants";
 import { createUserAccount } from "@/lib/firebase/auth";
 import { createUserDocument } from "@/lib/firebase/firestore";
+import { toast } from "sonner";
 
 const initialFormData: FormData = {
   authData: {
@@ -82,6 +83,9 @@ export function useRegistrationForm() {
         break;
       case 2:
         const userErrors = validateUserFields(formData.userData);
+        if (!formData.userData.imageUrl) {
+          errors.image = "Te rugăm să încarci o poză.";
+        }
         errors = { ...errors, ...userErrors };
         break;
       default:
@@ -120,16 +124,53 @@ export function useRegistrationForm() {
         formData.userData.imageUrl || ""
       );
 
+      // Show success toast
+      toast.success("Cont creat cu succes! Te vom redirecționa în curând...");
+
       // Log success
       console.group("Registration Success");
       console.log("User created:", user.uid);
       console.log("Document created in Firestore");
       console.groupEnd();
 
-      window.location.href = "/cont";
+      // Delay redirect slightly to show success message
+      setTimeout(() => {
+        window.location.href = "/cont";
+      }, 1500);
     } catch (error: any) {
       console.error("Registration error:", error);
-      alert(error.message);
+
+      // Handle specific Firebase Auth errors
+      switch (error.code) {
+        case "auth/email-already-in-use":
+          toast.error("Acest email este deja folosit.", {
+            description: "Te rugăm să te conectezi sau să folosești alt email.",
+            action: {
+              label: "Conectare",
+              onClick: () => (window.location.href = "/login"),
+            },
+          });
+          break;
+        case "auth/invalid-email":
+          toast.error("Adresa de email nu este validă.", {
+            description: "Te rugăm să verifici adresa introdusă.",
+          });
+          break;
+        case "auth/operation-not-allowed":
+          toast.error("Înregistrarea nu este permisă momentan.", {
+            description: "Te rugăm să încerci mai târziu.",
+          });
+          break;
+        case "auth/weak-password":
+          toast.error("Parola este prea slabă.", {
+            description: "Te rugăm să alegi o parolă mai puternică.",
+          });
+          break;
+        default:
+          toast.error("A apărut o eroare la înregistrare.", {
+            description: "Te rugăm să încerci din nou.",
+          });
+      }
     } finally {
       setIsLoading(false);
     }

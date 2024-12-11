@@ -22,18 +22,18 @@ export interface FormData {
   userData: UserData;
 }
 
-export interface ValidationErrors extends Record<string, string> {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  name: string;
-  age: string;
-  phone: string;
-  dateRange: string;
-  church: string;
-  payTaxTo: string;
-  transport: string;
-  [key: string]: string;
+export interface ValidationErrors {
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+  name?: string;
+  age?: string;
+  phone?: string;
+  dateRange?: string;
+  church?: string;
+  payTaxTo?: string;
+  transport?: string;
+  image?: string;
 }
 
 export interface StepProps {
