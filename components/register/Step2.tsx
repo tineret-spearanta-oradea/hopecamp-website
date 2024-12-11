@@ -49,7 +49,7 @@ export default function Step2({
 
   return (
     <div>
-      <h2 className="text-xl font-black text-center mb-4">
+      <h2 className="text-xl font-black text-center mb-4 py-4">
         Pasul 2/3: Detalii personale
       </h2>
 
@@ -61,6 +61,10 @@ export default function Step2({
       )}
 
       <div className="space-y-8">
+        <p className="text-sm text-muted-foreground text-center">
+          Câmpurile marcate cu * sunt obligatorii
+        </p>
+
         <div className="space-y-2">
           <Label className="text-base font-semibold">Numele întreg *</Label>
           <Input
@@ -115,81 +119,6 @@ export default function Step2({
           {validationErrors.dateRange && (
             <p className="text-destructive text-xs">
               {validationErrors.dateRange}
-            </p>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <Label className="text-base font-semibold">
-            Biserica din care provii *
-          </Label>
-          <RadioGroup
-            value={formData.userData.church}
-            className="flex flex-col space-y-1"
-            onValueChange={(value) =>
-              handleChange("userData", { name: "church", value })
-            }
-          >
-            {churchOptions.map((option) => (
-              <div key={option.value} className="flex items-center space-x-2">
-                <RadioGroupItem value={option.value} id={option.value} />
-                <Label htmlFor={option.value}>{option.label}</Label>
-              </div>
-            ))}
-          </RadioGroup>
-          {validationErrors.church && (
-            <p className="text-destructive text-xs">
-              {validationErrors.church}
-            </p>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <Label className="text-base font-semibold">
-            Cui plătești taxa de înscriere *
-          </Label>
-          <RadioGroup
-            value={formData.userData.payTaxTo}
-            className="flex flex-col space-y-1"
-            onValueChange={(value) =>
-              handleChange("userData", { name: "payTaxTo", value })
-            }
-          >
-            {payTaxToOptions.map((option) => (
-              <div key={option.value} className="flex items-center space-x-2">
-                <RadioGroupItem value={option.value} id={option.value} />
-                <Label htmlFor={option.value}>{option.label}</Label>
-              </div>
-            ))}
-          </RadioGroup>
-          {validationErrors.payTaxTo && (
-            <p className="text-destructive text-xs">
-              {validationErrors.payTaxTo}
-            </p>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <Label className="text-base font-semibold">
-            Mijloc de transport *
-          </Label>
-          <RadioGroup
-            value={formData.userData.transport}
-            className="flex flex-col space-y-1"
-            onValueChange={(value) =>
-              handleChange("userData", { name: "transport", value })
-            }
-          >
-            {transportOptions.map((option) => (
-              <div key={option.value} className="flex items-center space-x-2">
-                <RadioGroupItem value={option.value} id={option.value} />
-                <Label htmlFor={option.value}>{option.label}</Label>
-              </div>
-            ))}
-          </RadioGroup>
-          {validationErrors.transport && (
-            <p className="text-destructive text-xs">
-              {validationErrors.transport}
             </p>
           )}
         </div>
@@ -276,7 +205,119 @@ export default function Step2({
 
         <div className="space-y-2">
           <Label className="text-base font-semibold">
-            Vei merge pe pârtia Mărișel? *
+            Biserica din care provii *
+          </Label>
+          <RadioGroup
+            value={formData.userData.church}
+            className="flex flex-col space-y-1"
+            onValueChange={(value) =>
+              handleChange("userData", { name: "church", value })
+            }
+          >
+            {churchOptions.map((option) => (
+              <div key={option.value} className="flex flex-col space-y-2">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value={option.value} id={option.value} />
+                  <Label htmlFor={option.value}>{option.label}</Label>
+                </div>
+                {option.value === "alta" &&
+                  formData.userData.church === "alta" && (
+                    <div className="ml-6 space-y-2">
+                      <Input
+                        type="text"
+                        placeholder="Numele bisericii"
+                        className="w-full"
+                        value={formData.userData.churchOther || ""}
+                        onChange={(e) =>
+                          handleChange("userData", {
+                            name: "churchOther",
+                            value: e.target.value,
+                          })
+                        }
+                      />
+                      <div className="space-y-1">
+                        <Label className="text-sm text-muted-foreground">
+                          Spune-ne numele unui prieten(ă) sau a unei cunoștințe
+                          din contextul Tineret Speranța Oradea
+                        </Label>
+                        <Input
+                          type="text"
+                          placeholder="Numele prietenului/prietenei"
+                          className="w-full"
+                          value={formData.userData.churchContact || ""}
+                          onChange={(e) =>
+                            handleChange("userData", {
+                              name: "churchContact",
+                              value: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                    </div>
+                  )}
+              </div>
+            ))}
+          </RadioGroup>
+          {validationErrors.church && (
+            <p className="text-destructive text-xs">
+              {validationErrors.church}
+            </p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-base font-semibold">
+            Cui plătești taxa de înscriere *
+          </Label>
+          <RadioGroup
+            value={formData.userData.payTaxTo}
+            className="flex flex-col space-y-1"
+            onValueChange={(value) =>
+              handleChange("userData", { name: "payTaxTo", value })
+            }
+          >
+            {payTaxToOptions.map((option) => (
+              <div key={option.value} className="flex items-center space-x-2">
+                <RadioGroupItem value={option.value} id={option.value} />
+                <Label htmlFor={option.value}>{option.label}</Label>
+              </div>
+            ))}
+          </RadioGroup>
+          {validationErrors.payTaxTo && (
+            <p className="text-destructive text-xs">
+              {validationErrors.payTaxTo}
+            </p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-base font-semibold">
+            Mijloc de transport *
+          </Label>
+          <RadioGroup
+            value={formData.userData.transport}
+            className="flex flex-col space-y-1"
+            onValueChange={(value) =>
+              handleChange("userData", { name: "transport", value })
+            }
+          >
+            {transportOptions.map((option) => (
+              <div key={option.value} className="flex items-center space-x-2">
+                <RadioGroupItem value={option.value} id={option.value} />
+                <Label htmlFor={option.value}>{option.label}</Label>
+              </div>
+            ))}
+          </RadioGroup>
+          {validationErrors.transport && (
+            <p className="text-destructive text-xs">
+              {validationErrors.transport}
+            </p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-base font-semibold">
+            Vei merge pe pârtia Vârtop? *
           </Label>
           <RadioGroup
             value={formData.userData.slopeActivity}
@@ -330,7 +371,7 @@ export default function Step2({
             ← Înapoi
           </Button>
           <Button onClick={handleNext} disabled={isLoading || isUploading}>
-            {isLoading ? "Se procesează..." : "Continuă"}
+            {isLoading ? "Se procesează..." : "Continuă →"}
           </Button>
         </div>
       </div>

@@ -66,6 +66,13 @@ export const validateUserFields = (
 
   if (!userData.church) {
     errors.church = "Te rugăm să selectezi biserica.";
+  } else if (userData.church === "alta") {
+    if (!userData.churchOther) {
+      errors.church = "Te rugăm să introduci numele bisericii.";
+    }
+    if (!userData.churchContact) {
+      errors.church = "Te rugăm să introduci numele unui prieten/unei cunoștințe.";
+    }
   }
 
   if (!userData.payTaxTo) {

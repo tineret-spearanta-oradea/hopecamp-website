@@ -17,6 +17,8 @@ const initialFormData: FormData = {
     age: "",
     phone: "",
     church: churchOptions[0].value,
+    churchOther: "",
+    churchContact: "",
     payTaxTo: payTaxToOptions[0].value,
     transport: transportOptions[0].value,
     preferences: "",

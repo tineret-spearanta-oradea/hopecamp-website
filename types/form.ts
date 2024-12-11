@@ -11,6 +11,8 @@ export interface UserData {
   startDate: Date | undefined;
   endDate: Date | undefined;
   church: string;
+  churchOther?: string;
+  churchContact?: string;
   payTaxTo: string;
   transport: string;
   imageUrl: string;
