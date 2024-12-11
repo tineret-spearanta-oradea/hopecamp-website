@@ -1,4 +1,4 @@
-import { FormData } from "@/types/form";
+import { FormData, ValidationErrors } from "@/types/form";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -13,6 +13,7 @@ import { UploadButton } from "@/utils/uploadthing";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
+import Image from "next/image";
 
 interface Step2Props {
   formData: FormData;
@@ -24,7 +25,7 @@ interface Step2Props {
   handlePrev: () => void;
   handleDateChange: (dates: { from: Date; to: Date }) => void;
   handleImageChange: (imageUrl: string) => void;
-  validationErrors: Record<string, string>;
+  validationErrors: ValidationErrors;
   isLoading: boolean;
 }
 
@@ -47,6 +48,15 @@ export default function Step2({
     handleChange(objectName, e.target);
   };
 
+  const handleDateChangeWrapper = (dates: {
+    from: Date | null;
+    to: Date | null;
+  }) => {
+    if (dates.from && dates.to) {
+      handleDateChange({ from: dates.from, to: dates.to });
+    }
+  };
+
   return (
     <div>
       <h2 className="text-xl font-black text-center mb-4 py-4">
@@ -61,10 +71,6 @@ export default function Step2({
       )}
 
       <div className="space-y-8">
-        <p className="text-sm text-muted-foreground text-center">
-          Câmpurile marcate cu * sunt obligatorii
-        </p>
-
         <div className="space-y-2">
           <Label className="text-base font-semibold">Numele întreg *</Label>
           <Input
@@ -109,12 +115,13 @@ export default function Step2({
 
         <div className="space-y-2">
           <Label className="text-base font-semibold">
-            Perioada care stai în tabără *
+            Perioada în care stai în tabără *
           </Label>
           <DatePickerWithRange
-            from={formData.userData.startDate}
-            to={formData.userData.endDate}
-            onChange={handleDateChange}
+            from={formData.userData.startDate || null}
+            to={formData.userData.endDate || null}
+            onChange={handleDateChangeWrapper}
+            className={validationErrors.dateRange ? "border-destructive" : ""}
           />
           {validationErrors.dateRange && (
             <p className="text-destructive text-xs">
@@ -165,7 +172,8 @@ export default function Step2({
               appearance={{
                 button: cn(
                   "bg-secondary text-secondary-foreground hover:bg-secondary/90",
-                  formData.userData.imageUrl && "opacity-50 cursor-not-allowed"
+                  formData.userData.imageUrl && "opacity-50 cursor-not-allowed",
+                  validationErrors.image && "border-destructive"
                 ),
                 allowedContent: "text-sm text-muted-foreground text-center",
               }}
@@ -178,9 +186,11 @@ export default function Step2({
             {formData.userData.imageUrl ? (
               <div className="flex items-center gap-2 text-xs text-emerald-600 font-medium">
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border bg-muted">
-                  <img
+                  <Image
                     src={formData.userData.imageUrl}
                     alt="Preview"
+                    width={36}
+                    height={36}
                     className="rounded-md object-cover h-full w-full"
                   />
                 </div>
@@ -380,7 +390,7 @@ export default function Step2({
         </div>
 
         <p className="text-center text-sm text-muted-foreground mt-4">
-          * Câmpurile marcate cu * sunt obligatorii
+          Câmpurile marcate cu * sunt obligatorii
         </p>
       </div>
     </div>

@@ -11,9 +11,12 @@ import ConfirmedUser from "./ConfirmedUser";
 import { getUserData } from "@/firebase/database";
 
 type UserData = {
+  uid: string;
   name: string;
   phone: string;
   isConfirmed: boolean;
+  isAdmin?: boolean;
+  isSuperAdmin?: boolean;
 };
 
 export default function AccountPage() {
@@ -30,7 +33,7 @@ export default function AccountPage() {
 
       try {
         const data = await getUserData(user.uid);
-        setUserData(data as UserData);
+        setUserData({ ...data, uid: user.uid } as UserData);
       } catch (error) {
         console.error("Error fetching user data:", error);
       } finally {

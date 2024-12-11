@@ -60,7 +60,12 @@ export const validateUserFields = (
     errors.phone = "Numărul de telefon trebuie să aibă între 7 și 15 cifre.";
   }
 
-  if (!userData.startDate || !userData.endDate) {
+  if (
+    !userData.startDate ||
+    !userData.endDate ||
+    userData.startDate === null ||
+    userData.endDate === null
+  ) {
     errors.dateRange = "Te rugăm să selectezi perioada.";
   }
 
@@ -85,6 +90,10 @@ export const validateUserFields = (
 
   if (!userData.slopeActivity) {
     errors.slopeActivity = "Te rugăm să selectezi o opțiune.";
+  }
+
+  if (!userData.imageUrl) {
+    errors.image = "Te rugăm să încarci o poză.";
   }
 
   return errors;

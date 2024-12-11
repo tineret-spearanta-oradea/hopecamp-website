@@ -33,7 +33,10 @@ export function DatePickerWithRange({
   });
 
   const handleSelect = (selectedDate: DateRange | undefined) => {
+    // Always update the internal state
     setDate(selectedDate);
+
+    // Only call onChange when we have both dates
     if (selectedDate?.from && selectedDate?.to) {
       onChange({ from: selectedDate.from, to: selectedDate.to });
     }

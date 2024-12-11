@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { FirebaseError } from "firebase/app";
 import { Button } from "../ui/button";
 import { toast } from "@/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -15,53 +16,40 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
       router.push("/cont");
-    } catch (error) {
-      if (error instanceof FirebaseError) {
-        switch (error.code) {
-          case "auth/invalid-email":
-            toast({
-              variant: "destructive",
-              title: "Adresa de email este invalidă.",
-              description: "Te rugăm să verifici adresa introdusă.",
-            });
-            break;
-          case "auth/user-not-found":
-            toast({
-              variant: "destructive",
-              title: "Nu există niciun cont asociat cu acest email.",
-              description:
-                "Te rugăm să verifici emailul sau să te înregistrezi.",
-              action: {
-                label: "Înregistrare",
-                onClick: () => router.push("/inscrie-te"),
-              },
-            });
-            break;
-          case "auth/wrong-password":
-            toast({
-              variant: "destructive",
-              title: "Parola este incorectă.",
-              description: "Te rugăm să verifici parola introdusă.",
-              action: {
-                label: "Am uitat parola",
-                onClick: () => router.push("/reset-password"),
-              },
-            });
-            break;
-          default:
-            toast({
-              variant: "destructive",
-              title: "A apărut o eroare.",
-              description: "Te rugăm să încerci din nou.",
-            });
-        }
+    } catch (error: any) {
+      console.error("Error signing in:", error);
+      if (error.code === "auth/user-not-found") {
+        toast({
+          title: "Utilizator negăsit",
+          description: "Te rugăm să verifici emailul sau să te înregistrezi.",
+          action: (
+            <ToastAction
+              altText="Înregistrare"
+              onClick={() => router.push("/inscrie-te")}
+            >
+              Înregistrare
+            </ToastAction>
+          ),
+        });
+      } else if (error.code === "auth/wrong-password") {
+        toast({
+          title: "Parolă incorectă",
+          description: "Te rugăm să verifici parola și să încerci din nou.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Eroare",
+          description: "A apărut o eroare. Te rugăm să încerci din nou.",
+          variant: "destructive",
+        });
       }
     } finally {
       setLoading(false);

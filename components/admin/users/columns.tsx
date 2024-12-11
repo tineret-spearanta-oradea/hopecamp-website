@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { User } from "@/types/user";
 import { cn } from "@/lib/utils";
+import { sortingFns } from "@tanstack/react-table";
 
 interface ColumnProps {
   onEdit?: (user: User) => void;
@@ -82,7 +83,11 @@ export const columns = ({
     accessorKey: "isConfirmed",
     header: ({ column }) => <SortButton column={column}>Confirmat</SortButton>,
     cell: ({ row }) => <span>{row.getValue("isConfirmed") ? "Da" : "Nu"}</span>,
-    sortingFn: "boolean",
+    sortingFn: (rowA, rowB, columnId) => {
+      const a = rowA.getValue(columnId);
+      const b = rowB.getValue(columnId);
+      return a === b ? 0 : a ? -1 : 1;
+    },
   },
   {
     accessorKey: "age",
@@ -92,7 +97,7 @@ export const columns = ({
       if (!age) return "-";
       return <span className={age < 18 ? "text-purple-700" : ""}>{age}</span>;
     },
-    sortingFn: "numeric",
+    sortingFn: sortingFns.alphanumeric,
   },
   {
     accessorKey: "phone",
@@ -127,7 +132,7 @@ export const columns = ({
         </span>
       );
     },
-    sortingFn: "numeric",
+    sortingFn: sortingFns.alphanumeric,
   },
   {
     accessorKey: "numberOfDays",

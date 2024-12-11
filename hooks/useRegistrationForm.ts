@@ -17,12 +17,15 @@ const initialFormData: FormData = {
     age: "",
     phone: "",
     church: "Speranta, Oradea",
+    churchOther: "",
+    churchContact: "",
     payTaxTo: payTaxToOptions[0].value,
     transport: "personal",
     preferences: "",
     startDate: dateRange.startDate,
     endDate: dateRange.endDate,
     imageUrl: "",
+    slopeActivity: "no",
   },
 };
 
@@ -73,27 +76,19 @@ export function useRegistrationForm() {
     }));
   };
 
-  const validateStep = (stepNumber: number): boolean => {
-    let errors: ValidationErrors = { ...initialValidationErrors };
+  const validateStep = (step: number): boolean => {
+    let errors: ValidationErrors = {};
 
-    switch (stepNumber) {
-      case 1:
-        const authErrors = validateAuthFields(formData.authData);
-        errors = { ...errors, ...authErrors };
-        break;
-      case 2:
-        const userErrors = validateUserFields(formData.userData);
-        if (!formData.userData.imageUrl) {
-          errors.image = "Te rugăm să încarci o poză.";
-        }
-        errors = { ...errors, ...userErrors };
-        break;
-      default:
-        return true;
+    if (step === 1) {
+      errors = validateAuthFields(formData.authData);
+    } else if (step === 2) {
+      errors = validateUserFields(formData.userData);
     }
 
     setValidationErrors(errors);
-    return Object.keys(errors).every((key) => !errors[key]);
+    return Object.keys(errors).every(
+      (key) => !errors[key as keyof ValidationErrors]
+    );
   };
 
   const handleNext = () => {
