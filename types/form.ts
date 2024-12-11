@@ -8,13 +8,14 @@ export interface UserData {
   name: string;
   age: string;
   phone: string;
+  startDate: Date | undefined;
+  endDate: Date | undefined;
   church: string;
   payTaxTo: string;
   transport: string;
+  imageUrl: string;
   preferences?: string;
-  startDate: Date | null;
-  endDate: Date | null;
-  imageUrl?: string;
+  slopeActivity: string;
 }
 
 export interface FormData {
@@ -34,6 +35,7 @@ export interface ValidationErrors {
   payTaxTo?: string;
   transport?: string;
   image?: string;
+  slopeActivity?: string;
 }
 
 export interface StepProps {

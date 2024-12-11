@@ -276,6 +276,41 @@ export default function Step2({
 
         <div className="space-y-2">
           <Label className="text-base font-semibold">
+            Vei merge pe pârtia Mărișel? *
+          </Label>
+          <RadioGroup
+            value={formData.userData.slopeActivity}
+            className="flex flex-col space-y-1"
+            onValueChange={(value) =>
+              handleChange("userData", { name: "slopeActivity", value })
+            }
+          >
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="no" id="no" />
+              <Label htmlFor="no">Nu voi merge pe pârtie</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="visit" id="visit" />
+              <Label htmlFor="visit">Da, dar doar în vizită</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="ski" id="ski" />
+              <Label htmlFor="ski">Da, cu ski/snowboard</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="sled" id="sled" />
+              <Label htmlFor="sled">Da, cu sania</Label>
+            </div>
+          </RadioGroup>
+          {validationErrors.slopeActivity && (
+            <p className="text-xs text-destructive">
+              {validationErrors.slopeActivity}
+            </p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-base font-semibold">
             Preferințe colegi de cameră (opțional)
           </Label>
           <Input
