@@ -83,8 +83,24 @@ export function UserDetailsDialog({
             <InfoItem label="Vârstă" value={user.age?.toString() || "-"} />
             <InfoItem label="Telefon" value={user.phone || "-"} />
             <InfoItem label="Biserică" value={user.church || "-"} />
+            {user.church === "alta" && (
+              <>
+                <InfoItem
+                  label="Numele bisericii"
+                  value={user.churchOther || "-"}
+                />
+                <InfoItem
+                  label="Contact TSO"
+                  value={user.churchContact || "-"}
+                />
+              </>
+            )}
             <InfoItem label="Transport" value={user.transport || "-"} />
             <InfoItem label="Plătește taxa la" value={user.payTaxTo || "-"} />
+            <InfoItem
+              label="Activitate pârtie"
+              value={user.slopeActivity || "-"}
+            />
             <InfoItem
               label="Sumă plătită"
               value={`${user.amountPaid || 0} RON`}

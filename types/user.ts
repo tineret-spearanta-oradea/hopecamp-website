@@ -6,6 +6,8 @@ export interface User {
   isSuperAdmin: boolean;
   phone?: string;
   church?: string;
+  churchOther?: string;
+  churchContact?: string;
   imageUrl?: string;
   createdAt: Date;
   updatedAt: Date;
@@ -18,4 +20,5 @@ export interface User {
   payTaxTo?: string;
   age?: number;
   withFamilyMember?: boolean;
+  slopeActivity?: string;
 }

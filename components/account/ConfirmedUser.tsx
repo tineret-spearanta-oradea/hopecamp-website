@@ -6,11 +6,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { db } from "@/lib/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import Link from "next/link";
 
 type ConfirmedUserProps = {
   userData: {
     name: string;
     phone: string;
+    isAdmin?: boolean;
+    isSuperAdmin?: boolean;
     // add other fields as needed
   };
 };
@@ -66,6 +69,15 @@ export default function ConfirmedUser({ userData }: ConfirmedUserProps) {
           📝 În curând vei primi mai multe informații despre tabără și următorii
           pași.
         </p>
+        {(userData.isAdmin || userData.isSuperAdmin) && (
+          <div className="pt-2">
+            <Link href="/admin">
+              <Button variant="outline" className="w-full">
+                Deschide panoul de administrare →
+              </Button>
+            </Link>
+          </div>
+        )}
       </div>
 
       <div className="space-y-4 pt-4 border-t">

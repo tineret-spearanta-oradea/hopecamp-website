@@ -362,18 +362,26 @@ export default function Step2({
           />
         </div>
 
-        <p className="text-sm text-muted-foreground text-center">
-          Câmpurile marcate cu * sunt obligatorii
-        </p>
-
         <div className="flex justify-between pt-4">
-          <Button variant="outline" onClick={handlePrev}>
+          <Button
+            variant="outline"
+            onClick={handlePrev}
+            disabled={isLoading || isUploading}
+          >
             ← Înapoi
           </Button>
           <Button onClick={handleNext} disabled={isLoading || isUploading}>
-            {isLoading ? "Se procesează..." : "Continuă →"}
+            {isUploading
+              ? "Se încarcă poza..."
+              : isLoading
+              ? "Se procesează..."
+              : "Continuă →"}
           </Button>
         </div>
+
+        <p className="text-center text-sm text-muted-foreground mt-4">
+          * Câmpurile marcate cu * sunt obligatorii
+        </p>
       </div>
     </div>
   );
