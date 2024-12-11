@@ -4,9 +4,62 @@ import { columns } from "@/components/admin/messages/columns";
 import { DataTable } from "@/components/admin/messages/data-table";
 import { useMessages } from "@/hooks/use-messages";
 import { Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function MessagesPage() {
   const { messages, isLoading, error } = useMessages();
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  useEffect(() => {
+    // Only show tooltip if there are unread messages
+    const unreadMessages = messages?.filter((msg) => !msg.isRead) || [];
+    const hasSeenTooltip = localStorage.getItem("hasSeenMessagesStatusTooltip");
+
+    if (!hasSeenTooltip && unreadMessages.length > 0) {
+      setShowTooltip(true);
+      localStorage.setItem("hasSeenMessagesStatusTooltip", "true");
+
+      // Auto-hide tooltip after 5 seconds
+      const timer = setTimeout(() => {
+        setShowTooltip(false);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [messages]);
+
+  // Custom columns with tooltip
+  const columnsWithTooltip = columns.map((col) => {
+    if (col.header === "Status") {
+      return {
+        ...col,
+        header: () => (
+          <TooltipProvider>
+            <Tooltip open={showTooltip}>
+              <TooltipTrigger asChild>
+                <div className="cursor-default">Status</div>
+              </TooltipTrigger>
+              <TooltipContent
+                side="right"
+                className="bg-background border-2 border-primary p-3"
+              >
+                <p className="text-sm">
+                  Click pentru a marca mesajele ca citite/necitite
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        ),
+      };
+    }
+    return col;
+  });
 
   if (isLoading) {
     return (
@@ -31,7 +84,7 @@ export default function MessagesPage() {
       </div>
 
       <div className="overflow-x-auto">
-        <DataTable columns={columns} data={messages || []} />
+        <DataTable columns={columnsWithTooltip} data={messages || []} />
       </div>
     </div>
   );

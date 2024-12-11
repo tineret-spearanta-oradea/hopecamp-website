@@ -11,6 +11,7 @@ import {
   ChevronRight,
   Calendar,
   Timer,
+  MessageSquare,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -27,12 +28,18 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { useMessages } from "@/hooks/use-messages";
 
 export default function AdminDashboardPage() {
-  const { users, isLoading, error } = useUsers();
+  const { users, isLoading: usersLoading, error: usersError } = useUsers();
+  const {
+    messages,
+    isLoading: messagesLoading,
+    error: messagesError,
+  } = useMessages();
   const router = useRouter();
 
-  if (isLoading) {
+  if (usersLoading || messagesLoading) {
     return (
       <div className="flex h-[450px] items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin" />
@@ -40,10 +47,10 @@ export default function AdminDashboardPage() {
     );
   }
 
-  if (error) {
+  if (usersError || messagesError) {
     return (
       <div className="flex h-[450px] items-center justify-center text-red-500">
-        Error loading data: {error.message}
+        Error loading data: {(usersError || messagesError)?.message}
       </div>
     );
   }
@@ -198,6 +205,36 @@ export default function AdminDashboardPage() {
           icon={AlertCircle}
           iconColor="text-orange-500"
         />
+
+        <div
+          className="rounded-lg cursor-pointer"
+          onClick={() => router.push("/admin/messages")}
+        >
+          <Card className="group transition-all duration-300 hover:bg-accent/50">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Mesaje necitite
+              </CardTitle>
+              <div className="flex items-center gap-2">
+                <MessageSquare className="h-4 w-4 text-blue-500" />
+                <ChevronRight
+                  className={cn(
+                    "h-4 w-4 opacity-0 -ml-4 transition-all duration-300",
+                    "group-hover:opacity-100 group-hover:ml-0"
+                  )}
+                />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {messages?.filter((msg) => !msg.isRead).length || 0}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                din {messages?.length || 0} mesaje totale
+              </p>
+            </CardContent>
+          </Card>
+        </div>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

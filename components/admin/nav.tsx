@@ -3,14 +3,7 @@
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
-import {
-  Home,
-  Users,
-  MessageSquare,
-  Settings,
-  LogOut,
-  Shield,
-} from "lucide-react";
+import { Home, Users, MessageSquare, Settings, Shield } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
@@ -64,8 +57,6 @@ export function AdminNav() {
       .toUpperCase()
       .slice(0, 2) || "?";
 
-  console.log("User data in AdminNav:", user);
-
   return (
     <div className="flex h-full flex-col">
       <div className="border-b px-6 py-4">
@@ -91,46 +82,45 @@ export function AdminNav() {
         </nav>
       </div>
       <div className="border-t p-4">
-        <div className="flex items-center gap-3 px-2">
-          <div className="relative h-10 w-10 overflow-hidden rounded-full border bg-muted">
-            {user?.imageUrl && !imageError ? (
-              <>
-                {imageLoading && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-muted">
-                    <span className="text-sm font-semibold text-muted-foreground">
-                      {initials}
-                    </span>
-                  </div>
-                )}
-                <Image
-                  src={user.imageUrl}
-                  alt={user?.name || "User"}
-                  fill
-                  className="object-cover"
-                  sizes="40px"
-                  priority
-                  onLoadingComplete={() => setImageLoading(false)}
-                  onError={() => setImageError(true)}
-                />
-              </>
-            ) : (
-              <div className="h-full w-full flex items-center justify-center">
-                <span className="text-sm font-semibold text-muted-foreground">
-                  {initials}
-                </span>
-              </div>
-            )}
+        <Link href="/cont">
+          <div className="flex items-center gap-3 px-2 hover:bg-accent rounded-md transition-colors py-2 cursor-pointer">
+            <div className="relative h-10 w-10 overflow-hidden rounded-full border bg-muted">
+              {user?.imageUrl && !imageError ? (
+                <>
+                  {imageLoading && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-muted">
+                      <span className="text-sm font-semibold text-muted-foreground">
+                        {initials}
+                      </span>
+                    </div>
+                  )}
+                  <Image
+                    src={user.imageUrl}
+                    alt={user?.name || "User"}
+                    fill
+                    className="object-cover"
+                    sizes="40px"
+                    priority
+                    onLoadingComplete={() => setImageLoading(false)}
+                    onError={() => setImageError(true)}
+                  />
+                </>
+              ) : (
+                <div className="h-full w-full flex items-center justify-center">
+                  <span className="text-sm font-semibold text-muted-foreground">
+                    {initials}
+                  </span>
+                </div>
+              )}
+            </div>
+            <div className="flex-1 overflow-hidden">
+              <p className="truncate text-sm font-medium">{user?.name}</p>
+              <p className="truncate text-xs text-muted-foreground">
+                {user?.email}
+              </p>
+            </div>
           </div>
-          <div className="flex-1 overflow-hidden">
-            <p className="truncate text-sm font-medium">{user?.name}</p>
-            <p className="truncate text-xs text-muted-foreground">
-              {user?.email}
-            </p>
-          </div>
-          <Button variant="muted" size="icon">
-            <LogOut className="h-4 w-4 text-red-500" />
-          </Button>
-        </div>
+        </Link>
       </div>
     </div>
   );
