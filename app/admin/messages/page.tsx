@@ -1,17 +1,37 @@
 "use client";
 
-import { columns } from "@/components/admin/messages/columns";
+import { createColumns } from "@/components/admin/messages/columns";
 import { DataTable } from "@/components/admin/messages/data-table";
 import { useMessages } from "@/hooks/use-messages";
 import { Loader2 } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import { toast } from "sonner";
 
 export default function MessagesPage() {
-  const { messages, isLoading, error, fetchMessages } = useMessages();
+  const { messages, isLoading, error, fetchMessages, updateMessageStatus } =
+    useMessages();
+  const toastShownRef = useRef(false);
 
   useEffect(() => {
     fetchMessages();
   }, [fetchMessages]);
+
+  useEffect(() => {
+    if (!toastShownRef.current) {
+      toast.info(
+        "Poți schimba statusul mesajelor făcând click pe butonul de status",
+        {
+          duration: 5000,
+        }
+      );
+      toastShownRef.current = true;
+    }
+  }, []);
+
+  const columns = useMemo(
+    () => createColumns(updateMessageStatus),
+    [updateMessageStatus]
+  );
 
   if (isLoading) {
     return (

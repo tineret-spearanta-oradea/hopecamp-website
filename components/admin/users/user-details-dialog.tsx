@@ -57,6 +57,9 @@ export function UserDetailsDialog({
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Detalii Participant</DialogTitle>
+          <div className="text-[10px] text-muted-foreground/50 font-mono">
+            {user?.uid}
+          </div>
         </DialogHeader>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
@@ -151,16 +154,13 @@ export function UserDetailsDialog({
             <InfoItem label="Telefon" value={user.phone || "-"} />
             <InfoItem label="Biserică" value={user.church || "-"} />
             {user.church === "alta" && (
-              <>
-                <InfoItem
-                  label="Numele bisericii"
-                  value={user.churchOther || "-"}
-                />
-                <InfoItem
-                  label="Contact TSO"
-                  value={user.churchContact || "-"}
-                />
-              </>
+              <InfoItem
+                label="Numele bisericii"
+                value={user.churchOther || "-"}
+              />
+            )}
+            {user.churchContact && (
+              <InfoItem label="Contact TSO" value={user.churchContact} />
             )}
             <InfoItem label="Transport" value={user.transport || "-"} />
             <InfoItem label="Plătește taxa la" value={user.payTaxTo || "-"} />

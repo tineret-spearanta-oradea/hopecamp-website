@@ -306,10 +306,13 @@ export default function Step2({
           </Label>
           <RadioGroup
             value={formData.userData.transport}
-            className="flex flex-col space-y-1"
             onValueChange={(value) =>
-              handleChange("userData", { name: "transport", value })
+              handleChange("userData", {
+                name: "transport",
+                value,
+              })
             }
+            className="flex flex-col space-y-1"
           >
             {transportOptions.map((option) => (
               <div key={option.value} className="flex items-center space-x-2">

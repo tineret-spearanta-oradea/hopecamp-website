@@ -12,6 +12,7 @@ import { User } from "@/types/user";
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { UserDetailsDialog } from "@/components/admin/users/user-details-dialog";
+import { DeleteUserDialog } from "@/components/admin/users/delete-user-dialog";
 
 export default function UsersPage() {
   const { toast } = useToast();
@@ -21,6 +22,9 @@ export default function UsersPage() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedUserForDetails, setSelectedUserForDetails] =
     useState<User | null>(null);
+  const [selectedUserForDelete, setSelectedUserForDelete] =
+    useState<User | null>(null);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     fetchUsers();
@@ -33,44 +37,62 @@ export default function UsersPage() {
 
   const handleDeleteUser = async (user: User) => {
     if (!currentUser?.isSuperAdmin) return;
+    setSelectedUserForDelete(user);
+  };
 
-    if (confirm(`Are you sure you want to delete ${user.name}?`)) {
-      try {
-        await deleteDoc(doc(db, "users", user.uid));
-        toast({
-          title: "Success",
-          description: "User deleted successfully",
-        });
-      } catch (error) {
-        console.error("Failed to delete user:", error);
-        toast({
-          title: "Error",
-          description: "Failed to delete user. Please try again.",
-          variant: "destructive",
-        });
-      }
+  const handleConfirmDelete = async (user: User) => {
+    try {
+      await deleteDoc(doc(db, "users", user.uid));
+      await fetchUsers();
+      toast({
+        title: "Succes",
+        description: "Participantul a fost șters cu succes",
+      });
+    } catch (error) {
+      console.error("Failed to delete user:", error);
+      toast({
+        title: "Eroare",
+        description:
+          "Nu am putut șterge participantul. Te rugăm să încerci din nou.",
+        variant: "destructive",
+      });
     }
   };
 
   const handleUpdateUser = async (updatedUser: User) => {
+    console.log("Updating user:", updatedUser);
     try {
+      setIsUpdating(true);
       const userRef = doc(db, "users", updatedUser.uid);
+
+      const cleanedUser = Object.fromEntries(
+        Object.entries(updatedUser).filter(([_, v]) => v !== undefined)
+      );
+
       await updateDoc(userRef, {
-        ...updatedUser,
+        ...cleanedUser,
         updatedAt: new Date(),
       });
 
+      await fetchUsers();
+
       toast({
-        title: "Success",
-        description: "User updated successfully",
+        title: "Succes!",
+        description: "Datele au fost actualizate cu succes.",
       });
+
+      setIsDrawerOpen(false);
+      setSelectedUser(null);
     } catch (error) {
       console.error("Failed to update user:", error);
       toast({
-        title: "Error",
-        description: "Failed to update user. Please try again.",
+        title: "Eroare",
+        description:
+          "Nu am putut actualiza datele. Te rugăm să încerci din nou.",
         variant: "destructive",
       });
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -116,6 +138,7 @@ export default function UsersPage() {
           }}
           onUpdate={handleUpdateUser}
           isSuperAdmin={currentUser?.isSuperAdmin}
+          isUpdating={isUpdating}
         />
       )}
 
@@ -124,6 +147,15 @@ export default function UsersPage() {
           user={selectedUserForDetails}
           isOpen={!!selectedUserForDetails}
           onClose={() => setSelectedUserForDetails(null)}
+        />
+      )}
+
+      {selectedUserForDelete && (
+        <DeleteUserDialog
+          user={selectedUserForDelete}
+          isOpen={!!selectedUserForDelete}
+          onClose={() => setSelectedUserForDelete(null)}
+          onConfirm={handleConfirmDelete}
         />
       )}
     </div>

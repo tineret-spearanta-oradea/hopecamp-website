@@ -2,11 +2,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { Message } from "@/types/message";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Circle } from "lucide-react";
-import { doc, updateDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { CheckCircle2, Circle, PencilIcon } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
-import { useToast } from "@/hooks/use-toast";
 
 // Separate component for the status cell
 function MessageStatusCell({
@@ -17,12 +14,6 @@ function MessageStatusCell({
   onStatusChange: (newStatus: boolean) => Promise<void>;
 }) {
   const isRead = row.getValue("isRead") as boolean;
-  const readByInfo = row.original.readBy ? (
-    <span className="text-xs text-muted-foreground block mt-1">
-      Citit de {row.original.readBy.userId} la{" "}
-      {format(row.original.readBy.readAt, "dd MMM HH:mm")}
-    </span>
-  ) : null;
 
   return (
     <Button
@@ -31,7 +22,7 @@ function MessageStatusCell({
       onClick={() => onStatusChange(!isRead)}
       className={`flex items-center gap-1 ${
         isRead ? "text-emerald-600" : "text-yellow-600"
-      }`}
+      } group hover:bg-muted`}
     >
       {isRead ? (
         <>
@@ -44,45 +35,43 @@ function MessageStatusCell({
           <span className="text-xs">Necitit</span>
         </>
       )}
-      {readByInfo}
+      <PencilIcon className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-50" />
     </Button>
   );
 }
 
 // Wrap the status cell with context
-function StatusCellWrapper({ row }: { row: any }) {
+function StatusCellWrapper({
+  row,
+  updateMessageStatus,
+}: {
+  row: any;
+  updateMessageStatus: (
+    messageId: string,
+    newStatus: boolean,
+    userId?: string
+  ) => Promise<void>;
+}) {
   const { user } = useAuth();
-  const { toast } = useToast();
 
   const handleStatusChange = async (newStatus: boolean) => {
     try {
-      const messageRef = doc(db, "messages", row.original.id);
-      await updateDoc(messageRef, {
-        isRead: newStatus,
-        readBy: newStatus
-          ? {
-              userId: user?.name || "Unknown",
-              readAt: serverTimestamp(),
-            }
-          : null,
-      });
-      toast({
-        title: newStatus ? "Mesaj marcat ca citit" : "Mesaj marcat ca necitit",
-      });
+      await updateMessageStatus(row.original.id, newStatus, user?.name);
     } catch (error) {
       console.error("Error updating message status:", error);
-      toast({
-        title: "Eroare",
-        description: "Nu am putut actualiza statusul mesajului",
-        variant: "destructive",
-      });
     }
   };
 
   return <MessageStatusCell row={row} onStatusChange={handleStatusChange} />;
 }
 
-export const columns: ColumnDef<Message>[] = [
+export const createColumns = (
+  updateMessageStatus: (
+    messageId: string,
+    newStatus: boolean,
+    userId?: string
+  ) => Promise<void>
+): ColumnDef<Message>[] => [
   {
     id: "userName",
     accessorKey: "userName",
@@ -119,6 +108,8 @@ export const columns: ColumnDef<Message>[] = [
     id: "isRead",
     accessorKey: "isRead",
     header: "Status",
-    cell: ({ row }) => <StatusCellWrapper row={row} />,
+    cell: ({ row }) => (
+      <StatusCellWrapper row={row} updateMessageStatus={updateMessageStatus} />
+    ),
   },
 ];

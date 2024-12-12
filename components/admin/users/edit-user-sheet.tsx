@@ -23,10 +23,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useToast } from "@/hooks/use-toast";
 import { User } from "@/types/user";
 import React, { useState } from "react";
-import { transportOptions, payTaxToOptions } from "@/lib/constants";
+import {
+  transportOptions,
+  payTaxToOptions,
+  slopeActivityOptions,
+} from "@/lib/constants";
 import { Label } from "@/components/ui/label";
 import {
   Accordion,
@@ -35,29 +38,35 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { DatePickerWithRange } from "@/components/ui/date-picker";
-
-const slopeActivityMap: Record<string, string> = {
-  no: "nu",
-  visit: "vizita",
-  ski: "schi",
-  sled: "sanie",
-};
+import { toast } from "sonner";
 
 const userFormSchema = z.object({
   // Read-only fields for regular admins, editable for superAdmin
-  name: z.string(),
-  phone: z.string(),
-  church: z.string(),
-  age: z.number(),
+  name: z.string().min(1, "Numele este obligatoriu"),
+  phone: z.string().min(1, "Numărul de telefon este obligatoriu"),
+  church: z.string().min(1, "Biserica este obligatorie"),
+  age: z.number().min(1, "Vârsta este obligatorie"),
   imageUrl: z.string().optional(),
-  startDate: z.date(),
-  endDate: z.date(),
+  startDate: z.date({
+    required_error: "Data de început este obligatorie",
+    invalid_type_error: "Data de început nu este validă",
+  }),
+  endDate: z.date({
+    required_error: "Data de sfârșit este obligatorie",
+    invalid_type_error: "Data de sfârșit nu este validă",
+  }),
 
   // Editable fields for all admins
-  transport: z.enum(["personal", "bus", "other"]),
-  payTaxTo: z.string(),
-  slopeActivity: z.enum(["no", "visit", "ski", "sled"]),
-  amountPaid: z.number().min(0),
+  transport: z.enum(["personal", "prieten", "autocar"], {
+    required_error: "Mijlocul de transport este obligatoriu",
+    invalid_type_error: "Mijlocul de transport nu este valid",
+  }),
+  payTaxTo: z.string().min(1, "Metoda de plată este obligatorie"),
+  slopeActivity: z.enum(["nu", "vizita", "ski", "sanie"], {
+    required_error: "Activitatea la pârtie este obligatorie",
+    invalid_type_error: "Opțiunea pentru pârtie nu este validă",
+  }),
+  amountPaid: z.number().min(0, "Suma plătită nu poate fi negativă"),
   isConfirmed: z.boolean(),
   preferences: z.string().optional(),
   withFamilyMember: z.boolean(),
@@ -71,6 +80,7 @@ interface EditUserSheetProps {
   onClose: () => void;
   onUpdate: (user: User) => Promise<void>;
   isSuperAdmin?: boolean;
+  isUpdating?: boolean;
 }
 
 export function EditUserSheet({
@@ -79,8 +89,8 @@ export function EditUserSheet({
   onClose,
   onUpdate,
   isSuperAdmin,
+  isUpdating = false,
 }: EditUserSheetProps) {
-  const { toast } = useToast();
   const [defaultAccordionValue] = useState(["payment"]);
   const [isDirty, setIsDirty] = useState(false);
 
@@ -93,7 +103,7 @@ export function EditUserSheet({
       age: 0,
       transport: "personal",
       payTaxTo: "",
-      slopeActivity: "no",
+      slopeActivity: "nu",
       amountPaid: 0,
       isConfirmed: false,
       preferences: "",
@@ -101,35 +111,35 @@ export function EditUserSheet({
       startDate: new Date(),
       endDate: new Date(),
     },
+    mode: "onChange",
   });
 
   React.useEffect(() => {
     if (user) {
-      form.reset({
+      const formValues = {
         name: user.name,
         phone: user.phone || "",
         church: user.church || "",
         age: user.age || 0,
-        transport: user.transport as "personal" | "bus" | "other",
+        transport: user.transport as "personal" | "prieten" | "autocar",
         payTaxTo: user.payTaxTo || "",
-        slopeActivity: user.slopeActivity as "no" | "visit" | "ski" | "sled",
+        slopeActivity: user.slopeActivity as "nu" | "vizita" | "ski" | "sanie",
         amountPaid: user.amountPaid || 0,
         isConfirmed: user.isConfirmed || false,
         preferences: user.preferences || "",
         withFamilyMember: user.withFamilyMember || false,
         startDate: user.startDate ? new Date(user.startDate) : new Date(),
         endDate: user.endDate ? new Date(user.endDate) : new Date(),
-      });
+      };
+      form.reset(formValues);
       setIsDirty(false);
     }
   }, [user, form]);
 
   const handleClose = () => {
     if (isDirty) {
-      toast({
-        title: "Modificări nesalvate",
+      toast.warning("Modificări nesalvate", {
         description: "Ai făcut modificări care nu au fost salvate",
-        variant: "warning",
       });
     }
     onClose();
@@ -143,22 +153,16 @@ export function EditUserSheet({
         updatedAt: new Date(),
         startDate: data.startDate,
         endDate: data.endDate,
-        slopeActivity: slopeActivityMap[data.slopeActivity] || "nu",
       };
       await onUpdate(updatedUser);
-
-      toast({
-        title: "Succes",
-        description: "Datele au fost actualizate cu succes",
-        variant: "success",
-      });
       setIsDirty(false);
-      onClose();
-    } catch {
-      toast({
-        title: "Eroare",
-        description: "Nu am putut actualiza datele",
-        variant: "destructive",
+      toast.success("Salvat cu succes", {
+        description: "Datele au fost actualizate cu succes",
+      });
+    } catch (error) {
+      toast.error("Eroare", {
+        description:
+          "A apărut o eroare la salvarea datelor. Te rugăm să încerci din nou.",
       });
     }
   }
@@ -173,7 +177,21 @@ export function EditUserSheet({
         <div className="py-4">
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(onSubmit)}
+              onSubmit={async (e) => {
+                e.preventDefault();
+                const isValid = await form.trigger();
+                if (isValid) {
+                  const values = form.getValues();
+                  await onSubmit(values);
+                } else {
+                  const errorMessages = Object.entries(form.formState.errors)
+                    .map(([field, error]) => `${field}: ${error?.message}`)
+                    .join("\n");
+                  toast.error("Eroare de validare", {
+                    description: errorMessages,
+                  });
+                }
+              }}
               className="space-y-6"
               onChange={() => setIsDirty(true)}
             >
@@ -418,35 +436,27 @@ export function EditUserSheet({
                       name="slopeActivity"
                       render={({ field }) => (
                         <FormItem className="space-y-2">
-                          <FormLabel>Activitate Pârtie</FormLabel>
+                          <FormLabel>Activitate la pârtie</FormLabel>
                           <FormControl>
                             <RadioGroup
                               onValueChange={field.onChange}
                               defaultValue={field.value}
                               className="flex flex-col space-y-1"
                             >
-                              <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="no" id="no" />
-                                <Label htmlFor="no">
-                                  Nu va merge pe pârtie
-                                </Label>
-                              </div>
-                              <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="visit" id="visit" />
-                                <Label htmlFor="visit">
-                                  Da, doar în vizită
-                                </Label>
-                              </div>
-                              <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="ski" id="ski" />
-                                <Label htmlFor="ski">
-                                  Da, cu ski/snowboard
-                                </Label>
-                              </div>
-                              <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="sled" id="sled" />
-                                <Label htmlFor="sled">Da, cu sania</Label>
-                              </div>
+                              {slopeActivityOptions.map((option) => (
+                                <div
+                                  key={option.value}
+                                  className="flex items-center space-x-2"
+                                >
+                                  <RadioGroupItem
+                                    value={option.value}
+                                    id={option.value}
+                                  />
+                                  <Label htmlFor={option.value}>
+                                    {option.label}
+                                  </Label>
+                                </div>
+                              ))}
                             </RadioGroup>
                           </FormControl>
                           <FormMessage />
@@ -495,11 +505,27 @@ export function EditUserSheet({
               </Accordion>
 
               <div className="flex justify-end space-x-4 pt-4">
-                <Button type="button" variant="outline" onClick={handleClose}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleClose}
+                  disabled={isUpdating}
+                >
                   Anulează
                 </Button>
-                <Button type="submit" variant="default">
-                  Salvează
+                <Button
+                  type="submit"
+                  disabled={isUpdating || !isDirty}
+                  className="min-w-[100px]"
+                >
+                  {isUpdating ? (
+                    <div className="flex items-center gap-2">
+                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                      Salvează...
+                    </div>
+                  ) : (
+                    "Salvează"
+                  )}
                 </Button>
               </div>
             </form>
