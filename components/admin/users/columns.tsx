@@ -21,6 +21,7 @@ import {
 import { User } from "@/types/user";
 import { cn } from "@/lib/utils";
 import { sortingFns } from "@tanstack/react-table";
+import { slopeActivityOptions } from "@/lib/constants";
 
 interface ColumnProps {
   onEdit?: (user: User) => void;
@@ -55,13 +56,6 @@ const SortButton = ({
       )}
     </Button>
   );
-};
-
-const slopeActivityLabels: Record<string, string> = {
-  nu: "Nu merge",
-  vizita: "Doar vizită",
-  schi: "Ski/Snowboard",
-  sanie: "Sanie",
 };
 
 export const columns = ({
@@ -170,7 +164,7 @@ export const columns = ({
     header: ({ column }) => <SortButton column={column}>Pârtie</SortButton>,
     cell: ({ row }) => {
       const activity = row.getValue("slopeActivity") as string;
-      return <span>{slopeActivityLabels[activity] || activity}</span>;
+      return <span>{activity}</span>;
     },
     filterFn: (row, id, value) => {
       return value.length === 0 || value.includes(row.getValue(id));

@@ -21,8 +21,15 @@ export const payTaxToOptions = [
 
 export const transportOptions = [
   { value: "personal", label: "Vin cu mașina personală" },
-  { value: "friend", label: "Vin cu un prieten cu mașina" },
-  { value: "church", label: "Autocar de la biserică" },
+  { value: "prieten", label: "Vin cu un prieten cu mașina" },
+  { value: "autocar", label: "Autocar de la biserică" },
+];
+
+export const slopeActivityOptions = [
+  { value: "nu", label: "Nu voi merge pe pârtie" },
+  { value: "vizita", label: "Da, dar doar în vizită" },
+  { value: "ski", label: "Da, cu ski/snowboard" },
+  { value: "sanie", label: "Da, cu sania" },
 ];
 
 export const sumToPay = {

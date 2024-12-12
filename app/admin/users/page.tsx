@@ -21,6 +21,7 @@ export default function UsersPage() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedUserForDetails, setSelectedUserForDetails] =
     useState<User | null>(null);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     fetchUsers();
@@ -37,6 +38,7 @@ export default function UsersPage() {
     if (confirm(`Are you sure you want to delete ${user.name}?`)) {
       try {
         await deleteDoc(doc(db, "users", user.uid));
+        await fetchUsers();
         toast({
           title: "Success",
           description: "User deleted successfully",
@@ -53,24 +55,39 @@ export default function UsersPage() {
   };
 
   const handleUpdateUser = async (updatedUser: User) => {
+    console.log("Updating user:", updatedUser);
     try {
+      setIsUpdating(true);
       const userRef = doc(db, "users", updatedUser.uid);
+
+      const cleanedUser = Object.fromEntries(
+        Object.entries(updatedUser).filter(([_, v]) => v !== undefined)
+      );
+
       await updateDoc(userRef, {
-        ...updatedUser,
+        ...cleanedUser,
         updatedAt: new Date(),
       });
 
+      await fetchUsers();
+
       toast({
-        title: "Success",
-        description: "User updated successfully",
+        title: "Succes!",
+        description: "Datele au fost actualizate cu succes.",
       });
+
+      setIsDrawerOpen(false);
+      setSelectedUser(null);
     } catch (error) {
       console.error("Failed to update user:", error);
       toast({
-        title: "Error",
-        description: "Failed to update user. Please try again.",
+        title: "Eroare",
+        description:
+          "Nu am putut actualiza datele. Te rugăm să încerci din nou.",
         variant: "destructive",
       });
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -116,6 +133,7 @@ export default function UsersPage() {
           }}
           onUpdate={handleUpdateUser}
           isSuperAdmin={currentUser?.isSuperAdmin}
+          isUpdating={isUpdating}
         />
       )}
 
