@@ -1,7 +1,16 @@
 import { useCallback, useState } from "react";
 import { db } from "@/lib/firebase";
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  doc,
+  updateDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { Message } from "@/types/message";
+import { toast } from "sonner";
 
 export function useMessages() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -27,6 +36,12 @@ export function useMessages() {
           text: data.text,
           sentDate: data.sentDate?.toDate() || new Date(),
           isRead: Boolean(data.isRead),
+          readBy: data.readBy
+            ? {
+                userId: data.readBy.userId,
+                readAt: data.readBy.readAt.toDate(),
+              }
+            : undefined,
         } as Message;
       });
 
@@ -40,11 +55,66 @@ export function useMessages() {
     }
   }, []);
 
+  const updateMessageStatus = useCallback(
+    async (messageId: string, newStatus: boolean, userId?: string) => {
+      try {
+        const messageRef = doc(db, "messages", messageId);
+        const updateData = {
+          isRead: newStatus,
+          readBy: newStatus
+            ? {
+                userId: userId || "Unknown",
+                readAt: new Date(),
+              }
+            : null,
+        };
+
+        await updateDoc(messageRef, {
+          ...updateData,
+          readBy: newStatus
+            ? {
+                userId: userId || "Unknown",
+                readAt: serverTimestamp(),
+              }
+            : null,
+        });
+
+        // Update local state
+        setMessages((prevMessages) =>
+          prevMessages.map((message) =>
+            message.id === messageId
+              ? {
+                  ...message,
+                  isRead: newStatus,
+                  readBy: newStatus
+                    ? {
+                        userId: userId || "Unknown",
+                        readAt: new Date(),
+                      }
+                    : undefined,
+                }
+              : message
+          )
+        );
+
+        toast.success(
+          newStatus ? "Mesaj marcat ca citit" : "Mesaj marcat ca necitit"
+        );
+      } catch (err) {
+        console.error("Error updating message status:", err);
+        toast.error("Nu am putut actualiza statusul mesajului");
+        throw err;
+      }
+    },
+    []
+  );
+
   return {
     messages,
     isLoading,
     error,
     fetchMessages,
-    refetch: fetchMessages, // alias for clarity when manually refetching
+    updateMessageStatus,
+    refetch: fetchMessages,
   };
 }

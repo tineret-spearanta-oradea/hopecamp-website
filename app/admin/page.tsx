@@ -177,7 +177,9 @@ export default function AdminDashboardPage() {
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold tracking-tight">Statistici</h1>
-
+      <h2 className="text-lg font-medium">
+        Datele inca nu sunt corecte. Vom reveni cu un update.
+      </h2>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <UserCard
           title="Participanți"
