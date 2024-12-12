@@ -5,10 +5,8 @@ import Link from "next/link";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/firebase/config";
 import { useRouter } from "next/navigation";
-import { FirebaseError } from "firebase/app";
 import { Button } from "../ui/button";
-import { toast } from "@/hooks/use-toast";
-import { ToastAction } from "@/components/ui/toast";
+import { toast } from "sonner";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -16,8 +14,12 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleLogin = async () => {
+    if (!email || !password) {
+      toast.error("Te rugăm să completezi toate câmpurile");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -26,30 +28,21 @@ export default function LoginForm() {
     } catch (error: any) {
       console.error("Error signing in:", error);
       if (error.code === "auth/user-not-found") {
-        toast({
-          title: "Utilizator negăsit",
-          description: "Te rugăm să verifici emailul sau să te înregistrezi.",
-          action: (
-            <ToastAction
-              altText="Înregistrare"
-              onClick={() => router.push("/inscrie-te")}
-            >
-              Înregistrare
-            </ToastAction>
-          ),
-        });
+        toast.error(
+          "Utilizator negăsit. Te rugăm să verifici emailul sau să te înregistrezi.",
+          {
+            action: {
+              label: "Înregistrare",
+              onClick: () => router.push("/inscrie-te"),
+            },
+          }
+        );
       } else if (error.code === "auth/wrong-password") {
-        toast({
-          title: "Parolă incorectă",
-          description: "Te rugăm să verifici parola și să încerci din nou.",
-          variant: "destructive",
-        });
+        toast.error(
+          "Parolă incorectă. Te rugăm să verifici parola și să încerci din nou."
+        );
       } else {
-        toast({
-          title: "Eroare",
-          description: "A apărut o eroare. Te rugăm să încerci din nou.",
-          variant: "destructive",
-        });
+        toast.error("A apărut o eroare. Te rugăm să încerci din nou.");
       }
     } finally {
       setLoading(false);
@@ -61,7 +54,7 @@ export default function LoginForm() {
       <h2 className="text-2xl font-semibold text-gray-800 mb-8 text-center">
         Conectare cont
       </h2>
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="space-y-6">
         <div>
           <label
             htmlFor="email"
@@ -76,7 +69,6 @@ export default function LoginForm() {
             onChange={(e) => setEmail(e.target.value)}
             className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400
               focus:outline-none focus:border-hope-darkcyan focus:ring-1 focus:ring-hope-darkcyan"
-            required
             disabled={loading}
           />
         </div>
@@ -94,7 +86,6 @@ export default function LoginForm() {
             onChange={(e) => setPassword(e.target.value)}
             className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400
               focus:outline-none focus:border-hope-dark-cyan focus:ring-1 focus:ring-hope-dark-cyan"
-            required
             disabled={loading}
           />
         </div>
@@ -107,13 +98,13 @@ export default function LoginForm() {
           </Link>
         </div>
         <Button
-          type="submit"
+          onClick={handleLogin}
           className="w-full rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={loading}
         >
           {loading ? "Se procesează..." : "Autentificare"}
         </Button>
-      </form>
+      </div>
       <p className="mt-6 text-center text-sm text-gray-500">
         Nu te-ai înscris încă în tabără?{" "}
         <Link
