@@ -95,6 +95,11 @@ export function useRegistrationForm() {
     if (validateStep(step)) {
       setStep((prev) => prev + 1);
       setValidationErrors(initialValidationErrors);
+    } else {
+      toast.error("Te rugăm să completezi toate câmpurile corect", {
+        description: "Verifică câmpurile marcate cu roșu și încearcă din nou.",
+        duration: 4000,
+      });
     }
   };
 
@@ -134,12 +139,15 @@ export function useRegistrationForm() {
       }, 1500);
     } catch (error: any) {
       console.error("Registration error:", error);
-
+      console.log("Error code:", error.code);
+      console.log("Error message:", error.message);
       // Handle specific Firebase Auth errors
       switch (error.code) {
         case "auth/email-already-in-use":
-          toast.error("Acest email este deja folosit.", {
-            description: "Te rugăm să te conectezi sau să folosești alt email.",
+          toast.error("Adresa de email există deja", {
+            description:
+              "Dacă ai deja cont, apasă pe butonul de conectare. Dacă nu, folosește altă adresă de email.",
+            duration: 5000,
             action: {
               label: "Conectare",
               onClick: () => (window.location.href = "/login"),
