@@ -1,6 +1,12 @@
 import { useEffect, useState, useCallback } from "react";
 import { db } from "@/lib/firebase";
-import { collection, getDocs, query, Timestamp } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  Timestamp,
+} from "firebase/firestore";
 import { User } from "@/types/user";
 
 export function useUsers() {
@@ -11,7 +17,10 @@ export function useUsers() {
   const fetchUsers = useCallback(async () => {
     try {
       setIsLoading(true);
-      const usersQuery = query(collection(db, "users"));
+      const usersQuery = query(
+        collection(db, "users"),
+        orderBy("createdAt", "desc")
+      );
       const snapshot = await getDocs(usersQuery);
 
       const usersData = snapshot.docs.map((doc) => {

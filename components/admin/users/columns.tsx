@@ -21,7 +21,7 @@ import {
 import { User } from "@/types/user";
 import { cn } from "@/lib/utils";
 import { sortingFns } from "@tanstack/react-table";
-import { slopeActivityOptions } from "@/lib/constants";
+import { slopeActivityOptions, sumToPay } from "@/lib/constants";
 
 interface ColumnProps {
   onEdit?: (user: User) => void;
@@ -67,7 +67,10 @@ export const columns = ({
   {
     accessorKey: "uid",
     header: "Id",
-    cell: ({ row }) => row.index + 1,
+    cell: ({ row, table }) => {
+      const totalRows = table.getCoreRowModel().rows.length;
+      return totalRows - row.index;
+    },
   },
   {
     accessorKey: "name",
@@ -110,20 +113,34 @@ export const columns = ({
     header: ({ column }) => <SortButton column={column}>Plătit</SortButton>,
     cell: ({ row }) => {
       const amount = (row.getValue("amountPaid") as number) || 0;
-      const withFamily = row.original.withFamilyMember;
 
       return (
-        <span
-          className={
-            amount === 0
-              ? "text-red-500"
-              : amount >= (withFamily ? 1000 : 800)
-              ? "text-emerald-600"
-              : "text-yellow-500"
-          }
-        >
-          {amount}
-        </span>
+        <div className="flex items-center gap-2">
+          <span
+            className={
+              amount === 0
+                ? "text-red-500"
+                : amount >= sumToPay.normal
+                ? "text-emerald-600"
+                : amount >= sumToPay.deposit
+                ? "text-yellow-500"
+                : "text-red-500"
+            }
+          >
+            {amount}
+          </span>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-6 w-6"
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit?.(row.original);
+            }}
+          >
+            <Pencil className="h-3 w-3 text-muted-foreground" />
+          </Button>
+        </div>
       );
     },
     sortingFn: sortingFns.alphanumeric,
