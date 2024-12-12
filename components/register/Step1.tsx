@@ -4,6 +4,8 @@ import { Input } from "../ui/input";
 import Link from "next/link";
 import { StepWrapper } from "./StepWrapper";
 import { title } from "@/lib/constants";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function Step1({
   formData,
@@ -12,6 +14,9 @@ export default function Step1({
   validationErrors,
   isLoading,
 }: StepProps) {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     objectName: keyof typeof formData
@@ -34,7 +39,7 @@ export default function Step1({
             </Link>
             .
           </p>
-          <p className="mt-2 italic text-sm text-muted-foreground">
+          <p className="mt-2 text-sm text-muted-foreground">
             Chiar dacă ai mai fost cu noi în tabără în anii trecuți, trebuie să
             îți faci cont nou.
           </p>
@@ -58,14 +63,29 @@ export default function Step1({
           </div>
 
           <div className="space-y-2">
-            <Input
-              type="password"
-              placeholder="Parola"
-              name="password"
-              value={formData.authData.password}
-              onChange={(e) => handleInputChange(e, "authData")}
-              className={validationErrors.password ? "border-destructive" : ""}
-            />
+            <div className="relative">
+              <Input
+                type={showPassword ? "text" : "password"}
+                placeholder="Parola"
+                name="password"
+                value={formData.authData.password}
+                onChange={(e) => handleInputChange(e, "authData")}
+                className={
+                  validationErrors.password ? "border-destructive" : ""
+                }
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
+            </div>
             {validationErrors.password && (
               <p className="text-destructive text-xs">
                 {validationErrors.password}
@@ -74,16 +94,29 @@ export default function Step1({
           </div>
 
           <div className="space-y-2">
-            <Input
-              type="password"
-              placeholder="Confirma parola"
-              name="confirmPassword"
-              value={formData.authData.confirmPassword}
-              onChange={(e) => handleInputChange(e, "authData")}
-              className={
-                validationErrors.confirmPassword ? "border-destructive" : ""
-              }
-            />
+            <div className="relative">
+              <Input
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirma parola"
+                name="confirmPassword"
+                value={formData.authData.confirmPassword}
+                onChange={(e) => handleInputChange(e, "authData")}
+                className={
+                  validationErrors.confirmPassword ? "border-destructive" : ""
+                }
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                {showConfirmPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
+            </div>
             {validationErrors.confirmPassword && (
               <p className="text-destructive text-xs">
                 {validationErrors.confirmPassword}
@@ -98,17 +131,15 @@ export default function Step1({
           </Button>
         </div>
 
-        <div className="space-y-4 text-center text-sm">
-          <p>
-            Te-ai înscris deja?{" "}
-            <Link
-              href="/cont"
-              className="hover:underline font-bold text-hope-lightcyan"
-            >
-              Du-te la contul tău.
-            </Link>
-          </p>
-          <p className="text-xs text-muted-foreground">
+        <div className="text-center text-sm flex flex-col items-center">
+          <p>Te-ai înscris deja in {title}? </p>
+          <Link
+            href="/cont"
+            className="hover:underline font-bold text-hope-lightcyan"
+          >
+            Du-te la contul tău.
+          </Link>
+          <p className="text-xs text-muted-foreground mt-2">
             * Emailul si parola vor fi folosite pentru a te conecta la platforma
             noastră. Acestea sunt necesare pentru înscriere.
           </p>
