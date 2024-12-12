@@ -10,9 +10,9 @@ import {
 } from "@/lib/constants";
 import { DatePickerWithRange } from "../ui/date-picker";
 import { UploadButton } from "@/utils/uploadthing";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import Image from "next/image";
 
 interface Step2Props {
@@ -40,6 +40,40 @@ export default function Step2({
   isLoading,
 }: Step2Props) {
   const [isUploading, setIsUploading] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      toast.info("Ai nevoie de ajutor?", {
+        description: (
+          <div>
+            Dacă întâmpini probleme, ne poți contacta pe{" "}
+            <a
+              href="https://wa.me/40773311577"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-hope-darkcyan hover:underline"
+            >
+              WhatsApp
+            </a>{" "}
+            (0773 311 577) sau la{" "}
+            <a
+              href="mailto:dev@hopecamp.ro"
+              className="text-hope-darkcyan hover:underline"
+            >
+              dev@hopecamp.ro
+            </a>
+          </div>
+        ),
+        duration: 45000,
+        action: {
+          label: "Închide",
+          onClick: () => console.log("Closed"),
+        },
+      });
+    }, 45000); // 45 seconds
+
+    return () => clearTimeout(timer);
+  }, []); // Only run once when component mounts
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -141,8 +175,7 @@ export default function Step2({
                 if (res?.[0]?.url) {
                   handleImageChange(res[0].url);
                   setIsUploading(false);
-                  toast({
-                    title: "Poza a fost încărcată cu succes!",
+                  toast.success("Poza a fost încărcată cu succes!", {
                     description: "Poți continua cu înregistrarea.",
                   });
                 }
@@ -152,15 +185,11 @@ export default function Step2({
                 setIsUploading(false);
 
                 if (error.message.includes("FileSizeMismatch")) {
-                  toast({
-                    variant: "destructive",
-                    title: "Fișierul este prea mare",
+                  toast.error("Fișierul este prea mare", {
                     description: "Te rugăm să încarci o poză mai mică de 4MB.",
                   });
                 } else {
-                  toast({
-                    variant: "destructive",
-                    title: "Eroare la încărcare",
+                  toast.error("Eroare la încărcare", {
                     description:
                       "Te rugăm să încerci din nou. Dacă problema persistă, contactează-ne.",
                   });
