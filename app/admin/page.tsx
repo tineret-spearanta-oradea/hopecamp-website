@@ -29,15 +29,28 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useMessages } from "@/hooks/use-messages";
+import { useEffect } from "react";
+import { PieChart, Pie, Cell, Tooltip as RechartsTooltip } from "recharts";
 
 export default function AdminDashboardPage() {
-  const { users, isLoading: usersLoading, error: usersError } = useUsers();
+  const {
+    users,
+    isLoading: usersLoading,
+    error: usersError,
+    fetchUsers,
+  } = useUsers();
   const {
     messages,
     isLoading: messagesLoading,
     error: messagesError,
+    fetchMessages,
   } = useMessages();
   const router = useRouter();
+
+  useEffect(() => {
+    fetchUsers();
+    fetchMessages();
+  }, [fetchUsers, fetchMessages]);
 
   if (usersLoading || messagesLoading) {
     return (
@@ -174,12 +187,26 @@ export default function AdminDashboardPage() {
     </div>
   );
 
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28"];
+
+  const data = [
+    {
+      name: "Vin cu mașina personală",
+      value: users.filter((user) => user.transport === "personal").length,
+    },
+    {
+      name: "Vin cu un prieten cu mașina",
+      value: users.filter((user) => user.transport === "prieten").length,
+    },
+    {
+      name: "Autocar de la biserică",
+      value: users.filter((user) => user.transport === "autocar").length,
+    },
+  ];
+
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold tracking-tight">Statistici</h1>
-      <h2 className="text-lg font-medium">
-        Datele inca nu sunt corecte. Vom reveni cu un update.
-      </h2>
+      <h1 className="text-3xl font-bold tracking-tight mb-1">Statistici</h1>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <UserCard
           title="Participanți"
@@ -188,24 +215,6 @@ export default function AdminDashboardPage() {
           icon={UsersIcon}
           iconColor="text-muted-foreground"
           isShiny={true}
-        />
-
-        <UserCard
-          title="Participanți Confirmați"
-          value={confirmedUsers}
-          description={`${((confirmedUsers / totalUsers) * 100).toFixed(
-            1
-          )}% din total`}
-          icon={CheckCircle}
-          iconColor="text-emerald-600"
-        />
-
-        <UserCard
-          title="În Așteptare"
-          value={unconfirmedUsers}
-          description="necesită confirmare"
-          icon={AlertCircle}
-          iconColor="text-orange-500"
         />
 
         <div
@@ -237,6 +246,24 @@ export default function AdminDashboardPage() {
             </CardContent>
           </Card>
         </div>
+
+        <UserCard
+          title="Participanți Confirmați"
+          value={confirmedUsers}
+          description={`${((confirmedUsers / totalUsers) * 100).toFixed(
+            1
+          )}% din total`}
+          icon={CheckCircle}
+          iconColor="text-emerald-600"
+        />
+
+        <UserCard
+          title="În Așteptare"
+          value={unconfirmedUsers}
+          description="necesită confirmare"
+          icon={AlertCircle}
+          iconColor="text-orange-500"
+        />
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -276,29 +303,36 @@ export default function AdminDashboardPage() {
             <CardTitle>Transport</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-2">
-              <p className="text-sm">
-                Personal:{" "}
-                {users?.filter((user) => user.transport === "personal")
-                  .length || 0}
-              </p>
-              <p className="text-sm">
-                Autocar:{" "}
-                {users?.filter((user) => user.transport === "bus").length || 0}
-              </p>
-              <p className="text-sm">
-                Altele:{" "}
-                {users?.filter(
-                  (user) =>
-                    user.transport &&
-                    user.transport !== "personal" &&
-                    user.transport !== "bus"
-                ).length || 0}
-              </p>
-              <p className="text-sm">
-                Nespecificat:{" "}
-                {users?.filter((user) => !user.transport).length || 0}
-              </p>
+            <ResponsiveContainer width="100%" height={100} className="mb-1">
+              <PieChart>
+                <Pie
+                  data={data}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={50}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {data.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <RechartsTooltip />
+              </PieChart>
+            </ResponsiveContainer>
+            <div className="flex flex-col justify-center mt-1">
+              {data.map((entry, index) => (
+                <div key={index} className="flex items-center mb-2">
+                  <div
+                    className="w-4 h-4"
+                    style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                  ></div>
+                  <span className="ml-2 text-sm">{entry.name}</span>
+                </div>
+              ))}
             </div>
           </CardContent>
         </Card>
@@ -308,28 +342,52 @@ export default function AdminDashboardPage() {
             <CardTitle>Status Plată</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-2">
-              <p className="text-sm">
-                Plătit Integral:{" "}
-                {users?.filter(
-                  (user) =>
-                    (user.amountPaid || 0) >=
-                    (user.withFamilyMember ? 1000 : 800)
-                ).length || 0}
-              </p>
-              <p className="text-sm">
-                Plată Parțială:{" "}
-                {users?.filter(
-                  (user) =>
-                    (user.amountPaid || 0) > 0 &&
-                    (user.amountPaid || 0) <
+            <div className="text-2xl font-bold">
+              {totalAmountPaid.toLocaleString()} RON
+            </div>
+            <p className="text-xs text-muted-foreground mb-4">
+              Suma totală încasată
+            </p>
+            <div className="space-y-3">
+              <div>
+                <p className="text-sm font-medium">
+                  Plătit Integral (
+                  {users?.filter(
+                    (user) =>
+                      (user.amountPaid || 0) >=
                       (user.withFamilyMember ? 1000 : 800)
-                ).length || 0}
-              </p>
-              <p className="text-sm">
-                Neplătit:{" "}
-                {users?.filter((user) => !user.amountPaid).length || 0}
-              </p>
+                  ).length || 0}{" "}
+                  persoane)
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Au achitat suma completă de 800/1000 RON
+                </p>
+              </div>
+              <div>
+                <p className="text-sm font-medium">
+                  Plată Parțială (
+                  {users?.filter(
+                    (user) =>
+                      (user.amountPaid || 0) > 0 &&
+                      (user.amountPaid || 0) <
+                        (user.withFamilyMember ? 1000 : 800)
+                  ).length || 0}{" "}
+                  persoane)
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Au achitat o parte din sumă
+                </p>
+              </div>
+              <div>
+                <p className="text-sm font-medium">
+                  Neplătit (
+                  {users?.filter((user) => !user.amountPaid).length || 0}{" "}
+                  persoane)
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Nu au efectuat nicio plată
+                </p>
+              </div>
             </div>
           </CardContent>
         </Card>
