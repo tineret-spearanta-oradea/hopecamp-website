@@ -92,9 +92,5 @@ export const validateUserFields = (
     errors.slopeActivity = "Te rugăm să selectezi o opțiune.";
   }
 
-  if (!userData.imageUrl) {
-    errors.image = "Te rugăm să încarci o poză.";
-  }
-
   return errors;
 };
