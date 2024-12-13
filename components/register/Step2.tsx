@@ -166,7 +166,7 @@ export default function Step2({
 
         <div className="space-y-2">
           <Label className="text-base font-semibold">
-            Încarcă poză cu tine *
+            Încarcă poză cu tine
           </Label>
           <div className="space-y-4">
             <UploadButton
@@ -191,7 +191,7 @@ export default function Step2({
                 } else {
                   toast.error("Eroare la încărcare", {
                     description:
-                      "Te rugăm să încerci din nou. Dacă problema persistă, contactează-ne.",
+                      "Te rugăm să încerci din nou. Dacă problema persistă, contactează-ne. Dacă nu reușești nicicum să încarci poza, poti trece la urmatorul pas, si te vom contacta mai tarziu.",
                   });
                 }
               }}
@@ -201,8 +201,7 @@ export default function Step2({
               appearance={{
                 button: cn(
                   "bg-secondary text-secondary-foreground hover:bg-secondary/90",
-                  formData.userData.imageUrl && "opacity-50 cursor-not-allowed",
-                  validationErrors.image && "border-destructive"
+                  formData.userData.imageUrl && "opacity-50 cursor-not-allowed"
                 ),
                 allowedContent: "text-sm text-muted-foreground text-center",
               }}
@@ -234,11 +233,6 @@ export default function Step2({
                 </div>
               </div>
             ) : null}
-            {validationErrors.image && (
-              <p className="text-xs text-destructive text-center">
-                {validationErrors.image}
-              </p>
-            )}
           </div>
         </div>
 
