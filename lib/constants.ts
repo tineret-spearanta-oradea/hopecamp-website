@@ -28,7 +28,7 @@ export const transportOptions = [
 export const slopeActivityOptions = [
   { value: "nu", label: "Nu voi merge pe pârtie" },
   { value: "vizita", label: "Da, dar doar în vizită" },
-  { value: "ski", label: "Da, cu ski/snowboard" },
+  { value: "schi", label: "Da, cu ski/snowboard" },
   { value: "sanie", label: "Da, cu sania" },
 ];
 

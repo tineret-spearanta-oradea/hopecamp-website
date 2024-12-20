@@ -62,7 +62,7 @@ const userFormSchema = z.object({
     invalid_type_error: "Mijlocul de transport nu este valid",
   }),
   payTaxTo: z.string().min(1, "Metoda de plată este obligatorie"),
-  slopeActivity: z.enum(["nu", "vizita", "ski", "sanie"], {
+  slopeActivity: z.enum(["nu", "vizita", "schi", "sanie"], {
     required_error: "Activitatea la pârtie este obligatorie",
     invalid_type_error: "Opțiunea pentru pârtie nu este validă",
   }),
@@ -123,7 +123,7 @@ export function EditUserSheet({
         age: user.age || 0,
         transport: user.transport as "personal" | "prieten" | "autocar",
         payTaxTo: user.payTaxTo || "",
-        slopeActivity: user.slopeActivity as "nu" | "vizita" | "ski" | "sanie",
+        slopeActivity: user.slopeActivity as "nu" | "vizita" | "schi" | "sanie",
         amountPaid: user.amountPaid || 0,
         isConfirmed: user.isConfirmed || false,
         preferences: user.preferences || "",
