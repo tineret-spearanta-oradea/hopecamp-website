@@ -371,8 +371,8 @@ export default function Step2({
               <Label htmlFor="visit">Da, dar doar în vizită</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="ski" id="ski" />
-              <Label htmlFor="ski">Da, cu ski/snowboard</Label>
+              <RadioGroupItem value="schi" id="schi" />
+              <Label htmlFor="schi">Da, cu ski/snowboard</Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="sled" id="sled" />
