@@ -46,8 +46,8 @@ export const dateRange = {
 };
 
 export const MinimumAge = {
-  normal: 14,
-  memberOfChurch: 12,
+  normal: 16,
+  memberOfChurch: 15,
 };
 
 export const contactInfo = {
