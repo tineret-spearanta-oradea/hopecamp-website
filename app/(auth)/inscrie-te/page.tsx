@@ -8,7 +8,7 @@ import { Suspense } from "react";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 // This would typically come from your environment variables or a database
-const IS_REGISTRATION_DISABLED = true;
+const IS_REGISTRATION_DISABLED = false;
 const BYPASS_MODE = "temp";
 
 function RegistrationContent() {
