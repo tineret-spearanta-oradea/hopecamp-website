@@ -21,4 +21,5 @@ export interface User {
   age?: number;
   withFamilyMember?: boolean;
   slopeActivity?: string;
+  paidOn?: Date | null;
 }

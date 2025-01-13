@@ -7,13 +7,14 @@ import { EditUserSheet } from "@/components/admin/users/edit-user-sheet";
 import { useUsers } from "@/hooks/use-users";
 import { useAuth } from "@/contexts/auth-context";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Download } from "lucide-react";
+import { Download } from "lucide-react";
 import { User } from "@/types/user";
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { UserDetailsDialog } from "@/components/admin/users/user-details-dialog";
 import { DeleteUserDialog } from "@/components/admin/users/delete-user-dialog";
 import { Button } from "@/components/ui/button";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 export default function UsersPage() {
   const { toast } = useToast();
@@ -181,7 +182,7 @@ export default function UsersPage() {
 
       {isLoading ? (
         <div className="flex h-[450px] items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin" />
+          <LoadingSpinner transparentBg />
         </div>
       ) : error ? (
         <div className="flex h-[450px] items-center justify-center text-red-500">

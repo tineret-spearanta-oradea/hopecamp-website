@@ -29,6 +29,7 @@ import {
   transportOptions,
   payTaxToOptions,
   slopeActivityOptions,
+  sumToPay,
 } from "@/lib/constants";
 import { Label } from "@/components/ui/label";
 import {
@@ -364,16 +365,53 @@ export function EditUserSheet({
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Suma Plătită</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="number"
-                              {...field}
-                              onChange={(e) =>
-                                field.onChange(e.target.valueAsNumber)
-                              }
-                            />
-                          </FormControl>
-                          <FormMessage />
+                          <div className="space-y-2">
+                            <FormControl>
+                              <Input
+                                type="number"
+                                {...field}
+                                onChange={(e) =>
+                                  field.onChange(e.target.valueAsNumber)
+                                }
+                              />
+                            </FormControl>
+                            <div className="flex flex-wrap gap-2">
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  field.onChange(0);
+                                  setIsDirty(true);
+                                }}
+                              >
+                                0 RON
+                              </Button>
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  field.onChange(sumToPay.deposit);
+                                  setIsDirty(true);
+                                }}
+                              >
+                                {sumToPay.deposit} RON (Avans)
+                              </Button>
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  field.onChange(sumToPay.normal);
+                                  setIsDirty(true);
+                                }}
+                              >
+                                {sumToPay.normal} RON (Integral)
+                              </Button>
+                            </div>
+                            <FormMessage />
+                          </div>
                         </FormItem>
                       )}
                     />
