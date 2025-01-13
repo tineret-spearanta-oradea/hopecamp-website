@@ -360,7 +360,7 @@ export default function AdminDashboardPage() {
                   persoane)
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  Au achitat suma completă de 800/1000 RON
+                  Au achitat suma completă
                 </p>
               </div>
               <div>

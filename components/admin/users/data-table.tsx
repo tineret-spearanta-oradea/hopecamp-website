@@ -135,7 +135,7 @@ export function DataTable<TData, TValue>({
       <Input
         placeholder={`Filtrează după ${
           FILTERABLE_COLUMNS.find((col) => col.value === selectedColumn)?.label
-        }...`}
+        }... (poți selecta altă coloană)`}
         value={
           (table.getColumn(selectedColumn)?.getFilterValue() as string) ?? ""
         }

@@ -24,7 +24,7 @@ export default function AdminProtected({
 
   // Show loading state while we're loading OR if we have no user data yet
   if (loading || !user) {
-    return <LoadingSpinner />;
+    return <LoadingSpinner transparentBg />;
   }
 
   // If we have user data but they're not admin, return null
