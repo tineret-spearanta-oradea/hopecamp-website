@@ -7,12 +7,13 @@ import { EditUserSheet } from "@/components/admin/users/edit-user-sheet";
 import { useUsers } from "@/hooks/use-users";
 import { useAuth } from "@/contexts/auth-context";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
+import { Loader2, Download } from "lucide-react";
 import { User } from "@/types/user";
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { UserDetailsDialog } from "@/components/admin/users/user-details-dialog";
 import { DeleteUserDialog } from "@/components/admin/users/delete-user-dialog";
+import { Button } from "@/components/ui/button";
 
 export default function UsersPage() {
   const { toast } = useToast();
@@ -100,10 +101,82 @@ export default function UsersPage() {
     setSelectedUserForDetails(user);
   };
 
+  const handleExportCsv = () => {
+    if (!users?.length) {
+      toast({
+        title: "Eroare",
+        description: "Nu există date pentru export",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Define the fields to export (excluding sensitive or unnecessary data)
+    const fields = [
+      "name",
+      "email",
+      "phone",
+      "church",
+      "age",
+      "transport",
+      "payTaxTo",
+      "amountPaid",
+      "isConfirmed",
+      "preferences",
+      "withFamilyMember",
+      "startDate",
+      "endDate",
+      "slopeActivity",
+    ];
+
+    // Create CSV header
+    const csvData = [fields.join(",")];
+
+    // Add user data
+    users.forEach((user) => {
+      const rowData = fields.map((field) => {
+        const value = user[field as keyof User];
+        if (value === undefined || value === null) return "";
+        if (typeof value === "boolean") return value ? "Da" : "Nu";
+        if (value instanceof Date) return value.toLocaleDateString("ro-RO");
+        return String(value).replace(/,/g, "");
+      });
+      csvData.push(rowData.join(","));
+    });
+
+    // Create and download the file
+    const csvContent = csvData.join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const now = new Date();
+    const filename = `Participanti_HC_${now.getDate()}-${
+      now.getMonth() + 1
+    }-${now.getFullYear()}_${now.getHours()}-${now.getMinutes()}.csv`;
+
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute("download", filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    toast({
+      title: "Succes",
+      description: "Lista a fost exportată cu succes",
+    });
+  };
+
   return (
     <div className="w-full max-w-[90vw] mx-auto py-10 overflow-hidden">
-      <div className="mb-8">
+      <div className="mb-8 flex justify-between items-center">
         <h1 className="text-3xl font-bold tracking-tight">Users</h1>
+        <Button
+          onClick={handleExportCsv}
+          className="flex  text-sm items-center gap-2"
+          variant="outline"
+        >
+          <Download className="h-4 w-4" />
+          Export CSV
+        </Button>
       </div>
 
       {isLoading ? (
