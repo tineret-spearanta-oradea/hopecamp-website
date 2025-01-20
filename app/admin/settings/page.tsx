@@ -25,6 +25,7 @@ export default function SettingsPage() {
   const { users, fetchUsers } = useUsers();
   const { user: currentUser } = useAuth();
   const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadCount, setDownloadCount] = useState(0);
 
   useEffect(() => {
     fetchUsers();
@@ -38,7 +39,6 @@ export default function SettingsPage() {
 
     setIsDownloading(true);
     try {
-      let downloadCount = 0;
       const usersWithImages = users.filter((user) => user.imageUrl);
       console.log("Users with images:", usersWithImages);
 
@@ -65,7 +65,7 @@ export default function SettingsPage() {
           window.URL.revokeObjectURL(url);
           document.body.removeChild(a);
 
-          downloadCount++;
+          setDownloadCount((prevCount) => prevCount + 1);
 
           // Add a small delay between downloads to prevent browser throttling
           await new Promise((resolve) => setTimeout(resolve, 500));
@@ -76,6 +76,8 @@ export default function SettingsPage() {
           );
         }
       }
+
+      setDownloadCount(0);
 
       toast.success(`Successfully downloaded ${downloadCount} images`);
     } catch (error) {
@@ -96,6 +98,10 @@ export default function SettingsPage() {
         <div className="flex flex-col gap-4">
           <div className="rounded-lg border p-4">
             <h2 className="text-xl font-semibold mb-4">User Images</h2>
+            <p className="text-sm text-muted-foreground mb-4">
+              {isDownloading ? `Downloading ${downloadCount}/` : "Count: "}
+              {users.filter((user) => user.imageUrl).length}
+            </p>
             <Button
               onClick={downloadImages}
               disabled={isDownloading || !currentUser?.isSuperAdmin}
