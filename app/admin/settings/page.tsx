@@ -1,13 +1,117 @@
 "use client";
 
-import { Cog } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useUsers } from "@/hooks/use-users";
+import { Download } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { useAuth } from "@/contexts/auth-context";
+
+// Helper function to get file extension from mime type
+const getExtensionFromMimeType = (mimeType: string): string => {
+  const mimeToExt: Record<string, string> = {
+    "image/jpeg": "jpg",
+    "image/jpg": "jpg",
+    "image/png": "png",
+    "image/gif": "gif",
+    "image/webp": "webp",
+    "image/heic": "heic",
+    "image/heif": "heif",
+  };
+  return mimeToExt[mimeType] || "jpg";
+};
 
 export default function SettingsPage() {
+  const { users, fetchUsers } = useUsers();
+  const { user: currentUser } = useAuth();
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
+
+  const downloadImages = async () => {
+    if (!currentUser?.isSuperAdmin) {
+      toast.error("Nu ai permisiunea necesară pentru această acțiune");
+      return;
+    }
+
+    setIsDownloading(true);
+    try {
+      let downloadCount = 0;
+      const usersWithImages = users.filter((user) => user.imageUrl);
+      console.log("Users with images:", usersWithImages);
+
+      for (const user of usersWithImages) {
+        if (!user.imageUrl) continue;
+
+        try {
+          const response = await fetch(user.imageUrl);
+          const blob = await response.blob();
+          console.log(`Blob type for ${user.name}:`, blob.type);
+
+          // Get extension from blob mime type
+          const extension = getExtensionFromMimeType(blob.type);
+
+          // Create a download link
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.style.display = "none";
+          a.href = url;
+          a.download = `${user.name}_${user.uid}.${extension}`;
+
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+
+          downloadCount++;
+
+          // Add a small delay between downloads to prevent browser throttling
+          await new Promise((resolve) => setTimeout(resolve, 500));
+        } catch (error) {
+          console.error(
+            `Failed to download image for user ${user.name}:`,
+            error
+          );
+        }
+      }
+
+      toast.success(`Successfully downloaded ${downloadCount} images`);
+    } catch (error) {
+      console.error("Error downloading images:", error);
+      toast.error("Failed to download some images");
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   return (
-    <div className="w-full h-[450px] flex flex-col items-center justify-center gap-4 text-muted-foreground">
-      <Cog className="h-12 w-12 animate-spin-slow" />
-      <h1 className="text-2xl font-semibold">Pagina este în lucru</h1>
-      <p className="text-sm">Această secțiune va fi disponibilă în curând.</p>
+    <div className="container py-6">
+      <div className="flex flex-col gap-6">
+        <div className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold">Settings</h1>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="rounded-lg border p-4">
+            <h2 className="text-xl font-semibold mb-4">User Images</h2>
+            <Button
+              onClick={downloadImages}
+              disabled={isDownloading || !currentUser?.isSuperAdmin}
+              className="w-fit"
+            >
+              <Download className="mr-2 h-4 w-4" />
+              {isDownloading ? "Downloading..." : "Download All User Images"}
+            </Button>
+            {!currentUser?.isSuperAdmin && (
+              <p className="text-sm text-muted-foreground mt-2">
+                Doar superadminii pot descărca imaginile utilizatorilor.
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
