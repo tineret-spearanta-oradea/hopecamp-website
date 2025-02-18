@@ -39,6 +39,7 @@ interface DataTableProps<TData, TValue> {
 
 const FILTERABLE_COLUMNS = [
   { value: "name", label: "Nume" },
+  { value: "uid", label: "UID" },
   { value: "isConfirmed", label: "Confirmat" },
   { value: "age", label: "Ani" },
   { value: "phone", label: "Telefon" },
