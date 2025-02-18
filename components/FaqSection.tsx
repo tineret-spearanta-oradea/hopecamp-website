@@ -62,7 +62,7 @@ export default function FaqSection() {
                 variant="default"
                 size="lg"
                 className="flex items-center gap-2 whitespace-nowrap w-full lg:w-auto"
-                onClick={() => window.open("/assets/Regulament_HopeCamp.pdf")}
+                onClick={() => window.open("/assets/documents/Regulament_HopeCamp.pdf")}
               >
                 Regulament
                 <svg
