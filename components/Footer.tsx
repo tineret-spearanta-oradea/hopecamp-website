@@ -22,9 +22,9 @@ export default function Footer() {
         </div>
 
         <div className="w-1/2 flex flex-col  items-center gap-5 ">
-          <Button className="hover:bg-[#A2BCCB]" asChild>
+          {/* <Button className="hover:bg-[#A2BCCB]" asChild>
             <Link href="/inscrie-te">Înscrie-te</Link>
-          </Button>
+          </Button> */}
 
           <div className="flex items-center gap-2">
             <Link
