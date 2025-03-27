@@ -10,5 +10,3 @@ export const createUserAccount = async (email: string, password: string) => {
   );
   return userCredential.user;
 };
-
-export const currentUser: User | null = auth.currentUser;

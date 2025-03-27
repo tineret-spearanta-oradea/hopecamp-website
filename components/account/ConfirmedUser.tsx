@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/firebase/config";
 import {
   collection,
   addDoc,
