@@ -1,7 +1,6 @@
-import { getFirestore, doc, getDoc } from "firebase/firestore";
-import { getApps } from "firebase/app";
+import { doc, getDoc } from "firebase/firestore";
+import {db} from "@/lib/firebase/config";
 
-const db = getFirestore(getApps()[0]);
 
 export async function getUserData(userId: string) {
   try {

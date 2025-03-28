@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/firebase/config";
+import { auth } from "@/lib/firebase/config";
 import Link from "next/link";
 import LoadingSpinner from "../ui/LoadingSpinner";
 import PendingUser from "./PendingUser";
 import ConfirmedUser from "./ConfirmedUser";
-import { getUserData } from "@/firebase/database";
+import { getUserData } from "@/lib/database";
 
 type UserData = {
   uid: string;

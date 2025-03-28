@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Download } from "lucide-react";
 import { User } from "@/types/user";
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/firebase/config";
 import { UserDetailsDialog } from "@/components/admin/users/user-details-dialog";
 import { DeleteUserDialog } from "@/components/admin/users/delete-user-dialog";
 import { Button } from "@/components/ui/button";

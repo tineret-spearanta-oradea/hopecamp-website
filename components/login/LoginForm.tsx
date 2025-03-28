@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/firebase/config";
+import { auth } from "@/lib/firebase/config";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { toast } from "sonner";

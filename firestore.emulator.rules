@@ -1,0 +1,78 @@
+rules_version = '2';
+service cloud.firestore {
+    match /databases/{database}/documents {
+        match /users/{userId} {
+            // Only admins or superadmins are allowed to change those user fields
+            function restrictedUserFields() {
+                return ['isAdmin', 'isSuperAdmin', 'isConfirmed', 'amountPaid'];
+            }
+
+            // Allow read access for owners or admins/superadmins.
+            allow read: if isOwner(userId) || isAdmin() || isSuperAdmin();
+
+            // Allow creation if the user is creating their own document with proper default values for restricted fields.
+            allow create: if isOwner(userId) &&
+                    request.resource.data.isAdmin == false &&
+                    request.resource.data.isSuperAdmin == false &&
+                    request.resource.data.isConfirmed == false &&
+                    request.resource.data.amountPaid == 0;
+
+            // Allow update if:
+            // The user is the owner and they are not modifying any restricted fields,
+            // OR the user is an admin or superadmin.
+            allow update: if (isOwner(userId) &&
+                    !request.resource.data.diff(resource.data).affectedKeys().hasAny(restrictedUserFields())
+            ) || isAdmin() || isSuperAdmin();
+        }
+        match /expenses/{expenseId} {
+            // Only admins and super admins can access expenses
+            allow read, write: if isAdmin() || isSuperAdmin();
+        }
+        match /messages/{messageId} {
+            // Allow read:
+            // - Admins and superadmins can read any message.
+            // - Otherwise, only allow reading if the message's userId matches the request.auth.uid.
+            allow read: if isAdmin() || isSuperAdmin() ||
+                    (isRegisteredUser() && resource.data.userId == request.auth.uid);
+
+            // Allow create for any registered user if they are creating a message with their own userId.
+            allow create: if isRegisteredUser() && request.resource.data.userId == request.auth.uid;
+
+            // Allow update and delete only for admins and superadmins.
+            allow update, delete: if isAdmin() || isSuperAdmin();
+        }
+
+        function isRegisteredUser() {
+            return request.auth != null &&
+                    exists(/databases/$(database)/documents/users/$(request.auth.uid));
+        }
+
+        function isOwner(userId) {
+            return request.auth != null && request.auth.uid == userId;
+        }
+
+        function isAdmin() {
+            return request.auth != null &&
+                    get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+        }
+
+        function isSuperAdmin() {
+            return request.auth != null &&
+                    get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isSuperAdmin == true;
+        }
+
+        //    WARNING! THIS WILL ALLOW USERS TO SEE ALL DOCUMENTS! DON'T USE IN PROD!
+        //    match /{document=**} {
+        //      // This rule allows anyone with your database reference to view, edit,
+        //      // and delete all data in your database. It is useful for getting
+        //      // started, but it is configured to expire after 30 days because it
+        //      // leaves your app open to attackers. At that time, all client
+        //      // requests to your database will be denied.
+        //      //
+        //      // Make sure to write security rules for your app before that time, or
+        //      // else all client requests to your database will be denied until you
+        //      // update your rules.
+        //      allow read, write: if request.time < timestamp.date(2025, 4, 26);
+        //    }
+    }
+}

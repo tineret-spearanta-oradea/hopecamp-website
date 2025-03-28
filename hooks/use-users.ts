@@ -1,5 +1,5 @@
-import { useEffect, useState, useCallback } from "react";
-import { db } from "@/lib/firebase";
+import { useState, useCallback } from "react";
+import { db } from "@/lib/firebase/config";
 import {
   collection,
   getDocs,
