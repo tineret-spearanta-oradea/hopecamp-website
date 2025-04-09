@@ -3,16 +3,8 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
-import {
-  collection,
-  getDocs,
-  doc,
-  updateDoc,
-  query,
-  where,
-} from "firebase/firestore";
-import { db } from "@/lib/firebase/config";
-import { User } from "@/types/user";
+import { UserData } from "@/types/userData";
+import { getAllUsersData, getUserData, updateUserData } from "@/lib/supabase/database/user"; // Import Supabase functions
 import {
   Table,
   TableBody,
@@ -26,7 +18,6 @@ import {
   ShieldAlert,
   ShieldCheck,
   UserMinus,
-  UserPlus,
   Shield,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -49,11 +40,11 @@ type SuperAdminPromptData = {
 } | null;
 
 export default function AdminsPage() {
-  const { user: currentUser } = useAuth();
+  const { userData } = useAuth();
   const router = useRouter();
-  const [admins, setAdmins] = useState<User[]>([]);
+  const [admins, setAdmins] = useState<UserData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [newAdminEmail, setNewAdminEmail] = useState("");
+  const [newAdminUid, setNewAdminUid] = useState(""); // Changed from email to UID
   const [isAddingAdmin, setIsAddingAdmin] = useState(false);
   const [superAdminPrompt, setSuperAdminPrompt] =
     useState<SuperAdminPromptData>(null);
@@ -62,27 +53,24 @@ export default function AdminsPage() {
 
   // Redirect if not super admin
   useEffect(() => {
-    if (!currentUser?.isSuperAdmin) {
+    if (!userData?.isSuperAdmin) {
       router.push("/admin");
     }
-  }, [currentUser, router]);
+  }, [userData, router]);
 
-  // Fetch admins
+  // Fetch admins using Supabase
   useEffect(() => {
     const fetchAdmins = async () => {
+      setLoading(true); // Ensure loading state is set
       try {
-        const q = query(collection(db, "users"), where("isAdmin", "==", true));
-        const querySnapshot = await getDocs(q);
-        const adminsData = querySnapshot.docs.map((doc) => ({
-          ...doc.data(),
-          uid: doc.id,
-        })) as User[];
+        const allUsers = await getAllUsersData();
+        const adminsData = allUsers.filter(user => user.isAdmin);
         setAdmins(adminsData);
       } catch (error) {
         console.error("Error fetching admins:", error);
         toast({
-          title: "Error",
-          description: "Could not fetch admins",
+          title: "Eroare",
+          description: "Nu am putut prelua lista de admini",
           variant: "destructive",
         });
       } finally {
@@ -93,9 +81,20 @@ export default function AdminsPage() {
     fetchAdmins();
   }, [toast]);
 
-  const handleRoleUpdate = async (userId: string, updates: Partial<User>) => {
+  // Update roles using Supabase
+  const handleRoleUpdate = async (userId: string, updates: Partial<Omit<UserData, 'uid'>>) => {
+    // Ensure uid is not in the updates object passed to Supabase update function
+    const adminToUpdate = admins.find(admin => admin.uid === userId);
+    if (!adminToUpdate) {
+        console.error("Admin not found for update:", userId);
+        toast({ title: "Eroare", description: "Adminul nu a fost găsit.", variant: "destructive" });
+        return;
+    }
+
+    const updatedAdminData: UserData = { ...adminToUpdate, ...updates };
+
     try {
-      await updateDoc(doc(db, "users", userId), updates);
+      await updateUserData(updatedAdminData); // Use Supabase update function
       setAdmins(
         admins.map((admin) =>
           admin.uid === userId ? { ...admin, ...updates } : admin
@@ -109,19 +108,19 @@ export default function AdminsPage() {
 
       toast({
         title: "Succes",
-        description: "Rolurile au fost actualizate cu succes",
+        description: "Rolurile au fost actualizate cu succes.",
       });
     } catch (error) {
       console.error("Error updating admin roles:", error);
       toast({
         title: "Eroare",
-        description: "Nu am putut actualiza rolurile",
+        description: "Nu am putut actualiza rolurile.",
         variant: "destructive",
       });
     }
   };
 
-  const handleSuperAdminPrompt = (admin: User) => {
+  const handleSuperAdminPrompt = (admin: UserData) => {
     setSuperAdminPrompt({
       userId: admin.uid,
       userName: admin.name,
@@ -151,69 +150,66 @@ export default function AdminsPage() {
     setSuperAdminReason("");
   };
 
+  // Add admin using Supabase (by UID)
   const handleAddAdmin = async () => {
-    if (!newAdminEmail.trim()) {
+    const trimmedUid = newAdminUid.trim();
+    if (!trimmedUid) {
       toast({
         title: "Eroare",
-        description: "Te rugăm să introduci o adresă de email",
+        description: "Te rugăm să introduci un User ID (UID)",
         variant: "destructive",
       });
       return;
     }
 
+    // Basic UUID validation (optional, but recommended)
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(trimmedUid)) {
+        toast({ title: "Eroare", description: "User ID invalid.", variant: "destructive" });
+        return;
+    }
+
+
     setIsAddingAdmin(true);
     try {
-      // Find user by email
-      const q = query(
-        collection(db, "users"),
-        where("email", "==", newAdminEmail.trim().toLowerCase())
-      );
-      const querySnapshot = await getDocs(q);
+      // Find user by UID using Supabase
+      const userToAdd = await getUserData(trimmedUid);
 
-      if (querySnapshot.empty) {
+      if (!userToAdd) {
         toast({
           title: "Eroare",
-          description: "Nu am găsit niciun utilizator cu acest email",
+          description: "Nu am găsit niciun utilizator cu acest ID",
           variant: "destructive",
         });
         return;
       }
 
-      const userDoc = querySnapshot.docs[0];
-      const userData = userDoc.data() as User;
-
-      if (userData.isAdmin) {
+      if (userToAdd.isAdmin) {
         toast({
-          title: "Eroare",
-          description: "Acest utilizator este deja admin",
-          variant: "destructive",
+          title: "Info",
+          description: "Acest utilizator este deja admin.",
+          variant: "default", // Use default or info variant
         });
-        return;
+        return; // Don't proceed if already admin
       }
 
-      // Make user an admin
-      await updateDoc(doc(db, "users", userDoc.id), {
-        isAdmin: true,
-        isSuperAdmin: false,
-      });
+      // Make user an admin using Supabase
+      await updateUserData({ ...userToAdd, isAdmin: true, isSuperAdmin: userToAdd.isSuperAdmin || false }); // Preserve superAdmin status if already set
 
-      // Add to admins list
-      setAdmins([
-        ...admins,
-        { ...userData, uid: userDoc.id, isAdmin: true, isSuperAdmin: false },
-      ]);
+      // Add to local admins list
+      setAdmins([...admins, { ...userToAdd, isAdmin: true }]);
 
       toast({
         title: "Succes",
-        description: "Admin adăugat cu succes",
+        description: `Utilizatorul ${userToAdd.name} a fost promovat la rolul de Admin.`,
       });
 
-      setNewAdminEmail("");
+      setNewAdminUid(""); // Clear UID input
     } catch (error) {
       console.error("Error adding admin:", error);
       toast({
         title: "Eroare",
-        description: "Nu am putut adăuga adminul",
+        description: "Nu am putut adăuga adminul.",
         variant: "destructive",
       });
     } finally {
@@ -221,7 +217,7 @@ export default function AdminsPage() {
     }
   };
 
-  if (!currentUser?.isSuperAdmin) {
+  if (!userData?.isSuperAdmin) {
     return null;
   }
 
@@ -233,19 +229,20 @@ export default function AdminsPage() {
 
       <div className="flex gap-4 items-end">
         <div className="flex-1 space-y-2">
-          <label className="text-sm font-medium">
-            Adaugă admin nou după email
+          <label htmlFor="newAdminUidInput" className="text-sm font-medium">
+            Adaugă admin nou după User ID (UID)
           </label>
           <Input
-            type="email"
-            placeholder="utilizator@exemplu.com"
-            value={newAdminEmail}
-            onChange={(e) => setNewAdminEmail(e.target.value)}
+            id="newAdminUidInput"
+            type="text"
+            placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+            value={newAdminUid}
+            onChange={(e) => setNewAdminUid(e.target.value)}
           />
         </div>
         <Button
           onClick={handleAddAdmin}
-          disabled={isAddingAdmin || !newAdminEmail.trim()}
+          disabled={isAddingAdmin || !newAdminUid.trim()}
         >
           {isAddingAdmin ? "Se adaugă..." : "Adaugă Admin"}
         </Button>
@@ -256,16 +253,40 @@ export default function AdminsPage() {
           <TableHeader>
             <TableRow>
               <TableHead>Nume</TableHead>
-              <TableHead>Email</TableHead>
+              <TableHead>User ID (UID)</TableHead>
               <TableHead>Rol</TableHead>
               <TableHead>Acțiuni</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {admins.map((admin) => (
+            {loading ? (
+                 <TableRow>
+                    <TableCell colSpan={4} className="text-center">Se încarcă adminii...</TableCell>
+                 </TableRow>
+             ) : admins.length === 0 ? (
+                 <TableRow>
+                    <TableCell colSpan={4} className="text-center">Nu există admini.</TableCell>
+                 </TableRow>
+             ) : (
+                admins.map((admin) => (
               <TableRow key={admin.uid}>
                 <TableCell>{admin.name}</TableCell>
-                <TableCell>{admin.email}</TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-xs truncate max-w-[150px]" title={admin.uid}>{admin.uid}</span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-6 w-6"
+                      onClick={() => {
+                        navigator.clipboard.writeText(admin.uid);
+                        toast({ title: "Copiat!", description: "User ID copiat în clipboard." });
+                      }}
+                    >
+                      <Copy className="h-3 w-3" />
+                    </Button>
+                  </div>
+                </TableCell>
                 <TableCell>
                   {admin.isSuperAdmin ? (
                     <div className="flex items-center gap-2">
@@ -297,7 +318,7 @@ export default function AdminsPage() {
                         Șterge Admin
                       </Button>
                     )}
-                    {currentUser.uid !== admin.uid && (
+                    {userData.uid !== admin.uid && (
                       <Button
                         variant={admin.isSuperAdmin ? "destructive" : "outline"}
                         size="sm"
@@ -331,7 +352,7 @@ export default function AdminsPage() {
                   </div>
                 </TableCell>
               </TableRow>
-            ))}
+            )))}
           </TableBody>
         </Table>
       </div>

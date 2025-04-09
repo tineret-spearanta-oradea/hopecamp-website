@@ -12,13 +12,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { User } from "@/types/user";
+import { UserData } from "@/types/userData";
 
 interface DeleteUserDialogProps {
-  user: User | null;
+  user: UserData | null;
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: (user: User) => Promise<void>;
+  onConfirm: (user: UserData) => Promise<void>;
 }
 
 export function DeleteUserDialog({

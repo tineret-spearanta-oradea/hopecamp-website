@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import ResetPasswordForm from "@/components/reset-password/ResetPasswordForm";
-import AuthRedirect from "@/components/auth/AuthRedirect";
+import AuthToAccountRedirect from "@/components/auth/AuthToAccountRedirect";
 
 export const metadata: Metadata = {
   title: "Resetare Parolă | Hope Camp",
@@ -8,8 +8,8 @@ export const metadata: Metadata = {
 
 export default function ResetPasswordPage() {
   return (
-    <AuthRedirect>
+    <AuthToAccountRedirect>
       <ResetPasswordForm />
-    </AuthRedirect>
+    </AuthToAccountRedirect>
   );
 }

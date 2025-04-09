@@ -47,7 +47,7 @@ export default function FinanciarPage() {
     updateUserPayment,
     addExpense,
   } = useFinancials();
-  const { user } = useAuth();
+  const { userData:user } = useAuth();
   const [selectedCollector, setSelectedCollector] = useState<string | null>(
     () => {
       if (typeof window !== "undefined") {
@@ -343,7 +343,7 @@ export default function FinanciarPage() {
                         </TableCell>
                         <TableCell>{income.amount} RON</TableCell>
                         <TableCell>
-                          {getCollectorName(income.collectorName)}
+                          {getCollectorName(income.collector)}
                         </TableCell>
                         <TableCell>
                           {(income.paidOn || income.createdAt).toLocaleString(

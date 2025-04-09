@@ -23,7 +23,7 @@ const getExtensionFromMimeType = (mimeType: string): string => {
 
 export default function SettingsPage() {
   const { users, fetchUsers } = useUsers();
-  const { user: currentUser } = useAuth();
+  const { userData: currentUser } = useAuth();
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadCount, setDownloadCount] = useState(0);
   const [hasCopiedNames, setHasCopiedNames] = useState(false);
@@ -127,7 +127,7 @@ export default function SettingsPage() {
                   <Download className="mr-2 h-4 w-4" />
                   {isDownloading
                     ? "Downloading..."
-                    : "Download All User Images"}
+                    : "Download All UserData Images"}
                 </Button>
                 {!currentUser?.isSuperAdmin && (
                   <p className="text-sm text-muted-foreground mt-2">

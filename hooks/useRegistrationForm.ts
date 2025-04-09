@@ -1,10 +1,11 @@
-import { useState } from "react";
-import { FormData, ValidationErrors } from "@/types/form";
-import { validateAuthFields, validateUserFields } from "@/utils/validation";
-import { dateRange, sumToPay, payTaxToOptions } from "@/lib/constants";
-import { createUserAccount } from "@/lib/firebase/auth";
-import { createUserDocument } from "@/lib/firebase/firestore";
-import { toast } from "sonner";
+import {useState} from "react";
+import {FormData, ValidationErrors} from "@/types/form";
+import {validateAuthFields, validateUserFields} from "@/utils/validation";
+import {dateRange, payTaxToOptions} from "@/lib/constants";
+import {toast} from "sonner";
+import {supabaseBrowserClient} from "@/lib/supabase/client";
+import { useRouter} from "next/navigation";
+import {getNewUserMetadata} from "@/lib/supabase/database/user";
 
 const initialFormData: FormData = {
   authData: {
@@ -50,6 +51,7 @@ export function useRegistrationForm() {
   );
   const [agreementChecked, setAgreementChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleChange = (
     objectName: keyof FormData,
@@ -108,76 +110,63 @@ export function useRegistrationForm() {
     setValidationErrors(initialValidationErrors);
   };
 
-  const handleSubmit = async () => {
-    setIsLoading(true);
-    try {
-      // Create auth user
-      const user = await createUserAccount(
-        formData.authData.email,
-        formData.authData.password
-      );
+    const handleSubmit = async () => {
+        setIsLoading(true);
+            const metaData = getNewUserMetadata(formData);
+            // Create auth user with metadata. See `create_users_data_table` to understand
+            const {error, data: {user}} = await supabaseBrowserClient.auth.signUp({
+                email:formData.authData.email,
+                password: formData.authData.password,
+                phone: formData.userData.phone,
+                options: {
+                    data: metaData
+                }
+            });
 
-      // Create user document with the image URL
-      await createUserDocument(
-        user.uid,
-        formData,
-        formData.userData.imageUrl || ""
-      );
+            setIsLoading(false);
+            if (error) {
+                if (error.code === "user_already_exists") {
+                    toast.error("Adresa de email există deja", {
+                        description:
+                            "Dacă ai deja cont, apasă pe butonul de conectare. Dacă nu, folosește altă adresă de email.",
+                        duration: 5000,
+                        action: {
+                            label: "Conectare",
+                            onClick: () => router.push("/login"),
+                        },
+                    });
+                    return;
+                }
+                if (error.code === "validation_failed") {
+                    toast.error("Adresa de email nu este validă.", {
+                        description: "Te rugăm să verifici adresa introdusă.",
+                    });
+                    return;
+                }
+                if (error.code === "weak_password") {
+                    toast.error("Parola este prea slabă.", {
+                        description: "Te rugăm să alegi o parolă mai puternică. " + error.message,
+                    });
+                    return;
+                }
 
-      // Show success toast
-      toast.success("Cont creat cu succes! Te vom redirecționa în curând...");
+                toast.error("Ceva nu a mers bine", {
+                    description: error.message,
+                });
+                return;
+            }
 
-      // Log success
-      console.group("Registration Success");
-      console.log("User created:", user.uid);
-      console.log("Document created in Firestore");
-      console.groupEnd();
+            // Show success toast
+            toast.success("Cont creat cu succes! Te vom redirecționa în curând...");
 
-      // Delay redirect slightly to show success message
-      setTimeout(() => {
-        window.location.href = "/cont";
-      }, 1500);
-    } catch (error: any) {
-      console.error("Registration error:", error);
-      console.log("Error code:", error.code);
-      console.log("Error message:", error.message);
-      // Handle specific Firebase Auth errors
-      switch (error.code) {
-        case "auth/email-already-in-use":
-          toast.error("Adresa de email există deja", {
-            description:
-              "Dacă ai deja cont, apasă pe butonul de conectare. Dacă nu, folosește altă adresă de email.",
-            duration: 5000,
-            action: {
-              label: "Conectare",
-              onClick: () => (window.location.href = "/login"),
-            },
-          });
-          break;
-        case "auth/invalid-email":
-          toast.error("Adresa de email nu este validă.", {
-            description: "Te rugăm să verifici adresa introdusă.",
-          });
-          break;
-        case "auth/operation-not-allowed":
-          toast.error("Înregistrarea nu este permisă momentan.", {
-            description: "Te rugăm să încerci mai târziu.",
-          });
-          break;
-        case "auth/weak-password":
-          toast.error("Parola este prea slabă.", {
-            description: "Te rugăm să alegi o parolă mai puternică.",
-          });
-          break;
-        default:
-          toast.error("A apărut o eroare la înregistrare.", {
-            description: "Te rugăm să încerci din nou.",
-          });
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
+            // Log success
+            console.log("Auth user created:", user?.id);
+
+            // Delay redirect slightly to show success message
+            setTimeout(() => {
+                router.replace("/cont");
+            }, 1500);
+    };
 
   const handleImageChange = (imageUrl: string) => {
     setFormData((prevData) => ({

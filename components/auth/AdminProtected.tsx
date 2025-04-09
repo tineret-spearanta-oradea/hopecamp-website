@@ -10,7 +10,7 @@ export default function AdminProtected({
 }: {
   children: React.ReactNode;
 }) {
-  const { user, loading } = useAuth();
+  const { userData:user, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {

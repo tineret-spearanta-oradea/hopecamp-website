@@ -1,16 +1,7 @@
 import { useCallback, useState } from "react";
-import { db } from "@/lib/firebase/config";
-import {
-  collection,
-  getDocs,
-  query,
-  orderBy,
-  doc,
-  updateDoc,
-  serverTimestamp,
-} from "firebase/firestore";
 import { Message } from "@/types/message";
 import { toast } from "sonner";
+import {getAllMessages, setMessageRead} from "@/lib/supabase/database/message";
 
 export function useMessages() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -20,31 +11,7 @@ export function useMessages() {
   const fetchMessages = useCallback(async () => {
     try {
       setIsLoading(true);
-      const messagesQuery = query(
-        collection(db, "messages"),
-        orderBy("sentDate", "desc")
-      );
-
-      const snapshot = await getDocs(messagesQuery);
-      const messagesData = snapshot.docs.map((doc) => {
-        const data = doc.data();
-        return {
-          id: doc.id,
-          userId: data.userId || "",
-          userName: data.userName,
-          phone: data.phone,
-          text: data.text,
-          sentDate: data.sentDate?.toDate() || new Date(),
-          isRead: Boolean(data.isRead),
-          readBy: data.readBy
-            ? {
-                userId: data.readBy.userId,
-                readAt: data.readBy.readAt.toDate(),
-              }
-            : undefined,
-        } as Message;
-      });
-
+      const messagesData = await getAllMessages();
       setMessages(messagesData);
       setError(null);
     } catch (err) {
@@ -56,29 +23,9 @@ export function useMessages() {
   }, []);
 
   const updateMessageStatus = useCallback(
-    async (messageId: string, newStatus: boolean, userId?: string) => {
+    async (messageId: number, newStatus: boolean, userId?: string) => {
       try {
-        const messageRef = doc(db, "messages", messageId);
-        const updateData = {
-          isRead: newStatus,
-          readBy: newStatus
-            ? {
-                userId: userId || "Unknown",
-                readAt: new Date(),
-              }
-            : null,
-        };
-
-        await updateDoc(messageRef, {
-          ...updateData,
-          readBy: newStatus
-            ? {
-                userId: userId || "Unknown",
-                readAt: serverTimestamp(),
-              }
-            : null,
-        });
-
+          await setMessageRead(messageId,userId || "Unknown");
         // Update local state
         setMessages((prevMessages) =>
           prevMessages.map((message) =>
