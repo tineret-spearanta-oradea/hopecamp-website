@@ -1,23 +1,32 @@
-import {supabaseBrowserClient} from "@/lib/supabase/client";
-import {UserData} from "@/types/userData";
-import {FormData} from "@/types/form";
+import { supabaseBrowserClient } from "@/lib/supabase/client";
+import { UserData } from "@/types/userData";
+import { FormData } from "@/types/form";
+import type { SupabaseClient } from "@supabase/supabase-js"; // Import type
 
-export async function getUserData(userId: string): Promise<UserData | null> {
+// Modify getUserData to accept an optional client
+export async function getUserData(userId: string, client?: SupabaseClient): Promise<UserData | null> {
+    // Use the provided client or default to the browser client
+    const supabase = client || supabaseBrowserClient;
     try {
-        const { data, error } = await supabaseBrowserClient
+        const { data, error } = await supabase
             .from("users_data")
             .select("*")
             .eq("uid", userId)
             .single();
 
         if (error) {
-            // Log the error but don't throw, return null as per function signature
-            console.error("Error fetching user data:", error);
+            console.error("Error fetching user data:", error.message, `(User ID: ${userId})`);
+            // Handle specific errors like 'PGRST116' (resource not found) gracefully
+            if (error.code === 'PGRST116') {
+                return null; // User data not found is not necessarily a system error
+            }
+            // For other errors, still return null
             return null;
         }
-        return mapUserDataDbRow(data);
-    } catch (error) {
-        console.error("Unexpected error fetching user data:", error);
+        // Ensure data is not null before mapping (though .single() should handle this)
+        return data ? mapUserDataDbRow(data) : null;
+    } catch (error: any) {
+        console.error("Unexpected error fetching user data:", error.message, `(User ID: ${userId})`);
         return null;
     }
 }

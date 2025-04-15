@@ -41,17 +41,35 @@ export default function UsersPage() {
     setSelectedUserForDelete(user);
   };
 
-  const handleConfirmDelete = async (user: UserData) => {
+  const handleConfirmDelete = async (userToDelete: UserData) => {
+    if (!currentUser?.isSuperAdmin) {
+       toast({
+        title: "Eroare",
+        description: "Nu aveți permisiunea de a șterge utilizatori.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
-      // Use Supabase delete function
-      // await deleteUserData(user.uid); //TODO
-      throw Error("Feature not yet implemented");
-      // await fetchUsers(); // Refetch users after deletion
-      // toast({
-      //   title: "Succes",
-      //   description: "Participantul a fost șters cu succes",
-      // });
-    } catch (error) {
+      const response = await fetch(`/api/admin/delete-user?userId=${userToDelete.uid}`, {
+        method: 'DELETE',
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || `HTTP error! status: ${response.status}`);
+      }
+
+      await fetchUsers(); // Refetch users after deletion
+      toast({
+        title: "Succes",
+        description: "Participantul a fost șters cu succes.",
+      });
+      setSelectedUserForDelete(null); // Close the confirmation dialog
+
+    } catch (error: any) {
       console.error("Failed to delete user:", error);
       toast({
         title: "Eroare",

@@ -28,12 +28,13 @@
 1. You need to have docker installed. [Read the setup guide here](https://www.docker.com/products/docker-desktop/)
 2. [Verify that supabase cli is installed](https://supabase.com/docs/guides/local-development/cli/getting-started?queryGroups=platform&platform=macos#installing-the-supabase-cli)
    using `supabase -v`.
-3. Start the emulator: `supabase start` (this will take some time). Please note down the `API URL` and `anon key`!
+3. Start the emulator: `supabase start` (this will take some time). Please note down the `API URL`, `anon key`
+   and `service_role key`!
    You can see the dashboard at http://127.0.0.1:54323/project/default . For postgres you can use this db
    url: `postgresql://postgres:postgres@127.0.0.1:54322/postgres`.
 4. Create a new `.env.local` based on `.env.local.example`: `cp .env.local.example .env.local`.
-   Populate `NEXT_PUBLIC_SUPABASE_ANON_KEY` with the `anon key` from step 3. Please also check that the `API URL` is the
-   same as `NEXT_PUBLIC_SUPABASE_URL`
+   Populate `NEXT_PUBLIC_SUPABASE_ANON_KEY` with the `anon key`, `SUPABASE_SERVICE_ROLE_KEY` with `service_role key:`
+   from step 3. Please also check that the `API URL` is the same as `NEXT_PUBLIC_SUPABASE_URL`
 7. (Optional) Create a new account for https://uploadthing.com and set the `UPLOADTHING_TOKEN` env var in `.env.local`
 8. Start the server with `npm run dev`
 9. Register a user. Please note that a picture is not needed. You can see the emails sent at http://127.0.0.1:54324/
