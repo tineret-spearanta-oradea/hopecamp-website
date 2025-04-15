@@ -127,7 +127,7 @@ export default function SettingsPage() {
                   <Download className="mr-2 h-4 w-4" />
                   {isDownloading
                     ? "Downloading..."
-                    : "Download All UserData Images"}
+                    : "Download All User Images"}
                 </Button>
                 {!currentUser?.isSuperAdmin && (
                   <p className="text-sm text-muted-foreground mt-2">

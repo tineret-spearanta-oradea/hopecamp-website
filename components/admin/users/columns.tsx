@@ -200,8 +200,7 @@ export const columns = ({
           <DropdownMenuLabel>Acțiuni</DropdownMenuLabel>
           <DropdownMenuItem
             onClick={() => {
-              // navigator.clipboard.writeText(row.original.email);
-              navigator.clipboard.writeText("FIXME");
+              navigator.clipboard.writeText(row.original.email);
             }}
             className="cursor-pointer"
           >

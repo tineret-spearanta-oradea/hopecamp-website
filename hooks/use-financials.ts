@@ -12,25 +12,25 @@ import {
 import { UserData } from "@/types/userData"; // Use UserData type
 
 export interface Expense {
-  id: number; // Use number for Supabase ID
+  id: number;
   title: string;
   amount: number;
   description?: string | null;
-  createdBy: string; // User UUID
-  creatorName?: string; // Added creator's name
+  createdBy: string;
+  creatorName?: string;
   createdAt: Date;
   category?: string | null;
   receipt?: string | null;
 }
 
 export interface Income {
-  id: string; // User UID
-  userId: string; // User UID
+  id: string;
+  userId: string;
   userName: string;
-  amount: number; // amountPaid
-  collectedBy: string; // Collector's Name (from payTaxTo)
-  createdAt: Date; // User creation date
-  paidOn?: Date; // User paidOn date
+  amount: number;
+  collectedBy: string;
+  createdAt: Date;
+  paidOn?: Date;
 }
 
 export function useFinancials() {
@@ -60,7 +60,7 @@ export function useFinancials() {
 
       setIncomes(incomesData);
     } catch (err) {
-      console.error("Error fetching incomes (users with payments):", err);
+      console.error("Error fetching incomes:", err);
       setError(err as Error);
     } finally {
       setIsLoading(false);
@@ -121,7 +121,6 @@ export function useFinancials() {
                 userName: data.userName,
                 amount: data.amount,
                 collectedBy: data.collectedBy, // Collector's Name
-                // collectorName removed
                 paidOn: new Date(),
                 createdAt: originalCreatedAt,
             };

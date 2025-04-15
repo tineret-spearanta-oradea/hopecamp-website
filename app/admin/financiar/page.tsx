@@ -343,7 +343,7 @@ export default function FinanciarPage() {
                         </TableCell>
                         <TableCell>{income.amount} RON</TableCell>
                         <TableCell>
-                          {getCollectorName(income.collector)}
+                          {getCollectorName(income.collectedBy)}
                         </TableCell>
                         <TableCell>
                           {(income.paidOn || income.createdAt).toLocaleString(

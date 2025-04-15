@@ -96,8 +96,7 @@ export function UserDetailsDialog({
 
             <div className="text-center">
               <h3 className="text-xl font-semibold">{user.name}</h3>
-              {/* Email removed as it's not available */}
-              {/*// FIXME EMAIL*/}
+              <p className="text-sm text-muted-foreground mb-4">{user.email}</p>
 
               {/* Messages Section */}
               <div className="text-left border rounded-lg p-4 mt-4">

@@ -22,10 +22,30 @@ export async function getUserData(userId: string): Promise<UserData | null> {
     }
 }
 
+export async function getUserDataByEmail(email: string): Promise<UserData | null> {
+    try {
+        const { data, error } = await supabaseBrowserClient
+            .from("users_view")
+            .select("*")
+            .eq("email", email)
+            .single();
+
+        if (error) {
+            // Log the error but don't throw, return null as per function signature
+            console.error("Error fetching user data:", error);
+            return null;
+        }
+        return mapUserDataDbRow(data);
+    } catch (error) {
+        console.error("Unexpected error fetching user data:", error);
+        return null;
+    }
+}
+
 export async function getAllUsersData(): Promise<UserData[]> {
     try {
         const { data, error } = await supabaseBrowserClient
-            .from("users_data")
+            .from("users_view")
             .select("*");
 
         if (error || data === null) {
@@ -70,6 +90,7 @@ function mapUserDataDbRow(data: any):UserData {
     return {
         uid: data.uid,
         name: data.name,
+        email: data.email,
         isAdmin: data.is_admin,
         isSuperAdmin: data.is_super_admin,
         phone: data.phone,
@@ -84,12 +105,11 @@ function mapUserDataDbRow(data: any):UserData {
         transport: data.transport,
         preferences: data.preferences,
         amountPaid: data.amount_paid,
-        payTaxTo: data.pay_tax_to, // This is the collector's Name
-        // collectorName removed as payTaxTo holds the name
+        payTaxTo: data.pay_tax_to,
         age: data.age,
         withFamilyMember: data.with_family_member,
         slopeActivity: data.slope_activity,
-        paidOn: data.paid_on ? new Date(data.paid_on) : undefined, // Map paid_on
+        paidOn: data.paid_on ? new Date(data.paid_on) : undefined,
     };
 }
 
@@ -97,7 +117,7 @@ export async function getUsersWithPayments(): Promise<UserData[]> {
     try {
         // No join needed, pay_tax_to contains the name directly
         const { data, error } = await supabaseBrowserClient
-            .from("users_data")
+            .from("users_view")
             .select(`*`) // Select all user fields
             .gt("amount_paid", 0)
             .order("amount_paid", { ascending: false });
@@ -171,7 +191,7 @@ export async function updateUserData(userData: UserData): Promise<void> {
 export async function updateUserPayment(userId: string, amount: number, collectedBy: string): Promise<void> {
     try {
         const { error } = await supabaseBrowserClient
-            .from("users_data")
+            .from("users_view")
             .update({
                 amount_paid: amount,
                 pay_tax_to: collectedBy,

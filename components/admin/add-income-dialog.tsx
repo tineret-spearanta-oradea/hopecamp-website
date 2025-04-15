@@ -70,9 +70,8 @@ export function AddIncomeDialog({
   // Filter users based on search query
   const filteredUsers = users.filter(
     (user) =>
-      user.name.toLowerCase().includes(searchQuery.toLowerCase())
-      // FIXME EMAIL
-        // || user.email.toLowerCase().includes(searchQuery.toLowerCase())
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleUserSelect = (user: UserData) => {
@@ -173,8 +172,7 @@ export function AddIncomeDialog({
                         <div className="flex flex-col flex-1">
                           <span>{user.name}</span>
                           <span className="text-xs text-muted-foreground">
-                            {/*{user.email}*/}
-                            {/*// FIXME EMAIL*/}
+                            {user.email}
                           </span>
                         </div>
                         {user.amountPaid && user.amountPaid > 0 && (

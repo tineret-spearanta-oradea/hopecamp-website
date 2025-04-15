@@ -4,6 +4,7 @@ export interface UserData {
   isAdmin: boolean;
   isSuperAdmin: boolean;
   phone: string;
+  email: string;
   church?: string;
   churchOther?: string;
   churchContact?: string;

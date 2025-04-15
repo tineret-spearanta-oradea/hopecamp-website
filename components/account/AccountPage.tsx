@@ -41,18 +41,18 @@ export default function AccountPage() {
                 </button>
             </div>
 
-            <div className="text-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-800">Contul meu</h2>
-            </div>
+      <div className="text-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-800">Contul meu</h2>
+      </div>
 
-            {userData && (
-                <div className="text-gray-700">
-                    <p className="mb-4">Hello, {userData.name}!</p>
+      {userData && (
+        <div className="text-gray-700">
+          <p className="mb-4">Hello, {userData.name}!</p>
 
-                    {!userData.isConfirmed && <PendingUser userData={userData} />}
-                    {userData.isConfirmed && <ConfirmedUser userData={userData} />}
-                </div>
-            )}
+          {!userData.isConfirmed && <PendingUser userData={userData} />}
+          {userData.isConfirmed && <ConfirmedUser userData={userData} />}
         </div>
-    );
+      )}
+    </div>
+  );
 }
