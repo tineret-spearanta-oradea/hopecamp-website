@@ -5,12 +5,12 @@ import {PostgrestError} from "@supabase/supabase-js";
 // Helper function to map database row to Message type
 function mapMessageDbRow(data: any): Message {
   // When specifying the FK relationship, the joined data is nested under the table name by default.
-  const senderData = data.users_data;
+  const senderData = data.user_profiles;
   return {
     id: data.id,
     userId: data.user_id,
-    userName: senderData?.name || "Utilizator Necunoscut", // Get name from joined users_data table
-    phone: senderData?.phone || "Telefon indisponibil", // Get phone from joined users_data table
+    userName: senderData?.name || "Utilizator Necunoscut",
+    phone: senderData?.phone || "Telefon indisponibil",
     text: data.text,
     sentDate: new Date(data.sent_date),
     isRead: data.is_read,
@@ -26,7 +26,7 @@ export async function getAllMessages(): Promise<Message[]> {
     .from("messages")
     .select(`
       *,
-      users_data!fk_messages_user_id ( name, phone )
+      user_profiles!fk_messages_user_id ( name, phone )
     `)
     .order("sent_date", { ascending: false }); // Order by most recent
 
@@ -45,7 +45,7 @@ export async function getUserMessages(userId: string): Promise<Message[]> {
     .from("messages")
     .select(`
       *,
-      users_data!fk_messages_user_id ( name, phone )
+      user_profiles!fk_messages_user_id ( name, phone )
     `)
     .eq("user_id", userId)
     .order("sent_date", { ascending: true }); // Order by oldest first for conversation flow
@@ -64,7 +64,7 @@ export async function getLastUserMessage(userId: string): Promise<Message | null
     .from("messages")
     .select(`
       *,
-      users_data!fk_messages_user_id ( name, phone )
+      user_profiles!fk_messages_user_id ( name, phone )
     `)
     .eq("user_id", userId)
     .order("sent_date", { ascending: false })
@@ -94,7 +94,7 @@ export async function insertMessage(messageData: { userId: string; text: string 
     })
     .select(`
       *,
-      users_data!fk_messages_user_id ( name, phone )
+      user_profiles!fk_messages_user_id ( name, phone )
     `) // Select the newly inserted row with user name and phone
     .single();
 
@@ -120,7 +120,7 @@ export async function setMessageRead(messageId: number, readByUserId: string): P
     .eq("id", messageId)
     .select(`
       *,
-      users_data!fk_messages_user_id ( name, phone )
+      user_profiles!fk_messages_user_id ( name, phone )
     `) // Select the updated row with user name and phone
     .single();
 

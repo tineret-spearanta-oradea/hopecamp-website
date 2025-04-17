@@ -7,7 +7,7 @@ import {supabaseBrowserClient} from "@/lib/supabase/client";
 import {getUserData} from "@/lib/supabase/database/user";
 
 interface AuthContextType {
-    /** UserData data fetched from the 'users_data' table in the database.
+    /** UserData data fetched from the 'user_profiles' table in the database.
      *  Fetched initially on auth state change, but requires manual refresh
      *  using `updateUserData` after modifications. */
     userData: UserData | null;

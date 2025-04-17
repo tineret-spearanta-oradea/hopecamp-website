@@ -4,12 +4,12 @@ CREATE TABLE messages
 (
     id              SERIAL PRIMARY KEY,
     user_id         uuid        NOT NULL
-        CONSTRAINT fk_messages_user_id REFERENCES public.users_data (uid) ON DELETE CASCADE,
+        CONSTRAINT fk_messages_user_id REFERENCES public.user_profiles (uid) ON DELETE CASCADE,
     text            TEXT        NOT NULL,
     sent_date       TIMESTAMPTZ NOT NULL DEFAULT now(),
     is_read         BOOLEAN     NOT NULL DEFAULT false,
     read_by_user_id uuid        NULL
-        CONSTRAINT fk_messages_read_by_user_id REFERENCES public.users_data (uid) ON DELETE SET NULL, -- Foreign key for the user who read the message
+        CONSTRAINT fk_messages_read_by_user_id REFERENCES public.user_profiles (uid) ON DELETE SET NULL, -- Foreign key for the user who read the message
     read_at         TIMESTAMPTZ NULL                                                                  -- Timestamp when the message was read
 );
 

@@ -113,7 +113,7 @@ export function useRegistrationForm() {
     const handleSubmit = async () => {
         setIsLoading(true);
             const metaData = getNewUserMetadata(formData);
-            // Create auth user with metadata. See `create_users_data_table` to understand
+            // Create auth user with metadata. See `create_user_profiles_table` to understand
             const {error, data: {user}} = await supabaseBrowserClient.auth.signUp({
                 email:formData.authData.email,
                 password: formData.authData.password,

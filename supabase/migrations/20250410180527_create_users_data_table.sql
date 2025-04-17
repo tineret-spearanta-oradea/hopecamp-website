@@ -1,33 +1,61 @@
 -- Renamed table from users to userData
-CREATE TABLE users_data
+CREATE TABLE user_profiles
 (
-    uid                uuid        NOT NULL REFERENCES auth.users ON DELETE CASCADE PRIMARY KEY,
-    name               TEXT        NOT NULL,
-    age                INTEGER     NOT NULL,
-    phone              TEXT        NOT NULL,
+    uid            UUID        NOT NULL REFERENCES auth.users ON DELETE CASCADE PRIMARY KEY,
+    name           TEXT        NOT NULL,
+    age            INTEGER     NOT NULL,
+    phone          TEXT        NOT NULL,
+    image_url      TEXT        NULL,
+    created_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
+    is_super_admin BOOLEAN     NOT NULL DEFAULT false
+);
+
+CREATE TABLE editions
+(
+    id         SERIAL PRIMARY KEY,
+    name       TEXT        NOT NULL,
+    start_date TIMESTAMPTZ,
+    end_date   TIMESTAMPTZ,
+    is_open    BOOLEAN     NOT NULL DEFAULT false,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- we want to have only one edition enabled at one time
+CREATE UNIQUE INDEX only_one_open_edition
+    ON editions (is_open)
+    WHERE is_open = true;
+
+CREATE TABLE REGISTRATIONS
+(
+    id                 SERIAL PRIMARY KEY,
+    user_id            UUID        NOT NULL
+        CONSTRAINT fk_registrations_user_id REFERENCES public.user_profiles (uid) ON DELETE CASCADE,
+    edition_id         INT         NOT NULL
+        CONSTRAINT fk_registrations_edition_id REFERENCES editions (id) ON DELETE CASCADE,
     church             TEXT        NOT NULL,
     church_contact     TEXT                 DEFAULT '',
     pay_tax_to         TEXT        NOT NULL,
     transport          TEXT        NOT NULL,
     preferences        TEXT,
-    start_date         TIMESTAMPTZ,
-    end_date           TIMESTAMPTZ,
-    image_url          TEXT        NULL,
     slope_activity     TEXT        NOT NULL DEFAULT 'nu',
     created_at         TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at         TIMESTAMPTZ NOT NULL DEFAULT now(),
     is_confirmed       BOOLEAN     NOT NULL DEFAULT false,
-    is_admin           BOOLEAN     NOT NULL DEFAULT false,
-    is_super_admin     BOOLEAN     NOT NULL DEFAULT false,
     amount_paid        INTEGER     NOT NULL DEFAULT 0,
     with_family_member BOOLEAN     NOT NULL DEFAULT false
 );
 
--- inserts a row into public.users_data when a new user is created
+CREATE TABLE user_registration_role(
+
+);
+
+-- inserts a row into public.user_profiles when a new user is created
 create or replace function public.handle_new_user() -- Use 'create or replace' for idempotency
     returns trigger
     language plpgsql
-    security definer set search_path = public -- Set search path to find public.users_data
+    security definer set search_path = public -- Set search path to find public.user_profiles
 as
 $$
 declare
@@ -44,27 +72,27 @@ begin
         return new; -- Exit gracefully if metadata is missing
     end if;
 
-    -- Insert into public.users_data table, extracting data from meta
-    insert into public.users_data (uid,
-                                   name,
-                                   age,
-                                   phone,
-                                   church,
-                                   church_contact,
-                                   pay_tax_to,
-                                   transport,
-                                   preferences,
-                                   start_date,
-                                   end_date,
-                                   image_url,
-                                   slope_activity,
-                                   created_at, -- Use the timestamp from metadata if available, otherwise default
-                                   updated_at, -- Use the timestamp from metadata if available, otherwise default
-                                   is_confirmed,
-                                   is_admin,
-                                   is_super_admin,
-                                   amount_paid,
-                                   with_family_member)
+    -- Insert into public.user_profiles table, extracting data from meta
+    insert into public.user_profiles (uid,
+                                      name,
+                                      age,
+                                      phone,
+                                      church,
+                                      church_contact,
+                                      pay_tax_to,
+                                      transport,
+                                      preferences,
+                                      start_date,
+                                      end_date,
+                                      image_url,
+                                      slope_activity,
+                                      created_at, -- Use the timestamp from metadata if available, otherwise default
+                                      updated_at, -- Use the timestamp from metadata if available, otherwise default
+                                      is_confirmed,
+                                      is_admin,
+                                      is_super_admin,
+                                      amount_paid,
+                                      with_family_member)
     values (new.id, -- UserData's UUID from auth.users
             meta ->> 'display_name',
             (meta ->> 'age')::integer, -- Cast age string to integer

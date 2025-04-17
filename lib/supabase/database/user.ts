@@ -9,7 +9,7 @@ export async function getUserData(userId: string, client?: SupabaseClient): Prom
     const supabase = client || supabaseBrowserClient;
     try {
         const { data, error } = await supabase
-            .from("users_data")
+            .from("user_profiles")
             .select("*")
             .eq("uid", userId)
             .single();
@@ -183,7 +183,7 @@ export async function updateUserData(userData: UserData): Promise<void> {
 
 
         const { error } = await supabaseBrowserClient
-            .from("users_data")
+            .from("user_profiles")
             .update(updates)
             .eq("uid", userData.uid);
 

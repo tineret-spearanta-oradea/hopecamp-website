@@ -55,8 +55,8 @@ export async function DELETE(request: NextRequest) {
         }
 
         console.log(`Delete user API: User ${userIdToDelete} deleted successfully by admin ${user.id}`);
-        // Note: Deleting the auth user might trigger database cascades to delete related data (e.g., users_data)
-        // If not, you might need to explicitly delete from users_data here using supabaseAdmin.
+        // Note: Deleting the auth user might trigger database cascades to delete related data (e.g., user_profiles)
+        // If not, you might need to explicitly delete from user_profiles here using supabaseAdmin.
         return NextResponse.json({ message: "User deleted successfully" }, { status: 200 });
 
     } catch (error: any) {

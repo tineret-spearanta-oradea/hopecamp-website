@@ -5,7 +5,7 @@ CREATE TABLE expenses
     title       TEXT        NOT NULL,
     amount      NUMERIC     NOT NULL CHECK (amount >= 0), -- Use NUMERIC for monetary values, ensure non-negative
     description TEXT        NULL,
-    created_by  uuid        NOT NULL CONSTRAINT fk_expenses_created_by REFERENCES public.users_data (uid) ON DELETE RESTRICT, -- Reference users_data, restrict deletion if user has expenses
+    created_by  uuid        NOT NULL CONSTRAINT fk_expenses_created_by REFERENCES public.user_profiles (uid) ON DELETE RESTRICT, -- Reference user_profiles, restrict deletion if user has expenses
     created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
     category    TEXT        NULL,
     receipt     TEXT        NULL -- Store URL or reference to receipt file if needed

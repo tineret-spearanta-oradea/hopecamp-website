@@ -19,13 +19,13 @@ export type NewExpense = Omit<Expense, 'id' | 'created_at'>;
 
 
 export async function getAllExpenses(): Promise<Expense[]> {
-    // Join with users_data to get the creator's name
+    // Join with user_profiles to get the creator's name
     const { data, error } = await supabaseBrowserClient
         .from("expenses")
-        // Select all expense fields and the name from the related users_data record
+        // Select all expense fields and the name from the related user_profiles record
         .select(`
             *,
-            creator:users_data ( name )
+            creator:user_profiles ( name )
         `)
         .order("created_at", { ascending: false });
 
@@ -78,7 +78,7 @@ export async function addExpense(expenseData: NewExpense): Promise<Expense> {
         // Select the inserted data AND the creator's name via join
         .select(`
             *,
-            creator:users_data ( name )
+            creator:user_profiles ( name )
         `)
         .single();
 
