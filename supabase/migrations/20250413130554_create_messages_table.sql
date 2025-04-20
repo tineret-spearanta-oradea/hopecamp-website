@@ -1,22 +1,15 @@
--- Create the messages table
--- Create the messages table
 CREATE TABLE messages
 (
     id              SERIAL PRIMARY KEY,
-    user_id         uuid        NOT NULL
-        CONSTRAINT fk_messages_user_id REFERENCES public.user_profiles (uid) ON DELETE CASCADE,
+    registration_id INT
+        CONSTRAINT fk_messages_registration_id REFERENCES registrations (id) ON DELETE CASCADE,
     text            TEXT        NOT NULL,
     sent_date       TIMESTAMPTZ NOT NULL DEFAULT now(),
     is_read         BOOLEAN     NOT NULL DEFAULT false,
-    read_by_user_id uuid        NULL
-        CONSTRAINT fk_messages_read_by_user_id REFERENCES public.user_profiles (uid) ON DELETE SET NULL, -- Foreign key for the user who read the message
-    read_at         TIMESTAMPTZ NULL                                                                  -- Timestamp when the message was read
+    read_by_user_id UUID        NOT NULL
+        CONSTRAINT fk_messages_read_by_user_id REFERENCES auth.users ON DELETE CASCADE, -- Foreign key for the user who read the message
+    read_at         TIMESTAMPTZ NULL                                                    -- Timestamp when the message was read
 );
-
--- Add indexes for frequently queried columns
-CREATE INDEX idx_messages_user_id ON messages (user_id);
-CREATE INDEX idx_messages_is_read ON messages (is_read);
-CREATE INDEX idx_messages_sent_date ON messages (sent_date);
 
 -- Optional: Add RLS policies if needed for security
 -- ALTER TABLE messages ENABLE ROW LEVEL SECURITY;

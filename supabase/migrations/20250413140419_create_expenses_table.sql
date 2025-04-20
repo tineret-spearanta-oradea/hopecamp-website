@@ -1,14 +1,14 @@
--- Create the expenses table
 CREATE TABLE expenses
 (
-    id          SERIAL      PRIMARY KEY,
+    id          SERIAL PRIMARY KEY,
     title       TEXT        NOT NULL,
-    amount      NUMERIC     NOT NULL CHECK (amount >= 0), -- Use NUMERIC for monetary values, ensure non-negative
+    amount      NUMERIC     NOT NULL CHECK (amount >= 0),
     description TEXT        NULL,
-    created_by  uuid        NOT NULL CONSTRAINT fk_expenses_created_by REFERENCES public.user_profiles (uid) ON DELETE RESTRICT, -- Reference user_profiles, restrict deletion if user has expenses
+    created_by  UUID        NOT NULL
+        CONSTRAINT fk_expenses_created_by_user_id REFERENCES auth.users ON DELETE CASCADE,
     created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
     category    TEXT        NULL,
-    receipt     TEXT        NULL -- Store URL or reference to receipt file if needed
+    receipt     TEXT        NULL
 );
 
 -- Optional: Add RLS policies if needed for security
