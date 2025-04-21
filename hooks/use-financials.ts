@@ -9,7 +9,7 @@ import {
     getUsersWithPayments,
     updateUserPayment as updateUserPaymentSupabase
 } from "@/lib/supabase/database/user";
-import { UserData } from "@/types/userData"; // Use UserData type
+import { UserProfile } from "@/types/userProfile"; // Use UserProfile type
 
 export interface Expense {
   id: number;
@@ -45,12 +45,12 @@ export function useFinancials() {
     try {
       const usersData = await getUsersWithPayments();
 
-      // Map UserData to Income structure
+      // Map UserProfile to Income structure
       const incomesData: Income[] = usersData
         .filter(user => user.amountPaid !== undefined && user.amountPaid > 0) // Ensure amountPaid exists and is > 0
-        .map((user: UserData) => ({
-            id: user.uid,
-            userId: user.uid,
+        .map((user: UserProfile) => ({
+            id: user.userId,
+            userId: user.userId,
             userName: user.name || "",
             amount: user.amountPaid || 0,
             collectedBy: user.payTaxTo || "", // Use payTaxTo directly as collector's name

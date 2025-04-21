@@ -6,6 +6,7 @@ import {toast} from "sonner";
 import {supabaseBrowserClient} from "@/lib/supabase/client";
 import { useRouter} from "next/navigation";
 import {getNewUserMetadata} from "@/lib/supabase/database/user";
+import {getActiveEdition} from "@/lib/supabase/database/edition";
 
 const initialFormData: FormData = {
   authData: {
@@ -112,60 +113,61 @@ export function useRegistrationForm() {
 
     const handleSubmit = async () => {
         setIsLoading(true);
-            const metaData = getNewUserMetadata(formData);
-            // Create auth user with metadata. See `create_user_profiles_table` to understand
-            const {error, data: {user}} = await supabaseBrowserClient.auth.signUp({
-                email:formData.authData.email,
-                password: formData.authData.password,
-                phone: formData.userData.phone,
-                options: {
-                    data: metaData
-                }
-            });
+        const currentEdition = await getActiveEdition(); // TODO remove this after we have edition selector on the UI
+        const metaData = getNewUserMetadata(formData, currentEdition.id);
+        // Create auth user with metadata. See `create_user_profiles_table` to understand
+        const {error, data: {user}} = await supabaseBrowserClient.auth.signUp({
+            email: formData.authData.email,
+            password: formData.authData.password,
+            phone: formData.userData.phone,
+            options: {
+                data: metaData
+            }
+        });
 
-            setIsLoading(false);
-            if (error) {
-                if (error.code === "user_already_exists") {
-                    toast.error("Adresa de email există deja", {
-                        description:
-                            "Dacă ai deja cont, apasă pe butonul de conectare. Dacă nu, folosește altă adresă de email.",
-                        duration: 5000,
-                        action: {
-                            label: "Conectare",
-                            onClick: () => router.push("/login"),
-                        },
-                    });
-                    return;
-                }
-                if (error.code === "validation_failed") {
-                    toast.error("Adresa de email nu este validă.", {
-                        description: "Te rugăm să verifici adresa introdusă.",
-                    });
-                    return;
-                }
-                if (error.code === "weak_password") {
-                    toast.error("Parola este prea slabă.", {
-                        description: "Te rugăm să alegi o parolă mai puternică. " + error.message,
-                    });
-                    return;
-                }
-
-                toast.error("Ceva nu a mers bine", {
-                    description: error.message,
+        setIsLoading(false);
+        if (error) {
+            if (error.code === "user_already_exists") {
+                toast.error("Adresa de email există deja", {
+                    description:
+                        "Dacă ai deja cont, apasă pe butonul de conectare. Dacă nu, folosește altă adresă de email.",
+                    duration: 5000,
+                    action: {
+                        label: "Conectare",
+                        onClick: () => router.push("/login"),
+                    },
+                });
+                return;
+            }
+            if (error.code === "validation_failed") {
+                toast.error("Adresa de email nu este validă.", {
+                    description: "Te rugăm să verifici adresa introdusă.",
+                });
+                return;
+            }
+            if (error.code === "weak_password") {
+                toast.error("Parola este prea slabă.", {
+                    description: "Te rugăm să alegi o parolă mai puternică. " + error.message,
                 });
                 return;
             }
 
-            // Show success toast
-            toast.success("Cont creat cu succes! Te vom redirecționa în curând...");
+            toast.error("Ceva nu a mers bine", {
+                description: error.message,
+            });
+            return;
+        }
 
-            // Log success
-            console.log("Auth user created:", user?.id);
+        // Show success toast
+        toast.success("Cont creat cu succes! Te vom redirecționa în curând...");
 
-            // Delay redirect slightly to show success message
-            setTimeout(() => {
-                router.replace("/cont");
-            }, 1500);
+        // Log success
+        console.log("Auth user created:", user?.id);
+
+        // Delay redirect slightly to show success message
+        setTimeout(() => {
+            router.replace("/cont");
+        }, 1500);
     };
 
   const handleImageChange = (imageUrl: string) => {

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 // Import the updated server client creation function and the admin client
 import { createServerActionClient, supabaseAdmin } from "@/lib/supabase/server"; // Use createServerActionClient
-import { getUserData } from "@/lib/supabase/database/user"; // Import the modified function
+import { getUserProfile } from "@/lib/supabase/database/user"; // Import the modified function
 
 export async function DELETE(request: NextRequest) {
     // 1. Create a server client instance for this request to check user auth
@@ -14,8 +14,8 @@ export async function DELETE(request: NextRequest) {
     }
 
     // 2. Check if the requesting user is a super admin using the server client
-    // Pass the supabaseUserClient to getUserData
-    const currentUserData = await getUserData(user.id, supabaseUserClient);
+    // Pass the supabaseUserClient to getUserProfile
+    const currentUserData = await getUserProfile(user.id, supabaseUserClient);
     if (!currentUserData?.isSuperAdmin) {
         console.warn(`Delete user API: User ${user.id} (${currentUserData?.email || 'email unknown'}) attempted delete without super admin rights.`);
         return NextResponse.json({ message: "Forbidden: Admin privileges required" }, { status: 403 });

@@ -168,7 +168,7 @@ export default function FinanciarPage() {
       ...expense,
       description: expense.description || "",
       category: expense.category || "",
-      createdBy: user.uid,
+      createdBy: user.userId,
       creatorName: user.name,
     });
   };
@@ -299,7 +299,7 @@ export default function FinanciarPage() {
                   amount: number;
                   collectedBy: string;
                 }) => {
-                  const user = users.find((u) => u.uid === data.userId);
+                  const user = users.find((u) => u.userId === data.userId);
                   if (!user) return;
                   await updateUserPayment({
                     userId: data.userId,

@@ -1,9 +1,9 @@
 import { useState, useCallback } from "react";
-import { UserData } from "@/types/userData";
+import { UserProfile } from "@/types/userProfile";
 import {getAllUsersData} from "@/lib/supabase/database/user";
 
 export function useUsers() {
-  const [users, setUsers] = useState<UserData[]>([]);
+  const [users, setUsers] = useState<UserProfile[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 

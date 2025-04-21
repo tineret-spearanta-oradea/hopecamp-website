@@ -7,21 +7,14 @@ import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
 import { differenceInHours, format } from "date-fns";
 import { CheckCircle2, Circle } from "lucide-react";
-import {getLastUserMessage, insertMessage} from "@/lib/supabase/database/message";
+import { getLastUserMessage, insertMessage } from "@/lib/supabase/database/message";
 
 type ConfirmedUserProps = {
-  userData: {
-    uid: string;
-    name: string;
-    phone: string;
-    isAdmin?: boolean;
-    isSuperAdmin?: boolean;
-  };
+  userId: string;
+  isAdmin: boolean;      // From user_registration_roles via registration data
+  isSuperAdmin: boolean; // From user_profiles via userData
 };
-
-const MESSAGE_COOLDOWN_HOURS = 24;
-
-export default function ConfirmedUser({ userData }: ConfirmedUserProps) {
+export default function ConfirmedUser({ userId, isAdmin, isSuperAdmin }: ConfirmedUserProps) {
   const [message, setMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [lastMessageTime, setLastMessageTime] = useState<Date | null>(null);
@@ -34,7 +27,8 @@ export default function ConfirmedUser({ userData }: ConfirmedUserProps) {
   useEffect(() => {
     async function fetchLastMessageTime() {
       try {
-        const lastUserMessage=await getLastUserMessage(userData.uid);
+        // Use the userId prop here
+        const lastUserMessage = await getLastUserMessage(userId);
         if (lastUserMessage) {
           setLastMessageTime(lastUserMessage.sentDate);
           setLastMessageText(lastUserMessage.text);
@@ -48,7 +42,8 @@ export default function ConfirmedUser({ userData }: ConfirmedUserProps) {
     }
 
     fetchLastMessageTime();
-  }, [userData.uid]);
+    // Depend on userId prop
+  }, [userId]);
 
   const getHoursUntilNextMessage = () => {
     if (!lastMessageTime) return null;
@@ -90,7 +85,8 @@ export default function ConfirmedUser({ userData }: ConfirmedUserProps) {
 
     setIsSending(true);
     try {
-      const insertedMessage = await insertMessage({userId: userData.uid,text:message});
+      // Use the userId prop here
+      const insertedMessage = await insertMessage({ userId: userId, text: message });
       console.log("Added message", insertedMessage)
       setLastMessageTime(new Date());
       setLastMessageText(message);
@@ -124,7 +120,8 @@ export default function ConfirmedUser({ userData }: ConfirmedUserProps) {
           📝 În curând vei primi mai multe informații despre tabără și următorii
           pași.
         </p>
-        {(userData.isAdmin || userData.isSuperAdmin) && (
+        {/* Show admin link if user is admin (from registration) OR super admin (from profile) */}
+        {(isAdmin || isSuperAdmin) && (
           <div className="pt-2">
             <Link href="/admin">
               <Button variant="outline" className="w-full">

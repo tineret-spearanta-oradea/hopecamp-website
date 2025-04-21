@@ -1,16 +1,16 @@
 "use client";
 
 import {createContext, useContext, useEffect, useState, useRef, useCallback} from "react";
-import {UserData} from "@/types/userData";
+import {UserProfile} from "@/types/userProfile";
 import {User as SupabaseUser} from "@supabase/supabase-js";
 import {supabaseBrowserClient} from "@/lib/supabase/client";
-import {getUserData} from "@/lib/supabase/database/user";
+import {getUserProfile} from "@/lib/supabase/database/user";
 
 interface AuthContextType {
-    /** UserData data fetched from the 'user_profiles' table in the database.
+    /** UserProfile data fetched from the 'user_profiles' table in the database.
      *  Fetched initially on auth state change, but requires manual refresh
      *  using `updateUserData` after modifications. */
-    userData: UserData | null;
+    userData: UserProfile | null;
     /** The Supabase authentication user object. Automatically kept up-to-date
      *  by the onAuthStateChange listener based on the session. */
     supabaseUser: SupabaseUser | null;
@@ -30,7 +30,7 @@ const AuthContext = createContext<AuthContextType>({
 
 export function AuthProvider({children}: { children: React.ReactNode }) {
     const [supabaseUser, setSupabaseUser] = useState<SupabaseUser | null>(null);
-    const [userData, setUserData] = useState<UserData | null>(null);
+    const [userData, setUserData] = useState<UserProfile | null>(null);
     const [loading, setLoading] = useState(true); // Initialize loading to true
 
     /**
@@ -42,7 +42,7 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
             return
         }
         console.log(`[AuthContext] Fetching user data for ID: ${supabaseUser.id}`);
-        const fetchedUserData = await getUserData(supabaseUser.id);
+        const fetchedUserData = await getUserProfile(supabaseUser.id);
         setUserData(fetchedUserData);
     }, [supabaseUser]);
 
@@ -60,7 +60,7 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
                         setTimeout(async () => {
                             // load user data
                             // see https://supabase.com/docs/reference/javascript/auth-onauthstatechange for setTimeout explanation
-                            const fetchedUserData = await getUserData(user.id);
+                            const fetchedUserData = await getUserProfile(user.id);
                             setSupabaseUser(user);
                             setUserData(fetchedUserData);
                             setLoading(false);

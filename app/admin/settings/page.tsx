@@ -73,7 +73,7 @@ export default function SettingsPage() {
           const a = document.createElement("a");
           a.style.display = "none";
           a.href = url;
-          a.download = `${user.name}_${user.uid}.${extension}`;
+          a.download = `${user.name}_${user.userId}.${extension}`;
 
           document.body.appendChild(a);
           a.click();

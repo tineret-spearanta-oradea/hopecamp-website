@@ -1,39 +1,32 @@
-import { supabaseBrowserClient } from "@/lib/supabase/client";
-import { UserData } from "@/types/userData";
-import { FormData } from "@/types/form";
-import type { SupabaseClient } from "@supabase/supabase-js"; // Import type
+import {supabaseBrowserClient} from "@/lib/supabase/client";
+import {UserProfile} from "@/types/userProfile";
+import {FormData} from "@/types/form";
+import type {SupabaseClient} from "@supabase/supabase-js"; // Import type
 
-// Modify getUserData to accept an optional client
-export async function getUserData(userId: string, client?: SupabaseClient): Promise<UserData | null> {
+export async function getUserProfile(userId: string, client?: SupabaseClient): Promise<UserProfile | null> {
     // Use the provided client or default to the browser client
     const supabase = client || supabaseBrowserClient;
     try {
-        const { data, error } = await supabase
+        const {data, error} = await supabase
             .from("user_profiles")
-            .select("*")
-            .eq("uid", userId)
+            .select('*, user_roles!left ( is_super_admin )')
+            .eq("user_id", userId)
             .single();
 
         if (error) {
             console.error("Error fetching user data:", error.message, `(User ID: ${userId})`);
-            // Handle specific errors like 'PGRST116' (resource not found) gracefully
-            if (error.code === 'PGRST116') {
-                return null; // User data not found is not necessarily a system error
-            }
-            // For other errors, still return null
             return null;
         }
-        // Ensure data is not null before mapping (though .single() should handle this)
-        return data ? mapUserDataDbRow(data) : null;
+        return mapUserProfileDbRow(data);
     } catch (error: any) {
         console.error("Unexpected error fetching user data:", error.message, `(User ID: ${userId})`);
         return null;
     }
 }
 
-export async function getUserDataByEmail(email: string): Promise<UserData | null> {
+export async function getUserDataByEmail(email: string): Promise<UserProfile | null> {
     try {
-        const { data, error } = await supabaseBrowserClient
+        const {data, error} = await supabaseBrowserClient
             .from("users_view")
             .select("*")
             .eq("email", email)
@@ -44,16 +37,16 @@ export async function getUserDataByEmail(email: string): Promise<UserData | null
             console.error("Error fetching user data:", error);
             return null;
         }
-        return mapUserDataDbRow(data);
+        return mapUserProfileDbRow(data);
     } catch (error) {
         console.error("Unexpected error fetching user data:", error);
         return null;
     }
 }
 
-export async function getAllUsersData(): Promise<UserData[]> {
+export async function getAllUsersData(): Promise<UserProfile[]> {
     try {
-        const { data, error } = await supabaseBrowserClient
+        const {data, error} = await supabaseBrowserClient
             .from("users_view")
             .select("*");
 
@@ -62,17 +55,20 @@ export async function getAllUsersData(): Promise<UserData[]> {
             console.error("Error fetching user data:", error);
             return [];
         }
-        return data.map(row => mapUserDataDbRow(row)).filter(row => row);
+        return data.map(row => mapUserProfileDbRow(row)).filter(row => row);
     } catch (error) {
         console.error("Unexpected error fetching user data:", error);
         return [];
     }
 }
 
-export const getNewUserMetadata=  (
+export const getNewUserMetadata = (
     formData: FormData,
+    editionId: number // TODO remove this after we have edition selector on the UI
 ) => {
-    return {userSignUpMetaData:{
+    return {
+        userSignUpMetaData: {
+            edition_id: editionId,
             display_name: formData.userData.name,
             age: formData.userData.age,
             phone: formData.userData.phone,
@@ -88,59 +84,45 @@ export const getNewUserMetadata=  (
             endDate: formData.userData.endDate,
             imageUrl: formData.userData.imageUrl,
             slopeActivity: slopeActivityMap[formData.userData.slopeActivity] || "nu",
-            createdAt: new Date(),
-            updatedAt: new Date(),
             withFamilyMember: false,
         },
-        display_name: formData.userData.name};
+        display_name: formData.userData.name
+    };
 };
 
-function mapUserDataDbRow(data: any):UserData {
+function mapUserProfileDbRow(data: any): UserProfile {
     return {
-        uid: data.uid,
+        userId: data.user_id,
         name: data.name,
         email: data.email,
-        isAdmin: data.is_admin,
-        isSuperAdmin: data.is_super_admin,
+        isSuperAdmin: data.user_roles?.is_super_admin ?? false,
         phone: data.phone,
-        church: data.church,
-        churchContact: data.church_contact,
         imageUrl: data.image_url,
         createdAt: new Date(data.created_at),
         updatedAt: new Date(data.updated_at),
-        isConfirmed: data.is_confirmed,
-        startDate: data.start_date ? new Date(data.start_date) : undefined,
-        endDate: data.end_date ? new Date(data.end_date) : undefined,
-        transport: data.transport,
-        preferences: data.preferences,
-        amountPaid: data.amount_paid,
-        payTaxTo: data.pay_tax_to,
         age: data.age,
-        withFamilyMember: data.with_family_member,
-        slopeActivity: data.slope_activity,
-        paidOn: data.paid_on ? new Date(data.paid_on) : undefined,
     };
 }
 
-export async function getUsersWithPayments(): Promise<UserData[]> {
+export async function getUsersWithPayments(): Promise<UserProfile[]> {
     try {
         // No join needed, pay_tax_to contains the name directly
-        const { data, error } = await supabaseBrowserClient
+        const {data, error} = await supabaseBrowserClient
             .from("users_view")
             .select(`*`) // Select all user fields
             .gt("amount_paid", 0)
-            .order("amount_paid", { ascending: false });
+            .order("amount_paid", {ascending: false});
 
         if (error) {
             console.error("Error fetching users with payments:", error);
             throw error;
         }
         if (!data) {
-             // Should not happen if error is null, but good practice
+            // Should not happen if error is null, but good practice
             return [];
         }
-        // Use existing mapping function, filter out nulls just in case mapUserDataDbRow fails
-        return data.map(row => mapUserDataDbRow(row)).filter((user): user is UserData => user !== null);
+        // Use existing mapping function, filter out nulls just in case mapUserProfileDbRow fails
+        return data.map(row => mapUserProfileDbRow(row)).filter((user): user is UserProfile => user !== null);
     } catch (error) {
         // Catch unexpected errors during the operation (e.g., network issues)
         console.error("Unexpected error fetching users with payments:", error);
@@ -149,29 +131,15 @@ export async function getUsersWithPayments(): Promise<UserData[]> {
 }
 
 // Function to update user data
-export async function updateUserData(userData: UserData): Promise<void> {
+export async function updateUserData(userData: UserProfile): Promise<void> {
     try {
-        // Map UserData fields to database column names
+        // Map UserProfile fields to database column names
         const updates = {
             name: userData.name,
             phone: userData.phone,
-            church: userData.church,
-            church_contact: userData.churchContact,
             image_url: userData.imageUrl,
-            is_confirmed: userData.isConfirmed,
-            start_date: userData.startDate?.toISOString(),
-            end_date: userData.endDate?.toISOString(),
-            transport: userData.transport,
-            preferences: userData.preferences,
-            amount_paid: userData.amountPaid,
-            pay_tax_to: userData.payTaxTo,
             age: userData.age,
-            with_family_member: userData.withFamilyMember,
-            slope_activity: userData.slopeActivity,
-            is_admin: userData.isAdmin,
-            is_super_admin: userData.isSuperAdmin,
-            paid_on: userData.paidOn?.toISOString(),
-            updated_at: new Date().toISOString(), // Always update the timestamp
+            updated_at: new Date().toISOString()
         };
 
         // Remove undefined fields to avoid overwriting existing data with null
@@ -182,32 +150,54 @@ export async function updateUserData(userData: UserData): Promise<void> {
         });
 
 
-        const { error } = await supabaseBrowserClient
+        const { error: profileError } = await supabaseBrowserClient
             .from("user_profiles")
             .update(updates)
-            .eq("uid", userData.uid);
+            .eq("user_id", userData.userId); // Corrected column name to user_id
 
-        if (error) {
-            console.error("Error updating user data:", error);
-            throw error;
+        if (profileError) {
+            console.error("Error updating user profile data:", profileError);
+            throw profileError;
         }
+
+        // Upsert the role in user_roles table
+        const { error: roleError } = await supabaseBrowserClient
+            .from("user_roles")
+            .upsert(
+                {
+                    user_id: userData.userId,
+                    is_super_admin: userData.isSuperAdmin,
+                    updated_at: new Date().toISOString()
+                },
+                {
+                    onConflict: 'user_id' // Specify the conflict target for upsert
+                }
+            );
+
+        if (roleError) {
+            console.error("Error upserting user role:", roleError);
+            // Note: Profile data might have been updated successfully before this error.
+            // Consider transaction or compensation logic if atomicity is critical.
+            throw roleError;
+        }
+
     } catch (error) {
-        console.error("Unexpected error updating user data:", error);
+        console.error("Unexpected error during user data update:", error);
         throw error;
     }
 }
 
 export async function updateUserPayment(userId: string, amount: number, collectedBy: string): Promise<void> {
     try {
-        const { error } = await supabaseBrowserClient
+        const {error} = await supabaseBrowserClient
             .from("users_view")
             .update({
                 amount_paid: amount,
                 pay_tax_to: collectedBy,
                 paid_on: new Date().toISOString(), // Set paid_on timestamp
                 updated_at: new Date().toISOString(), // Also update updated_at
-             })
-            .eq("uid", userId);
+            })
+            .eq("userId", userId);
 
         if (error) {
             console.error("Error updating user payment:", error);

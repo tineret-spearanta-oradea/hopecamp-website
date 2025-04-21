@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { UserData } from "@/types/userData";
+import { UserProfile } from "@/types/userProfile";
 import { Message } from "@/types/message";
 import Image from "next/image";
 import { format } from "date-fns";
@@ -15,7 +15,7 @@ import { getUserMessages } from "@/lib/supabase/database/message"; // Updated im
 import { Loader2 } from "lucide-react";
 
 interface UserDetailsDialogProps {
-  user: UserData | null;
+  user: UserProfile | null;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -34,7 +34,7 @@ export function UserDetailsDialog({
     async function fetchMessages() {
       if (user) {
         setMessagesLoading(true);
-        const userMessages = await getUserMessages(user.uid);
+        const userMessages = await getUserMessages(user.userId);
         setMessages(userMessages);
         setMessagesLoading(false);
       }
@@ -58,7 +58,7 @@ export function UserDetailsDialog({
         <DialogHeader>
           <DialogTitle>Detalii Participant</DialogTitle>
           <div className="text-[10px] text-muted-foreground/50 font-mono">
-            {user?.uid}
+            {user?.userId}
           </div>
         </DialogHeader>
 

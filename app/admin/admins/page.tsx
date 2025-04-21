@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
-import { UserData } from "@/types/userData";
+import { UserProfile } from "@/types/userProfile";
 import {getAllUsersData, getUserDataByEmail, updateUserData} from "@/lib/supabase/database/user"; // Import Supabase functions
 import {
   Table,
@@ -42,7 +42,7 @@ type SuperAdminPromptData = {
 export default function AdminsPage() {
   const { userData } = useAuth();
   const router = useRouter();
-  const [admins, setAdmins] = useState<UserData[]>([]);
+  const [admins, setAdmins] = useState<UserProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [newAdminEmail, setNewAdminEmail] = useState("");
   const [isAddingAdmin, setIsAddingAdmin] = useState(false);
@@ -81,27 +81,27 @@ export default function AdminsPage() {
     fetchAdmins();
   }, [toast]);
 
-  const handleRoleUpdate = async (userId: string, updates: Partial<Omit<UserData, 'uid'>>) => {
-    const adminToUpdate = admins.find(admin => admin.uid === userId);
+  const handleRoleUpdate = async (userId: string, updates: Partial<Omit<UserProfile, 'userId'>>) => {
+    const adminToUpdate = admins.find(admin => admin.userId === userId);
     if (!adminToUpdate) {
         console.error("User not found for update:", userId);
         toast({ title: "Eroare", description: "Userul nu a fost găsit.", variant: "destructive" });
         return;
     }
 
-    const updatedAdminData: UserData = { ...adminToUpdate, ...updates };
+    const updatedAdminData: UserProfile = { ...adminToUpdate, ...updates };
 
     try {
       await updateUserData(updatedAdminData); // Use Supabase update function
       setAdmins(
         admins.map((admin) =>
-          admin.uid === userId ? { ...admin, ...updates } : admin
+          admin.userId === userId ? { ...admin, ...updates } : admin
         )
       );
 
       // If removing admin status, remove from the list
       if (!updates.isAdmin) {
-        setAdmins(admins.filter((admin) => admin.uid !== userId));
+        setAdmins(admins.filter((admin) => admin.userId !== userId));
       }
 
       toast({
@@ -118,9 +118,9 @@ export default function AdminsPage() {
     }
   };
 
-  const handleSuperAdminPrompt = (admin: UserData) => {
+  const handleSuperAdminPrompt = (admin: UserProfile) => {
     setSuperAdminPrompt({
-      userId: admin.uid,
+      userId: admin.userId,
       userName: admin.name,
       currentAdmin: admin.isAdmin,
     });
@@ -255,7 +255,7 @@ export default function AdminsPage() {
                  </TableRow>
              ) : (
                 admins.map((admin) => (
-              <TableRow key={admin.uid}>
+              <TableRow key={admin.userId}>
                 <TableCell>{admin.name}</TableCell>
                 <TableCell>{admin.email}</TableCell>
                 <TableCell>
@@ -278,7 +278,7 @@ export default function AdminsPage() {
                         variant="outline"
                         size="sm"
                         onClick={() =>
-                          handleRoleUpdate(admin.uid, {
+                          handleRoleUpdate(admin.userId, {
                             isAdmin: false,
                             isSuperAdmin: false,
                           })
@@ -289,13 +289,13 @@ export default function AdminsPage() {
                         Șterge Admin
                       </Button>
                     )}
-                    {userData.uid !== admin.uid && (
+                    {userData.userId !== admin.userId && (
                       <Button
                         variant={admin.isSuperAdmin ? "destructive" : "outline"}
                         size="sm"
                         onClick={() =>
                           admin.isSuperAdmin
-                            ? handleRoleUpdate(admin.uid, {
+                            ? handleRoleUpdate(admin.userId, {
                                 isSuperAdmin: false,
                                 isAdmin: true,
                               })

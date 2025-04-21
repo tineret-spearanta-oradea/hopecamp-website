@@ -2,8 +2,8 @@ CREATE TABLE editions
 (
     id         SERIAL PRIMARY KEY,
     name       TEXT        NOT NULL,
-    start_date TIMESTAMPTZ,
-    end_date   TIMESTAMPTZ,
+    start_date TIMESTAMPTZ NOT NULL,
+    end_date   TIMESTAMPTZ NOT NULL,
     is_open    BOOLEAN     NOT NULL DEFAULT false,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()

@@ -8,7 +8,7 @@ import { useUsers } from "@/hooks/use-users";
 import { useAuth } from "@/contexts/auth-context";
 import { useToast } from "@/hooks/use-toast";
 import { Download } from "lucide-react";
-import { UserData } from "@/types/userData";
+import { UserProfile } from "@/types/userProfile";
 import { updateUserData } from "@/lib/supabase/database/user"; // Import Supabase functions
 import { UserDetailsDialog } from "@/components/admin/users/user-details-dialog";
 import { DeleteUserDialog } from "@/components/admin/users/delete-user-dialog";
@@ -19,29 +19,29 @@ export default function UsersPage() {
   const { toast } = useToast();
   const { userData: currentUser } = useAuth();
   const { users, isLoading, error, fetchUsers } = useUsers();
-  const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
+  const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedUserForDetails, setSelectedUserForDetails] =
-    useState<UserData | null>(null);
+    useState<UserProfile | null>(null);
   const [selectedUserForDelete, setSelectedUserForDelete] =
-    useState<UserData | null>(null);
+    useState<UserProfile | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
 
-  const handleEditUser = (user: UserData | null) => {
+  const handleEditUser = (user: UserProfile | null) => {
     setSelectedUser(user);
     setIsDrawerOpen(true);
   };
 
-  const handleDeleteUser = async (user: UserData) => {
+  const handleDeleteUser = async (user: UserProfile) => {
     if (!currentUser?.isSuperAdmin) return;
     setSelectedUserForDelete(user);
   };
 
-  const handleConfirmDelete = async (userToDelete: UserData) => {
+  const handleConfirmDelete = async (userToDelete: UserProfile) => {
     if (!currentUser?.isSuperAdmin) {
        toast({
         title: "Eroare",
@@ -52,7 +52,7 @@ export default function UsersPage() {
     }
 
     try {
-      const response = await fetch(`/api/admin/delete-user?userId=${userToDelete.uid}`, {
+      const response = await fetch(`/api/admin/delete-user?userId=${userToDelete.userId}`, {
         method: 'DELETE',
       });
 
@@ -80,7 +80,7 @@ export default function UsersPage() {
     }
   };
 
-  const handleUpdateUser = async (updatedUser: UserData) => {
+  const handleUpdateUser = async (updatedUser: UserProfile) => {
     console.log("Updating user with Supabase:", updatedUser);
     try {
       setIsUpdating(true);
@@ -109,7 +109,7 @@ export default function UsersPage() {
     }
   };
 
-  const handleViewDetails = (user: UserData) => {
+  const handleViewDetails = (user: UserProfile) => {
     setSelectedUserForDetails(user);
   };
 
@@ -147,7 +147,7 @@ export default function UsersPage() {
     // Add user data
     users.forEach((user) => {
       const rowData = fields.map((field) => {
-        const value = user[field as keyof UserData];
+        const value = user[field as keyof UserProfile];
         if (value === undefined || value === null) return "";
         if (typeof value === "boolean") return value ? "Da" : "Nu";
         if (value instanceof Date) return value.toLocaleDateString("ro-RO");
