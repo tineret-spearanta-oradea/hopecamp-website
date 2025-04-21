@@ -14,6 +14,9 @@ type ConfirmedUserProps = {
   isAdmin: boolean;      // From user_registration_roles via registration data
   isSuperAdmin: boolean; // From user_profiles via userData
 };
+
+const MESSAGE_COOLDOWN_HOURS = 24;
+
 export default function ConfirmedUser({ userId, isAdmin, isSuperAdmin }: ConfirmedUserProps) {
   const [message, setMessage] = useState("");
   const [isSending, setIsSending] = useState(false);

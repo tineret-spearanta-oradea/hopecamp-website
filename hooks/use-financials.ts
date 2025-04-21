@@ -9,7 +9,9 @@ import {
     getUsersWithPayments,
     updateUserPayment as updateUserPaymentSupabase
 } from "@/lib/supabase/database/user";
-import { UserProfile } from "@/types/userProfile"; // Use UserProfile type
+import { UserProfile } from "@/types/userProfile";
+import {getActiveEdition} from "@/lib/supabase/database/edition";
+import {getRegistrationsByEditionId} from "@/lib/supabase/database/registration"; // Use UserProfile type
 
 export interface Expense {
   id: number;
@@ -43,19 +45,19 @@ export function useFinancials() {
     setIsLoading(true);
     setError(null); // Reset error state at the beginning
     try {
-      const usersData = await getUsersWithPayments();
-
+        const currentEdition = await getActiveEdition(); // TODO remove this after we have edition selector on the UI
+        const registrations=await getRegistrationsByEditionId(currentEdition.id);
       // Map UserProfile to Income structure
-      const incomesData: Income[] = usersData
-        .filter(user => user.amountPaid !== undefined && user.amountPaid > 0) // Ensure amountPaid exists and is > 0
-        .map((user: UserProfile) => ({
-            id: user.userId,
-            userId: user.userId,
-            userName: user.name || "",
-            amount: user.amountPaid || 0,
-            collectedBy: user.payTaxTo || "", // Use payTaxTo directly as collector's name
-            createdAt: user.createdAt ? new Date(user.createdAt) : new Date(),
-            paidOn: user.paidOn ? new Date(user.paidOn) : undefined,
+      const incomesData: Income[] = registrations
+        .filter(registration => registration.amountPaid !== undefined && registration.amountPaid > 0) // Ensure amountPaid exists and is > 0
+        .map((registration ) => ({
+            id: registration.userId,
+            userId: registration.userId,
+            userName: registration.name || "",
+            amount: registration.amountPaid || 0,
+            collectedBy: registration.payTaxTo || "", // Use payTaxTo directly as collector's name
+            createdAt: registration.createdAt ? new Date(registration.createdAt) : new Date(),
+            paidOn: undefined,// TODO we don't store this. Maybe drop it
         }));
 
       setIncomes(incomesData);

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { columns } from "@/components/admin/users/columns";
 import { DataTable } from "@/components/admin/users/data-table";
 import { EditUserSheet } from "@/components/admin/users/edit-user-sheet";
-import { useUsers } from "@/hooks/use-users";
+import { useRegistrations } from "@/hooks/use-registrations";
 import { useAuth } from "@/contexts/auth-context";
 import { useToast } from "@/hooks/use-toast";
 import { Download } from "lucide-react";
@@ -14,25 +14,26 @@ import { UserDetailsDialog } from "@/components/admin/users/user-details-dialog"
 import { DeleteUserDialog } from "@/components/admin/users/delete-user-dialog";
 import { Button } from "@/components/ui/button";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import {RegistrationWithProfile} from "@/lib/supabase/database/registration";
 
 export default function UsersPage() {
   const { toast } = useToast();
   const { userData: currentUser } = useAuth();
-  const { users, isLoading, error, fetchUsers } = useUsers();
-  const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
+  const { registrations, isLoading, error, fetchRegistrations } = useRegistrations();
+  const [selectedRegistration, setSelectedRegistration] = useState<RegistrationWithProfile | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [selectedUserForDetails, setSelectedUserForDetails] =
-    useState<UserProfile | null>(null);
+  const [selectedRegistrationForDetails, setSelectedRegistrationForDetails] =
+    useState<RegistrationWithProfile | null>(null);
   const [selectedUserForDelete, setSelectedUserForDelete] =
     useState<UserProfile | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
+    fetchRegistrations();
+  }, [fetchRegistrations]);
 
-  const handleEditUser = (user: UserProfile | null) => {
-    setSelectedUser(user);
+  const handleEditUser = (registration: RegistrationWithProfile | null) => {
+    setSelectedRegistration(registration);
     setIsDrawerOpen(true);
   };
 
@@ -62,7 +63,7 @@ export default function UsersPage() {
         throw new Error(result.message || `HTTP error! status: ${response.status}`);
       }
 
-      await fetchUsers(); // Refetch users after deletion
+      await fetchRegistrations(); // Refetch registrations after deletion
       toast({
         title: "Succes",
         description: "Participantul a fost șters cu succes.",
@@ -87,7 +88,7 @@ export default function UsersPage() {
 
       await updateUserData(updatedUser);
 
-      await fetchUsers(); // Refetch users after update
+      await fetchRegistrations(); // Refetch registrations after update
 
       toast({
         title: "Succes!",
@@ -95,7 +96,7 @@ export default function UsersPage() {
       });
 
       setIsDrawerOpen(false);
-      setSelectedUser(null);
+      setSelectedRegistration(null);
     } catch (error) {
       console.error("Failed to update user:", error);
       toast({
@@ -109,12 +110,12 @@ export default function UsersPage() {
     }
   };
 
-  const handleViewDetails = (user: UserProfile) => {
-    setSelectedUserForDetails(user);
+  const handleViewDetails = (user: RegistrationWithProfile) => {
+    setSelectedRegistrationForDetails(user);
   };
 
   const handleExportCsv = () => {
-    if (!users?.length) {
+    if (!registrations?.length) {
       toast({
         title: "Eroare",
         description: "Nu există date pentru export",
@@ -145,7 +146,7 @@ export default function UsersPage() {
     const csvData = [fields.join(",")];
 
     // Add user data
-    users.forEach((user) => {
+    registrations.forEach((user) => {
       const rowData = fields.map((field) => {
         const value = user[field as keyof UserProfile];
         if (value === undefined || value === null) return "";
@@ -208,18 +209,18 @@ export default function UsersPage() {
               onViewDetails: handleViewDetails,
               isSuperAdmin: currentUser?.isSuperAdmin,
             })}
-            data={users || []}
+            data={registrations || []}
           />
         </div>
       )}
 
-      {selectedUser && (
+      {selectedRegistration && (
         <EditUserSheet
-          user={selectedUser}
+          registration={selectedRegistration}
           isOpen={isDrawerOpen}
           onClose={() => {
             setIsDrawerOpen(false);
-            setSelectedUser(null);
+            setSelectedRegistration(null);
           }}
           onUpdate={handleUpdateUser}
           isSuperAdmin={currentUser?.isSuperAdmin}
@@ -227,11 +228,11 @@ export default function UsersPage() {
         />
       )}
 
-      {selectedUserForDetails && (
+      {selectedRegistrationForDetails && (
         <UserDetailsDialog
-          user={selectedUserForDetails}
-          isOpen={!!selectedUserForDetails}
-          onClose={() => setSelectedUserForDetails(null)}
+          registration={selectedRegistrationForDetails}
+          isOpen={!!selectedRegistrationForDetails}
+          onClose={() => setSelectedRegistrationForDetails(null)}
         />
       )}
 

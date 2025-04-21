@@ -11,13 +11,7 @@ import { useUserRegistration } from "@/hooks/use-user-registration"; // Import t
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 export default function AccountPage() {
-    // Get auth data from AuthContext
-    const { userData, loading: authLoading } = useAuth();
-    // Get registration data from the custom hook
-    const { registration, loading: registrationLoading, error: registrationError } = useUserRegistration();
-
-    // Combine loading states: loading is true if either auth or registration is loading
-    const isLoading = authLoading || registrationLoading;
+    const { userData, loading, userRegistrationData } = useAuth();
 
     return (
         <div className="bg-white rounded-lg shadow-md p-8 min-h-[300px]"> {/* Added min-height */}
@@ -55,23 +49,21 @@ export default function AccountPage() {
         <h2 className="text-2xl font-bold text-gray-800">Contul meu</h2>
       </div>
 
-      {isLoading ? ( // Use the combined loading state
+      {loading ? (
          <div className="flex justify-center items-center h-40">
              <LoadingSpinner />
          </div>
-      ) : registrationError ? ( // Handle registration fetch error
-          <p className="text-center text-red-500">Eroare la încărcarea datelor de înregistrare.</p>
-      ) : userData ? ( // Check if userData exists (implies user is logged in)
+      )  : userData ? ( // Check if userData exists (implies user is logged in)
         <div className="text-gray-700">
           <p className="mb-4">Salut, {userData.name}!</p>
 
           {/* Use registration data from the hook to determine confirmation status */}
-          {registration?.isConfirmed ? (
+          {userRegistrationData?.isConfirmed ? (
             <ConfirmedUser
-              userId={userData.userId}
+              userId={userRegistrationData.userId}
               // Pass isAdmin from registration and isSuperAdmin from user profile
-              isAdmin={registration.isAdmin}
-              isSuperAdmin={userData.isSuperAdmin || false} // Pass super admin status
+              isAdmin={userRegistrationData.isAdmin}
+              isSuperAdmin={userRegistrationData.isSuperAdmin || false} // Pass super admin status
             />
           ) : (
             // If no registration or not confirmed, show PendingUser

@@ -1,12 +1,21 @@
 "use client";
 
-import {createContext, useContext, useEffect, useState, useRef, useCallback} from "react";
+import {createContext, useContext, useEffect, useState, useCallback, ReactNode} from "react";
 import {UserProfile} from "@/types/userProfile";
 import {User as SupabaseUser} from "@supabase/supabase-js";
 import {supabaseBrowserClient} from "@/lib/supabase/client";
 import {getUserProfile} from "@/lib/supabase/database/user";
+import {
+    getUserRegistrationByEditionId,
+    RegistrationWithProfile
+} from "@/lib/supabase/database/registration";
+import {getActiveEdition} from "@/lib/supabase/database/edition";
 
 interface AuthContextType {
+    /** UserRegistrationData data fetched from the 'registrations' table in the database.
+     *  Fetched initially on auth state change, but requires manual refresh
+     *  using `updateUserData` after modifications. */
+    userRegistrationData:RegistrationWithProfile | null;
     /** UserProfile data fetched from the 'user_profiles' table in the database.
      *  Fetched initially on auth state change, but requires manual refresh
      *  using `updateUserData` after modifications. */
@@ -23,14 +32,16 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType>({
     userData: null,
+    userRegistrationData: null,
     supabaseUser: null,
     loading: true,
     updateUserData: async () => {},
 });
 
-export function AuthProvider({children}: { children: React.ReactNode }) {
+export function AuthProvider({children}: { children: ReactNode }) {
     const [supabaseUser, setSupabaseUser] = useState<SupabaseUser | null>(null);
     const [userData, setUserData] = useState<UserProfile | null>(null);
+    const [userRegistrationData, setUserRegistrationData] = useState<RegistrationWithProfile | null>(null);
     const [loading, setLoading] = useState(true); // Initialize loading to true
 
     /**
@@ -43,7 +54,12 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
         }
         console.log(`[AuthContext] Fetching user data for ID: ${supabaseUser.id}`);
         const fetchedUserData = await getUserProfile(supabaseUser.id);
+
+        const currentEdition = await getActiveEdition(); // TODO remove this after we have edition selector on the UI
+        const registration=await getUserRegistrationByEditionId(currentEdition.id, supabaseUser.id);
+
         setUserData(fetchedUserData);
+        setUserRegistrationData(registration);
     }, [supabaseUser]);
 
     // Listen to authentication state changes
@@ -61,8 +77,13 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
                             // load user data
                             // see https://supabase.com/docs/reference/javascript/auth-onauthstatechange for setTimeout explanation
                             const fetchedUserData = await getUserProfile(user.id);
-                            setSupabaseUser(user);
+
+                            const currentEdition = await getActiveEdition(); // TODO remove this after we have edition selector on the UI
+                            const registration=await getUserRegistrationByEditionId(currentEdition.id, user.id);
+
                             setUserData(fetchedUserData);
+                            setUserRegistrationData(registration);
+
                             setLoading(false);
                         }, 0)
                     }
@@ -85,7 +106,7 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
 
 
     return (
-        <AuthContext.Provider value={{ supabaseUser, loading, userData, updateUserData }}>
+        <AuthContext.Provider value={{ supabaseUser, loading, userData, updateUserData, userRegistrationData }}>
             {children}
         </AuthContext.Provider>
     );

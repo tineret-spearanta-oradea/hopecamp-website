@@ -10,25 +10,27 @@ export default function AdminProtected({
 }: {
   children: React.ReactNode;
 }) {
-  const { userData:user, loading } = useAuth();
+  const { userData, loading, userRegistrationData } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     // Only redirect if we're done loading and either there's no user or user is not admin
     if (!loading) {
-      if (!user || (!user.isAdmin && !user.isSuperAdmin)) {
-        router.replace("/cont");
+      if (!userData || (!userData.isSuperAdmin)) {
+          router.replace("/cont");
       }
+      if (!userRegistrationData || (!userRegistrationData.isAdmin))
+        router.replace("/cont");
     }
-  }, [user, loading, router]);
+  }, [userData, loading, router, userRegistrationData]);
 
   // Show loading state while we're loading OR if we have no user data yet
-  if (loading || !user) {
+  if (loading || !userData || !userRegistrationData) {
     return <LoadingSpinner transparentBg />;
   }
 
   // If we have user data but they're not admin, return null
-  if (!user.isAdmin && !user.isSuperAdmin) {
+  if (!userRegistrationData.isAdmin && !userData.isSuperAdmin) {
     return null;
   }
 

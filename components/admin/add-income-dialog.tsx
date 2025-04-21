@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { UserProfile } from "@/types/userProfile";
 import {
   Dialog,
   DialogContent,
@@ -22,11 +21,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {RegistrationWithProfile} from "@/lib/supabase/database/registration";
 
 interface AddIncomeDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  users: UserProfile[];
+  registration: RegistrationWithProfile[];
   selectedCollector: string | null;
   onSave: (data: {
     userId: string;
@@ -38,7 +38,7 @@ interface AddIncomeDialogProps {
 export function AddIncomeDialog({
   open,
   onOpenChange,
-  users,
+  registration,
   selectedCollector: defaultCollector,
   onSave,
 }: AddIncomeDialogProps) {
@@ -64,17 +64,17 @@ export function AddIncomeDialog({
   };
 
   // Get selected user's current amount
-  const selectedUserData = users.find((u) => u.userId === selectedUser);
+  const selectedUserData = registration.find((u) => u.userId === selectedUser);
   const currentAmount = selectedUserData?.amountPaid || 0;
 
-  // Filter users based on search query
-  const filteredUsers = users.filter(
+  // Filter registrations based on search query
+  const filteredUsers = registration.filter(
     (user) =>
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       user.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleUserSelect = (user: UserProfile) => {
+  const handleUserSelect = (user: RegistrationWithProfile) => {
     setSelectedUser(user.userId);
     setSearchQuery(user.name);
     setShowDropdown(false);

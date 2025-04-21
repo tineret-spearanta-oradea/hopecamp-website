@@ -18,14 +18,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { UserProfile } from "@/types/userProfile";
 import { sortingFns } from "@tanstack/react-table";
 import { sumToPay } from "@/lib/constants";
+import {RegistrationWithProfile} from "@/lib/supabase/database/registration";
 
 interface ColumnProps {
-  onEdit?: (user: UserProfile) => void;
-  onDelete?: (user: UserProfile) => void;
-  onViewDetails?: (user: UserProfile) => void;
+  onEdit?: (user: RegistrationWithProfile) => void;
+  onDelete?: (user: RegistrationWithProfile) => void;
+  onViewDetails?: (user: RegistrationWithProfile) => void;
   isSuperAdmin?: boolean;
 }
 
@@ -62,7 +62,7 @@ export const columns = ({
   onDelete,
   onViewDetails,
   isSuperAdmin,
-}: ColumnProps): ColumnDef<UserProfile>[] => [
+}: ColumnProps): ColumnDef<RegistrationWithProfile>[] => [
   {
     accessorKey: "userId",
     header: "Id",
@@ -153,9 +153,7 @@ export const columns = ({
 
       if (
         !start ||
-        !end ||
-        !(start instanceof Date) ||
-        !(end instanceof Date)
+        !end
       ) {
         return "-";
       }

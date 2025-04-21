@@ -1,7 +1,8 @@
 import {supabaseBrowserClient} from "@/lib/supabase/client";
 import {UserProfile} from "@/types/userProfile";
 import {FormData} from "@/types/form";
-import type {SupabaseClient} from "@supabase/supabase-js"; // Import type
+import type {SupabaseClient} from "@supabase/supabase-js";
+import {RegistrationWithProfile} from "@/lib/supabase/database/registration"; // Import type
 
 export async function getUserProfile(userId: string, client?: SupabaseClient): Promise<UserProfile | null> {
     // Use the provided client or default to the browser client
@@ -20,26 +21,6 @@ export async function getUserProfile(userId: string, client?: SupabaseClient): P
         return mapUserProfileDbRow(data);
     } catch (error: any) {
         console.error("Unexpected error fetching user data:", error.message, `(User ID: ${userId})`);
-        return null;
-    }
-}
-
-export async function getUserDataByEmail(email: string): Promise<UserProfile | null> {
-    try {
-        const {data, error} = await supabaseBrowserClient
-            .from("users_view")
-            .select("*")
-            .eq("email", email)
-            .single();
-
-        if (error) {
-            // Log the error but don't throw, return null as per function signature
-            console.error("Error fetching user data:", error);
-            return null;
-        }
-        return mapUserProfileDbRow(data);
-    } catch (error) {
-        console.error("Unexpected error fetching user data:", error);
         return null;
     }
 }
@@ -114,7 +95,7 @@ export async function getUsersWithPayments(): Promise<UserProfile[]> {
             .order("amount_paid", {ascending: false});
 
         if (error) {
-            console.error("Error fetching users with payments:", error);
+            console.error("Error fetching registrations with payments:", error);
             throw error;
         }
         if (!data) {
@@ -125,7 +106,7 @@ export async function getUsersWithPayments(): Promise<UserProfile[]> {
         return data.map(row => mapUserProfileDbRow(row)).filter((user): user is UserProfile => user !== null);
     } catch (error) {
         // Catch unexpected errors during the operation (e.g., network issues)
-        console.error("Unexpected error fetching users with payments:", error);
+        console.error("Unexpected error fetching registrations with payments:", error);
         throw error; // Re-throw the caught error
     }
 }
@@ -218,3 +199,16 @@ const slopeActivityMap: Record<string, string> = {
     ski: "schi",
     sled: "sanie",
 };
+export async function makeUserSuperAdmin(userId: string,  newIsAdmin:boolean): Promise<void> {
+    const { error } = await supabaseBrowserClient
+      .from("user_roles")
+      .upsert({
+         user_id: userId,
+         is_super_admin: newIsAdmin,
+         updated_at: new Date().toISOString(),
+      }, { onConflict: 'user_id' });
+    if (error) {
+         console.error("Error updating super admin role:", error.message);
+         throw error;
+    }
+}

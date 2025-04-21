@@ -21,13 +21,15 @@ function mapMessageDbRow(data: any): Message {
 
 // Function to get all messages with user names
 // Throws an error if fetching fails
-export async function getAllMessages(): Promise<Message[]> {
+export async function getAllMessages(editionId:number): Promise<Message[]> {
   const { data, error } = await supabaseBrowserClient
     .from("messages")
     .select(`
       *,
-      user_profiles!fk_messages_user_id ( name, phone )
+      user_profiles!fk_messages_read_by_user_id ( name, phone ),
+      registrations!inner ( edition_id )
     `)
+    .eq('registrations.edition_id', editionId)
     .order("sent_date", { ascending: false }); // Order by most recent
 
   if (error) {
@@ -45,7 +47,7 @@ export async function getUserMessages(userId: string): Promise<Message[]> {
     .from("messages")
     .select(`
       *,
-      user_profiles!fk_messages_user_id ( name, phone )
+      user_profiles!fk_messages_read_by_user_id ( name, phone )
     `)
     .eq("user_id", userId)
     .order("sent_date", { ascending: true }); // Order by oldest first for conversation flow
@@ -64,7 +66,7 @@ export async function getLastUserMessage(userId: string): Promise<Message | null
     .from("messages")
     .select(`
       *,
-      user_profiles!fk_messages_user_id ( name, phone )
+      user_profiles!fk_messages_read_by_user_id ( name, phone )
     `)
     .eq("user_id", userId)
     .order("sent_date", { ascending: false })
@@ -94,7 +96,7 @@ export async function insertMessage(messageData: { userId: string; text: string 
     })
     .select(`
       *,
-      user_profiles!fk_messages_user_id ( name, phone )
+      user_profiles!fk_messages_read_by_user_id ( name, phone )
     `) // Select the newly inserted row with user name and phone
     .single();
 

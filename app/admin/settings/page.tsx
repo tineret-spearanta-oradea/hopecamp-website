@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useUsers } from "@/hooks/use-users";
+import { useRegistrations } from "@/hooks/use-registrations";
 import { Check, Copy, Download } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -22,20 +22,20 @@ const getExtensionFromMimeType = (mimeType: string): string => {
 };
 
 export default function SettingsPage() {
-  const { users, fetchUsers } = useUsers();
+  const { registrations, fetchRegistrations } = useRegistrations();
   const { userData: currentUser } = useAuth();
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadCount, setDownloadCount] = useState(0);
   const [hasCopiedNames, setHasCopiedNames] = useState(false);
 
   useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
+    fetchRegistrations();
+  }, [fetchRegistrations]);
 
   const copyNamesToClipboard = () => {
     let finalString = "";
     let index = 1;
-    for (const name of users
+    for (const name of registrations
       .filter((user) => !!!user.imageUrl)
       .map((user) => user.name)) {
       finalString += `${index}. ${name}\n`;
@@ -54,7 +54,7 @@ export default function SettingsPage() {
 
     setIsDownloading(true);
     try {
-      const usersWithImages = users.filter((user) => user.imageUrl);
+      const usersWithImages = registrations.filter((user) => user.imageUrl);
       console.log("Users with images:", usersWithImages);
 
       for (const user of usersWithImages) {
@@ -117,7 +117,7 @@ export default function SettingsPage() {
               <div className="">
                 <p className="text-sm text-muted-foreground mb-4">
                   {isDownloading ? `Downloading ${downloadCount}/` : "Count: "}
-                  {users.filter((user) => user.imageUrl).length}
+                  {registrations.filter((user) => user.imageUrl).length}
                 </p>
                 <Button
                   onClick={downloadImages}
@@ -138,7 +138,7 @@ export default function SettingsPage() {
               <div>
                 <p className="text-sm text-muted-foreground mb-4">
                   Utilizatori fără imagine:{" "}
-                  {users.filter((user) => !user.imageUrl).length}
+                  {registrations.filter((user) => !user.imageUrl).length}
                 </p>
                 <Button
                   onClick={copyNamesToClipboard}

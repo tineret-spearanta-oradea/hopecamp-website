@@ -50,6 +50,8 @@ BEGIN
                                               transport,
                                               preferences,
                                               slope_activity,
+                                              start_date,
+                                              end_date,
                                               with_family_member)
             VALUES (NEW.id,
                     edition_id_val,
@@ -59,6 +61,8 @@ BEGIN
                     meta ->> 'transport',
                     COALESCE(meta ->> 'preferences', ''),
                     COALESCE(meta ->> 'slopeActivity', 'nu'),
+                    (meta ->> 'startDate')::TIMESTAMPTZ,
+                    (meta ->> 'endDate')::TIMESTAMPTZ,
                     COALESCE((meta ->> 'withFamilyMember')::BOOLEAN, FALSE));
         ELSE
             -- Edition exists but isn't open
