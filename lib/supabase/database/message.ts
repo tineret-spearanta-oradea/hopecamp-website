@@ -5,7 +5,7 @@ import {PostgrestError} from "@supabase/supabase-js";
 // Helper function to map database row to Message type
 function mapMessageDbRow(data: any): Message {
   // When specifying the FK relationship, the joined data is nested under the table name by default.
-  const senderData = data.user_profiles;
+  const senderData = data.registrations;
   return {
     id: data.id,
     userId: data.user_id,
@@ -14,7 +14,7 @@ function mapMessageDbRow(data: any): Message {
     text: data.text,
     sentDate: new Date(data.sent_date),
     isRead: data.is_read,
-    readByUserId: data.read_by_user_id,
+    readByUserId: data.user_profiles?.name,
     readAt: data.read_at ? new Date(data.read_at) : undefined,
   };
 }
@@ -26,8 +26,8 @@ export async function getAllMessages(editionId:number): Promise<Message[]> {
     .from("messages")
     .select(`
       *,
-      user_profiles!fk_messages_read_by_user_id ( name, phone ),
-      registrations!inner ( edition_id )
+      user_profiles!fk_messages_read_by_user_id ( name ),
+      registrations!fk_messages_registration_id ( edition_id, ...user_profiles(name, phone) )
     `)
     .eq('registrations.edition_id', editionId)
     .order("sent_date", { ascending: false }); // Order by most recent
@@ -61,20 +61,20 @@ export async function getUserMessages(userId: string): Promise<Message[]> {
 }
 
 // Function to get the last message sent by a specific user
-export async function getLastUserMessage(userId: string): Promise<Message | null> {
+export async function getLastUserMessage(registrationId: number): Promise<Message | null> {
   const { data, error } = await supabaseBrowserClient
     .from("messages")
     .select(`
       *,
-      user_profiles!fk_messages_read_by_user_id ( name, phone )
+      registrations!fk_messages_registration_id ( edition_id, user_id, user_profiles!inner(name, phone) )
     `)
-    .eq("user_id", userId)
+    .eq("registration_id", registrationId)
     .order("sent_date", { ascending: false })
     .limit(1)
     .maybeSingle(); // Use maybeSingle to return one row or null
 
   if (error) {
-    console.error(`Error fetching last message for user ${userId}:`, error);
+    console.error(`Error fetching last message for registration ${registrationId}:`, error);
     return null; // Return null on error
   }
 
@@ -87,11 +87,11 @@ export async function getLastUserMessage(userId: string): Promise<Message | null
 
 // Function to insert a new message
 // Throws an error if insertion fails
-export async function insertMessage(messageData: { userId: string; text: string }): Promise<Message> {
+export async function insertMessage(messageData: { registrationId: number; text: string }): Promise<Message> {
   const { data, error } = await supabaseBrowserClient
     .from("messages")
     .insert({
-      user_id: messageData.userId,
+      registration_id: messageData.registrationId,
       text: messageData.text,
     })
     .select(`
@@ -122,7 +122,7 @@ export async function setMessageRead(messageId: number, readByUserId: string): P
     .eq("id", messageId)
     .select(`
       *,
-      user_profiles!fk_messages_user_id ( name, phone )
+      user_profiles!fk_messages_read_by_user_id ( name, phone )
     `) // Select the updated row with user name and phone
     .single();
 

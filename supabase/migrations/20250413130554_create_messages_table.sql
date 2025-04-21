@@ -1,14 +1,14 @@
 CREATE TABLE messages
 (
     id              SERIAL PRIMARY KEY,
-    registration_id INT
+    registration_id INT NOT NULL
         CONSTRAINT fk_messages_registration_id REFERENCES registrations (id) ON DELETE CASCADE,
     text            TEXT        NOT NULL,
     sent_date       TIMESTAMPTZ NOT NULL DEFAULT now(),
     is_read         BOOLEAN     NOT NULL DEFAULT false,
-    read_by_user_id UUID        NOT NULL
-        CONSTRAINT fk_messages_read_by_user_id REFERENCES public.user_profiles ON DELETE CASCADE, -- Foreign key for the user who read the message
-    read_at         TIMESTAMPTZ NULL                                                    -- Timestamp when the message was read
+    read_by_user_id UUID        NULL
+        CONSTRAINT fk_messages_read_by_user_id REFERENCES public.user_profiles(user_id) ON DELETE CASCADE, -- Foreign key for the user who read the message
+    read_at         TIMESTAMPTZ NULL                                                              -- Timestamp when the message was read
 );
 
 -- Optional: Add RLS policies if needed for security

@@ -1,5 +1,6 @@
 import {supabaseBrowserClient} from "@/lib/supabase/client";
 import {UserProfile} from "@/types/userProfile"; // Assuming browser client usage
+export { getUserProfile } from "@/lib/supabase/database/user";
 
 export interface UserRegistration {
     id: number;
@@ -108,7 +109,7 @@ export async function getRegistrationsByEditionId(editionId: number): Promise<Re
             .select(`
                 *,
                 user_registration_roles!left ( is_admin ),
-                user_profiles: user_profiles!inner ( user_id, name, phone, image_url, age, ...user_roles!left ( is_super_admin ), ...auth_users_view!inner ( email ) )
+                user_profiles!inner ( user_id, name, phone, image_url, age, ...user_roles!left ( is_super_admin ), ...auth_users_view!inner ( email ) )
             `)
             .eq("edition_id", editionId);
 
@@ -129,19 +130,45 @@ export async function getRegistrationsByEditionId(editionId: number): Promise<Re
 }
 
 export async function getUserRegistrationByEditionId(editionId: number, userId?: string, email?: string): Promise<RegistrationWithProfile | null> {
-    const query = supabaseBrowserClient
-        .from("registrations")
-        .select(`
+    // Base select string
+    let selectString = `
+        *,
+        user_registration_roles!left ( is_admin ),
+        user_profiles!inner ( user_id, name, phone, image_url, age, ...user_roles!left ( is_super_admin ), ...auth_users_view!inner ( email ) )
+    `;
+
+    // If email is provided, modify the select string to filter within the join
+    // Note: This approach might be less efficient if the email filter significantly reduces the primary results.
+    // However, it directly addresses the filtering on the joined table's column.
+    // We are essentially telling it to only join auth_users_view where email matches.
+    if (email !== undefined) {
+         selectString = `
             *,
             user_registration_roles!left ( is_admin ),
-            user_profiles: user_profiles!inner ( user_id, name, phone, image_url, age, ...user_roles!left ( is_super_admin ), ...auth_users_view!inner ( email ) )
-        `)
+            user_profiles!inner ( user_id, name, phone, image_url, age, ...user_roles!left ( is_super_admin ), ...auth_users_view!inner ( email ) )
+        `;
+        // The filter needs to be applied *after* the select, targeting the joined view's column
+    }
+
+
+    let query = supabaseBrowserClient
+        .from("registrations")
+        .select(selectString)
         .eq("edition_id", editionId);
-    if (email !== undefined)
-        query.eq("user_profiles.email", email);
-    if (userId !== undefined)
-        query.eq("user_id", userId);
+
+    // Apply filters directly on the primary table or explicitly joined columns if possible
+    if (userId !== undefined) {
+        query = query.eq("user_id", userId);
+    }
+     // Apply the email filter using the correct syntax for filtering on related tables
+     if (email !== undefined) {
+        // Use the foreign table name and the column name with the 'inner' keyword hint if needed
+        query = query.eq('user_profiles.auth_users_view.email', email);
+     }
+
+
     try {
+        // Use maybeSingle as we expect at most one result per user/email per edition
         const {data, error} = await query.maybeSingle();
 
         if (error) {
@@ -172,5 +199,69 @@ export async function makeUserAdminForEdition(userId: string, registrationId: nu
     if (roleError) {
         console.error("Error updating admin role:", roleError.message);
         throw roleError;
+    }
+}
+export async function updateUserData(registration: RegistrationWithProfile): Promise<void> {
+    try {
+        const now = new Date().toISOString();
+
+        // Update user_profiles table
+        const userUpdates = {
+            name: registration.name,
+            phone: registration.phone,
+            image_url: registration.imageUrl,
+            age: registration.age,
+            updated_at: now
+        };
+        const { error: profileError } = await supabaseBrowserClient
+            .from("user_profiles")
+            .update(userUpdates)
+            .eq("user_id", registration.userId);
+        if (profileError) {
+            console.error("Error updating user profile data:", profileError);
+            throw profileError;
+        }
+
+        // Update registrations table
+        const registrationUpdates = {
+            church: registration.church,
+            church_other: registration.churchOther,
+            church_contact: registration.churchContact || "",
+            pay_tax_to: registration.payTaxTo,
+            transport: registration.transport,
+            preferences: registration.preferences,
+            slope_activity: registration.slopeActivity,
+            start_date: registration.startDate,
+            end_date: registration.endDate,
+            amount_paid: registration.amountPaid,
+            updated_at: now
+        };
+        const { error: registrationError } = await supabaseBrowserClient
+            .from("registrations")
+            .update(registrationUpdates)
+            .eq("id", registration.id);
+        if (registrationError) {
+            console.error("Error updating registration data:", registrationError);
+            throw registrationError;
+        }
+
+        // Upsert the role in user_roles table
+        const { error: roleError } = await supabaseBrowserClient
+            .from("user_roles")
+            .upsert(
+                {
+                    user_id: registration.userId,
+                    is_super_admin: registration.isSuperAdmin,
+                    updated_at: now
+                },
+                { onConflict: 'user_id' }
+            );
+        if (roleError) {
+            console.error("Error upserting user role:", roleError);
+            throw roleError;
+        }
+    } catch (error) {
+        console.error("Unexpected error during update:", error);
+        throw error;
     }
 }

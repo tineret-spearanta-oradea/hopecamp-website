@@ -9,7 +9,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { useToast } from "@/hooks/use-toast";
 import { Download } from "lucide-react";
 import { UserProfile } from "@/types/userProfile";
-import { updateUserData } from "@/lib/supabase/database/user"; // Import Supabase functions
+import { updateUserData } from "@/lib/supabase/database/registration"; // Import Supabase functions
 import { UserDetailsDialog } from "@/components/admin/users/user-details-dialog";
 import { DeleteUserDialog } from "@/components/admin/users/delete-user-dialog";
 import { Button } from "@/components/ui/button";
@@ -81,12 +81,12 @@ export default function UsersPage() {
     }
   };
 
-  const handleUpdateUser = async (updatedUser: UserProfile) => {
-    console.log("Updating user with Supabase:", updatedUser);
+  const handleUpdateUser = async (updatedRegistration: RegistrationWithProfile) => {
+    console.log("Updating user with Supabase:", updatedRegistration);
     try {
       setIsUpdating(true);
 
-      await updateUserData(updatedUser);
+      await updateUserData(updatedRegistration);
 
       await fetchRegistrations(); // Refetch registrations after update
 

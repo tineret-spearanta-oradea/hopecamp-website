@@ -2,7 +2,6 @@ import {supabaseBrowserClient} from "@/lib/supabase/client";
 import {UserProfile} from "@/types/userProfile";
 import {FormData} from "@/types/form";
 import type {SupabaseClient} from "@supabase/supabase-js";
-import {RegistrationWithProfile} from "@/lib/supabase/database/registration"; // Import type
 
 export async function getUserProfile(userId: string, client?: SupabaseClient): Promise<UserProfile | null> {
     // Use the provided client or default to the browser client
@@ -108,63 +107,6 @@ export async function getUsersWithPayments(): Promise<UserProfile[]> {
         // Catch unexpected errors during the operation (e.g., network issues)
         console.error("Unexpected error fetching registrations with payments:", error);
         throw error; // Re-throw the caught error
-    }
-}
-
-// Function to update user data
-export async function updateUserData(userData: UserProfile): Promise<void> {
-    try {
-        // Map UserProfile fields to database column names
-        const updates = {
-            name: userData.name,
-            phone: userData.phone,
-            image_url: userData.imageUrl,
-            age: userData.age,
-            updated_at: new Date().toISOString()
-        };
-
-        // Remove undefined fields to avoid overwriting existing data with null
-        Object.keys(updates).forEach(key => {
-            if ((updates as any)[key] === undefined) {
-                delete (updates as any)[key];
-            }
-        });
-
-
-        const { error: profileError } = await supabaseBrowserClient
-            .from("user_profiles")
-            .update(updates)
-            .eq("user_id", userData.userId); // Corrected column name to user_id
-
-        if (profileError) {
-            console.error("Error updating user profile data:", profileError);
-            throw profileError;
-        }
-
-        // Upsert the role in user_roles table
-        const { error: roleError } = await supabaseBrowserClient
-            .from("user_roles")
-            .upsert(
-                {
-                    user_id: userData.userId,
-                    is_super_admin: userData.isSuperAdmin,
-                    updated_at: new Date().toISOString()
-                },
-                {
-                    onConflict: 'user_id' // Specify the conflict target for upsert
-                }
-            );
-
-        if (roleError) {
-            console.error("Error upserting user role:", roleError);
-            // Note: Profile data might have been updated successfully before this error.
-            // Consider transaction or compensation logic if atomicity is critical.
-            throw roleError;
-        }
-
-    } catch (error) {
-        console.error("Unexpected error during user data update:", error);
-        throw error;
     }
 }
 

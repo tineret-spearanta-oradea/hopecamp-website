@@ -23,7 +23,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { UserProfile } from "@/types/userProfile";
 import React, { useState } from "react";
 import {
   transportOptions,
@@ -80,7 +79,7 @@ interface EditUserSheetProps {
   registration: RegistrationWithProfile;
   isOpen: boolean;
   onClose: () => void;
-  onUpdate: (user: UserProfile) => Promise<void>;
+  onUpdate: (user: RegistrationWithProfile) => Promise<void>;
   isSuperAdmin?: boolean;
   isUpdating?: boolean;
 }

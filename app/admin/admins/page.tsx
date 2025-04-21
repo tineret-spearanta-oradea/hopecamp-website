@@ -3,7 +3,7 @@
 import {useEffect, useState} from "react";
 import {useAuth} from "@/contexts/auth-context";
 import {useRouter} from "next/navigation";
-import { updateUserData, makeUserSuperAdmin} from "@/lib/supabase/database/user"; // Import Supabase functions
+import { updateUserData, makeUserSuperAdmin} from "@/lib/supabase/database/registration"; // Import Supabase functions
 import {getUserRegistrationByEditionId, makeUserAdminForEdition} from "@/lib/supabase/database/registration";
 import {
     Table,
@@ -31,7 +31,6 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import {Textarea} from "@/components/ui/textarea";
-import {Copy} from "lucide-react";
 import {getActiveEdition} from "@/lib/supabase/database/edition";
 import {getRegistrationsByEditionId, RegistrationWithProfile} from "@/lib/supabase/database/registration";
 

@@ -1,13 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { supabaseBrowserClient } from "@/lib/supabase/client";
 import { useAuth } from "@/contexts/auth-context";
 import PendingUser from "./PendingUser";
 import ConfirmedUser from "./ConfirmedUser";
-// Removed: import { getUserRegistrationByUserId, UserRegistration } from "@/lib/supabase/database/registration";
-import { useUserRegistration } from "@/hooks/use-user-registration"; // Import the new hook
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 export default function AccountPage() {
@@ -60,10 +57,7 @@ export default function AccountPage() {
           {/* Use registration data from the hook to determine confirmation status */}
           {userRegistrationData?.isConfirmed ? (
             <ConfirmedUser
-              userId={userRegistrationData.userId}
-              // Pass isAdmin from registration and isSuperAdmin from user profile
-              isAdmin={userRegistrationData.isAdmin}
-              isSuperAdmin={userRegistrationData.isSuperAdmin || false} // Pass super admin status
+                userRegistrationData={userRegistrationData}
             />
           ) : (
             // If no registration or not confirmed, show PendingUser
