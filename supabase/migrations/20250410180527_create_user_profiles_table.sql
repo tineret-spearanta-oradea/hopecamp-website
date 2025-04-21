@@ -7,6 +7,5 @@ CREATE TABLE user_profiles
     phone          TEXT        NOT NULL,
     image_url      TEXT        NULL,
     created_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
-    updated_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
-    is_super_admin BOOLEAN     NOT NULL DEFAULT false
+    updated_at     TIMESTAMPTZ NOT NULL DEFAULT now()
 );
