@@ -8,7 +8,8 @@ import Link from "next/link";
 import {differenceInHours, format} from "date-fns";
 import {CheckCircle2, Circle} from "lucide-react";
 import {getLastUserMessage, insertMessage} from "@/lib/supabase/database/message";
-import {RegistrationWithProfile} from "@/lib/supabase/database/registration";
+
+import {RegistrationWithProfile} from "@/types/registrationWithProfile";
 
 type ConfirmedUserProps = {
     userRegistrationData: RegistrationWithProfile

@@ -14,7 +14,8 @@ import { UserDetailsDialog } from "@/components/admin/users/user-details-dialog"
 import { DeleteUserDialog } from "@/components/admin/users/delete-user-dialog";
 import { Button } from "@/components/ui/button";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import {RegistrationWithProfile} from "@/lib/supabase/database/registration";
+
+import {RegistrationWithProfile} from "@/types/registrationWithProfile";
 
 export default function UsersPage() {
   const { toast } = useToast();

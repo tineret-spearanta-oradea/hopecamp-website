@@ -32,7 +32,8 @@ import {
 } from "@/components/ui/dialog";
 import {Textarea} from "@/components/ui/textarea";
 import {getActiveEdition} from "@/lib/supabase/database/edition";
-import {getRegistrationsByEditionId, RegistrationWithProfile} from "@/lib/supabase/database/registration";
+import {getRegistrationsByEditionId} from "@/lib/supabase/database/registration";
+import {RegistrationWithProfile} from "@/types/registrationWithProfile";
 
 type SuperAdminPromptData = {
     userId: string;

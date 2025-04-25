@@ -6,10 +6,10 @@ import {User as SupabaseUser} from "@supabase/supabase-js";
 import {supabaseBrowserClient} from "@/lib/supabase/client";
 import {getUserProfile} from "@/lib/supabase/database/registration";
 import {
-    getUserRegistrationByEditionId,
-    RegistrationWithProfile
+    getUserRegistrationByEditionId
 } from "@/lib/supabase/database/registration";
 import {getActiveEdition} from "@/lib/supabase/database/edition";
+import {RegistrationWithProfile} from "@/types/registrationWithProfile";
 
 interface AuthContextType {
     /** UserRegistrationData data fetched from the 'registrations' table in the database.

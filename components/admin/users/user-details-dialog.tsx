@@ -13,7 +13,8 @@ import { format } from "date-fns";
 import { useState, useEffect } from "react";
 import { getUserMessages } from "@/lib/supabase/database/message"; // Updated import
 import { Loader2 } from "lucide-react";
-import {RegistrationWithProfile} from "@/lib/supabase/database/registration";
+
+import {RegistrationWithProfile} from "@/types/registrationWithProfile";
 
 interface UserDetailsDialogProps {
   registration: RegistrationWithProfile | null;

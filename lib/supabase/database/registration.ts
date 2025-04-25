@@ -1,31 +1,7 @@
 import {supabaseBrowserClient} from "@/lib/supabase/client";
-import {UserProfile} from "@/types/userProfile"; // Assuming browser client usage
+import {UserRegistration} from "@/types/userRegistration";
+import {RegistrationWithProfile} from "@/types/registrationWithProfile"; // Assuming browser client usage
 export { getUserProfile } from "@/lib/supabase/database/user";
-
-export interface UserRegistration {
-    id: number;
-    userId: string;
-    editionId: number;
-    church: string;
-    churchOther: string;
-    churchContact?: string;
-    payTaxTo: string;
-    transport: string;
-    preferences?: string;
-    slopeActivity: string;
-    createdAt: Date;
-    updatedAt: Date;
-    startDate: Date;
-    endDate: Date;
-    isConfirmed: boolean;
-    amountPaid: number;
-    withFamilyMember: boolean;
-    // Fields from user_registration_roles
-    isAdmin: boolean;
-}
-
-export interface RegistrationWithProfile extends UserRegistration, UserProfile {
-}
 
 export async function getUserRegistrationByUserId(userId: string): Promise<UserRegistration | null> {
     try {
@@ -73,7 +49,7 @@ export async function getUserRegistrationByUserId(userId: string): Promise<UserR
     }
 }
 
-function mapRegistrationWithProfile(row: any) {
+function mapRegistrationWithProfile(row: any):RegistrationWithProfile {
     return ({
         id: row.id,
         userId: row.user_id,

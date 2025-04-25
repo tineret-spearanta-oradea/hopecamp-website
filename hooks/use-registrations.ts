@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
-import {RegistrationWithProfile, getRegistrationsByEditionId} from "@/lib/supabase/database/registration";
+import {getRegistrationsByEditionId} from "@/lib/supabase/database/registration";
 import {getActiveEdition} from "@/lib/supabase/database/edition";
+import {RegistrationWithProfile} from "@/types/registrationWithProfile";
 
 export function useRegistrations() {
   const [registrations, setRegistrations] = useState<RegistrationWithProfile[]>([]);

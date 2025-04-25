@@ -20,7 +20,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { sortingFns } from "@tanstack/react-table";
 import { sumToPay } from "@/lib/constants";
-import {RegistrationWithProfile} from "@/lib/supabase/database/registration";
+
+import {RegistrationWithProfile} from "@/types/registrationWithProfile";
 
 interface ColumnProps {
   onEdit?: (user: RegistrationWithProfile) => void;

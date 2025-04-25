@@ -21,7 +21,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {RegistrationWithProfile} from "@/lib/supabase/database/registration";
+
+import {RegistrationWithProfile} from "@/types/registrationWithProfile";
 
 interface AddIncomeDialogProps {
   open: boolean;

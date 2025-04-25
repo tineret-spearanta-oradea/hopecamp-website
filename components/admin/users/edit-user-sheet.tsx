@@ -39,7 +39,8 @@ import {
 } from "@/components/ui/accordion";
 import { DatePickerWithRange } from "@/components/ui/date-picker";
 import { toast } from "sonner";
-import {RegistrationWithProfile} from "@/lib/supabase/database/registration";
+
+import {RegistrationWithProfile} from "@/types/registrationWithProfile";
 
 const userFormSchema = z.object({
   // Read-only fields for regular admins, editable for superAdmin

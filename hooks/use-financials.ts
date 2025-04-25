@@ -1,9 +1,7 @@
 import { useState, useCallback } from "react";
 import {
     getAllExpenses,
-    addExpense as addExpenseSupabase,
-    Expense as SupabaseExpense, // Rename imported Expense to avoid conflict
-    NewExpense
+    addExpense as addExpenseSupabase
 } from "@/lib/supabase/database/expense";
 import {
     getUsersWithPayments,
@@ -11,7 +9,8 @@ import {
 } from "@/lib/supabase/database/user";
 import { UserProfile } from "@/types/userProfile";
 import {getActiveEdition} from "@/lib/supabase/database/edition";
-import {getRegistrationsByEditionId} from "@/lib/supabase/database/registration"; // Use UserProfile type
+import {getRegistrationsByEditionId} from "@/lib/supabase/database/registration";
+import {Expense as SupabaseExpense, NewExpense} from "@/types/expense"; // Use UserProfile type
 
 export interface Expense {
   id: number;

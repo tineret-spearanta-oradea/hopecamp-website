@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/auth-context';
-import { getUserRegistrationByUserId, UserRegistration } from '@/lib/supabase/database/registration';
+import { getUserRegistrationByUserId } from '@/lib/supabase/database/registration';
+import {UserRegistration} from "@/types/userRegistration";
 
 interface UseUserRegistrationReturn {
     registration: UserRegistration | null;
