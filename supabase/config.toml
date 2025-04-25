@@ -293,6 +293,7 @@ deno_version = 1
 # secret_key = "env(SECRET_VALUE)"
 
 [analytics]
+# analytics/vector logs disabled due to this bug https://github.com/supabase/supabase/issues/27240
 enabled = false
 port = 54327
 # Configure one of the supported backends: `postgres`, `bigquery`.
