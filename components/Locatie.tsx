@@ -1,16 +1,16 @@
 export default function Locatie() {
   return (
     <>
-      <section className="bg-gray py-16 sm:py-32">
+      <section className="bg-white py-16 sm:py-32">
         <div className="container mx-auto flex flex-col-reverse md:flex-row items-center gap-10">
           <div className="w-full text-center  md:text-start lg:w-1/2 flex flex-col gap-5">
-            <h4 className="text-sm uppercase text-primary font-inter">
+            <h4 className="text-sm uppercase text-primary font-semibold tracking-wider">
               Locație
             </h4>
-            <h2 className="text-primary font-lemon text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
-              Tabăra începe aici!
+            <h2 className="text-primary font-lemon text-3xl sm:text-4xl md:text-5xl">
+              Unde mergem anul acesta?
             </h2>
-            <p className="text-primary">
+            <p className="text-foreground">
               Tabăra se va desfășura în localitatea Mărișel din județul Cluj, la
               Campus Mărișel, oferind un cadru ideal pentru relaxare, reflecție
               și socializare. Cu aer limpede de natură și cu o echipă de

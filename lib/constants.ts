@@ -40,9 +40,9 @@ export const sumToPay = {
 };
 
 export const dateRange = {
-  startDate: new Date("2025-02-20"),
-  endDate: new Date("2025-02-23"),
-  depositPaymentDueDate: new Date("2025-01-15"),
+  startDate: new Date("2025-08-04"),
+  endDate: new Date("2025-08-09"),
+  depositPaymentDueDate: new Date("2025-07-20"),
 };
 
 export const MinimumAge = {
@@ -70,6 +70,7 @@ export const faqData = [
     question: "Cum pot să mă înscriu?",
     answer:
       "Accesează pagina de înscriere și completează formularul cu datele tale. E simplu. Trebuie doar să-ți dorești!",
+    tags: ["înscriere"],
   },
   {
     question: "După ce mă înscriu ce trebuie să fac?",
@@ -82,6 +83,7 @@ export const faqData = [
       "ro",
       { month: "long" }
     )}`,
+    tags: ["înscriere", "financiar"],
   },
   {
     question: "Care este taxa taberei și ce include aceasta?",
@@ -94,43 +96,52 @@ export const faqData = [
     } zile si ${
       dateRange.endDate.getDate() - dateRange.startDate.getDate()
     } nopti.`,
+    tags: ["financiar"],
   },
   {
     question: "Care sunt modalitățile de plată?",
     answer: `Poți achita la ${payTaxToOptions[0].label} sau la ${payTaxToOptions[1].label}. Pentru alte variante sau ajutor te rugăm să ne scrii pe WhatsApp la ${contactInfo.phone}`,
+    tags: ["financiar"],
   },
   {
     question: "Sunt chestiuni diferite dacă sunt minor?",
     answer:
       "Dacă ești minor și vrei să vii în tabără, în primul rând, trebuie ca părinții tăi să fie de acord. Apoi, trebuie ca părinții tăi să citească regulamentul și să îl semneze. Atașat îți vom cere o copie după buletinul tău și un număr de telefon al unuia dintre părinți.",
+    tags: ["reguli", "înscriere"],
   },
   {
     question: "Care este vârsta minimă pentru participarea în tabără?",
     answer: `Vârsta minimă pentru participarea în tabără este ${MinimumAge.normal} ani împliniți în prima zi de tabără sau ${MinimumAge.memberOfChurch} ani dacă participantul face parte din Biserica Speranța Oradea.`,
+    tags: ["reguli", "înscriere"],
   },
   {
     question: "Cum pot să ajung în tabără?",
     answer:
       "Poți să vii cu mașina personală, cu un prieten cu mașina sau cu autocarul pe care îl vom avea la dispoziție. Indiferent de varianta pentru care optezi, trebuie să specifici la înscriere!",
+    tags: ["transport"],
   },
   {
     question:
       "Dacă în tabără vreau să merg până la un magazin din apropiere pentru o gustare, pot ieși din tabără să fac asta?",
     answer:
       "Pe cât e posibil încercăm să descurajăm deplasarea afară din tabără. Prin urmare, în cadrul taberei oferim tot felul de produse de vânzare, la prețuri foarte bune: snacksuri, semințe, croissante, sucuri, apă, înghețată, cafea, limonadă, clătite. În cadrul taberei vom avea inclusiv medicamente sau produse de prim ajutor. În cazul unei nevoi speciale, participantul poate să părăsească tabăra pentru un timp scurt după ce anunță liderul principal al taberei.",
+    tags: ["reguli"],
   },
   {
     question: "Există o ținută pentru băieți/fete la slujbele din tabără?",
     answer:
       "Nu impunem o ținută, însă insistăm pe ținuta decentă pe toată durata taberei, nu doar la slujbe. Nu este permisă ținuta de plajă atât în campusul taberei, cât nici în deplasările din afara taberei, indiferent dacă ești într-un grup mai mare sau mai restrâns. Nu este permisă purtarea maiourilor mulate, foarte largi sau transparente, de asemenea, nici purtarea de rochii/fuste/pantaloni prea scurți(e).",
+    tags: ["reguli"],
   },
   {
     question: "Doresc să donez. Cum pot face asta?",
     answer: `Poți plăti taxa pentru un participant care nu își permite asta sau poți dona pentru suportul altor cheltuieli ale taberei precum sunet sau invitați. Scrie-ne pe WhatsApp la ${contactInfo.phone} sau dăruiește direct cash, Revolut sau BT pay conform posibilităților de plată a taberei.`,
+    tags: ["financiar"],
   },
   {
     question: "Dacă nu sunt membru în Biserica Speranța pot să particip?",
     answer:
       "Cu siguranță că poți. Cerința noastră e să fi participat la cel puțin 2 întâlniri de tineret ca să ne cunoști și să ai un prieten participant care să te recomande.",
+    tags: ["înscriere"],
   },
 ];

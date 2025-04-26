@@ -86,9 +86,9 @@ export default function Footer() {
           </div>
         </div>
       </div>
-       <div className="flex justify-center pt-10">
+      <div className="flex justify-center pt-10">
         <p className="text-white text-xs text-center  ">
-          © 2024 copyright
+          © {new Date().getFullYear()} copyright
           <br /> Tineret Speranta Oradea
         </p>
       </div>
