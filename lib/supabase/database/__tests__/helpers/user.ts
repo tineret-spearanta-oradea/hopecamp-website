@@ -88,7 +88,7 @@ async function deleteAuthUser(userId: string) {
  * Creates a complete FormData object based on RegistrationWithProfile data.
  * @param registration - The RegistrationWithProfile object containing the base data.
  */
-function createTestFormData(
+export function createTestFormData( // Add export
     registration: RegistrationWithProfile,
 ): FormData {
     // Extract UserData fields from RegistrationWithProfile
