@@ -1,13 +1,11 @@
 export interface Message {
-  id: string;
+  id: number; // Changed from string to number
   userId: string;
   userName: string;
   phone: string;
   text: string;
   sentDate: Date;
   isRead: boolean;
-  readBy?: {
-    userId: string;
-    readAt: Date;
-  };
+  readByUserId?: string;
+  readAt?: Date;
 }

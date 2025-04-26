@@ -4,20 +4,10 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { db } from "@/lib/firebase";
-import {
-  collection,
-  addDoc,
-  serverTimestamp,
-  query,
-  where,
-  orderBy,
-  getDocs,
-} from "firebase/firestore";
 import Link from "next/link";
 import { differenceInHours, format } from "date-fns";
-import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, Circle } from "lucide-react";
+import {getLastUserMessage, insertMessage} from "@/lib/supabase/database/message";
 
 type ConfirmedUserProps = {
   userData: {
@@ -44,20 +34,11 @@ export default function ConfirmedUser({ userData }: ConfirmedUserProps) {
   useEffect(() => {
     async function fetchLastMessageTime() {
       try {
-        const messagesRef = collection(db, "messages");
-        const q = query(
-          messagesRef,
-          where("userId", "==", userData.uid),
-          orderBy("sentDate", "desc"),
-          where("sentDate", "!=", null)
-        );
-
-        const querySnapshot = await getDocs(q);
-        if (!querySnapshot.empty) {
-          const lastMessage = querySnapshot.docs[0].data();
-          setLastMessageTime(lastMessage.sentDate.toDate());
-          setLastMessageText(lastMessage.text);
-          setLastMessageIsRead(lastMessage.isRead);
+        const lastUserMessage=await getLastUserMessage(userData.uid);
+        if (lastUserMessage) {
+          setLastMessageTime(lastUserMessage.sentDate);
+          setLastMessageText(lastUserMessage.text);
+          setLastMessageIsRead(lastUserMessage.isRead);
         }
       } catch (error) {
         console.error("Error fetching last message time:", error);
@@ -109,16 +90,8 @@ export default function ConfirmedUser({ userData }: ConfirmedUserProps) {
 
     setIsSending(true);
     try {
-      const newMessage = {
-        userId: userData.uid,
-        userName: userData.name,
-        phone: userData.phone,
-        text: message,
-        sentDate: serverTimestamp(),
-        isRead: false,
-      };
-
-      await addDoc(collection(db, "messages"), newMessage);
+      const insertedMessage = await insertMessage({userId: userData.uid,text:message});
+      console.log("Added message", insertedMessage)
       setLastMessageTime(new Date());
       setLastMessageText(message);
       setLastMessageIsRead(false);

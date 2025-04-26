@@ -14,7 +14,6 @@ export default function AdminLayout({
   const isMobile = useIsMobile();
 
   return (
-    <AuthProvider>
       <AdminProtected>
         <div className="flex h-screen">
           <Sidebar>
@@ -27,6 +26,5 @@ export default function AdminLayout({
           </main>
         </div>
       </AdminProtected>
-    </AuthProvider>
   );
 }

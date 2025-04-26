@@ -56,7 +56,7 @@ const menuItems = [
 ];
 
 export function AdminNav() {
-  const { user } = useAuth();
+  const { userData:user } = useAuth();
   const pathname = usePathname();
   const isSuperAdmin = user?.isSuperAdmin;
   const [imageError, setImageError] = useState(false);

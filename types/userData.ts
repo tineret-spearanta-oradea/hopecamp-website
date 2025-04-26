@@ -1,10 +1,10 @@
-export interface User {
+export interface UserData {
   uid: string;
   name: string;
-  email: string;
   isAdmin: boolean;
   isSuperAdmin: boolean;
-  phone?: string;
+  phone: string;
+  email: string;
   church?: string;
   churchOther?: string;
   churchContact?: string;

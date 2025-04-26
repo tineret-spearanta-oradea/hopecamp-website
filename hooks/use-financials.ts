@@ -1,28 +1,26 @@
-import { useEffect, useState, useCallback } from "react";
-import { db } from "@/lib/firebase";
+import { useState, useCallback } from "react";
 import {
-  collection,
-  getDocs,
-  query,
-  orderBy,
-  Timestamp,
-  addDoc,
-  serverTimestamp,
-  where,
-  doc,
-  updateDoc,
-} from "firebase/firestore";
+    getAllExpenses,
+    addExpense as addExpenseSupabase,
+    Expense as SupabaseExpense, // Rename imported Expense to avoid conflict
+    NewExpense
+} from "@/lib/supabase/database/expense";
+import {
+    getUsersWithPayments,
+    updateUserPayment as updateUserPaymentSupabase
+} from "@/lib/supabase/database/user";
+import { UserData } from "@/types/userData"; // Use UserData type
 
 export interface Expense {
-  id: string;
+  id: number;
   title: string;
   amount: number;
-  description?: string;
+  description?: string | null;
   createdBy: string;
-  creatorName: string;
+  creatorName?: string;
   createdAt: Date;
-  category?: string;
-  receipt?: string;
+  category?: string | null;
+  receipt?: string | null;
 }
 
 export interface Income {
@@ -31,7 +29,6 @@ export interface Income {
   userName: string;
   amount: number;
   collectedBy: string;
-  collectorName: string;
   createdAt: Date;
   paidOn?: Date;
 }
@@ -43,43 +40,25 @@ export function useFinancials() {
   const [error, setError] = useState<Error | null>(null);
 
   const fetchIncomes = useCallback(async () => {
+    setIsLoading(true);
+    setError(null); // Reset error state at the beginning
     try {
-      setIsLoading(true);
-      const usersQuery = query(
-        collection(db, "users"),
-        where("amountPaid", ">", 0),
-        orderBy("amountPaid", "desc")
-      );
-      const snapshot = await getDocs(usersQuery);
+      const usersData = await getUsersWithPayments();
 
-      const incomesData = snapshot.docs.map((doc) => {
-        const data = doc.data();
-
-        // Helper function to safely convert Firestore timestamps to Date objects
-        const convertTimestamp = (timestamp: unknown) => {
-          if (timestamp instanceof Timestamp) {
-            return timestamp.toDate();
-          }
-          if (timestamp instanceof Date) {
-            return timestamp;
-          }
-          return new Date();
-        };
-
-        return {
-          id: doc.id,
-          userId: doc.id,
-          userName: data.name || "",
-          amount: Number(data.amountPaid) || 0,
-          collectedBy: data.payTaxTo || "",
-          collectorName: data.payTaxTo || "",
-          createdAt: convertTimestamp(data.createdAt),
-          paidOn: data.paidOn ? convertTimestamp(data.paidOn) : undefined,
-        } as Income;
-      });
+      // Map UserData to Income structure
+      const incomesData: Income[] = usersData
+        .filter(user => user.amountPaid !== undefined && user.amountPaid > 0) // Ensure amountPaid exists and is > 0
+        .map((user: UserData) => ({
+            id: user.uid,
+            userId: user.uid,
+            userName: user.name || "",
+            amount: user.amountPaid || 0,
+            collectedBy: user.payTaxTo || "", // Use payTaxTo directly as collector's name
+            createdAt: user.createdAt ? new Date(user.createdAt) : new Date(),
+            paidOn: user.paidOn ? new Date(user.paidOn) : undefined,
+        }));
 
       setIncomes(incomesData);
-      setError(null);
     } catch (err) {
       console.error("Error fetching incomes:", err);
       setError(err as Error);
@@ -89,43 +68,25 @@ export function useFinancials() {
   }, []);
 
   const fetchExpenses = useCallback(async () => {
+    setIsLoading(true);
+    setError(null); // Reset error state at the beginning
     try {
-      setIsLoading(true);
-      const expensesQuery = query(
-        collection(db, "expenses"),
-        orderBy("createdAt", "desc")
-      );
-      const snapshot = await getDocs(expensesQuery);
+      const data = await getAllExpenses(); // Now returns data directly or throws
 
-      const expensesData = snapshot.docs.map((doc) => {
-        const data = doc.data();
-
-        // Helper function to safely convert Firestore timestamps to Date objects
-        const convertTimestamp = (timestamp: unknown) => {
-          if (timestamp instanceof Timestamp) {
-            return timestamp.toDate();
-          }
-          if (timestamp instanceof Date) {
-            return timestamp;
-          }
-          return new Date();
-        };
-
-        return {
-          id: doc.id,
-          title: data.title || "",
-          amount: Number(data.amount) || 0,
-          description: data.description || "",
-          createdBy: data.createdBy || "",
-          creatorName: data.creatorName || "",
-          createdAt: convertTimestamp(data.createdAt),
-          category: data.category,
-          receipt: data.receipt,
-        } as Expense;
-      });
+      // Map SupabaseExpense to the hook's Expense structure
+      const expensesData: Expense[] = data.map((expense: SupabaseExpense) => ({
+          id: expense.id,
+          title: expense.title || "",
+          amount: Number(expense.amount) || 0,
+          description: expense.description,
+          createdBy: expense.created_by, // Creator's UUID
+          creatorName: expense.creatorName, // Use fetched name
+          createdAt: expense.created_at ? new Date(expense.created_at) : new Date(),
+          category: expense.category,
+          receipt: expense.receipt,
+      }));
 
       setExpenses(expensesData);
-      setError(null);
     } catch (err) {
       console.error("Error fetching expenses:", err);
       setError(err as Error);
@@ -140,59 +101,99 @@ export function useFinancials() {
     collectedBy: string;
     userName: string;
   }) => {
-    const userRef = doc(db, "users", data.userId);
-    await updateDoc(userRef, {
-      amountPaid: data.amount,
-      payTaxTo: data.collectedBy,
-      paidOn: serverTimestamp(),
-    });
+    setIsLoading(true); // Indicate loading state
+    setError(null);
+    try {
+        // No need to destructure error, it will throw if there is one
+        await updateUserPaymentSupabase(data.userId, data.amount, data.collectedBy);
 
-    // Update local state instead of refetching
-    setIncomes((prev) => {
-      const existingIndex = prev.findIndex(
-        (income) => income.id === data.userId
-      );
-      const newIncome: Income = {
-        id: data.userId,
-        userId: data.userId,
-        userName: data.userName,
-        amount: data.amount,
-        collectedBy: data.collectedBy,
-        collectorName: data.collectedBy,
-        paidOn: new Date(),
-        createdAt: new Date(),
-      };
+        // Update local state optimistically
+        setIncomes((prev) => {
+            const existingIndex = prev.findIndex(
+                (income) => income.id === data.userId
+            );
+            // Find the original creation date if the user exists, otherwise use now
+            const originalCreatedAt = prev.find(inc => inc.id === data.userId)?.createdAt || new Date();
 
-      if (existingIndex !== -1) {
-        const newIncomes = [...prev];
-        newIncomes[existingIndex] = { ...prev[existingIndex], ...newIncome };
-        return newIncomes;
-      }
+            const updatedIncome: Income = {
+                id: data.userId,
+                userId: data.userId,
+                userName: data.userName,
+                amount: data.amount,
+                collectedBy: data.collectedBy, // Collector's Name
+                paidOn: new Date(),
+                createdAt: originalCreatedAt,
+            };
 
-      return [newIncome, ...prev];
-    });
+            if (existingIndex !== -1) {
+                const newIncomes = [...prev];
+                // Merge existing data with new data, ensuring paidOn is updated
+                newIncomes[existingIndex] = { ...prev[existingIndex], ...updatedIncome };
+                // Re-sort if necessary, e.g., by amount or name
+                // newIncomes.sort((a, b) => b.amount - a.amount);
+                return newIncomes;
+            } else {
+                 // If user wasn't in the list before (e.g., first payment), add them
+                 // This case might be less common if fetchIncomes runs first
+                return [updatedIncome, ...prev].sort((a, b) => b.amount - a.amount); // Add and sort
+            }
+        });
+    } catch (err) {
+        console.error("Error updating user payment:", err);
+        setError(err as Error);
+    } finally {
+        setIsLoading(false);
+    }
   };
 
+  // Adjusted to accept data matching NewExpense structure (without creatorName)
   const addExpense = async (data: {
     title: string;
-    description: string;
+    description?: string | null;
     amount: number;
-    category: string;
-    createdBy: string;
-    creatorName: string;
+    category?: string | null;
+    createdBy: string; // Creator's User UUID
+    creatorName?: string; // Creator's Name for local state update
+    receipt?: string | null;
   }) => {
-    const expenseRef = await addDoc(collection(db, "expenses"), {
-      ...data,
-      createdAt: serverTimestamp(),
-    });
+     setIsLoading(true); // Indicate loading state
+     setError(null);
+     try {
+        // Prepare data for Supabase function
+        const expenseToAdd: NewExpense = {
+            title: data.title,
+            amount: data.amount,
+            description: data.description,
+            category: data.category,
+            created_by: data.createdBy, // Map to created_by
+            receipt: data.receipt,
+        };
 
-    // Update local state instead of refetching
-    const newExpense = {
-      id: expenseRef.id,
-      ...data,
-      createdAt: new Date(),
-    };
-    setExpenses((prev) => [newExpense, ...prev]);
+        // addExpenseSupabase now returns the single added expense or throws
+        const addedExpense = await addExpenseSupabase(expenseToAdd);
+
+        // Update local state with the data returned from Supabase
+        // No need to map from array, addedExpense is the Expense object
+        const newExpense: Expense = {
+            id: addedExpense.id,
+            title: addedExpense.title,
+            amount: addedExpense.amount,
+            description: addedExpense.description,
+            createdBy: addedExpense.created_by, // Creator's UUID
+            creatorName: addedExpense.creatorName, // Use name returned from addExpenseSupabase
+            createdAt: new Date(addedExpense.created_at),
+            category: addedExpense.category,
+            receipt: addedExpense.receipt,
+        };
+
+        setExpenses((prev) => [newExpense, ...prev]); // Add to the beginning of the list
+
+    } catch (err) {
+        console.error("Error adding expense:", err);
+        setError(err as Error);
+    } finally {
+        setIsLoading(false);
+    }
   };
 
   return {
@@ -204,6 +205,8 @@ export function useFinancials() {
     fetchIncomes,
     addExpense,
     updateUserPayment,
-    refetch: fetchExpenses,
+    // Keep refetch for expenses, add one for incomes if needed
+    refetchExpenses: fetchExpenses,
+    refetchIncomes: fetchIncomes,
   };
 }

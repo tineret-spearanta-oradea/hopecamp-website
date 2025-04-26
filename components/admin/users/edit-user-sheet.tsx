@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { User } from "@/types/user";
+import { UserData } from "@/types/userData";
 import React, { useState } from "react";
 import {
   transportOptions,
@@ -76,10 +76,10 @@ const userFormSchema = z.object({
 type UserFormValues = z.infer<typeof userFormSchema>;
 
 interface EditUserSheetProps {
-  user: User;
+  user: UserData;
   isOpen: boolean;
   onClose: () => void;
-  onUpdate: (user: User) => Promise<void>;
+  onUpdate: (user: UserData) => Promise<void>;
   isSuperAdmin?: boolean;
   isUpdating?: boolean;
 }

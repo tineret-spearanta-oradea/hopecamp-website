@@ -6,16 +6,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { User } from "@/types/user";
+import { UserData } from "@/types/userData";
 import { Message } from "@/types/message";
 import Image from "next/image";
 import { format } from "date-fns";
 import { useState, useEffect } from "react";
-import { getUserMessages } from "@/lib/firebase/firestore";
+import { getUserMessages } from "@/lib/supabase/database/message"; // Updated import
 import { Loader2 } from "lucide-react";
 
 interface UserDetailsDialogProps {
-  user: User | null;
+  user: UserData | null;
   isOpen: boolean;
   onClose: () => void;
 }

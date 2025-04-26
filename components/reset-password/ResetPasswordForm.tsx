@@ -2,9 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { sendPasswordResetEmail } from "firebase/auth";
-import { auth } from "@/firebase/config";
-import { FirebaseError } from "firebase/app";
+import { supabaseBrowserClient } from "@/lib/supabase/client";
 
 export default function ResetPasswordForm() {
   const [email, setEmail] = useState("");
@@ -18,26 +16,18 @@ export default function ResetPasswordForm() {
     setError("");
     setLoading(true);
 
-    try {
-      await sendPasswordResetEmail(auth, email);
+    const { error: resetError } =
+      await supabaseBrowserClient.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/update-password`,
+      });
+
+    if (resetError) {
+        setError("A apărut o eroare la trimiterea emailului. Te rugăm să încerci din nou. Eroare: "+resetError.message);
+    } else {
       setEmailSent(true);
       setSentToEmail(email);
-    } catch (error) {
-      if (error instanceof FirebaseError) {
-        switch (error.code) {
-          case "auth/invalid-email":
-            setError("Adresa de email este invalidă.");
-            break;
-          case "auth/user-not-found":
-            setError("Nu există niciun cont asociat cu acest email.");
-            break;
-          default:
-            setError("A apărut o eroare. Te rugăm să încerci din nou.");
-        }
-      }
-    } finally {
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   return (
@@ -49,12 +39,13 @@ export default function ResetPasswordForm() {
       {emailSent ? (
         <div className="text-center space-y-6">
           <p className="text-sm text-gray-600">
-            Un email a fost trimis la adresa <strong>{sentToEmail}</strong>.
-            Verifică-ți inbox-ul sau folderul de spam pentru a reseta parola.
+            Dacă există un cont asociat cu <strong>{sentToEmail}</strong>, un
+            email cu instrucțiuni pentru resetarea parolei a fost trimis.
+            Verifică-ți inbox-ul (și folderul de spam).
           </p>
           <Link
             href="/login"
-            className="block w-full bg-hope-dark-cyan text-white py-2.5 px-4 rounded-md hover:bg-hope-dark-cyan/90 transition-colors text-sm font-medium text-center"
+            className="block w-full bg-hope-dark-cyan py-2.5 px-4 rounded-md hover:bg-hope-dark-cyan/90 transition-colors text-sm font-medium text-center"
           >
             ← Înapoi la login
           </Link>
@@ -92,8 +83,7 @@ export default function ResetPasswordForm() {
             </div>
             <button
               type="submit"
-              className="w-full bg-hope-dark-cyan text-white py-2.5 px-4 rounded-md hover:bg-hope-dark-cyan/90 transition-colors
-                disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm"
+              className="w-full bg-hope-dark-cyan border border-red-500 text-red-500 py-2.5 px-4 rounded-md hover:bg-hope-dark-cyan/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm"
               disabled={loading}
             >
               {loading ? "Se procesează..." : "Resetare parolă"}

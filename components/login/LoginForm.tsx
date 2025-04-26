@@ -1,53 +1,46 @@
 "use client";
 
-import { useState } from "react";
+import {useState} from "react";
 import Link from "next/link";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/firebase/config";
-import { useRouter } from "next/navigation";
-import { Button } from "../ui/button";
-import { toast } from "sonner";
+import {Button} from "../ui/button";
+import {toast} from "sonner";
+import {supabaseBrowserClient} from "@/lib/supabase/client";
 
 export default function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
 
-  const handleLogin = async () => {
-    if (!email || !password) {
-      toast.error("Te rugăm să completezi toate câmpurile");
-      return;
-    }
+    const handleLogin = async () => {
+        if (!email || !password) {
+            toast.error("Te rugăm să completezi toate câmpurile");
+            return;
+        }
+        setLoading(true);
+        const {error} = await supabaseBrowserClient.auth.signInWithPassword({
+            email,
+            password,
+        });
 
-    setLoading(true);
-
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      router.push("/cont");
-    } catch (error: any) {
-      console.error("Error signing in:", error);
-      if (error.code === "auth/user-not-found") {
-        toast.error(
-          "Utilizator negăsit. Te rugăm să verifici emailul sau să te înregistrezi.",
-          {
-            action: {
-              label: "Înregistrare",
-              onClick: () => router.push("/inscrie-te"),
-            },
-          }
-        );
-      } else if (error.code === "auth/wrong-password") {
-        toast.error(
-          "Parolă incorectă. Te rugăm să verifici parola și să încerci din nou."
-        );
-      } else {
-        toast.error("A apărut o eroare. Te rugăm să încerci din nou.");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+        if (error) {
+            setLoading(false);
+            if (error.code === "invalid_credentials") {
+                toast.error(
+                    "Utilizator negăsit sau parolă incorectă. Te rugăm să verifici parola și să încerci din nou."
+                );
+                return;
+            }
+            toast.error(
+                "A apărut o eroare!",
+                {
+                    description: error.message
+                }
+            );
+            return;
+        }
+        console.log("Login successful");
+        // router.push("/cont"); // No need to redirect. User will be redirected to the account page by the AuthToAccountRedirect
+    };
 
   return (
     <div className="bg-white rounded-lg shadow-md p-8 w-full max-w-md mx-auto">

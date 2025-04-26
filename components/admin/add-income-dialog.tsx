@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { User } from "@/types/user";
+import { UserData } from "@/types/userData";
 import {
   Dialog,
   DialogContent,
@@ -14,7 +14,6 @@ import { Label } from "@/components/ui/label";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { payTaxToOptions, sumToPay } from "@/lib/constants";
 import {
   Select,
@@ -27,7 +26,7 @@ import {
 interface AddIncomeDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  users: User[];
+  users: UserData[];
   selectedCollector: string | null;
   onSave: (data: {
     userId: string;
@@ -75,7 +74,7 @@ export function AddIncomeDialog({
       user.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleUserSelect = (user: User) => {
+  const handleUserSelect = (user: UserData) => {
     setSelectedUser(user.uid);
     setSearchQuery(user.name);
     setShowDropdown(false);

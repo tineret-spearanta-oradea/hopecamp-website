@@ -23,7 +23,7 @@ const getExtensionFromMimeType = (mimeType: string): string => {
 
 export default function SettingsPage() {
   const { users, fetchUsers } = useUsers();
-  const { user: currentUser } = useAuth();
+  const { userData: currentUser } = useAuth();
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadCount, setDownloadCount] = useState(0);
   const [hasCopiedNames, setHasCopiedNames] = useState(false);

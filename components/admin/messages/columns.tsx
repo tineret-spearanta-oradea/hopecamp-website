@@ -47,16 +47,16 @@ function StatusCellWrapper({
 }: {
   row: any;
   updateMessageStatus: (
-    messageId: string,
+    messageId: number,
     newStatus: boolean,
     userId?: string
   ) => Promise<void>;
 }) {
-  const { user } = useAuth();
+  const { userData:user } = useAuth();
 
   const handleStatusChange = async (newStatus: boolean) => {
     try {
-      await updateMessageStatus(row.original.id, newStatus, user?.name);
+      await updateMessageStatus(row.original.id, newStatus, user?.uid);
     } catch (error) {
       console.error("Error updating message status:", error);
     }
@@ -67,7 +67,7 @@ function StatusCellWrapper({
 
 export const createColumns = (
   updateMessageStatus: (
-    messageId: string,
+    messageId: number,
     newStatus: boolean,
     userId?: string
   ) => Promise<void>

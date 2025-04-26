@@ -18,15 +18,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User } from "@/types/user";
-import { cn } from "@/lib/utils";
+import { UserData } from "@/types/userData";
 import { sortingFns } from "@tanstack/react-table";
-import { slopeActivityOptions, sumToPay } from "@/lib/constants";
+import { sumToPay } from "@/lib/constants";
 
 interface ColumnProps {
-  onEdit?: (user: User) => void;
-  onDelete?: (user: User) => void;
-  onViewDetails?: (user: User) => void;
+  onEdit?: (user: UserData) => void;
+  onDelete?: (user: UserData) => void;
+  onViewDetails?: (user: UserData) => void;
   isSuperAdmin?: boolean;
 }
 
@@ -63,7 +62,7 @@ export const columns = ({
   onDelete,
   onViewDetails,
   isSuperAdmin,
-}: ColumnProps): ColumnDef<User>[] => [
+}: ColumnProps): ColumnDef<UserData>[] => [
   {
     accessorKey: "uid",
     header: "Id",

@@ -8,9 +8,8 @@ import { useUsers } from "@/hooks/use-users";
 import { useAuth } from "@/contexts/auth-context";
 import { useToast } from "@/hooks/use-toast";
 import { Download } from "lucide-react";
-import { User } from "@/types/user";
-import { doc, updateDoc, deleteDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { UserData } from "@/types/userData";
+import { updateUserData } from "@/lib/supabase/database/user"; // Import Supabase functions
 import { UserDetailsDialog } from "@/components/admin/users/user-details-dialog";
 import { DeleteUserDialog } from "@/components/admin/users/delete-user-dialog";
 import { Button } from "@/components/ui/button";
@@ -18,39 +17,59 @@ import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 export default function UsersPage() {
   const { toast } = useToast();
-  const { user: currentUser } = useAuth();
+  const { userData: currentUser } = useAuth();
   const { users, isLoading, error, fetchUsers } = useUsers();
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedUserForDetails, setSelectedUserForDetails] =
-    useState<User | null>(null);
+    useState<UserData | null>(null);
   const [selectedUserForDelete, setSelectedUserForDelete] =
-    useState<User | null>(null);
+    useState<UserData | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
 
-  const handleEditUser = (user: User | null) => {
+  const handleEditUser = (user: UserData | null) => {
     setSelectedUser(user);
     setIsDrawerOpen(true);
   };
 
-  const handleDeleteUser = async (user: User) => {
+  const handleDeleteUser = async (user: UserData) => {
     if (!currentUser?.isSuperAdmin) return;
     setSelectedUserForDelete(user);
   };
 
-  const handleConfirmDelete = async (user: User) => {
+  const handleConfirmDelete = async (userToDelete: UserData) => {
+    if (!currentUser?.isSuperAdmin) {
+       toast({
+        title: "Eroare",
+        description: "Nu aveți permisiunea de a șterge utilizatori.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
-      await deleteDoc(doc(db, "users", user.uid));
-      await fetchUsers();
+      const response = await fetch(`/api/admin/delete-user?userId=${userToDelete.uid}`, {
+        method: 'DELETE',
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || `HTTP error! status: ${response.status}`);
+      }
+
+      await fetchUsers(); // Refetch users after deletion
       toast({
         title: "Succes",
-        description: "Participantul a fost șters cu succes",
+        description: "Participantul a fost șters cu succes.",
       });
-    } catch (error) {
+      setSelectedUserForDelete(null); // Close the confirmation dialog
+
+    } catch (error: any) {
       console.error("Failed to delete user:", error);
       toast({
         title: "Eroare",
@@ -61,22 +80,14 @@ export default function UsersPage() {
     }
   };
 
-  const handleUpdateUser = async (updatedUser: User) => {
-    console.log("Updating user:", updatedUser);
+  const handleUpdateUser = async (updatedUser: UserData) => {
+    console.log("Updating user with Supabase:", updatedUser);
     try {
       setIsUpdating(true);
-      const userRef = doc(db, "users", updatedUser.uid);
 
-      const cleanedUser = Object.fromEntries(
-        Object.entries(updatedUser).filter(([_, v]) => v !== undefined)
-      );
+      await updateUserData(updatedUser);
 
-      await updateDoc(userRef, {
-        ...cleanedUser,
-        updatedAt: new Date(),
-      });
-
-      await fetchUsers();
+      await fetchUsers(); // Refetch users after update
 
       toast({
         title: "Succes!",
@@ -98,7 +109,7 @@ export default function UsersPage() {
     }
   };
 
-  const handleViewDetails = (user: User) => {
+  const handleViewDetails = (user: UserData) => {
     setSelectedUserForDetails(user);
   };
 
@@ -136,7 +147,7 @@ export default function UsersPage() {
     // Add user data
     users.forEach((user) => {
       const rowData = fields.map((field) => {
-        const value = user[field as keyof User];
+        const value = user[field as keyof UserData];
         if (value === undefined || value === null) return "";
         if (typeof value === "boolean") return value ? "Da" : "Nu";
         if (value instanceof Date) return value.toLocaleDateString("ro-RO");
