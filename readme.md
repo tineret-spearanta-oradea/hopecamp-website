@@ -13,8 +13,8 @@
 3. Create a new branch: `git checkout -b <branch-name>`
 4. Make changes and commit: `git commit -m "Add new feature"`
 5. Push changes: `git push origin <branch-name>`
-6. Create a PR in the GitHub web interface.
-7. When the PR is approved, merge the changes into main: `git checkout main`
+6. Create a PR in the GitHub web interface. (into develop branch)
+7. When the PR is approved, merge the changes into develop: `git checkout develop`
 
 ## Some guidelines
 
@@ -24,6 +24,8 @@
 * Use GitHub issues for useful comments, technical details, and progress tracking.
 
 ## Run locally using Supabase
+
+If something goes wrong, please refer to https://supabase.com/docs/guides/local-development
 
 1. You need to have docker installed. [Read the setup guide here](https://www.docker.com/products/docker-desktop/)
 2. [Verify that supabase cli is installed](https://supabase.com/docs/guides/local-development/cli/getting-started?queryGroups=platform&platform=macos#installing-the-supabase-cli)

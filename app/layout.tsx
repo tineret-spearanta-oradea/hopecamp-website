@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { Snowfall } from "@/components/ui/Snowfall";
+// import { Snowfall } from "@/components/ui/Snowfall";
 import { Toaster } from "sonner";
 import {AuthProvider} from "@/contexts/auth-context";
 
@@ -32,11 +32,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-      <AuthProvider>
-        <Snowfall />
-        {children}
-        <Toaster richColors position="top-center" />
-      </AuthProvider>
+        <AuthProvider>
+          {/* 
+        Kept here for future use (winter editions)
+        <Snowfall /> */}
+          {children}
+          <Toaster richColors position="top-center" />
+        </AuthProvider>
       </body>
     </html>
   );
