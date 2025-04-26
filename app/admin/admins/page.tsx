@@ -3,8 +3,8 @@
 import {useEffect, useState} from "react";
 import {useAuth} from "@/contexts/auth-context";
 import {useRouter} from "next/navigation";
-import { updateUserData, makeUserSuperAdmin} from "@/lib/supabase/database/registration"; // Import Supabase functions
-import {getUserRegistrationByEditionId, makeUserAdminForEdition} from "@/lib/supabase/database/registration";
+import { updateUserData} from "@/lib/supabase/database/registration"; // Import Supabase functions
+import {getUserRegistrationByEditionId, changeUserAdminStatusForRegistration} from "@/lib/supabase/database/registration";
 import {
     Table,
     TableBody,
@@ -34,6 +34,7 @@ import {Textarea} from "@/components/ui/textarea";
 import {getActiveEdition} from "@/lib/supabase/database/edition";
 import {getRegistrationsByEditionId} from "@/lib/supabase/database/registration";
 import {RegistrationWithProfile} from "@/types/registrationWithProfile";
+import {changeUserSuperAdminStatus} from "@/lib/supabase/database/user";
 
 type SuperAdminPromptData = {
     userId: string;
@@ -95,10 +96,10 @@ export default function AdminsPage() {
         try {
             if (updates.isAdmin !== undefined) {
                 const currentEdition = await getActiveEdition();
-                await makeUserAdminForEdition(userId, currentEdition.id, updates.isAdmin);
+                await changeUserAdminStatusForRegistration(currentEdition.id, updates.isAdmin);
             }
             if (updates.isSuperAdmin !== undefined) {
-                await makeUserSuperAdmin(userId, updates.isSuperAdmin);
+                await changeUserSuperAdminStatus(userId, updates.isSuperAdmin);
             }
             setAdmins(
                 admins.map((admin) =>
@@ -169,7 +170,7 @@ export default function AdminsPage() {
         try {
             // Find user by email
             const currentEdition = await getActiveEdition(); // TODO remove this after we have edition selector on the UI
-            const userToAdd: RegistrationWithProfile | null = await getUserRegistrationByEditionId(currentEdition.id,undefined, newAdminEmail.trim().toLowerCase());
+            const userToAdd: RegistrationWithProfile | null = await getUserRegistrationByEditionId(currentEdition.id, {email:newAdminEmail.trim().toLowerCase()});
 
             if (!userToAdd) {
                 toast({
@@ -189,7 +190,10 @@ export default function AdminsPage() {
                 return;
             }
 
-            await updateUserData({...userToAdd, isSuperAdmin: userToAdd.isSuperAdmin || false});
+            await handleRoleUpdate(userToAdd.userId, {
+                isSuperAdmin: true,
+                isAdmin: true,
+            });
 
             // Add to local admins list
             setAdmins([...admins, {...userToAdd, isAdmin: true}]);

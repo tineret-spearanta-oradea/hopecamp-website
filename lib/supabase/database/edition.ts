@@ -1,5 +1,6 @@
-import {supabaseBrowserClient} from "@/lib/supabase/client";
-import {Edition} from "@/types/edition";
+import { supabaseBrowserClient } from "@/lib/supabase/client";
+import { supabaseAdmin } from "@/lib/supabase/server"; // Import the admin client
+import { Edition } from "@/types/edition";
 
 /**
  * Maps a database row (with string dates) to the Edition interface (with Date objects).
@@ -33,6 +34,39 @@ export async function getActiveEdition(): Promise<Edition> {
     if (error) {
         console.error("Error fetching active edition:", error);
         throw new Error(`Database error fetching active edition: ${error.message}`);
+    }
+
+    return mapEditionDbRow(data);
+}
+
+/**
+ * Inserts a new edition into the database using the admin client.
+ * @param editionData - The data for the new edition (dates as ISO strings).
+ * @returns A Promise resolving to the newly created Edition object.
+ */
+export async function insertEdition(editionData: Edition): Promise<Edition> {
+    // Use the admin client for insertion to bypass RLS if necessary during tests/setup
+    const client = supabaseAdmin;
+    if (!client) {
+        throw new Error("Supabase admin client is not initialized.");
+    }
+
+    const { data, error } = await client
+        .from("editions")
+        .insert({
+            name: editionData.name,
+            start_date: editionData.start_date,
+            end_date: editionData.end_date,
+            is_open: editionData.is_open,
+            created_at: editionData.created_at,
+            updated_at: editionData.updated_at,
+        })
+        .select()
+        .single();
+
+    if (error) {
+        console.error("Error inserting edition:", error);
+        throw new Error(`Database error inserting edition: ${error.message}`);
     }
 
     return mapEditionDbRow(data);

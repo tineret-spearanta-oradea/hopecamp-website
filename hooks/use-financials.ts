@@ -3,11 +3,6 @@ import {
     getAllExpenses,
     addExpense as addExpenseSupabase
 } from "@/lib/supabase/database/expense";
-import {
-    getUsersWithPayments,
-    updateUserPayment as updateUserPaymentSupabase
-} from "@/lib/supabase/database/user";
-import { UserProfile } from "@/types/userProfile";
 import {getActiveEdition} from "@/lib/supabase/database/edition";
 import {getRegistrationsByEditionId} from "@/lib/supabase/database/registration";
 import {Expense as SupabaseExpense, NewExpense} from "@/types/expense"; // Use UserProfile type
@@ -106,7 +101,8 @@ export function useFinancials() {
     setError(null);
     try {
         // No need to destructure error, it will throw if there is one
-        await updateUserPaymentSupabase(data.userId, data.amount, data.collectedBy);
+        // TODO FIXME
+        // await updateUserPaymentSupabase(data.userId, data.amount, data.collectedBy);
 
         // Update local state optimistically
         setIncomes((prev) => {

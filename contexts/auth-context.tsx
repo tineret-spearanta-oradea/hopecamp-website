@@ -60,7 +60,7 @@ export function AuthProvider({children}: { children: ReactNode }) {
         const fetchedUserData = await getUserProfile(supabaseUser.id);
 
         const currentEdition = await getActiveEdition(); // TODO remove this after we have edition selector on the UI
-        const registration = await getUserRegistrationByEditionId(currentEdition.id, supabaseUser.id);
+        const registration = await getUserRegistrationByEditionId(currentEdition.id, {userId:supabaseUser.id});
 
         setUserData(fetchedUserData);
         setUserRegistrationData(registration);
@@ -83,7 +83,7 @@ export function AuthProvider({children}: { children: ReactNode }) {
                             const fetchedUserData = await getUserProfile(user.id);
 
                             const currentEdition = await getActiveEdition(); // TODO remove this after we have edition selector on the UI
-                            const registration = await getUserRegistrationByEditionId(currentEdition.id, user.id);
+                            const registration = await getUserRegistrationByEditionId(currentEdition.id, {userId:user.id});
 
                             setUserData(fetchedUserData);
                             setUserRegistrationData(registration);

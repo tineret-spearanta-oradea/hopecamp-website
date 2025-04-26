@@ -62,6 +62,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/uuid": "^10.0.0",
     "dotenv": "^16.5.0",
     "dotenv-cli": "^8.0.0",
     "eslint": "^8",
@@ -71,6 +72,7 @@
     "supabase": "^2.20.12",
     "tailwindcss": "^3.4.1",
     "ts-jest": "^29.3.2",
-    "typescript": "^5"
+    "typescript": "^5",
+    "uuid": "^11.1.0"
   }
 }
