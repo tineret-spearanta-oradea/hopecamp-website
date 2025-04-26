@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { supabaseBrowserClient } from "@/lib/supabase/client";
 import Link from "next/link";
 
-export default function UpdatePasswordPage() {
+export default function UpdatePasswordForm() {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
