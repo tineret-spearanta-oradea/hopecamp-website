@@ -1,38 +1,6 @@
 import {AuthData, FormData, UserData} from '@/types/form';
 import {RegistrationWithProfile} from '@/types/registrationWithProfile';
 import {supabaseAdmin} from "@/lib/supabase/server";
-import {createTestRegistrationWithProfile} from "@/lib/supabase/database/__tests__/helpers/registration";
-import {getNewUserMetadata} from "@/lib/supabase/database/user";
-
-export async function createUser(activeEditionId: number, profileOverrides: Partial<RegistrationWithProfile> = {}, formDataOverrides: Partial<FormData>={}) {
-    // 1. Create base registration data using the new helper
-    const testRegData = createTestRegistrationWithProfile({
-        editionId: activeEditionId, // Ensure it uses the active edition
-        ...profileOverrides
-    });
-
-    // 2. Create FormData based on the RegistrationWithProfile object
-    const testFormDataFromRegistration = createTestFormData(testRegData);
-    const testFormData = {...testFormDataFromRegistration, formDataOverrides};
-
-    // 3. Generate metadata required by the trigger
-    const metadata = getNewUserMetadata(testFormData, activeEditionId);
-
-    // Act: Create the user using the admin API, passing the generated metadata
-    const {data: authUser, error: authError} = await testSupabaseAdmin.auth.admin.createUser({
-        email: testFormData.authData.email,
-        password: testFormData.authData.password, // Use password from FormData
-        email_confirm: true, // Skip email confirmation for test
-        user_metadata: metadata, // Pass the specific metadata part
-        app_metadata: {provider: 'email', providers: ['email']}, // Mimic app metadata
-        id: testRegData.userId, // Assign the specific UUID from registration data
-    });
-
-    expect(authError).toBeNull();
-    expect(authUser).toBeDefined();
-    expect(authUser.user?.id).toBe(testRegData.userId);
-    return testRegData;
-}
 
 const testSupabaseAdmin = supabaseAdmin!;
 

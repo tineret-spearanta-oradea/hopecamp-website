@@ -2,8 +2,9 @@ import {supabaseAdmin} from '@/lib/supabase/server';
 import {getUserProfile} from '../user';
 import {insertEdition} from '../edition';
 import {createTestEdition, createTestEditionObject, deleteAllEditions} from './helpers/edition';
-import {createUser, deleteAllAuthUsers} from './helpers/user'; // Still needed
+import {deleteAllAuthUsers} from './helpers/user'; // Still needed
 import {Edition} from '@/types/edition';
+import {createUserWithRegistration} from "@/lib/supabase/database/__tests__/helpers/registration";
 
 const testSupabaseAdmin = supabaseAdmin!;
 
@@ -35,7 +36,7 @@ describe('User Database Integration Tests', () => {
     describe('handle_new_user trigger', () => {
         it('should create a user_profile when a user is inserted into auth.users with valid metadata', async () => {
             // Arrange
-            const testRegData = await createUser(activeEdition.id, {});
+            const testRegData = await createUserWithRegistration(activeEdition.id, {});
 
             // Assert: Fetch the profile created by the trigger
             // Need a short delay for the trigger to potentially complete

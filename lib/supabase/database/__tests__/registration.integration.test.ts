@@ -8,10 +8,10 @@ import {
     updateRegistrationPayment // Import the new function
 } from '../registration';
 import {createTestEdition, createTestEditionObject, deleteAllEditions} from './helpers/edition';
-import { createUser, deleteAllAuthUsers, createTestFormData } from './helpers/user'; // Import createTestFormData
+import { deleteAllAuthUsers, createTestFormData } from './helpers/user'; // Import createTestFormData
 import { Edition } from '@/types/edition';
 import { FormData } from "@/types/form";
-import { createTestRegistrationWithProfile } from './helpers/registration'; // Import helper
+import {createTestRegistrationWithProfile, createUserWithRegistration} from './helpers/registration'; // Import helper
 
 describe('Registration Database Integration Tests', () => {
     let activeEdition: Edition;
@@ -60,8 +60,8 @@ describe('Registration Database Integration Tests', () => {
             const formData: FormData = createTestFormData(registrationInput);
 
             // 3. Create the user using the helper, passing the specific formData
-            // Note: createUser internally generates metadata based on formData
-            const testRegData = await createUser(activeEdition.id, registrationInput, formData);
+            // Note: createUserWithRegistration internally generates metadata based on formData
+            const testRegData = await createUserWithRegistration(activeEdition.id, registrationInput, formData);
 
             // Assert: Fetch the profile created by the trigger
             // Need a short delay for the trigger to potentially complete
@@ -96,7 +96,7 @@ describe('Registration Database Integration Tests', () => {
     describe('getUserRegistrationByEditionId', () => {
         it('should return the correct registration by userId', async () => {
             // Arrange
-            const testRegData = await createUser(activeEdition.id, {name: "Fetch Me By ID"});
+            const testRegData = await createUserWithRegistration(activeEdition.id, {name: "Fetch Me By ID"});
             await new Promise(resolve => setTimeout(resolve, 100)); // Allow trigger to complete
 
             // Act
@@ -114,7 +114,7 @@ describe('Registration Database Integration Tests', () => {
 
         it('should return the correct registration by email', async () => {
             // Arrange
-            const testRegData = await createUser(activeEdition.id, {name: "Fetch Me By Email"});
+            const testRegData = await createUserWithRegistration(activeEdition.id, {name: "Fetch Me By Email"});
             await new Promise(resolve => setTimeout(resolve, 100)); // Allow trigger to complete
 
             // Act
@@ -132,7 +132,7 @@ describe('Registration Database Integration Tests', () => {
             // Arrange
             const nonExistentEmail = 'nonexistent@example.com';
 
-            await createUser(activeEdition.id);
+            await createUserWithRegistration(activeEdition.id);
             await new Promise(resolve => setTimeout(resolve, 100));
 
             // Act
@@ -146,9 +146,9 @@ describe('Registration Database Integration Tests', () => {
     describe('getRegistrationsByEditionId', () => {
         it('should return all registrations for the active edition', async () => {
             // Arrange: Create multiple users for the active edition
-            const user1Data = await createUser(activeEdition.id, {name: "Reg List User 1"});
-            const user2Data = await createUser(activeEdition.id, {name: "Reg List User 2"});
-            const user3Data = await createUser(activeEdition.id, {name: "Reg List User 3"});
+            const user1Data = await createUserWithRegistration(activeEdition.id, {name: "Reg List User 1"});
+            const user2Data = await createUserWithRegistration(activeEdition.id, {name: "Reg List User 2"});
+            const user3Data = await createUserWithRegistration(activeEdition.id, {name: "Reg List User 3"});
             await new Promise(resolve => setTimeout(resolve, 200)); // Allow triggers to complete
 
             // Act
@@ -166,7 +166,7 @@ describe('Registration Database Integration Tests', () => {
     describe('changeUserAdminStatusForRegistration', () => {
         it('should correctly set and unset the isAdmin flag for a registration', async () => {
             // Arrange
-            const testRegData = await createUser(activeEdition.id, {name: "Admin Status Test"});
+            const testRegData = await createUserWithRegistration(activeEdition.id, {name: "Admin Status Test"});
             await new Promise(resolve => setTimeout(resolve, 100)); // Allow trigger to complete
 
             // Fetch the initial registration to get its ID
@@ -196,7 +196,7 @@ describe('Registration Database Integration Tests', () => {
     describe('updateRegistrationPayment', () => {
         it('should update amount_paid and pay_tax_to for a registration', async () => {
             // Arrange
-            const testRegData = await createUser(activeEdition.id, { name: "Payment Update Test" });
+            const testRegData = await createUserWithRegistration(activeEdition.id, { name: "Payment Update Test" });
             await new Promise(resolve => setTimeout(resolve, 100)); // Allow trigger
 
             // Fetch initial registration to get ID and verify initial state
@@ -224,7 +224,7 @@ describe('Registration Database Integration Tests', () => {
 
         it('should throw an error if amount is negative', async () => {
              // Arrange
-            const testRegData = await createUser(activeEdition.id);
+            const testRegData = await createUserWithRegistration(activeEdition.id);
             await new Promise(resolve => setTimeout(resolve, 100));
             const initialReg = await getUserRegistrationByEditionId(activeEdition.id, { userId: testRegData.userId });
             const registrationId = initialReg!.id;

@@ -6,6 +6,6 @@ export interface Message {
   text: string;
   sentDate: Date;
   isRead: boolean;
-  readByUserId?: string;
+  readByUserName?: string;
   readAt?: Date;
 }
