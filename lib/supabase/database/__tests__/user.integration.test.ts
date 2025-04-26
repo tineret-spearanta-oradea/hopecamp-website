@@ -1,7 +1,7 @@
 import {supabaseAdmin} from '@/lib/supabase/server';
 import {getUserProfile} from '../user';
 import {insertEdition} from '../edition';
-import {createTestEditionObject, deleteAllEditions} from './helpers/edition';
+import {createTestEdition, createTestEditionObject, deleteAllEditions} from './helpers/edition';
 import {createUser, deleteAllAuthUsers} from './helpers/user'; // Still needed
 import {Edition} from '@/types/edition';
 
@@ -17,7 +17,7 @@ describe('User Database Integration Tests', () => {
         // Ensure clean slate for editions
         await deleteAllEditions();
         // Create an active edition required for registration trigger
-        activeEdition = await insertEdition(createTestEditionObject());
+        activeEdition = await createTestEdition(createTestEditionObject());
         expect(activeEdition).toBeDefined();
         expect(activeEdition.is_open).toBe(true);
     });

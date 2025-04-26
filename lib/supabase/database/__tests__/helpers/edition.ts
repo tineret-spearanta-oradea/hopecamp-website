@@ -1,5 +1,6 @@
 import {Edition} from '@/types/edition';
 import {supabaseAdmin} from "@/lib/supabase/server";
+import {insertEdition} from "@/lib/supabase/database/edition";
 
 /**
  * Creates a fully typed Edition object (with Date objects), often used for assertions.
@@ -24,6 +25,10 @@ export function createTestEditionObject(overrides: Partial<Edition> = {}): Editi
         ...defaults,
         ...overrides,
     };
+}
+
+export async function createTestEdition(edition:Edition): Promise<Edition> {
+    return await insertEdition(edition,testSupabaseAdmin);
 }
 
 const testSupabaseAdmin = supabaseAdmin!

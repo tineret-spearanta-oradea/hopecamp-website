@@ -3,7 +3,7 @@
 import {useEffect, useState} from "react";
 import {useAuth} from "@/contexts/auth-context";
 import {useRouter} from "next/navigation";
-import { updateUserData} from "@/lib/supabase/database/registration"; // Import Supabase functions
+import { updateUserRegistrationProfile} from "@/lib/supabase/database/registration"; // Import Supabase functions
 import {getUserRegistrationByEditionId, changeUserAdminStatusForRegistration} from "@/lib/supabase/database/registration";
 import {
     Table,

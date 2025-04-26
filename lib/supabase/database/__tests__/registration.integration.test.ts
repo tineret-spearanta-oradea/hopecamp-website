@@ -4,9 +4,10 @@ import {insertEdition} from '../edition';
 import {
     getUserRegistrationByEditionId,
     getRegistrationsByEditionId,
-    changeUserAdminStatusForRegistration
+    changeUserAdminStatusForRegistration,
+    updateRegistrationPayment // Import the new function
 } from '../registration';
-import {createTestEditionObject, deleteAllEditions} from './helpers/edition';
+import {createTestEdition, createTestEditionObject, deleteAllEditions} from './helpers/edition';
 import { createUser, deleteAllAuthUsers, createTestFormData } from './helpers/user'; // Import createTestFormData
 import { Edition } from '@/types/edition';
 import { FormData } from "@/types/form";
@@ -21,7 +22,7 @@ describe('Registration Database Integration Tests', () => {
         // Ensure clean slate for editions
         await deleteAllEditions();
         // Create an active edition required for registration trigger
-        activeEdition = await insertEdition(createTestEditionObject());
+        activeEdition = await createTestEdition(createTestEditionObject());
         expect(activeEdition).toBeDefined();
         expect(activeEdition.is_open).toBe(true);
     });
@@ -192,4 +193,46 @@ describe('Registration Database Integration Tests', () => {
         });
     });
 
+    describe('updateRegistrationPayment', () => {
+        it('should update amount_paid and pay_tax_to for a registration', async () => {
+            // Arrange
+            const testRegData = await createUser(activeEdition.id, { name: "Payment Update Test" });
+            await new Promise(resolve => setTimeout(resolve, 100)); // Allow trigger
+
+            // Fetch initial registration to get ID and verify initial state
+            const initialReg = await getUserRegistrationByEditionId(activeEdition.id, { userId: testRegData.userId });
+            expect(initialReg).not.toBeNull();
+            expect(initialReg?.amountPaid).toBe(0); // Initial amount should be 0
+            expect(initialReg?.payTaxTo).toBe(testRegData.payTaxTo); // Initial collector
+            const registrationId = initialReg!.id;
+
+            const newAmount = 150;
+            const newCollector = "Test Collector";
+
+            // Act: Update the payment details
+            await updateRegistrationPayment(registrationId, newAmount, newCollector);
+
+            // Assert: Fetch the registration again and verify updated fields
+            const updatedReg = await getUserRegistrationByEditionId(activeEdition.id, { userId: testRegData.userId });
+            expect(updatedReg).not.toBeNull();
+            expect(updatedReg?.amountPaid).toBe(newAmount);
+            expect(updatedReg?.payTaxTo).toBe(newCollector);
+            // Check that other fields haven't changed unexpectedly
+            expect(updatedReg?.name).toBe("Payment Update Test");
+            expect(updatedReg?.id).toBe(registrationId);
+        });
+
+        it('should throw an error if amount is negative', async () => {
+             // Arrange
+            const testRegData = await createUser(activeEdition.id);
+            await new Promise(resolve => setTimeout(resolve, 100));
+            const initialReg = await getUserRegistrationByEditionId(activeEdition.id, { userId: testRegData.userId });
+            const registrationId = initialReg!.id;
+
+            // Act & Assert
+            await expect(updateRegistrationPayment(registrationId, -50, "Negative Collector"))
+                .rejects
+                .toThrow("Amount paid cannot be negative.");
+        });
+    });
 });

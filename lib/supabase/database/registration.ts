@@ -97,10 +97,10 @@ function mapRegistrationWithProfile(row: any): RegistrationWithProfile {
     });
 }
 
-type UpdateRegistrationProfile = Omit<RegistrationWithProfile, "isAdmin" | "isSuperAdmin">;
+type UpdateRegistrationProfile = Omit<RegistrationWithProfile, "isAdmin" | "isSuperAdmin"|"amountPaid" | "payTaxTo">;
 
 // Please note that isAdmin and isSuperAdmin should be updated by calling changeUserAdminStatusForRegistration or changeUserSuperAdminStatus
-export async function updateUserData(registration: UpdateRegistrationProfile): Promise<void> {
+export async function updateUserRegistrationProfile(registration: UpdateRegistrationProfile): Promise<void> {
     try {
         const now = new Date().toISOString();
 
@@ -126,13 +126,11 @@ export async function updateUserData(registration: UpdateRegistrationProfile): P
             church: registration.church,
             church_other: registration.churchOther,
             church_contact: registration.churchContact || "",
-            pay_tax_to: registration.payTaxTo,
             transport: registration.transport,
             preferences: registration.preferences,
             slope_activity: registration.slopeActivity,
             start_date: registration.startDate,
             end_date: registration.endDate,
-            amount_paid: registration.amountPaid,
             updated_at: now
         };
         const {error: registrationError} = await supabaseBrowserClient
@@ -161,5 +159,31 @@ export async function changeUserAdminStatusForRegistration(registrationId: numbe
     if (roleError) {
         console.error("Error updating admin role:", roleError.message);
         throw roleError;
+    }
+}
+
+/**
+ * Updates the payment details (amount paid and collector) for a specific registration.
+ * @param registrationId - The ID of the registration to update.
+ * @param amountPaid - The new amount paid.
+ * @param payTaxTo - The name of the person who collected the payment.
+ */
+export async function updateRegistrationPayment(registrationId: number, amountPaid: number, payTaxTo: string): Promise<void> {
+    if (amountPaid < 0) {
+        throw new Error("Amount paid cannot be negative.");
+    }
+
+    const { error } = await supabaseBrowserClient
+        .from("registrations")
+        .update({
+            amount_paid: amountPaid,
+            pay_tax_to: payTaxTo,
+            updated_at: new Date().toISOString(),
+        })
+        .eq("id", registrationId);
+
+    if (error) {
+        console.error(`Error updating payment for registration ${registrationId}:`, error.message);
+        throw error;
     }
 }

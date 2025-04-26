@@ -1,5 +1,5 @@
 import {getActiveEdition, insertEdition} from '../edition'; // Import insertEdition
-import {createTestEditionObject, deleteAllEditions} from './helpers/edition'; // Import the helper
+import {createTestEdition, createTestEditionObject, deleteAllEditions} from './helpers/edition'; // Import the helper
 
 
 describe('Edition Database Integration Tests', () => {
@@ -27,7 +27,7 @@ describe('Edition Database Integration Tests', () => {
                 start_date: startDate,
                 end_date: endDate,
             });
-            const insertedInactive = await insertEdition(inactiveEditionData);
+            const insertedInactive = await createTestEdition(inactiveEditionData);
             expect(insertedInactive).toBeDefined();
 
             const activeEditionData = createTestEditionObject({
@@ -36,7 +36,7 @@ describe('Edition Database Integration Tests', () => {
                 start_date: startDate,
                 end_date: endDate,
             });
-            const insertedActive = await insertEdition(activeEditionData);
+            const insertedActive = await createTestEdition(activeEditionData);
             expect(insertedActive).toBeDefined();
 
             // Act

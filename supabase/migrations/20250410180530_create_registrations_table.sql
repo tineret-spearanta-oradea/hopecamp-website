@@ -7,7 +7,7 @@ CREATE TABLE registrations
         CONSTRAINT fk_registrations_edition_id REFERENCES editions (id) ON DELETE CASCADE,
     church             TEXT        NOT NULL,
     church_contact     TEXT                 DEFAULT '',
-    church_other     TEXT                 DEFAULT '',
+    church_other       TEXT                 DEFAULT '',
     pay_tax_to         TEXT        NOT NULL,
     transport          TEXT        NOT NULL,
     preferences        TEXT,
@@ -17,7 +17,7 @@ CREATE TABLE registrations
     created_at         TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at         TIMESTAMPTZ NOT NULL DEFAULT now(),
     is_confirmed       BOOLEAN     NOT NULL DEFAULT false,
-    amount_paid        INTEGER     NOT NULL DEFAULT 0 CHECK (amount_paid >= 0),
+    amount_paid        INTEGER     NOT NULL DEFAULT 0 CHECK (amount_paid >= 0), -- maybe we should create a new table for income
     with_family_member BOOLEAN     NOT NULL DEFAULT false
 );
 

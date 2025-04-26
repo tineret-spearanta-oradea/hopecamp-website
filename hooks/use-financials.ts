@@ -4,7 +4,7 @@ import {
     addExpense as addExpenseSupabase
 } from "@/lib/supabase/database/expense";
 import {getActiveEdition} from "@/lib/supabase/database/edition";
-import {getRegistrationsByEditionId} from "@/lib/supabase/database/registration";
+import {getRegistrationsByEditionId, updateRegistrationPayment} from "@/lib/supabase/database/registration";
 import {Expense as SupabaseExpense, NewExpense} from "@/types/expense"; // Use UserProfile type
 
 export interface Expense {
@@ -20,7 +20,7 @@ export interface Expense {
 }
 
 export interface Income {
-  id: string;
+  id: number;
   userId: string;
   userName: string;
   amount: number;
@@ -45,13 +45,13 @@ export function useFinancials() {
       const incomesData: Income[] = registrations
         .filter(registration => registration.amountPaid !== undefined && registration.amountPaid > 0) // Ensure amountPaid exists and is > 0
         .map((registration ) => ({
-            id: registration.userId,
+            id: registration.id,
             userId: registration.userId,
             userName: registration.name || "",
             amount: registration.amountPaid || 0,
             collectedBy: registration.payTaxTo || "", // Use payTaxTo directly as collector's name
             createdAt: registration.createdAt ? new Date(registration.createdAt) : new Date(),
-            paidOn: undefined,// TODO we don't store this. Maybe drop it
+            paidOn: undefined,
         }));
 
       setIncomes(incomesData);
@@ -92,28 +92,27 @@ export function useFinancials() {
   }, []);
 
   const updateUserPayment = async (data: {
-    userId: string;
+    registrationId: number;
     amount: number;
     collectedBy: string;
     userName: string;
+    userId:string;
   }) => {
     setIsLoading(true); // Indicate loading state
     setError(null);
     try {
-        // No need to destructure error, it will throw if there is one
-        // TODO FIXME
-        // await updateUserPaymentSupabase(data.userId, data.amount, data.collectedBy);
+        await updateRegistrationPayment(data.registrationId, data.amount, data.collectedBy);
 
-        // Update local state optimistically
+        // Update local state optimistically *after* successful DB update
         setIncomes((prev) => {
             const existingIndex = prev.findIndex(
-                (income) => income.id === data.userId
+                (income) => income.id === data.registrationId
             );
             // Find the original creation date if the user exists, otherwise use now
-            const originalCreatedAt = prev.find(inc => inc.id === data.userId)?.createdAt || new Date();
+            const originalCreatedAt = prev.find(inc => inc.id === data.registrationId)?.createdAt || new Date();
 
             const updatedIncome: Income = {
-                id: data.userId,
+                id: data.registrationId,
                 userId: data.userId,
                 userName: data.userName,
                 amount: data.amount,

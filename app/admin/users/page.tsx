@@ -9,7 +9,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { useToast } from "@/hooks/use-toast";
 import { Download } from "lucide-react";
 import { UserProfile } from "@/types/userProfile";
-import { updateUserData } from "@/lib/supabase/database/registration"; // Import Supabase functions
+import { updateUserRegistrationProfile } from "@/lib/supabase/database/registration"; // Import Supabase functions
 import { UserDetailsDialog } from "@/components/admin/users/user-details-dialog";
 import { DeleteUserDialog } from "@/components/admin/users/delete-user-dialog";
 import { Button } from "@/components/ui/button";
@@ -87,7 +87,7 @@ export default function UsersPage() {
     try {
       setIsUpdating(true);
 
-      await updateUserData(updatedRegistration);
+      await updateUserRegistrationProfile(updatedRegistration);
 
       await fetchRegistrations(); // Refetch registrations after update
 

@@ -299,13 +299,14 @@ export default function FinanciarPage() {
                   amount: number;
                   collectedBy: string;
                 }) => {
-                  const user = registrations.find((u) => u.userId === data.userId);
-                  if (!user) return;
+                  const registration = registrations.find((u) => u.userId === data.userId);
+                  if (!registration) return;
                   await updateUserPayment({
-                    userId: data.userId,
                     amount: data.amount,
                     collectedBy: data.collectedBy,
-                    userName: user.name,
+                    userName: registration.name,
+                    userId: registration.userId,
+                    registrationId: registration.id
                   });
                 }}
               />

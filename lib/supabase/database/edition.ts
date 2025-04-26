@@ -1,6 +1,6 @@
 import { supabaseBrowserClient } from "@/lib/supabase/client";
-import { supabaseAdmin } from "@/lib/supabase/server"; // Import the admin client
 import { Edition } from "@/types/edition";
+import {SupabaseClient} from "@supabase/supabase-js";
 
 /**
  * Maps a database row (with string dates) to the Edition interface (with Date objects).
@@ -42,16 +42,13 @@ export async function getActiveEdition(): Promise<Edition> {
 /**
  * Inserts a new edition into the database using the admin client.
  * @param editionData - The data for the new edition (dates as ISO strings).
+ * @param supabaseClient - the
  * @returns A Promise resolving to the newly created Edition object.
  */
-export async function insertEdition(editionData: Edition): Promise<Edition> {
+export async function insertEdition(editionData: Edition, supabaseClient: SupabaseClient): Promise<Edition> {
     // Use the admin client for insertion to bypass RLS if necessary during tests/setup
-    const client = supabaseAdmin;
-    if (!client) {
-        throw new Error("Supabase admin client is not initialized.");
-    }
 
-    const { data, error } = await client
+    const { data, error } = await supabaseClient
         .from("editions")
         .insert({
             name: editionData.name,

@@ -10,3 +10,9 @@ You can use this [SQL to REST API translator](https://supabase.com/docs/guides/a
 ```postgresql
 
 ```
+
+### Db tests
+DB function tests are saved under `lib/supabase/database/__tests__`.
+To run the tests, supabase should be started. **Running tests will delete existing db!**
+
+You can run all the tests using `npm run test:integration`.
