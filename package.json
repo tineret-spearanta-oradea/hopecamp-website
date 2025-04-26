@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:integration": "jest --runInBand --detectOpenHandles --forceExit --testMatch '**/__tests__/**/*.integration.test.[jt]s?(x)'"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
@@ -56,14 +57,21 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.14",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/uuid": "^10.0.0",
+    "dotenv": "^16.5.0",
+    "dotenv-cli": "^8.0.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.16",
+    "jest": "^29.7.0",
     "postcss": "^8",
     "supabase": "^2.22.6",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "ts-jest": "^29.3.2",
+    "typescript": "^5",
+    "uuid": "^11.1.0"
   }
 }

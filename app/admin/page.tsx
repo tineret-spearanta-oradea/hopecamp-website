@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useUsers } from "@/hooks/use-users";
+import { useRegistrations } from "@/hooks/use-registrations";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Loader2,
@@ -34,11 +34,11 @@ import { PieChart, Pie, Cell, Tooltip as RechartsTooltip } from "recharts";
 
 export default function AdminDashboardPage() {
   const {
-    users,
+    registrations,
     isLoading: usersLoading,
     error: usersError,
-    fetchUsers,
-  } = useUsers();
+    fetchRegistrations,
+  } = useRegistrations();
   const {
     messages,
     isLoading: messagesLoading,
@@ -48,9 +48,9 @@ export default function AdminDashboardPage() {
   const router = useRouter();
 
   useEffect(() => {
-    fetchUsers();
+    fetchRegistrations();
     fetchMessages();
-  }, [fetchUsers, fetchMessages]);
+  }, [fetchRegistrations, fetchMessages]);
 
   if (usersLoading || messagesLoading) {
     return (
@@ -69,13 +69,13 @@ export default function AdminDashboardPage() {
   }
 
   // Calculate statistics
-  const totalUsers = users?.length || 0;
-  const confirmedUsers = users?.filter((user) => user.isConfirmed).length || 0;
+  const totalUsers = registrations?.length || 0;
+  const confirmedUsers = registrations?.filter((user) => user.isConfirmed).length || 0;
   const unconfirmedUsers = totalUsers - confirmedUsers;
   const totalAmountPaid =
-    users?.reduce((sum, user) => sum + (user.amountPaid || 0), 0) || 0;
+    registrations?.reduce((sum, user) => sum + (user.amountPaid || 0), 0) || 0;
   const averageAge =
-    users?.reduce((sum, user) => sum + (user.age || 0), 0) / totalUsers || 0;
+    registrations?.reduce((sum, user) => sum + (user.age || 0), 0) / totalUsers || 0;
 
   // Calculate days distribution
   const campDays = Array.from(
@@ -91,10 +91,10 @@ export default function AdminDashboardPage() {
     return {
       date: day,
       count:
-        users?.filter((user) => {
-          if (!user.startDate || !user.endDate) return false;
-          const start = new Date(user.startDate);
-          const end = new Date(user.endDate);
+        registrations?.filter((registration) => {
+          if (!registration.startDate || !registration.endDate) return false;
+          const start = new Date(registration.startDate);
+          const end = new Date(registration.endDate);
           return start <= day && end >= day;
         }).length || 0,
     };
@@ -118,7 +118,7 @@ export default function AdminDashboardPage() {
 
   // Calculate registrations per day
   const registrationsByDay =
-    users?.reduce((acc: { date: Date; count: number }[], user) => {
+    registrations?.reduce((acc: { date: Date; count: number }[], user) => {
       const userDate = startOfDay(new Date(user.createdAt));
       const existingDay = acc.find((item) => isSameDay(item.date, userDate));
 
@@ -192,15 +192,15 @@ export default function AdminDashboardPage() {
   const data = [
     {
       name: "Vin cu mașina personală",
-      value: users.filter((user) => user.transport === "personal").length,
+      value: registrations.filter((user) => user.transport === "personal").length,
     },
     {
       name: "Vin cu un prieten cu mașina",
-      value: users.filter((user) => user.transport === "prieten").length,
+      value: registrations.filter((user) => user.transport === "prieten").length,
     },
     {
       name: "Autocar de la biserică",
-      value: users.filter((user) => user.transport === "autocar").length,
+      value: registrations.filter((user) => user.transport === "autocar").length,
     },
   ];
 
@@ -279,19 +279,19 @@ export default function AdminDashboardPage() {
             <div className="mt-4">
               <p className="text-sm">
                 Sub 18:{" "}
-                {users?.filter((user) => (user.age || 0) < 18).length || 0}{" "}
+                {registrations?.filter((user) => (user.age || 0) < 18).length || 0}{" "}
                 participanți
               </p>
               <p className="text-sm">
                 18-25:{" "}
-                {users?.filter(
+                {registrations?.filter(
                   (user) => (user.age || 0) >= 18 && (user.age || 0) <= 25
                 ).length || 0}{" "}
                 participanți
               </p>
               <p className="text-sm">
                 Peste 25:{" "}
-                {users?.filter((user) => (user.age || 0) > 25).length || 0}{" "}
+                {registrations?.filter((user) => (user.age || 0) > 25).length || 0}{" "}
                 participanți
               </p>
             </div>
@@ -352,7 +352,7 @@ export default function AdminDashboardPage() {
               <div>
                 <p className="text-sm font-medium">
                   Plătit Integral (
-                  {users?.filter(
+                  {registrations?.filter(
                     (user) =>
                       (user.amountPaid || 0) >=
                       (user.withFamilyMember ? 1000 : 800)
@@ -366,7 +366,7 @@ export default function AdminDashboardPage() {
               <div>
                 <p className="text-sm font-medium">
                   Plată Parțială (
-                  {users?.filter(
+                  {registrations?.filter(
                     (user) =>
                       (user.amountPaid || 0) > 0 &&
                       (user.amountPaid || 0) <
@@ -381,7 +381,7 @@ export default function AdminDashboardPage() {
               <div>
                 <p className="text-sm font-medium">
                   Neplătit (
-                  {users?.filter((user) => !user.amountPaid).length || 0}{" "}
+                  {registrations?.filter((user) => !user.amountPaid).length || 0}{" "}
                   persoane)
                 </p>
                 <p className="text-xs text-muted-foreground">

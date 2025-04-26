@@ -1,31 +1,15 @@
-import { supabaseBrowserClient } from "@/lib/supabase/client";
-import { PostgrestError } from "@supabase/supabase-js";
-
-// Matches the structure of the 'expenses' table
-export interface Expense {
-    id: number;
-    title: string;
-    amount: number;
-    description?: string | null;
-    created_by: string; // UUID of the user who created it
-    creatorName?: string; // Added field for the creator's name
-    created_at: string;
-    category?: string | null;
-    receipt?: string | null;
-}
-
-// Type for adding a new expense (omits id, created_at)
-export type NewExpense = Omit<Expense, 'id' | 'created_at'>;
+import {supabaseBrowserClient} from "@/lib/supabase/client";
+import {Expense, NewExpense} from "@/types/expense";
 
 
 export async function getAllExpenses(): Promise<Expense[]> {
-    // Join with users_data to get the creator's name
+    // Join with user_profiles to get the creator's name
     const { data, error } = await supabaseBrowserClient
         .from("expenses")
-        // Select all expense fields and the name from the related users_data record
+        // Select all expense fields and the name from the related user_profiles record
         .select(`
             *,
-            creator:users_data ( name )
+            creator:user_profiles ( name )
         `)
         .order("created_at", { ascending: false });
 
@@ -78,7 +62,7 @@ export async function addExpense(expenseData: NewExpense): Promise<Expense> {
         // Select the inserted data AND the creator's name via join
         .select(`
             *,
-            creator:users_data ( name )
+            creator:user_profiles ( name )
         `)
         .single();
 

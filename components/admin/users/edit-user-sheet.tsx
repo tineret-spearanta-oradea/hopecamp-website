@@ -23,7 +23,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { UserData } from "@/types/userData";
 import React, { useState } from "react";
 import {
   transportOptions,
@@ -40,6 +39,8 @@ import {
 } from "@/components/ui/accordion";
 import { DatePickerWithRange } from "@/components/ui/date-picker";
 import { toast } from "sonner";
+
+import {RegistrationWithProfile} from "@/types/registrationWithProfile";
 
 const userFormSchema = z.object({
   // Read-only fields for regular admins, editable for superAdmin
@@ -76,16 +77,16 @@ const userFormSchema = z.object({
 type UserFormValues = z.infer<typeof userFormSchema>;
 
 interface EditUserSheetProps {
-  user: UserData;
+  registration: RegistrationWithProfile;
   isOpen: boolean;
   onClose: () => void;
-  onUpdate: (user: UserData) => Promise<void>;
+  onUpdate: (user: RegistrationWithProfile) => Promise<void>;
   isSuperAdmin?: boolean;
   isUpdating?: boolean;
 }
 
 export function EditUserSheet({
-  user,
+  registration,
   isOpen,
   onClose,
   onUpdate,
@@ -116,26 +117,26 @@ export function EditUserSheet({
   });
 
   React.useEffect(() => {
-    if (user) {
+    if (registration) {
       const formValues = {
-        name: user.name,
-        phone: user.phone || "",
-        church: user.church || "",
-        age: user.age || 0,
-        transport: user.transport as "personal" | "prieten" | "autocar",
-        payTaxTo: user.payTaxTo || "",
-        slopeActivity: user.slopeActivity as "nu" | "vizita" | "schi" | "sanie",
-        amountPaid: user.amountPaid || 0,
-        isConfirmed: user.isConfirmed || false,
-        preferences: user.preferences || "",
-        withFamilyMember: user.withFamilyMember || false,
-        startDate: user.startDate ? new Date(user.startDate) : new Date(),
-        endDate: user.endDate ? new Date(user.endDate) : new Date(),
+        name: registration.name,
+        phone: registration.phone || "",
+        church: registration.church || "",
+        age: registration.age || 0,
+        transport: registration.transport as "personal" | "prieten" | "autocar",
+        payTaxTo: registration.payTaxTo || "",
+        slopeActivity: registration.slopeActivity as "nu" | "vizita" | "schi" | "sanie",
+        amountPaid: registration.amountPaid || 0,
+        isConfirmed: registration.isConfirmed || false,
+        preferences: registration.preferences || "",
+        withFamilyMember: registration.withFamilyMember || false,
+        startDate: registration.startDate ? new Date(registration.startDate) : new Date(),
+        endDate: registration.endDate ? new Date(registration.endDate) : new Date(),
       };
       form.reset(formValues);
       setIsDirty(false);
     }
-  }, [user, form]);
+  }, [registration, form]);
 
   const handleClose = () => {
     if (isDirty) {
@@ -149,7 +150,7 @@ export function EditUserSheet({
   async function onSubmit(data: UserFormValues) {
     try {
       const updatedUser = {
-        ...user,
+        ...registration,
         ...data,
         updatedAt: new Date(),
         startDate: data.startDate,
@@ -173,7 +174,7 @@ export function EditUserSheet({
       <SheetContent className="sm:max-w-[500px] overflow-y-auto">
         <SheetHeader>
           <SheetTitle>Editare Participant</SheetTitle>
-          <SheetDescription>{user.name}</SheetDescription>
+          <SheetDescription>{registration.name}</SheetDescription>
         </SheetHeader>
         <div className="py-4">
           <Form {...form}>

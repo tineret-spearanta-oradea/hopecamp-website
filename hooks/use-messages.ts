@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { Message } from "@/types/message";
 import { toast } from "sonner";
 import {getAllMessages, setMessageRead} from "@/lib/supabase/database/message";
+import {getActiveEdition} from "@/lib/supabase/database/edition";
 
 export function useMessages() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -11,7 +12,8 @@ export function useMessages() {
   const fetchMessages = useCallback(async () => {
     try {
       setIsLoading(true);
-      const messagesData = await getAllMessages();
+      const currentEdition = await getActiveEdition(); // TODO remove this after we have edition selector on the UI
+      const messagesData = await getAllMessages(currentEdition.id);
       setMessages(messagesData);
       setError(null);
     } catch (err) {

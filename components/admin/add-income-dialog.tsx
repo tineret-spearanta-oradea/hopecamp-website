@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { UserData } from "@/types/userData";
 import {
   Dialog,
   DialogContent,
@@ -23,10 +22,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import {RegistrationWithProfile} from "@/types/registrationWithProfile";
+
 interface AddIncomeDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  users: UserData[];
+  registration: RegistrationWithProfile[];
   selectedCollector: string | null;
   onSave: (data: {
     userId: string;
@@ -38,7 +39,7 @@ interface AddIncomeDialogProps {
 export function AddIncomeDialog({
   open,
   onOpenChange,
-  users,
+  registration,
   selectedCollector: defaultCollector,
   onSave,
 }: AddIncomeDialogProps) {
@@ -64,18 +65,18 @@ export function AddIncomeDialog({
   };
 
   // Get selected user's current amount
-  const selectedUserData = users.find((u) => u.uid === selectedUser);
+  const selectedUserData = registration.find((u) => u.userId === selectedUser);
   const currentAmount = selectedUserData?.amountPaid || 0;
 
-  // Filter users based on search query
-  const filteredUsers = users.filter(
+  // Filter registrations based on search query
+  const filteredUsers = registration.filter(
     (user) =>
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       user.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleUserSelect = (user: UserData) => {
-    setSelectedUser(user.uid);
+  const handleUserSelect = (user: RegistrationWithProfile) => {
+    setSelectedUser(user.userId);
     setSearchQuery(user.name);
     setShowDropdown(false);
 
@@ -157,15 +158,15 @@ export function AddIncomeDialog({
                   ) : (
                     filteredUsers.map((user) => (
                       <div
-                        key={user.uid}
+                        key={user.userId}
                         className={cn(
                           "flex items-center gap-2 p-2 cursor-pointer hover:bg-accent",
-                          selectedUser === user.uid && "bg-accent"
+                          selectedUser === user.userId && "bg-accent"
                         )}
                         onClick={() => handleUserSelect(user)}
                       >
                         <div className="min-w-[16px]">
-                          {selectedUser === user.uid && (
+                          {selectedUser === user.userId && (
                             <Check className="h-4 w-4" />
                           )}
                         </div>

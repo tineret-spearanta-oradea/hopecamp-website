@@ -45,10 +45,9 @@ If something goes wrong, please refer to https://supabase.com/docs/guides/local-
 11. Reload the page, and you should see a button for admin page. Or you can go to http://localhost:3000/admin
 12. `supabase stop` to stop the containers
 
-### Applying migrations
-
-You can apply migrations locally by resetting the db: `supabase db reset`
-
 ### Supabase access rules
 
 Supabase uses [psql row level security](https://supabase.com/docs/guides/database/postgres/row-level-security)
+
+### Querying the db & applying migrations
+Please check [DB.md for more details and examples.](./DB.md)

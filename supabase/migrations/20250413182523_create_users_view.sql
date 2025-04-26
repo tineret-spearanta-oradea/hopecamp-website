@@ -1,4 +1,8 @@
-CREATE OR REPLACE VIEW public.users_view AS
-SELECT ud.*, u.email, u.phone as auth_phone
-FROM public.users_data ud
-LEFT JOIN auth.users u ON u.id = ud.uid;
+-- auth.users is not visible. Expose the user and phone number from it
+CREATE OR REPLACE VIEW public.auth_users_view AS
+SELECT id, email, auth.users.phone as auth_phone
+FROM auth.users
+         INNER JOIN public.user_profiles up on users.id = up.user_id;
+
+
+

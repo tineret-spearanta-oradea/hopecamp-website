@@ -18,14 +18,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { UserData } from "@/types/userData";
 import { sortingFns } from "@tanstack/react-table";
 import { sumToPay } from "@/lib/constants";
 
+import {RegistrationWithProfile} from "@/types/registrationWithProfile";
+
 interface ColumnProps {
-  onEdit?: (user: UserData) => void;
-  onDelete?: (user: UserData) => void;
-  onViewDetails?: (user: UserData) => void;
+  onEdit?: (user: RegistrationWithProfile) => void;
+  onDelete?: (user: RegistrationWithProfile) => void;
+  onViewDetails?: (user: RegistrationWithProfile) => void;
   isSuperAdmin?: boolean;
 }
 
@@ -62,9 +63,9 @@ export const columns = ({
   onDelete,
   onViewDetails,
   isSuperAdmin,
-}: ColumnProps): ColumnDef<UserData>[] => [
+}: ColumnProps): ColumnDef<RegistrationWithProfile>[] => [
   {
-    accessorKey: "uid",
+    accessorKey: "userId",
     header: "Id",
     cell: ({ row, table }) => {
       const totalRows = table.getCoreRowModel().rows.length;
@@ -153,9 +154,7 @@ export const columns = ({
 
       if (
         !start ||
-        !end ||
-        !(start instanceof Date) ||
-        !(end instanceof Date)
+        !end
       ) {
         return "-";
       }

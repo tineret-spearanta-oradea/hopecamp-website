@@ -56,7 +56,7 @@ function StatusCellWrapper({
 
   const handleStatusChange = async (newStatus: boolean) => {
     try {
-      await updateMessageStatus(row.original.id, newStatus, user?.uid);
+      await updateMessageStatus(row.original.id, newStatus, user?.userId);
     } catch (error) {
       console.error("Error updating message status:", error);
     }

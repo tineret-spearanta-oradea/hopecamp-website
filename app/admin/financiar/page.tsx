@@ -1,6 +1,6 @@
 "use client";
 
-import { useUsers } from "@/hooks/use-users";
+import { useRegistrations } from "@/hooks/use-registrations";
 import { useAuth } from "@/contexts/auth-context";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -37,7 +37,7 @@ const getCollectorName = (collectorId: string) => {
 };
 
 export default function FinanciarPage() {
-  const { users, isLoading: usersLoading, fetchUsers } = useUsers();
+  const { registrations, isLoading: usersLoading, fetchRegistrations } = useRegistrations();
   const {
     expenses,
     incomes,
@@ -71,7 +71,7 @@ export default function FinanciarPage() {
     if (activeTab === "cheltuieli") {
       fetchExpenses();
     } else {
-      Promise.all([fetchIncomes(), fetchUsers()]);
+      Promise.all([fetchIncomes(), fetchRegistrations()]);
     }
   }, [activeTab]);
 
@@ -107,15 +107,15 @@ export default function FinanciarPage() {
     (sum, income) => sum + income.amount,
     0
   );
-  const totalParticipants = users.length;
-  const noDepositCount = users.filter((user) => {
+  const totalParticipants = registrations.length;
+  const noDepositCount = registrations.filter((user) => {
     const shouldCount = !user.amountPaid || user.amountPaid < sumToPay.deposit;
     if (selectedCollector) {
       return shouldCount && user.payTaxTo === selectedCollector;
     }
     return shouldCount;
   }).length;
-  const noFullPaymentCount = users.filter((user) => {
+  const noFullPaymentCount = registrations.filter((user) => {
     const shouldCount = !user.amountPaid || user.amountPaid < sumToPay.normal;
     if (selectedCollector) {
       return shouldCount && user.payTaxTo === selectedCollector;
@@ -124,7 +124,7 @@ export default function FinanciarPage() {
   }).length;
 
   // Calculate payment statistics
-  const noPaymentCount = users.filter((user) => {
+  const noPaymentCount = registrations.filter((user) => {
     const shouldCount = !user.amountPaid || user.amountPaid === 0;
     if (selectedCollector) {
       return shouldCount && user.payTaxTo === selectedCollector;
@@ -132,7 +132,7 @@ export default function FinanciarPage() {
     return shouldCount;
   }).length;
 
-  const depositOnlyCount = users.filter((user) => {
+  const depositOnlyCount = registrations.filter((user) => {
     const shouldCount =
       user.amountPaid &&
       user.amountPaid >= sumToPay.deposit &&
@@ -143,7 +143,7 @@ export default function FinanciarPage() {
     return shouldCount;
   }).length;
 
-  const fullyPaidCount = users.filter((user) => {
+  const fullyPaidCount = registrations.filter((user) => {
     const shouldCount = user.amountPaid && user.amountPaid >= sumToPay.normal;
     if (selectedCollector) {
       return shouldCount && user.payTaxTo === selectedCollector;
@@ -168,7 +168,7 @@ export default function FinanciarPage() {
       ...expense,
       description: expense.description || "",
       category: expense.category || "",
-      createdBy: user.uid,
+      createdBy: user.userId,
       creatorName: user.name,
     });
   };
@@ -292,20 +292,21 @@ export default function FinanciarPage() {
               <AddIncomeDialog
                 open={isAddIncomeOpen}
                 onOpenChange={setIsAddIncomeOpen}
-                users={users}
+                registration={registrations}
                 selectedCollector={selectedCollector}
                 onSave={async (data: {
                   userId: string;
                   amount: number;
                   collectedBy: string;
                 }) => {
-                  const user = users.find((u) => u.uid === data.userId);
-                  if (!user) return;
+                  const registration = registrations.find((u) => u.userId === data.userId);
+                  if (!registration) return;
                   await updateUserPayment({
-                    userId: data.userId,
                     amount: data.amount,
                     collectedBy: data.collectedBy,
-                    userName: user.name,
+                    userName: registration.name,
+                    userId: registration.userId,
+                    registrationId: registration.id
                   });
                 }}
               />

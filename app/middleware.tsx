@@ -1,5 +1,5 @@
 // see https://supabase.com/docs/guides/auth/server-side/nextjs
-// this should redirect unauthenticated users to login page
+// this should redirect unauthenticated registrations to login page
 import { type NextRequest } from 'next/server'
 import { updateSession } from '@/utils/supabase/middleware'
 

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 // Import the updated server client creation function and the admin client
 import { createServerActionClient, supabaseAdmin } from "@/lib/supabase/server"; // Use createServerActionClient
-import { getUserData } from "@/lib/supabase/database/user"; // Import the modified function
+import { getUserProfile } from "@/lib/supabase/database/user"; // Import the modified function
 
 export async function DELETE(request: NextRequest) {
     // 1. Create a server client instance for this request to check user auth
@@ -14,8 +14,8 @@ export async function DELETE(request: NextRequest) {
     }
 
     // 2. Check if the requesting user is a super admin using the server client
-    // Pass the supabaseUserClient to getUserData
-    const currentUserData = await getUserData(user.id, supabaseUserClient);
+    // Pass the supabaseUserClient to getUserProfile
+    const currentUserData = await getUserProfile(user.id, supabaseUserClient);
     if (!currentUserData?.isSuperAdmin) {
         console.warn(`Delete user API: User ${user.id} (${currentUserData?.email || 'email unknown'}) attempted delete without super admin rights.`);
         return NextResponse.json({ message: "Forbidden: Admin privileges required" }, { status: 403 });
@@ -55,8 +55,8 @@ export async function DELETE(request: NextRequest) {
         }
 
         console.log(`Delete user API: User ${userIdToDelete} deleted successfully by admin ${user.id}`);
-        // Note: Deleting the auth user might trigger database cascades to delete related data (e.g., users_data)
-        // If not, you might need to explicitly delete from users_data here using supabaseAdmin.
+        // Note: Deleting the auth user might trigger database cascades to delete related data (e.g., user_profiles)
+        // If not, you might need to explicitly delete from user_profiles here using supabaseAdmin.
         return NextResponse.json({ message: "User deleted successfully" }, { status: 200 });
 
     } catch (error: any) {
