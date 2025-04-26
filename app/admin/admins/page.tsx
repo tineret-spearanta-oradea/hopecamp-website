@@ -190,10 +190,7 @@ export default function AdminsPage() {
                 return;
             }
 
-            await handleRoleUpdate(userToAdd.userId, {
-                isSuperAdmin: true,
-                isAdmin: true,
-            });
+            await changeUserAdminStatusForRegistration(currentEdition.id, true);
 
             // Add to local admins list
             setAdmins([...admins, {...userToAdd, isAdmin: true}]);

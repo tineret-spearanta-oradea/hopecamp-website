@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test:integration": "jest --runInBand --detectOpenHandles --forceExit --testMatch '**/__tests__/**/*.integration.test.[jt]s?(x)'",
-    "test": "jest"
+    "test:integration": "jest --runInBand --detectOpenHandles --forceExit --testMatch '**/__tests__/**/*.integration.test.[jt]s?(x)'"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",

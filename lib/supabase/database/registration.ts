@@ -97,7 +97,8 @@ function mapRegistrationWithProfile(row: any): RegistrationWithProfile {
     });
 }
 
-type UpdateRegistrationProfile = Omit<RegistrationWithProfile, "isAdmin" | "isSuperAdmin"|"amountPaid" | "payTaxTo">;
+// Allow updating most fields except roles (handled separately)
+type UpdateRegistrationProfile = Omit<RegistrationWithProfile, "isAdmin" | "isSuperAdmin">;
 
 // Please note that isAdmin and isSuperAdmin should be updated by calling changeUserAdminStatusForRegistration or changeUserSuperAdminStatus
 export async function updateUserRegistrationProfile(registration: UpdateRegistrationProfile): Promise<void> {
@@ -131,6 +132,10 @@ export async function updateUserRegistrationProfile(registration: UpdateRegistra
             slope_activity: registration.slopeActivity,
             start_date: registration.startDate,
             end_date: registration.endDate,
+            is_confirmed: registration.isConfirmed,
+            amount_paid: registration.amountPaid,
+            pay_tax_to: registration.payTaxTo,
+            with_family_member: registration.withFamilyMember,
             updated_at: now
         };
         const {error: registrationError} = await supabaseBrowserClient

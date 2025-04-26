@@ -1,17 +1,16 @@
-import {supabaseAdmin} from '@/lib/supabase/server';
-import {getUserProfile} from '../user';
-import {insertEdition} from '../edition';
 import {
     getUserRegistrationByEditionId,
     getRegistrationsByEditionId,
     changeUserAdminStatusForRegistration,
-    updateRegistrationPayment // Import the new function
+    updateRegistrationPayment,
+    updateUserRegistrationProfile // Ensure this is imported
 } from '../registration';
 import {createTestEdition, createTestEditionObject, deleteAllEditions} from './helpers/edition';
 import { deleteAllAuthUsers, createTestFormData } from './helpers/user'; // Import createTestFormData
 import { Edition } from '@/types/edition';
 import { FormData } from "@/types/form";
-import {createTestRegistrationWithProfile, createUserWithRegistration} from './helpers/registration'; // Import helper
+import {createTestRegistrationWithProfile, createUserWithRegistration} from './helpers/registration';
+import {RegistrationWithProfile} from "@/types/registrationWithProfile"; // Import helper
 
 describe('Registration Database Integration Tests', () => {
     let activeEdition: Edition;
@@ -233,6 +232,73 @@ describe('Registration Database Integration Tests', () => {
             await expect(updateRegistrationPayment(registrationId, -50, "Negative Collector"))
                 .rejects
                 .toThrow("Amount paid cannot be negative.");
+        });
+    });
+
+    describe('updateUserRegistrationProfile', () => {
+        it('should update user profile and registration details correctly, including is_confirmed, but not payment or role fields', async () => {
+            // Arrange: Create a user
+            const initialData = createTestRegistrationWithProfile();
+            const createdUser = await createUserWithRegistration(activeEdition.id, initialData);
+            await new Promise(resolve => setTimeout(resolve, 100)); // Allow trigger
+
+            // Fetch initial state to confirm setup and get IDs
+            const initialReg = await getUserRegistrationByEditionId(activeEdition.id, { userId: createdUser.userId });
+            expect(initialReg).not.toBeNull();
+            expect(initialReg?.isConfirmed).toBe(false);
+            expect(initialReg?.amountPaid).toBe(0); // Trigger sets amountPaid to 0 initially
+            expect(initialReg?.payTaxTo).toBe(initialData.payTaxTo); // Trigger sets payTaxTo
+            expect(initialReg?.isAdmin).toBe(false);
+            expect(initialReg?.isSuperAdmin).toBe(false);
+
+            // Define updates - Use the fetched initialReg data where needed
+            const updatedData: Omit<RegistrationWithProfile, "isAdmin" | "isSuperAdmin"> = {
+                ...initialReg!, // Spread the fetched registration data
+                // Update profile fields
+                name: "Updated Name",
+                phone: "0722222222",
+                age: 26,
+                imageUrl: "updated.jpg",
+                // Update registration fields
+                church: "Updated Church",
+                transport: "updated transport",
+                preferences: "updated prefs",
+                slopeActivity: "schi", // Use the mapped value expected by the DB
+                startDate: new Date(2025, 1, 21),
+                endDate: new Date(2025, 1, 23),
+                isConfirmed: true, // Explicitly update isConfirmed
+                amountPaid: 100, // Update amountPaid
+                payTaxTo: "Updated Collector",
+                withFamilyMember: !initialReg!.withFamilyMember,
+                churchContact:"test test"
+            };
+
+            // Act: Call the update function
+            await updateUserRegistrationProfile(updatedData);
+
+            // Assert: Fetch the updated registration
+            const updatedReg = await getUserRegistrationByEditionId(activeEdition.id, { userId: createdUser.userId });
+            expect(updatedReg).not.toBeNull();
+            // Check updated fields
+            expect(updatedReg?.name).toBe("Updated Name");
+            expect(updatedReg?.phone).toBe("0722222222");
+            expect(updatedReg?.age).toBe(26);
+            expect(updatedReg?.imageUrl).toBe("updated.jpg");
+            expect(updatedReg?.church).toBe("Updated Church");
+            expect(updatedReg?.transport).toBe("updated transport");
+            expect(updatedReg?.preferences).toBe("updated prefs");
+            expect(updatedReg?.slopeActivity).toBe("schi");
+            expect(updatedReg?.startDate.toISOString()).toBe(new Date(2025, 1, 21).toISOString());
+            expect(updatedReg?.endDate.toISOString()).toBe(new Date(2025, 1, 23).toISOString());
+            expect(updatedReg?.isConfirmed).toBe(true); // Verify isConfirmed was updated
+            expect(updatedReg?.amountPaid).toBe(100); // Verify amountPaid was updated
+            expect(updatedReg?.payTaxTo).toBe("Updated Collector"); // Verify payTaxTo was updated
+            expect(updatedReg?.withFamilyMember).toBe(updatedData.withFamilyMember);
+            expect(updatedReg?.churchContact).toBe(updatedData.churchContact);
+
+            // Check fields that should NOT have been updated by this function (roles)
+            expect(updatedReg?.isAdmin).toBe(initialReg?.isAdmin); // Should remain false
+            expect(updatedReg?.isSuperAdmin).toBe(initialReg?.isSuperAdmin); // Should remain false
         });
     });
 });

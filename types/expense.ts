@@ -9,5 +9,6 @@ export interface Expense {
     created_at: string;
     category?: string | null;
     receipt?: string | null;
-} // Type for adding a new expense (omits id, created_at)
+}
+// Type for adding a new expense (omits id, created_at)
 export type NewExpense = Omit<Expense, 'id' | 'created_at'>;
