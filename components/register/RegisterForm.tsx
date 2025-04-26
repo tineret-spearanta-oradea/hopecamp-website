@@ -43,6 +43,7 @@ export default function RegisterForm() {
               handleNext={handleNext}
               validationErrors={validationErrors}
               isLoading={isLoading}
+              handleImageChange={handleImageChange} // Pass image handler
             />
           )}
 
@@ -53,7 +54,6 @@ export default function RegisterForm() {
               handleNext={handleNext}
               handlePrev={handlePrev}
               handleDateChange={handleDateChange}
-              handleImageChange={handleImageChange}
               validationErrors={validationErrors}
               isLoading={isLoading}
             />
@@ -62,12 +62,14 @@ export default function RegisterForm() {
           {step === 3 && (
             <Step3
               formData={formData}
+              handleChange={handleChange}
               handlePrev={handlePrev}
               handleSubmit={handleSubmit}
               agreementChecked={agreementChecked}
               setAgreementChecked={setAgreementChecked}
               downloadCampRules={downloadCampRules}
               isLoading={isLoading}
+              validationErrors={validationErrors}
             />
           )}
         </CardContent>

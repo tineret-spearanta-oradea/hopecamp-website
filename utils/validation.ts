@@ -1,9 +1,9 @@
 import { FormData, ValidationErrors } from "@/types/form";
 
 const initialValidationErrors: ValidationErrors = {
-  email: "",
-  password: "",
-  confirmPassword: "",
+  // email: "", // Removed
+  // password: "", // Removed
+  // confirmPassword: "", // Removed
   name: "",
   age: "",
   phone: "",
@@ -13,31 +13,7 @@ const initialValidationErrors: ValidationErrors = {
   transport: "",
 };
 
-export const validateAuthFields = (
-  authData: FormData["authData"]
-): ValidationErrors => {
-  const errors: ValidationErrors = { ...initialValidationErrors };
-
-  if (!authData.email) {
-    errors.email = "Adresa de email este necesară.";
-  } else if (!/\S+@\S+\.\S+/.test(authData.email)) {
-    errors.email = "Adresa de email nu este validă.";
-  }
-
-  if (!authData.password) {
-    errors.password = "Parola este necesară.";
-  } else if (authData.password.length < 6) {
-    errors.password = "Parola trebuie să aibă cel puțin 6 caractere.";
-  }
-
-  if (!authData.confirmPassword) {
-    errors.confirmPassword = "Te rugăm să confirmi parola.";
-  } else if (authData.password !== authData.confirmPassword) {
-    errors.confirmPassword = "Parolele nu se potrivesc.";
-  }
-
-  return errors;
-};
+// Removed validateAuthFields function
 
 export const validateUserFields = (
   userData: FormData["userData"]

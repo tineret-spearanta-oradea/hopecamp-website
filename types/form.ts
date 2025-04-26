@@ -26,9 +26,9 @@ export interface FormData {
 }
 
 export interface ValidationErrors {
-  email?: string;
-  password?: string;
-  confirmPassword?: string;
+  // email?: string; // Removed - No longer collected in initial steps
+  // password?: string; // Removed
+  // confirmPassword?: string; // Removed
   name?: string;
   age?: string;
   phone?: string;
@@ -54,6 +54,7 @@ export interface StepProps {
   setAgreementChecked?: (checked: boolean) => void;
   handleSubmit?: () => void;
   isLoading?: boolean;
+  downloadCampRules?: () => void; // Added missing prop
 }
 
 export interface Step3Props {

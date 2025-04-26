@@ -1,11 +1,13 @@
-import { StepProps } from "@/types/form";
+import { StepProps, FormData, ValidationErrors } from "@/types/form";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import Link from "next/link";
+import { Label } from "../ui/label"; // Added
 import { StepWrapper } from "./StepWrapper";
-import { title } from "@/lib/constants";
-import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { UploadButton } from "@/utils/uploadthing"; // Added
+import { useState, useEffect } from "react"; // Added useEffect
+import { cn } from "@/lib/utils"; // Added
+import { toast } from "sonner"; // Added
+import Image from "next/image"; // Added
 
 export default function Step1({
   formData,
@@ -13,137 +15,177 @@ export default function Step1({
   handleNext,
   validationErrors,
   isLoading,
-}: StepProps) {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  handleImageChange,
+}: StepProps & { handleImageChange: (imageUrl: string) => void }) { // Adjusted props type
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    objectName: keyof typeof formData
+    objectName: keyof FormData
   ) => {
     handleChange(objectName, e.target);
   };
 
-  return (
-    <StepWrapper title="Pasul 1/3: Autentificare" isLoading={isLoading}>
-      <div className="space-y-8">
-        <div className="space-y-4 text-center">
-          <p className="text-base">
-            {title} este o tabără creștină de tineret, organizată de Tineret
-            Speranța Oradea. Mai multe găsiți în{" "}
-            <Link
-              href="/"
-              className="hover:underline font-bold text-hope-lightcyan"
+  // Added useEffect for help toast (copied from original Step2)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      toast.info("Ai nevoie de ajutor?", {
+        description: (
+          <div>
+            Dacă întâmpini probleme, ne poți contacta pe{" "}
+            <a
+              href="https://wa.me/40773311577"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-hope-darkcyan hover:underline"
             >
-              pagina principală
-            </Link>
-            .
-          </p>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Chiar dacă ai mai fost cu noi în tabără în anii trecuți, trebuie să
-            îți faci cont nou.
-          </p>
-        </div>
+              WhatsApp
+            </a>{" "}
+            (0773 311 577) sau la{" "}
+            <a
+              href="mailto:dev@hopecamp.ro"
+              className="text-hope-darkcyan hover:underline"
+            >
+              dev@hopecamp.ro
+            </a>
+          </div>
+        ),
+        duration: 45000,
+        action: {
+          label: "Închide",
+          onClick: () => console.log("Closed"),
+        },
+      });
+    }, 45000); // 45 seconds
+
+    return () => clearTimeout(timer);
+  }, []); // Only run once when component mounts
+
+  return (
+    <StepWrapper title="Pasul 1/3: Detalii Personale" isLoading={isLoading}>
+      <div className="space-y-8">
 
         <div className="space-y-4">
+          {/* Name Input */}
           <div className="space-y-2">
+            <Label className="text-base font-semibold">Numele întreg *</Label>
             <Input
-              type="email"
-              placeholder="Email"
-              name="email"
-              value={formData.authData.email}
-              onChange={(e) => handleInputChange(e, "authData")}
-              className={validationErrors.email ? "border-destructive" : ""}
+              type="text"
+              name="name"
+              value={formData.userData.name}
+              onChange={(e) => handleInputChange(e, "userData")}
+              className={validationErrors.name ? "border-destructive" : ""}
             />
-            {validationErrors.email && (
-              <p className="text-destructive text-xs">
-                {validationErrors.email}
-              </p>
+            {validationErrors.name && (
+              <p className="text-destructive text-xs">{validationErrors.name}</p>
             )}
           </div>
 
+          {/* Age Input */}
           <div className="space-y-2">
-            <div className="relative">
-              <Input
-                type={showPassword ? "text" : "password"}
-                placeholder="Parola"
-                name="password"
-                value={formData.authData.password}
-                onChange={(e) => handleInputChange(e, "authData")}
-                className={
-                  validationErrors.password ? "border-destructive" : ""
-                }
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-              >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4" />
-                ) : (
-                  <Eye className="h-4 w-4" />
-                )}
-              </button>
-            </div>
-            {validationErrors.password && (
-              <p className="text-destructive text-xs">
-                {validationErrors.password}
-              </p>
+            <Label className="text-base font-semibold">Vârsta *</Label>
+            <Input
+              type="number"
+              name="age"
+              value={formData.userData.age}
+              onChange={(e) => handleInputChange(e, "userData")}
+              className={validationErrors.age ? "border-destructive" : ""}
+            />
+            {validationErrors.age && (
+              <p className="text-destructive text-xs">{validationErrors.age}</p>
             )}
           </div>
 
+          {/* Image Upload */}
           <div className="space-y-2">
-            <div className="relative">
-              <Input
-                type={showConfirmPassword ? "text" : "password"}
-                placeholder="Confirma parola"
-                name="confirmPassword"
-                value={formData.authData.confirmPassword}
-                onChange={(e) => handleInputChange(e, "authData")}
-                className={
-                  validationErrors.confirmPassword ? "border-destructive" : ""
-                }
+            <Label className="text-base font-semibold">
+              Încarcă poză cu tine
+            </Label>
+            <div className="space-y-4">
+              <UploadButton
+                endpoint="profileImage"
+                onClientUploadComplete={(res) => {
+                  if (res?.[0]?.url) {
+                    handleImageChange(res[0].url);
+                    setIsUploading(false);
+                    toast.success("Poza a fost încărcată cu succes!", {
+                      description: "Poți continua cu înregistrarea.",
+                    });
+                  }
+                }}
+                onUploadError={(error: Error) => {
+                  console.error("Upload error:", error);
+                  setIsUploading(false);
+
+                  if (error.message.includes("FileSizeMismatch")) {
+                    toast.error("Fișierul este prea mare", {
+                      description: "Te rugăm să încarci o poză mai mică de 4MB.",
+                    });
+                  } else {
+                    toast.error("Eroare la încărcare", {
+                      description:
+                        "Te rugăm să încerci din nou. Dacă problema persistă, contactează-ne. Dacă nu reușești nicicum să încarci poza, poti trece la urmatorul pas, si te vom contacta mai tarziu.",
+                    });
+                  }
+                }}
+                onUploadBegin={() => {
+                  setIsUploading(true);
+                }}
+                appearance={{
+                  button: cn(
+                    "bg-secondary text-secondary-foreground hover:bg-secondary/90",
+                    formData.userData.imageUrl && "opacity-50 cursor-not-allowed"
+                  ),
+                  allowedContent: "text-sm text-muted-foreground text-center",
+                }}
               />
-              <button
-                type="button"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-              >
-                {showConfirmPassword ? (
-                  <EyeOff className="h-4 w-4" />
-                ) : (
-                  <Eye className="h-4 w-4" />
-                )}
-              </button>
+              {isUploading && (
+                <p className="text-sm text-muted-foreground text-center animate-pulse">
+                  Se încarcă poza...
+                </p>
+              )}
+              {formData.userData.imageUrl ? (
+                <div className="flex items-center gap-2 text-xs text-emerald-600 font-medium">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border bg-muted">
+                    <Image
+                      src={formData.userData.imageUrl}
+                      alt="Preview"
+                      width={36}
+                      height={36}
+                      className="rounded-md object-cover h-full w-full"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <span>✓ Poza a fost încărcată cu succes!</span>
+                    <button
+                      onClick={() => handleImageChange("")}
+                      className="text-left text-muted-foreground hover:text-destructive"
+                    >
+                      Șterge poza
+                    </button>
+                  </div>
+                </div>
+              ) : null}
+               {validationErrors.image && (
+                 <p className="text-destructive text-xs">{validationErrors.image}</p>
+               )}
             </div>
-            {validationErrors.confirmPassword && (
-              <p className="text-destructive text-xs">
-                {validationErrors.confirmPassword}
-              </p>
-            )}
           </div>
         </div>
 
         <div className="flex justify-end pt-4">
-          <Button onClick={handleNext} disabled={isLoading}>
-            {isLoading ? "Se procesează..." : "Continuă →"}
+          <Button onClick={handleNext} disabled={isLoading || isUploading}>
+            {isUploading
+              ? "Se încarcă poza..."
+              : isLoading
+              ? "Se procesează..."
+              : "Continuă →"}
           </Button>
         </div>
 
-        <div className="text-center text-sm flex flex-col items-center">
-          <p>Te-ai înscris deja in {title}? </p>
-          <Link
-            href="/cont"
-            className="hover:underline font-bold text-hope-lightcyan"
-          >
-            Du-te la contul tău.
-          </Link>
-          <p className="text-xs text-muted-foreground mt-2">
-            * Emailul si parola vor fi folosite pentru a te conecta la platforma
-            noastră. Acestea sunt necesare pentru înscriere.
-          </p>
-        </div>
+         <p className="text-center text-sm text-muted-foreground mt-4">
+          Câmpurile marcate cu * sunt obligatorii
+        </p>
       </div>
     </StepWrapper>
   );

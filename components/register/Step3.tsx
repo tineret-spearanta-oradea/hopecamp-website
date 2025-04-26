@@ -1,32 +1,25 @@
-import { StepProps } from "@/types/form";
+import { StepProps, FormData } from "@/types/form"; // Added FormData
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";
+import { Input } from "../ui/input"; // Added Input
 import { cn } from "@/lib/utils";
 import { StepWrapper } from "./StepWrapper";
 import { Check } from "lucide-react";
 import { sumToPay, dateRange } from "@/lib/constants";
 import { format } from "date-fns";
 
-interface Step3Props {
-  formData: StepProps["formData"];
-  handlePrev: () => void;
-  handleSubmit: () => void;
-  agreementChecked: boolean;
-  setAgreementChecked: (checked: boolean) => void;
-  downloadCampRules: () => void;
-  isLoading: boolean;
-}
-
 export default function Step3({
   formData,
+  handleChange,
   handlePrev,
   handleSubmit,
   agreementChecked,
   setAgreementChecked,
   downloadCampRules,
   isLoading,
-}: Step3Props) {
+  validationErrors,
+}: StepProps) {
   const retrieveNumberOfDays = () => {
     if (!formData.userData.startDate || !formData.userData.endDate) {
       return [0, 0];
@@ -46,9 +39,39 @@ export default function Step3({
   const [numberOfDaysSelected, numberOfDaysCamp] = retrieveNumberOfDays();
   const isFullTime = numberOfDaysSelected === numberOfDaysCamp;
 
+  // Added handler for phone input
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    objectName: keyof FormData
+  ) => {
+    handleChange(objectName, e.target);
+  };
+
   return (
-    <StepWrapper title="Pasul 3/3: Confirmare" isLoading={isLoading}>
+    // Changed Title
+    <StepWrapper title="Pasul 3/3: Autentificare & Confirmare" isLoading={isLoading}>
       <div className="space-y-8">
+
+         {/* Added Phone Number Input */}
+         <div className="space-y-2">
+          <Label className="text-base font-semibold">Număr de telefon *</Label>
+          <Input
+            type="tel"
+            name="phone"
+            value={formData.userData.phone}
+            onChange={(e) => handleInputChange(e, "userData")}
+            className={validationErrors.phone ? "border-destructive" : ""}
+            placeholder="Ex: 0712345678"
+          />
+          {validationErrors.phone && (
+            <p className="text-destructive text-xs">{validationErrors.phone}</p>
+          )}
+           <p className="text-xs text-muted-foreground">
+             Vom folosi acest număr pentru a te autentifica și a te contacta.
+           </p>
+        </div>
+
+        {/* Kept Download Rules Button */}
         <div className="text-center mb-6">
           <Button
             onClick={downloadCampRules}
@@ -124,9 +147,11 @@ export default function Step3({
               <Checkbox
                 id="agreement"
                 checked={agreementChecked}
-                onCheckedChange={(checked) =>
-                  setAgreementChecked(checked as boolean)
-                }
+                onCheckedChange={(checked) => {
+                  if (setAgreementChecked) {
+                    setAgreementChecked(checked as boolean);
+                  }
+                }}
                 className="mt-0.5 h-4 w-4 rounded-sm border border-third text-third data-[state=checked]:bg-third data-[state=checked]:text-primary-foreground"
               />
               {agreementChecked && (
