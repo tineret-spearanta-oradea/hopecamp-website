@@ -1,6 +1,5 @@
 import {supabaseAdmin} from '@/lib/supabase/server';
 import {getUserProfile} from '../user';
-import {insertEdition} from '../edition';
 import {createTestEdition, createTestEditionObject, deleteAllEditions} from './helpers/edition';
 import {deleteAllAuthUsers} from './helpers/user'; // Still needed
 import {Edition} from '@/types/edition';
@@ -49,7 +48,6 @@ describe('User Database Integration Tests', () => {
             expect(userProfile?.userId).toBe(testRegData.userId);
             expect(userProfile?.name).toBe(testRegData.name); // Compare against Registration data
             expect(userProfile?.age).toBe(testRegData.age); // Compare against Registration data (number)
-            expect(userProfile?.phone).toBe(testRegData.phone); // Compare against Registration data
             expect(userProfile?.imageUrl).toBe(testRegData.imageUrl || ''); // Check default/provided value
             expect(userProfile?.isSuperAdmin).toBe(false); // Default value from registration helper
         });

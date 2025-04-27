@@ -3,7 +3,6 @@
 import {useEffect, useState} from "react";
 import {useAuth} from "@/contexts/auth-context";
 import {useRouter} from "next/navigation";
-import { updateUserRegistrationProfile} from "@/lib/supabase/database/registration"; // Import Supabase functions
 import {getUserRegistrationByEditionId, changeUserAdminStatusForRegistration} from "@/lib/supabase/database/registration";
 import {
     Table,
@@ -47,7 +46,7 @@ export default function AdminsPage() {
     const router = useRouter();
     const [admins, setAdmins] = useState<RegistrationWithProfile[]>([]);
     const [loading, setLoading] = useState(true);
-    const [newAdminEmail, setNewAdminEmail] = useState("");
+    const [newAdminPhone, setNewAdminPhone] = useState("");
     const [isAddingAdmin, setIsAddingAdmin] = useState(false);
     const [superAdminPrompt, setSuperAdminPrompt] =
         useState<SuperAdminPromptData>(null);
@@ -157,10 +156,10 @@ export default function AdminsPage() {
     };
 
     const handleAddAdmin = async () => {
-        if (!newAdminEmail.trim()) {
+        if (!newAdminPhone.trim()) {
             toast({
                 title: "Eroare",
-                description: "Te rugăm să introduci o adresă de email",
+                description: "Te rugăm să introduci un numar de telefon",
                 variant: "destructive",
             });
             return;
@@ -168,14 +167,14 @@ export default function AdminsPage() {
 
         setIsAddingAdmin(true);
         try {
-            // Find user by email
+            // Find user by phone
             const currentEdition = await getActiveEdition(); // TODO remove this after we have edition selector on the UI
-            const userToAdd: RegistrationWithProfile | null = await getUserRegistrationByEditionId(currentEdition.id, {email:newAdminEmail.trim().toLowerCase()});
+            const userToAdd: RegistrationWithProfile | null = await getUserRegistrationByEditionId(currentEdition.id, {phone:newAdminPhone.trim().toLowerCase()});
 
             if (!userToAdd) {
                 toast({
                     title: "Eroare",
-                    description: "Nu am găsit niciun utilizator cu acest email",
+                    description: "Nu am găsit niciun utilizator cu acest numar de telefon",
                     variant: "destructive",
                 });
                 return;
@@ -200,7 +199,7 @@ export default function AdminsPage() {
                 description: "Admin adăugat cu succes",
             });
 
-            setNewAdminEmail("");
+            setNewAdminPhone("");
         } catch (error) {
             console.error("Error adding admin:", error);
             toast({
@@ -226,18 +225,18 @@ export default function AdminsPage() {
             <div className="flex gap-4 items-end">
                 <div className="flex-1 space-y-2">
                     <label className="text-sm font-medium">
-                        Adaugă admin nou după email
+                        Adaugă admin nou după telefon
                     </label>
                     <Input
                         type="email"
-                        placeholder="utilizator@exemplu.com"
-                        value={newAdminEmail}
-                        onChange={(e) => setNewAdminEmail(e.target.value)}
+                        placeholder="0770123456"
+                        value={newAdminPhone}
+                        onChange={(e) => setNewAdminPhone(e.target.value)}
                     />
                 </div>
                 <Button
                     onClick={handleAddAdmin}
-                    disabled={isAddingAdmin || !newAdminEmail.trim()}
+                    disabled={isAddingAdmin || !newAdminPhone.trim()}
                 >
                     {isAddingAdmin ? "Se adaugă..." : "Adaugă Admin"}
                 </Button>
@@ -266,7 +265,7 @@ export default function AdminsPage() {
                             admins.map((admin) => (
                                 <TableRow key={admin.userId}>
                                     <TableCell>{admin.name}</TableCell>
-                                    <TableCell>{admin.email}</TableCell>
+                                    <TableCell>{admin.phone}</TableCell>
                                     <TableCell>
                                         {admin.isSuperAdmin ? (
                                             <div className="flex items-center gap-2">

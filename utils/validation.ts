@@ -1,7 +1,7 @@
 import { FormData, ValidationErrors } from "@/types/form";
 
 const initialValidationErrors: ValidationErrors = {
-  // email: "", // Removed
+  // phone: "", // Removed
   // password: "", // Removed
   // confirmPassword: "", // Removed
   name: "",
@@ -31,11 +31,12 @@ export const validateUserFields = (
     errors.age = "Vârsta trebuie să fie între 7 și 99 ani.";
   }
 
-  // if (!userData.phone) {
-  //   errors.phone = "Numărul de telefon este necesar.";
-  // } else if (!/^[0-9]{7,15}$/.test(userData.phone)) {
-  //   errors.phone = "Numărul de telefon trebuie să aibă între 7 și 15 cifre.";
-  // }
+  // Validate Romanian phone number format (07XXXXXXXX)
+  if (!userData.phone) {
+    errors.phone = "Numărul de telefon este necesar.";
+  } else if (!/^07\d{8}$/.test(userData.phone)) {
+    errors.phone = "Numărul de telefon trebuie să înceapă cu 07 și să aibă 10 cifre (ex: 0770123456).";
+  }
 
   if (
     !userData.startDate ||

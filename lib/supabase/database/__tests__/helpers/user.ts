@@ -76,9 +76,8 @@ export function createTestFormData( // Add export
         slopeActivity: registration.slopeActivity, // Assuming slopeActivity string matches form values
     };
 
-    // Create AuthData using email from registration and any overrides
+    // Create AuthData using phone from registration and any overrides
     const authData: AuthData = {
-        email: registration.email,
         password: 'password123', // Default password
         confirmPassword: 'password123',
     };

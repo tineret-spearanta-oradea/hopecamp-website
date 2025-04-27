@@ -72,7 +72,7 @@ export function AddIncomeDialog({
   const filteredUsers = registration.filter(
     (user) =>
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchQuery.toLowerCase())
+      user.phone.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleUserSelect = (user: RegistrationWithProfile) => {
@@ -173,7 +173,7 @@ export function AddIncomeDialog({
                         <div className="flex flex-col flex-1">
                           <span>{user.name}</span>
                           <span className="text-xs text-muted-foreground">
-                            {user.email}
+                            {user.phone}
                           </span>
                         </div>
                         {user.amountPaid && user.amountPaid > 0 && (

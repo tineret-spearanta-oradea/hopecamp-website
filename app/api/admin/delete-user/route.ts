@@ -17,7 +17,7 @@ export async function DELETE(request: NextRequest) {
     // Pass the supabaseUserClient to getUserProfile
     const currentUserData = await getUserProfile(user.id, supabaseUserClient);
     if (!currentUserData?.isSuperAdmin) {
-        console.warn(`Delete user API: User ${user.id} (${currentUserData?.email || 'email unknown'}) attempted delete without super admin rights.`);
+        console.warn(`Delete user API: User ${user.id} attempted delete without super admin rights.`);
         return NextResponse.json({ message: "Forbidden: Admin privileges required" }, { status: 403 });
     }
 

@@ -27,7 +27,7 @@ This section outlines the main tables and their corresponding TypeScript interfa
 
 | Table Name                | Migration File                                            | TypeScript Interface                  | Interface File              | Description                                                             |
 |:--------------------------|:----------------------------------------------------------|:--------------------------------------|:----------------------------|:------------------------------------------------------------------------|
-| `auth.users`              | (Supabase internal)                                       | `User` (from `@supabase/supabase-js`) | `@supabase/supabase-js`     | Stores authentication information (email, password hash, etc.).         |
+| `auth.users`              | (Supabase internal)                                       | `User` (from `@supabase/supabase-js`) | `@supabase/supabase-js`     | Stores authentication information (phone, password hash, etc.).         |
 | `editions`                | `20250410180529_create_editions_table.sql`                | `Edition`                             | `types/edition.ts`          | Defines camp editions (e.g., "Hope Camp 2025"), dates, and open status. |
 | `user_profiles`           | `20250410180527_create_user_profiles_table.sql`           | `UserProfile`                         | `types/userProfile.ts`      | Stores basic user profile information (name, age, phone, image).        |
 | `user_roles`              | `20250410180528_create_user_roles_table.sql`              | (Part of `UserProfile`)               | `types/userProfile.ts`      | Stores the global superadmin role status for a user.                    |
@@ -35,7 +35,7 @@ This section outlines the main tables and their corresponding TypeScript interfa
 | `user_registration_roles` | `20250410180531_create_user_registration_roles_table.sql` | (Part of `UserRegistration`)          | `types/userRegistration.ts` | Stores the admin role status for a specific user *registration*.        |
 | `messages`                | `20250413130554_create_messages_table.sql`                | `Message`                             | `types/message.ts`          | Stores messages sent by users, linked to their registration.            |
 | `expenses`                | `20250413140419_create_expenses_table.sql`                | `Expense`, `NewExpense`               | `types/expense.ts`          | Stores camp expenses added by admins.                                   |
-| `auth_users_view`         | `20250413182523_create_users_view.sql`                    | (Used internally in queries)          | N/A                         | A view exposing `id` and `email` from `auth.users` for easier joins.    |
+| `auth_users_view`         | `20250413182523_create_users_view.sql`                    | (Used internally in queries)          | N/A                         | A view exposing `id` and `phone` from `auth.users` for easier joins.    |
 
 **Combined Interface:**
 

@@ -44,16 +44,19 @@ export default function LoginForm() {
   }, [otpSent, resendDisabled]); // Rerun effect when otpSent or resendDisabled changes
 
   const handleSendOtp = async () => {
-    // Basic phone validation (you might want a more robust one)
-    if (!phone || !/^\+?[0-9\s\-()]{7,}$/.test(phone)) {
-      toast.error("Te rugăm să introduci un număr de telefon valid.");
+    // Validate Romanian phone number format (07XXXXXXXX)
+    if (!phone || !/^07\d{8}$/.test(phone)) {
+      toast.error("Te rugăm să introduci un număr de telefon valid (ex: 0770123456).");
       return;
     }
     setLoading(true);
     setResendDisabled(true); // Disable resend immediately
 
+    // Normalize phone number to E.164 format for Supabase
+    const normalizedPhone = '+4' + phone;
+
     const { error } = await supabaseBrowserClient.auth.signInWithOtp({
-      phone: phone,
+      phone: normalizedPhone, // Use normalized phone
       options: {
         shouldCreateUser: false, // Prevent sign-up
       },
@@ -77,7 +80,9 @@ export default function LoginForm() {
       return;
     }
 
-    toast.success("Codul OTP a fost trimis pe numărul tău de telefon.");
+    toast.success("Codul OTP a fost trimis!", {
+        description: `Verifică SMS-ul primit la ${phone}.` // Show original number
+    });
     setOtpSent(true);
     // Timer will start via useEffect
   };
@@ -89,11 +94,14 @@ export default function LoginForm() {
     }
     setLoading(true);
 
+    // Normalize phone number to E.164 format for Supabase
+    const normalizedPhone = '+4' + phone;
+
     const {
       data: { session },
       error,
     } = await supabaseBrowserClient.auth.verifyOtp({
-      phone: phone,
+      phone: normalizedPhone, // Use normalized phone
       token: otp,
       type: "sms", // or 'phone_change' if that's what you used, but 'sms' is typical for login
     });
@@ -146,14 +154,14 @@ export default function LoginForm() {
                 htmlFor="phone"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Număr de telefon (ex: +40712345678)
+                Număr de telefon (ex: 0770123456)
               </label>
               <Input
                 type="tel"
                 id="phone"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="+40712345678"
+                placeholder="0770123456"
                 className="mt-1 block w-full"
                 disabled={loading}
                 autoComplete="tel"
@@ -234,10 +242,10 @@ export default function LoginForm() {
           Înscrie-te aici
         </Link>
       </p>
-      {/* Optional: Add a link back to email/password login if needed */}
+      {/* Optional: Add a link back to phone/password login if needed */}
       {/* <p className="mt-4 text-center text-sm text-gray-500">
-        <Link href="/login-email" className="text-hope-darkcyan hover:underline">
-          Conectare cu email și parolă
+        <Link href="/login-phone" className="text-hope-darkcyan hover:underline">
+          Conectare cu phone și parolă
         </Link>
       </p> */}
     </div>

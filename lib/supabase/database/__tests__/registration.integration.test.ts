@@ -106,28 +106,27 @@ describe('Registration Database Integration Tests', () => {
             expect(registration?.userId).toBe(testRegData.userId);
             expect(registration?.editionId).toBe(activeEdition.id);
             expect(registration?.name).toBe("Fetch Me By ID");
-            expect(registration?.email).toBe(testRegData.email);
             expect(registration?.isAdmin).toBe(false); // Default
             expect(registration?.isSuperAdmin).toBe(false); // Default
         });
 
-        it('should return the correct registration by email', async () => {
+        it('should return the correct registration by phone', async () => {
             // Arrange
             const testRegData = await createUserWithRegistration(activeEdition.id, {name: "Fetch Me By Email"});
             await new Promise(resolve => setTimeout(resolve, 100)); // Allow trigger to complete
 
             // Act
-            const registration = await getUserRegistrationByEditionId(activeEdition.id, {email: testRegData.email});
+            const registration = await getUserRegistrationByEditionId(activeEdition.id, {phone: testRegData.phone});
 
             // Assert
             expect(registration).not.toBeNull();
             expect(registration?.userId).toBe(testRegData.userId);
             expect(registration?.editionId).toBe(activeEdition.id);
             expect(registration?.name).toBe("Fetch Me By Email");
-            expect(registration?.email).toBe(testRegData.email);
+            expect(registration?.phone).toBe(testRegData.phone);
         });
 
-        it('should return null if email does not exist', async () => {
+        it('should return null if phone does not exist', async () => {
             // Arrange
             const nonExistentEmail = 'nonexistent@example.com';
 
@@ -135,7 +134,7 @@ describe('Registration Database Integration Tests', () => {
             await new Promise(resolve => setTimeout(resolve, 100));
 
             // Act
-            const registration = await getUserRegistrationByEditionId(activeEdition.id, {email: nonExistentEmail});
+            const registration = await getUserRegistrationByEditionId(activeEdition.id, {phone: nonExistentEmail});
 
             // Assert
             expect(registration).toBeNull();

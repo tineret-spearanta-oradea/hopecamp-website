@@ -32,9 +32,6 @@ const initialFormData: FormData = {
 };
 
 const initialValidationErrors: ValidationErrors = {
-  // email: "", // Removed
-  // password: "", // Removed
-  // confirmPassword: "", // Removed
   name: "",
   age: "",
   phone: "",
@@ -176,9 +173,12 @@ export function useRegistrationForm() {
       const randomPassword = Math.random().toString(36).slice(-12); // Generate random password
 
       try {
+        // Normalize phone number to E.164 format for Supabase
+        const normalizedPhone = '+4' + formData.userData.phone;
+
         // Call signUp - this creates the user and should trigger OTP send if confirmations are enabled
         const { data, error } = await supabaseBrowserClient.auth.signUp({
-          phone: formData.userData.phone,
+          phone: normalizedPhone, // Use normalized phone
           password: randomPassword,
           options: {
             data: metaData, // Pass user metadata here!
@@ -264,9 +264,12 @@ export function useRegistrationForm() {
       setValidationErrors(initialValidationErrors); // Clear errors
 
       try {
+        // Normalize phone number to E.164 format for Supabase
+        const normalizedPhone = '+4' + formData.userData.phone;
+
         // Verify the OTP using the phone number and token
         const { data: { session, user }, error: verifyError } = await supabaseBrowserClient.auth.verifyOtp({
-          phone: formData.userData.phone,
+          phone: normalizedPhone, // Use normalized phone
           token: otp,
           type: 'sms', // Ensure type matches how OTP was sent (usually 'sms' for phone signup)
         });

@@ -1,5 +1,4 @@
 export interface AuthData {
-  email: string;
   password: string;
   confirmPassword: string;
 }
@@ -26,7 +25,7 @@ export interface FormData {
 }
 
 export interface ValidationErrors {
-  // email?: string; // Removed - No longer collected in initial steps
+  // phone?: string; // Removed - No longer collected in initial steps
   // password?: string; // Removed
   // confirmPassword?: string; // Removed
   name?: string;

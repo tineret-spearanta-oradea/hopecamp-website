@@ -38,10 +38,14 @@
 7. (Optional) Create a new account for https://uploadthing.com and set the `UPLOADTHING_TOKEN` env var in `.env.local`
 8. Start the server with `npm run dev`
 9. Register a user. Please note that a picture is not needed. You can see the emails sent at http://127.0.0.1:54324/.
-   
+
    **Note:** For local development, SMS OTP codes (e.g., for phone verification) are also redirected to this Mailpit
    interface instead of being sent as actual SMS messages. This is configured via a Supabase Auth hook (`send_sms`) to
    simplify testing.
+  
+   **Tip:** You can also hardcode OTPs for specific phone numbers in `supabase/config.toml` under
+   the `[auth.sms.test_otp]` section. This bypasses the need to check Mailpit. Remember to
+   run `supabase stop; supabase start` after modifying `config.toml` for changes to take effect.
 10. Make the user admin and super admin: Go to http://127.0.0.1:54323/project/default/editor, select
     the `users_data` table find your user UID and set the `isAdmin` and `isSuperAdmin` to `true`
 11. Reload the page, and you should see a button for admin page. Or you can go to http://localhost:3000/admin

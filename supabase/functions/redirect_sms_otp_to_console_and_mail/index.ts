@@ -42,7 +42,7 @@ serve(async (req: Request) => {
             if (!mailpitResponse.ok) {
                 const errorBody = await mailpitResponse.text();
                 console.error(`Error sending OTP to Mailpit: ${mailpitResponse.status} ${mailpitResponse.statusText}`, errorBody);
-                throw new Error("Error sending email!");
+                throw new Error("Error sending phone!");
             } else {
                 console.log("Successfully forwarded OTP details to Mailpit.");
             }
