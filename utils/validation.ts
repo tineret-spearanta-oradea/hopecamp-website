@@ -11,6 +11,7 @@ const initialValidationErrors: ValidationErrors = {
   church: "",
   payTaxTo: "",
   transport: "",
+  otp: "", // Added OTP initial error
 };
 
 // Removed validateAuthFields function
@@ -30,11 +31,11 @@ export const validateUserFields = (
     errors.age = "Vârsta trebuie să fie între 7 și 99 ani.";
   }
 
-  if (!userData.phone) {
-    errors.phone = "Numărul de telefon este necesar.";
-  } else if (!/^[0-9]{7,15}$/.test(userData.phone)) {
-    errors.phone = "Numărul de telefon trebuie să aibă între 7 și 15 cifre.";
-  }
+  // if (!userData.phone) {
+  //   errors.phone = "Numărul de telefon este necesar.";
+  // } else if (!/^[0-9]{7,15}$/.test(userData.phone)) {
+  //   errors.phone = "Numărul de telefon trebuie să aibă între 7 și 15 cifre.";
+  // }
 
   if (
     !userData.startDate ||
@@ -70,3 +71,14 @@ export const validateUserFields = (
 
   return errors;
 };
+
+// Added OTP validation function
+export const validateOtp = (otp: string): ValidationErrors => {
+    const errors: ValidationErrors = { ...initialValidationErrors };
+    if (!otp) {
+        errors.otp = "Codul OTP este necesar.";
+    } else if (!/^\d{6}$/.test(otp)) { // Assuming 6-digit OTP
+        errors.otp = "Codul OTP trebuie să conțină 6 cifre.";
+    }
+    return errors;
+}

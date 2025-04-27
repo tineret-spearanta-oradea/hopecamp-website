@@ -3,7 +3,6 @@ import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input"; // Added Input
-import { cn } from "@/lib/utils";
 import { StepWrapper } from "./StepWrapper";
 import { Check } from "lucide-react";
 import { sumToPay, dateRange } from "@/lib/constants";
@@ -12,6 +11,7 @@ import { format } from "date-fns";
 export default function Step3({
   formData,
   handleChange,
+  handleNext, // Added missing handleNext
   handlePrev,
   handleSubmit,
   agreementChecked,
@@ -174,12 +174,13 @@ export default function Step3({
           <Button variant="outline" onClick={handlePrev}>
             ← Înapoi
           </Button>
+          {/* Ensure this button calls handleNext to trigger signUp/OTP send */}
           <Button
-            onClick={handleSubmit}
+            onClick={handleNext}
             disabled={!agreementChecked || isLoading}
             className="bg-secondary text-white hover:bg-secondary/90"
           >
-            {isLoading ? "Se procesează..." : "Înscrie-te ↗"}
+            {isLoading ? "Se trimite codul..." : "Trimite cod verificare ↗"}
           </Button>
         </div>
       </div>

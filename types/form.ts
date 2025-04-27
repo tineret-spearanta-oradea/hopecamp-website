@@ -38,15 +38,16 @@ export interface ValidationErrors {
   transport?: string;
   image?: string;
   slopeActivity?: string;
+  otp?: string; // Added OTP validation error
 }
 
 export interface StepProps {
   formData: FormData;
   handleChange: (
-    objectName: keyof FormData,
+    objectName: keyof FormData | "otp", // Allow 'otp' as objectName
     e: { name: string; value: string }
   ) => void;
-  handleNext?: () => void;
+  handleNext?: () => Promise<void>; // Make async for signup call
   handlePrev?: () => void;
   handleDateChange?: (dates: { from: Date; to: Date }) => void;
   validationErrors: ValidationErrors;
