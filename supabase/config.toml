@@ -194,9 +194,9 @@ template = "Your code is {{ .Code }}"
 max_frequency = "5s"
 
 # Use pre-defined map of phone number to OTP for testing.
-[auth.sms.test_otp]
-40770123456 = "123456"
-40770123457 = "123456"
+# [auth.sms.test_otp]
+# 40770123456 = "123456"
+# 40770123457 = "123456"
 
 # Configure logged in session timeouts.
 # [auth.sessions]
@@ -210,6 +210,17 @@ max_frequency = "5s"
 # enabled = true
 # uri = "pg-functions://<database>/<schema>/<hook_name>"
 
+# Hook for SMS provider events (e.g., sending OTP)
+[auth.hook.send_sms]
+enabled = true
+# Redirect all sms otps to supabase_edge_runtime console in docker and to mailpit mail (it should be running at http://127.0.0.1:54324/)
+uri = "http://host.docker.internal:54321/functions/v1/redirect_sms_otp_to_console_and_mail"
+secrets = "v1,whsec_dGVzdHNkYWRhc2RhZHNhc2RhZGFzZGFkYXNk"
+
+[functions.redirect_sms_otp_to_console_and_mail]
+verify_jwt = false
+
+# configure a provider with some dummy data
 # Configure one of the supported SMS providers: `twilio`, `twilio_verify`, `messagebird`, `textlocal`, `vonage`.
 [auth.sms.twilio]
 enabled = true
