@@ -178,26 +178,22 @@ export default function LoginForm() {
         ) : (
           // OTP Verification Stage
           <>
-            <div>
-              <label
-                htmlFor="otp"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Cod OTP primit prin SMS
-              </label>
+            <div className="space-y-2 flex flex-col items-center">
+              <label htmlFor="otp-input" className="text-base font-semibold">Introdu codul OTP</label>
               <Input
-                type="text" // Use text to allow leading zeros if any, handle validation
-                id="otp"
+                id="otp-input"
+                type="text"
+                inputMode="numeric" // Hint for numeric keyboard on mobile
+                maxLength={6}
                 value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                maxLength={6} // Standard OTP length
-                placeholder="123456"
-                className="mt-1 block w-full"
+                onChange={(e) => setOtp(e.target.value)} // Update OTP state
+                className={`w-32 text-center text-lg tracking-[0.3em]`} // Removed validation class for now, can be added if needed
+                placeholder="------"
                 disabled={loading}
-                inputMode="numeric"
                 autoComplete="one-time-code"
               />
             </div>
+
              <div className="flex items-center justify-between gap-4">
                  <Button
                     onClick={handleVerifyOtp}
