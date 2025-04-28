@@ -9,13 +9,14 @@ import {SupabaseClient} from "@supabase/supabase-js";
  */
 export function mapEditionDbRow(data: any): Edition {
     return {
-        id: data.id,
-        name: data.name,
-        start_date: new Date(data.start_date),
-        end_date: new Date(data.end_date),
-        is_open: data.is_open,
-        created_at: new Date(data.created_at),
-        updated_at: new Date(data.updated_at),
+      id: data.id,
+      name: data.name,
+      start_date: new Date(data.start_date),
+      end_date: new Date(data.end_date),
+      is_open: data.is_open,
+      title: data.title,
+      created_at: new Date(data.created_at),
+      updated_at: new Date(data.updated_at),
     };
 }
 
@@ -49,17 +50,18 @@ export async function insertEdition(editionData: Edition, supabaseClient: Supaba
     // Use the admin client for insertion to bypass RLS if necessary during tests/setup
 
     const { data, error } = await supabaseClient
-        .from("editions")
-        .insert({
-            name: editionData.name,
-            start_date: editionData.start_date,
-            end_date: editionData.end_date,
-            is_open: editionData.is_open,
-            created_at: editionData.created_at,
-            updated_at: editionData.updated_at,
-        })
-        .select()
-        .single();
+      .from("editions")
+      .insert({
+        name: editionData.name,
+        start_date: editionData.start_date,
+        end_date: editionData.end_date,
+        is_open: editionData.is_open,
+        title: editionData.title,
+        created_at: editionData.created_at,
+        updated_at: editionData.updated_at,
+      })
+      .select()
+      .single();
 
     if (error) {
         console.error("Error inserting edition:", error);
