@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "supabase db push && next build",
+    "build": "npx supabase db push --project-ref $SUPABASE_PROJECT_REF && next build",
     "start": "next start",
     "lint": "next lint",
     "test:integration": "jest --runInBand --detectOpenHandles --forceExit --testMatch '**/__tests__/**/*.integration.test.[jt]s?(x)'"
