@@ -89,7 +89,6 @@ export default function RegisterForm() {
               otp={otp}
               handleOtpChange={handleOtpChange}
               resendOtp={resendOtp} // Pass the resendOtp handler
-              // Pass other StepProps if needed by Step4
               agreementChecked={agreementChecked} // Keep required props
               setAgreementChecked={setAgreementChecked} // Keep required props
               downloadCampRules={downloadCampRules} // Keep required props

@@ -60,7 +60,7 @@ export default function Step3({
             type="tel"
             name="phone"
             value={formData.authData.phone}
-            onChange={(e) => handleInputChange(e, "userData")}
+            onChange={(e) => handleInputChange(e, "authData")}
             className={validationErrors.phone ? "border-destructive" : ""}
             placeholder="Ex: 0712345678"
           />
