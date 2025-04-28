@@ -66,9 +66,9 @@ export default function LoginForm() {
     if (error) {
       console.error("OTP Send Error:", error);
       // Handle specific errors
-      if (error.message.includes("User not found")) { // Adjust based on actual error message
+      if (error.code === "otp_disabled") { // Adjust based on actual error message
           toast.error("Numărul de telefon nu este înregistrat. Te rugăm să te înscrii mai întâi.");
-      } else if (error.message.includes("rate limit")) {
+      } else if (error.code === "over_sms_send_rate_limit") {
           toast.error("Prea multe încercări. Te rugăm să încerci mai târziu.");
       }
        else {

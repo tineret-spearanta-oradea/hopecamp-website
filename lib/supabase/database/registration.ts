@@ -18,7 +18,7 @@ export async function getUserRegistrationByEditionId(editionId: number, filterPa
     if ("userId" in filterParams) {
         query = query.eq("user_id", filterParams.userId);
     } else {
-        query = query.eq('user_profiles.auth_users_view.phone', `$4{filterParams.phone}`);// add 4 in front
+        query = query.eq('user_profiles.auth_users_view.phone', filterParams.phone);
     }
 
 
@@ -89,7 +89,7 @@ function mapRegistrationWithProfile(row: any): RegistrationWithProfile {
         withFamilyMember: row.with_family_member,
         isAdmin: row.user_registration_roles?.is_admin ?? false,
         name: row.user_profiles.name,
-        phone: row.phone,
+        phone: row.user_profiles.phone,
         imageUrl: row.user_profiles.image_url,
         age: row.user_profiles.age,
         isSuperAdmin: row.user_profiles?.is_super_admin ?? false,
@@ -107,7 +107,6 @@ export async function updateUserRegistrationProfile(registration: UpdateRegistra
         // Update user_profiles table
         const userUpdates = {
             name: registration.name,
-            phone: registration.phone,
             image_url: registration.imageUrl,
             age: registration.age,
             updated_at: now

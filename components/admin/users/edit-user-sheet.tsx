@@ -252,7 +252,7 @@ export function EditUserSheet({
                           <FormItem>
                             <FormLabel>Telefon</FormLabel>
                             <FormControl>
-                              <Input {...field} type="tel" />
+                              <Input {...field} type="tel" disabled/>
                             </FormControl>
                             <FormMessage />
                           </FormItem>

@@ -24,7 +24,7 @@ export function createTestRegistrationWithProfile(overrides: Partial<Registratio
         // UserProfile fields
         userId: userId,
         name: 'Test Reg User',
-        phone: `phone-${userId}`,
+        phone: `40${770123456+ Math.floor(Math.random() * 10000) + 1}`,
         age: 28,
         imageUrl: '',
         isSuperAdmin: false,
@@ -69,7 +69,7 @@ export async function createUserWithRegistration(activeEditionId: number, profil
 
     // Act: Create the user using the admin API, passing the generated metadata
     const {data: authUser, error: authError} = await testSupabaseAdmin.auth.admin.createUser({
-        password: testFormData.authData.password, // Use password from FormData
+        phone: testFormData.userData.phone,
         phone_confirm: true,
         user_metadata: metadata, // Pass the specific metadata part
         app_metadata: {provider: 'email', providers: ['email']}, // Mimic app metadata

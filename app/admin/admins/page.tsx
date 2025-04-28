@@ -85,8 +85,8 @@ export default function AdminsPage() {
     }, [toast]);
 
     const handleRoleUpdate = async (userId: string, updates: Partial<Omit<RegistrationWithProfile, 'userId'>>) => {
-        const adminToUpdate = admins.find(admin => admin.userId === userId);
-        if (!adminToUpdate) {
+        const adminRegistrationToUpdate = admins.find(admin => admin.userId === userId);
+        if (!adminRegistrationToUpdate) {
             console.error("User not found for update:", userId);
             toast({title: "Eroare", description: "Userul nu a fost găsit.", variant: "destructive"});
             return;
@@ -94,8 +94,7 @@ export default function AdminsPage() {
 
         try {
             if (updates.isAdmin !== undefined) {
-                const currentEdition = await getActiveEdition();
-                await changeUserAdminStatusForRegistration(currentEdition.id, updates.isAdmin);
+                await changeUserAdminStatusForRegistration(adminRegistrationToUpdate.id, updates.isAdmin);
             }
             if (updates.isSuperAdmin !== undefined) {
                 await changeUserSuperAdminStatus(userId, updates.isSuperAdmin);
@@ -169,9 +168,9 @@ export default function AdminsPage() {
         try {
             // Find user by phone
             const currentEdition = await getActiveEdition(); // TODO remove this after we have edition selector on the UI
-            const userToAdd: RegistrationWithProfile | null = await getUserRegistrationByEditionId(currentEdition.id, {phone:newAdminPhone.trim().toLowerCase()});
+            const registrationToAdd: RegistrationWithProfile | null = await getUserRegistrationByEditionId(currentEdition.id, {phone:`4${newAdminPhone.trim().toLowerCase()}`});
 
-            if (!userToAdd) {
+            if (!registrationToAdd) {
                 toast({
                     title: "Eroare",
                     description: "Nu am găsit niciun utilizator cu acest numar de telefon",
@@ -180,7 +179,7 @@ export default function AdminsPage() {
                 return;
             }
 
-            if (userToAdd.isAdmin) {
+            if (registrationToAdd.isAdmin) {
                 toast({
                     title: "Eroare",
                     description: "Acest utilizator este deja admin",
@@ -189,10 +188,10 @@ export default function AdminsPage() {
                 return;
             }
 
-            await changeUserAdminStatusForRegistration(currentEdition.id, true);
+            await changeUserAdminStatusForRegistration(registrationToAdd.id, true);
 
             // Add to local admins list
-            setAdmins([...admins, {...userToAdd, isAdmin: true}]);
+            setAdmins([...admins, {...registrationToAdd, isAdmin: true}]);
 
             toast({
                 title: "Succes",

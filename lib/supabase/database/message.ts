@@ -8,7 +8,7 @@ export async function getLastUserMessage(registrationId: number): Promise<Messag
       .from("messages")
       .select(`
         *,
-        sender_registration:registrations!inner ( user_id, user_profiles!inner(name, phone) ),
+        sender_registration:registrations!inner ( user_id, user_profiles!inner(name, ...auth_users_view!inner ( email, phone )) ),
         reader_profile:user_profiles!fk_messages_read_by_user_id ( name )
       `)
       .eq("registration_id", registrationId)
@@ -39,7 +39,7 @@ export async function insertMessage(messageData: { registrationId: number; text:
       })
       .select(`
         *,
-        sender_registration:registrations!inner ( user_id, user_profiles!inner(name, phone) ),
+        sender_registration:registrations!inner ( user_id, user_profiles!inner(name, ...auth_users_view!inner ( email, phone )) ),
         reader_profile:user_profiles!fk_messages_read_by_user_id ( name )
       `) // Select the newly inserted row with sender and reader info
       .single();
@@ -83,7 +83,7 @@ export async function getUserMessages(userId: string): Promise<Message[]> {
       .from("messages")
       .select(`
         *,
-        sender_registration:registrations!inner ( user_id, user_profiles!inner(name, phone) ),
+        sender_registration:registrations!inner ( user_id, user_profiles!inner(name, ...auth_users_view!inner ( email, phone )) ),
         reader_profile:user_profiles!fk_messages_read_by_user_id ( name )
       `)
       // Filter by the user_id within the nested sender_registration -> user_profiles structure
@@ -105,7 +105,7 @@ export async function getAllMessages(editionId:number): Promise<Message[]> {
     .from("messages")
     .select(`
       *,
-      sender_registration:registrations!inner ( edition_id, user_id, user_profiles!inner(name, phone) ),
+      sender_registration:registrations!inner ( edition_id, user_id, user_profiles!inner(name, ...auth_users_view!inner ( email, phone )) ),
       reader_profile:user_profiles!fk_messages_read_by_user_id ( name )
     `)
     // Filter by edition_id within the nested sender_registration structure
@@ -132,7 +132,7 @@ export async function setMessageRead(messageId: number, readByUserId: string): P
     .eq("id", messageId)
     .select(`
       *,
-      sender_registration:registrations!inner ( user_id, user_profiles!inner(name, phone) ),
+      sender_registration:registrations!inner ( user_id, user_profiles!inner(name, ...auth_users_view!inner ( email, phone )) ),
       reader_profile:user_profiles!fk_messages_read_by_user_id ( name )
     `) // Select the updated row with sender and reader info
     .single();

@@ -44,7 +44,6 @@ describe('Registration Database Integration Tests', () => {
                 editionId: activeEdition.id,
                 name: "Full Data Test User",
                 age: 30,
-                phone: "0712312312",
                 church: "Betel, Oradea",
                 payTaxTo: "Andrei Micula",
                 transport: "autocar",
@@ -255,7 +254,6 @@ describe('Registration Database Integration Tests', () => {
                 ...initialReg!, // Spread the fetched registration data
                 // Update profile fields
                 name: "Updated Name",
-                phone: "0722222222",
                 age: 26,
                 imageUrl: "updated.jpg",
                 // Update registration fields
@@ -280,7 +278,6 @@ describe('Registration Database Integration Tests', () => {
             expect(updatedReg).not.toBeNull();
             // Check updated fields
             expect(updatedReg?.name).toBe("Updated Name");
-            expect(updatedReg?.phone).toBe("0722222222");
             expect(updatedReg?.age).toBe(26);
             expect(updatedReg?.imageUrl).toBe("updated.jpg");
             expect(updatedReg?.church).toBe("Updated Church");
