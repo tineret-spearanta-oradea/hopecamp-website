@@ -1,4 +1,4 @@
-name: Apply Supabase Migrations
+name: Apply Supabase Migrations - DEV
 
 on:
   push:
