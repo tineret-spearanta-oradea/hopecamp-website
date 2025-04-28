@@ -9,10 +9,11 @@ on:
   workflow_dispatch: # Allows manual triggering from the GitHub Actions UI
 
 jobs:
-  ping:
+  ping_dev:
+    name: Ping Dev Supabase
     runs-on: ubuntu-latest
-    # Only run this job if the required secrets are set
-    if: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL != '' && secrets.SUPABASE_SERVICE_ROLE_KEY != '' }}
+    # Only run this job if the dev secrets are set
+    if: ${{ secrets.DEV_SUPABASE_URL != '' && secrets.DEV_SUPABASE_SERVICE_ROLE_KEY != '' }}
 
     steps:
       # Step 1: Checkout the repository (optional, not strictly needed for this script)
@@ -29,11 +30,11 @@ jobs:
       - name: Install Supabase Client
         run: npm install @supabase/supabase-js
 
-      # Step 4: Ping Supabase Editions Table
-      - name: Ping Supabase Editions Table
+      # Step 4: Ping Dev Supabase Editions Table
+      - name: Ping Dev Supabase Editions Table
         env:
-          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }} # Your Supabase project URL
-          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }} # Your Supabase service role key
+          SUPABASE_URL: ${{ secrets.DEV_SUPABASE_URL }} # Your Dev Supabase project URL
+          SUPABASE_KEY: ${{ secrets.DEV_SUPABASE_SERVICE_ROLE_KEY }} # Your Dev Supabase service role key
         run: |
           node -e "
           (async () => {
@@ -51,12 +52,12 @@ jobs:
 
               console.log('Supabase URL:', supabaseUrl); // Log URL (consider security implications if sensitive)
               // Avoid logging the key itself for security reasons
-              console.log('Supabase Key: Present');
+              console.log('Dev Supabase Key: Present');
 
               const supabase = createClient(supabaseUrl, supabaseKey);
 
-              // Ping Supabase by querying the 'editions' table
-              console.log('Pinging Supabase editions table...');
+              // Ping Dev Supabase by querying the 'editions' table
+              console.log('Pinging Dev Supabase editions table...');
               const { data, error } = await supabase.from('editions').select('id').limit(1);
 
               // Handle errors
@@ -66,10 +67,77 @@ jobs:
               }
 
               // Log success
-              console.log('Ping successful. Received data:', data);
+              console.log('Dev Ping successful. Received data:', data);
             } catch (err) {
               // Log and exit with error
-              console.error('Error pinging Supabase:', err.message);
+              console.error('Error pinging Dev Supabase:', err.message);
+              process.exit(1); // Exit with a non-zero code to indicate failure
+            }
+          })();
+          "
+
+  ping_prod:
+    name: Ping Prod Supabase
+    runs-on: ubuntu-latest
+    # Only run this job if the prod secrets are set
+    if: ${{ secrets.PROD_SUPABASE_URL != '' && secrets.PROD_SUPABASE_SERVICE_ROLE_KEY != '' }}
+
+    steps:
+      # Step 1: Checkout the repository (optional, not strictly needed for this script)
+      # - name: Checkout repository
+      #   uses: actions/checkout@v4
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18' # Use Node.js 18 or your preferred version
+
+      # Step 3: Install Supabase Client
+      - name: Install Supabase Client
+        run: npm install @supabase/supabase-js
+
+      # Step 4: Ping Prod Supabase Editions Table
+      - name: Ping Prod Supabase Editions Table
+        env:
+          SUPABASE_URL: ${{ secrets.PROD_SUPABASE_URL }} # Your Prod Supabase project URL
+          SUPABASE_KEY: ${{ secrets.PROD_SUPABASE_SERVICE_ROLE_KEY }} # Your Prod Supabase service role key
+        run: |
+          node -e "
+          (async () => {
+            try {
+              // Import Supabase client
+              const { createClient } = require('@supabase/supabase-js');
+
+              // Check if environment variables are set
+              const supabaseUrl = process.env.SUPABASE_URL;
+              const supabaseKey = process.env.SUPABASE_KEY;
+
+              if (!supabaseUrl || !supabaseKey) {
+                throw new Error('Supabase URL or Key is missing in environment variables.');
+              }
+
+              console.log('Prod Supabase URL:', supabaseUrl); // Log URL (consider security implications if sensitive)
+              // Avoid logging the key itself for security reasons
+              console.log('Prod Supabase Key: Present');
+
+              const supabase = createClient(supabaseUrl, supabaseKey);
+
+              // Ping Prod Supabase by querying the 'editions' table
+              console.log('Pinging Prod Supabase editions table...');
+              const { data, error } = await supabase.from('editions').select('id').limit(1);
+
+              // Handle errors
+              if (error) {
+                console.error('Supabase query error:', error);
+                throw error; // Re-throw the error to make the step fail
+              }
+
+              // Log success
+              console.log('Prod Ping successful. Received data:', data);
+            } catch (err) {
+              // Log and exit with error
+              console.error('Error pinging Prod Supabase:', err.message);
               process.exit(1); // Exit with a non-zero code to indicate failure
             }
           })();
