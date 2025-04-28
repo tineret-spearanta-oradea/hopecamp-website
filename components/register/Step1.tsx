@@ -6,8 +6,9 @@ import { StepWrapper } from "./StepWrapper";
 import { UploadButton } from "@/utils/uploadthing"; // Added
 import { useState, useEffect } from "react"; // Added useEffect
 import { cn } from "@/lib/utils"; // Added
-import { toast } from "sonner"; // Added
-import Image from "next/image"; // Added
+import { toast } from "sonner";
+import Image from "next/image";
+import Link from "next/link"; // Added
 
 export default function Step1({
   formData,
@@ -185,6 +186,13 @@ export default function Step1({
 
          <p className="text-center text-sm text-muted-foreground mt-4">
           Câmpurile marcate cu * sunt obligatorii
+        </p>
+        <p className="text-center text-sm text-muted-foreground mt-2">
+          Ai deja cont?{" "}
+          <Link href="/login" className="text-hope-lightcyan hover:underline">
+            Autentifică-te aici
+          </Link>
+          .
         </p>
       </div>
     </StepWrapper>

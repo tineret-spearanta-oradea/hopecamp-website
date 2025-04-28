@@ -73,7 +73,7 @@ describe('Registration Database Integration Tests', () => {
             // Verify registration fields against the original formData.userData
             expect(registration?.name).toBe(formData.userData.name);
             expect(registration?.age).toBe(parseInt(formData.userData.age, 10));
-            expect(registration?.phone).toBe(formData.userData.phone);
+            expect(registration?.phone).toBe(formData.authData.phone);
             expect(registration?.church).toBe(formData.userData.church);
             expect(registration?.payTaxTo).toBe(formData.userData.payTaxTo);
             expect(registration?.transport).toBe(formData.userData.transport);

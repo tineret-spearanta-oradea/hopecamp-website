@@ -1,12 +1,10 @@
 export interface AuthData {
-  password: string;
-  confirmPassword: string;
+  phone: string;
 }
 
 export interface UserData {
   name: string;
   age: string;
-  phone: string;
   startDate: Date | undefined;
   endDate: Date | undefined;
   church: string;
@@ -25,9 +23,6 @@ export interface FormData {
 }
 
 export interface ValidationErrors {
-  // phone?: string; // Removed - No longer collected in initial steps
-  // password?: string; // Removed
-  // confirmPassword?: string; // Removed
   name?: string;
   age?: string;
   phone?: string;

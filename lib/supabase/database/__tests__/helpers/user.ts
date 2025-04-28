@@ -63,7 +63,7 @@ export function createTestFormData( // Add export
     const userData: UserData = {
         name: registration.name,
         age: registration.age.toString(), // Convert number back to string for form
-        phone: registration.phone,
+
         startDate: registration.startDate,
         endDate: registration.endDate,
         church: registration.church,
@@ -78,8 +78,7 @@ export function createTestFormData( // Add export
 
     // Create AuthData using phone from registration and any overrides
     const authData: AuthData = {
-        password: 'password123', // Default password
-        confirmPassword: 'password123',
+        phone: registration.phone,
     };
 
     return {

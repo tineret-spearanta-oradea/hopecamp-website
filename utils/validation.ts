@@ -14,10 +14,21 @@ const initialValidationErrors: ValidationErrors = {
   otp: "", // Added OTP initial error
 };
 
-// Removed validateAuthFields function
+export const validateAuthFields = (
+    authData: FormData["authData"]
+): ValidationErrors => {
+  const errors: ValidationErrors = { ...initialValidationErrors };
+  // Validate Romanian phone number format (07XXXXXXXX)
+  if (!authData.phone) {
+    errors.phone = "Numărul de telefon este necesar.";
+  } else if (!/^07\d{8}$/.test(authData.phone)) {
+    errors.phone = "Numărul de telefon trebuie să înceapă cu 07 și să aibă 10 cifre (ex: 0770123456).";
+  }
+  return errors;
+};
 
 export const validateUserFields = (
-  userData: FormData["userData"]
+  userData: Partial<FormData["userData"]>
 ): ValidationErrors => {
   const errors: ValidationErrors = { ...initialValidationErrors };
 
@@ -29,13 +40,6 @@ export const validateUserFields = (
     errors.age = "Vârsta este necesară.";
   } else if (parseInt(userData.age) < 7 || parseInt(userData.age) > 99) {
     errors.age = "Vârsta trebuie să fie între 7 și 99 ani.";
-  }
-
-  // Validate Romanian phone number format (07XXXXXXXX)
-  if (!userData.phone) {
-    errors.phone = "Numărul de telefon este necesar.";
-  } else if (!/^07\d{8}$/.test(userData.phone)) {
-    errors.phone = "Numărul de telefon trebuie să înceapă cu 07 și să aibă 10 cifre (ex: 0770123456).";
   }
 
   if (

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FormData, ValidationErrors } from "@/types/form";
-import { validateUserFields, validateOtp } from "@/utils/validation"; // Added validateOtp
+import {validateUserFields, validateOtp, validateAuthFields} from "@/utils/validation"; // Added validateOtp
 import { dateRange, payTaxToOptions } from "@/lib/constants";
 import { toast } from "sonner";
 import { supabaseBrowserClient } from "@/lib/supabase/client";
@@ -10,14 +10,11 @@ import {getActiveEdition} from "@/lib/supabase/database/edition";
 
 const initialFormData: FormData = {
   authData: {
-    email: "",
-    password: "",
-    confirmPassword: "",
+    phone: "",
   },
   userData: {
     name: "",
     age: "",
-    phone: "",
     church: "Speranta, Oradea",
     churchOther: "",
     churchContact: "",
@@ -99,8 +96,8 @@ export function useRegistrationForm() {
     // Step 1 (Personal Details) validation
     if (step === 1) {
       // Validate name and age from userData
-      const nameError = validateUserFields({ name: formData.userData.name } as FormData["userData"]).name;
-      const ageError = validateUserFields({ age: formData.userData.age } as FormData["userData"]).age;
+      const nameError = validateUserFields({ name: formData.userData.name }).name;
+      const ageError = validateUserFields({ age: formData.userData.age }).age;
 
       if (nameError) errors.name = nameError;
       if (ageError) errors.age = ageError;
@@ -108,13 +105,13 @@ export function useRegistrationForm() {
     }
     // Step 2 (Registration Details) validation
     else if (step === 2) {
-      // Validate the rest of userData fields excluding name, age, phone, imageUrl
-      const { name, age, phone, imageUrl, ...registrationData } = formData.userData;
-      errors = validateUserFields(registrationData as FormData["userData"]); // Validate remaining fields
+      // Validate the rest of userData fields excluding name, age, imageUrl
+      const { name, age, imageUrl, ...registrationData } = formData.userData;
+      errors = validateUserFields(registrationData); // Validate remaining fields
     }
     // Step 3 (Phone & Confirmation) validation - only phone needed here before signup/OTP send
     else if (step === 3) {
-        const phoneError = validateUserFields({ phone: formData.userData.phone } as FormData["userData"]).phone;
+        const phoneError = validateAuthFields({ phone: formData.authData.phone }).phone;
         if (phoneError) errors.phone = phoneError;
         // Agreement is checked separately in handleNext
     }
@@ -143,7 +140,7 @@ export function useRegistrationForm() {
   const handleNext = async () => {
     // Step 3 -> Step 4: Validate phone/agreement, then call signUp
     if (step === 3) {
-      const phoneError = validateUserFields({ phone: formData.userData.phone } as FormData["userData"]).phone;
+      const phoneError = validateAuthFields({ phone: formData.authData.phone }).phone;
       if (phoneError || !agreementChecked) {
         setValidationErrors((prev) => ({ ...prev, phone: phoneError || "" }));
         if (!agreementChecked) {
@@ -174,7 +171,7 @@ export function useRegistrationForm() {
 
       try {
         // Normalize phone number to E.164 format for Supabase
-        const normalizedPhone = '+4' + formData.userData.phone;
+        const normalizedPhone = '+4' + formData.authData.phone;
 
         // Call signUp - this creates the user and should trigger OTP send if confirmations are enabled
         const { data, error } = await supabaseBrowserClient.auth.signUp({
@@ -209,7 +206,7 @@ export function useRegistrationForm() {
         console.log("signUp response (OTP Trigger):", data);
 
         toast.success("Codul de verificare a fost trimis!", {
-          description: `Verifică SMS-ul primit la ${formData.userData.phone}.`,
+          description: `Verifică SMS-ul primit la ${formData.authData.phone}.`,
         });
         setStep(4); // Proceed to Step 4 (OTP entry)
 
@@ -265,7 +262,7 @@ export function useRegistrationForm() {
 
       try {
         // Normalize phone number to E.164 format for Supabase
-        const normalizedPhone = '+4' + formData.userData.phone;
+        const normalizedPhone = '+4' + formData.authData.phone;
 
         // Verify the OTP using the phone number and token
         const { data: { session, user }, error: verifyError } = await supabaseBrowserClient.auth.verifyOtp({
@@ -322,6 +319,50 @@ export function useRegistrationForm() {
     }));
   };
 
+  // Function to resend OTP
+  const resendOtp = async () => {
+    setIsLoading(true); // Indicate loading state
+    try {
+      // Normalize phone number to E.164 format
+      const normalizedPhone = '+4' + formData.authData.phone;
+
+      // Call Supabase resend function
+      const { data, error } = await supabaseBrowserClient.auth.resend({
+        type: 'sms', // Specify the type of OTP being resent
+        phone: normalizedPhone,
+      });
+
+      setIsLoading(false);
+
+      if (error) {
+        console.error("Resend OTP Error:", error);
+        let description = error.message || "A apărut o eroare.";
+        if (error.message.includes("rate limit")) {
+          description = "Prea multe încercări. Te rugăm să aștepți puțin înainte de a reîncerca.";
+        } else if (error.message.includes("valid phone number")) {
+          description = "Numărul de telefon nu este valid. Te rugăm să te întorci și să îl corectezi.";
+        }
+        toast.error("Eroare la retrimiterea codului", { description });
+        throw error; // Re-throw error to be caught by the caller if needed
+      }
+
+      console.log("Resend OTP Response:", data);
+      toast.success("Codul de verificare a fost retrimis!", {
+        description: `Verifică SMS-ul primit la ${formData.authData.phone}.`,
+      });
+
+    } catch (err) {
+      setIsLoading(false);
+      console.error("Unexpected error during resend OTP:", err);
+      // Avoid duplicate toast if already handled above
+      if (!(err instanceof Error && err.message.includes("rate limit"))) {
+          toast.error("A apărut o eroare neașteptată la retrimiterea codului.");
+      }
+      throw err; // Re-throw error
+    }
+  };
+
+
   return {
     step,
     formData,
@@ -336,6 +377,7 @@ export function useRegistrationForm() {
     handleSubmit, // Pass final submit handler (verifyOtp)
     setAgreementChecked,
     handleImageChange,
-    handleOtpChange, // Pass OTP input handler
+    handleOtpChange,
+    resendOtp, // Return the resendOtp function
   };
 }

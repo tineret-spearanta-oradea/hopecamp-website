@@ -7,6 +7,7 @@ import { StepWrapper } from "./StepWrapper";
 import { Check } from "lucide-react";
 import { sumToPay, dateRange } from "@/lib/constants";
 import { format } from "date-fns";
+import Link from "next/link"; // Added
 
 export default function Step3({
   formData,
@@ -58,7 +59,7 @@ export default function Step3({
           <Input
             type="tel"
             name="phone"
-            value={formData.userData.phone}
+            value={formData.authData.phone}
             onChange={(e) => handleInputChange(e, "userData")}
             className={validationErrors.phone ? "border-destructive" : ""}
             placeholder="Ex: 0712345678"
@@ -183,6 +184,16 @@ export default function Step3({
             {isLoading ? "Se trimite codul..." : "Trimite cod verificare ↗"}
           </Button>
         </div>
+        <p className="text-center text-sm text-muted-foreground mt-4">
+          Câmpurile marcate cu * sunt obligatorii
+        </p>
+        <p className="text-center text-sm text-muted-foreground mt-2">
+          Ai deja cont?{" "}
+          <Link href="/login" className="text-hope-lightcyan hover:underline">
+            Autentifică-te aici
+          </Link>
+          .
+        </p>
       </div>
     </StepWrapper>
   );

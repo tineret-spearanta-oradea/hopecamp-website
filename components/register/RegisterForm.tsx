@@ -23,7 +23,8 @@ export default function RegisterForm() {
     handleSubmit, // This is now the verifyOtp handler
     setAgreementChecked,
     handleImageChange,
-    handleOtpChange, // Added otp handler from hook
+    handleOtpChange,
+    resendOtp, // Added resendOtp handler from hook
   } = useRegistrationForm();
 
   const downloadCampRules = () => {
@@ -85,12 +86,13 @@ export default function RegisterForm() {
               handleSubmit={handleSubmit} // Pass the verifyOtp handler
               isLoading={isLoading}
               validationErrors={validationErrors}
-              otp={otp} // Pass current OTP value
-              handleOtpChange={handleOtpChange} // Pass the OTP change handler
-              // Pass other StepProps if needed by Step4, though unlikely now
-              agreementChecked={agreementChecked}
-              setAgreementChecked={setAgreementChecked}
-              downloadCampRules={downloadCampRules}
+              otp={otp}
+              handleOtpChange={handleOtpChange}
+              resendOtp={resendOtp} // Pass the resendOtp handler
+              // Pass other StepProps if needed by Step4
+              agreementChecked={agreementChecked} // Keep required props
+              setAgreementChecked={setAgreementChecked} // Keep required props
+              downloadCampRules={downloadCampRules} // Keep required props
             />
           )}
         </CardContent>

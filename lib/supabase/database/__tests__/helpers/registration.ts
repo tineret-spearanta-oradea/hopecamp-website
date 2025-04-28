@@ -69,7 +69,7 @@ export async function createUserWithRegistration(activeEditionId: number, profil
 
     // Act: Create the user using the admin API, passing the generated metadata
     const {data: authUser, error: authError} = await testSupabaseAdmin.auth.admin.createUser({
-        phone: testFormData.userData.phone,
+        phone: testFormData.authData.phone,
         phone_confirm: true,
         user_metadata: metadata, // Pass the specific metadata part
         app_metadata: {provider: 'email', providers: ['email']}, // Mimic app metadata
