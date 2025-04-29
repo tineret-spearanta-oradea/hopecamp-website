@@ -12,9 +12,6 @@ jobs:
   ping_dev:
     name: Ping Dev Supabase
     runs-on: ubuntu-latest
-    # Only run this job if the dev secrets are set
-    if: ${{ secrets.DEV_SUPABASE_URL != '' && secrets.DEV_SUPABASE_SERVICE_ROLE_KEY != '' }}
-
     steps:
       # Step 1: Checkout the repository (optional, not strictly needed for this script)
       # - name: Checkout repository
@@ -79,9 +76,6 @@ jobs:
   ping_prod:
     name: Ping Prod Supabase
     runs-on: ubuntu-latest
-    # Only run this job if the prod secrets are set
-    if: ${{ secrets.PROD_SUPABASE_URL != '' && secrets.PROD_SUPABASE_SERVICE_ROLE_KEY != '' }}
-
     steps:
       # Step 1: Checkout the repository (optional, not strictly needed for this script)
       # - name: Checkout repository
