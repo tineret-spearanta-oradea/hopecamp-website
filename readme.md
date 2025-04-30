@@ -32,6 +32,11 @@
    and `service_role key`!
    You can see the dashboard at http://127.0.0.1:54323/project/default . For postgres you can use this db
    url: `postgresql://postgres:postgres@127.0.0.1:54322/postgres`.
+
+   **Note:** If you have previously run `supabase start` and are switching branches or pulling changes that include new
+   database migrations, it's recommended to reset your local database to apply the latest schema.
+   Run `supabase db reset` to drop the existing local database and reapply all migrations from
+   your `supabase/migrations` folder. Be aware that this will delete all local data.
 4. Create a new `.env.local` based on `.env.local.example`: `cp .env.local.example .env.local`.
    Populate `NEXT_PUBLIC_SUPABASE_ANON_KEY` with the `anon key`, `SUPABASE_SERVICE_ROLE_KEY` with `service_role key:`
    from step 3. Please also check that the `API URL` is the same as `NEXT_PUBLIC_SUPABASE_URL`
@@ -42,7 +47,7 @@
    **Note:** For local development, SMS OTP codes (e.g., for phone verification) are also redirected to this Mailpit
    interface instead of being sent as actual SMS messages. This is configured via a Supabase Auth hook (`send_sms`) to
    simplify testing.
-  
+
    **Tip:** You can also hardcode OTPs for specific phone numbers in `supabase/config.toml` under
    the `[auth.sms.test_otp]` section. This bypasses the need to check Mailpit. Remember to
    run `supabase stop; supabase start` after modifying `config.toml` for changes to take effect.
