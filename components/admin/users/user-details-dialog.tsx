@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Message } from "@/types/message";
+import { AdminMessage } from "@/types/message"; // Use AdminMessage
 import Image from "next/image";
 import { format } from "date-fns";
 import { useState, useEffect } from "react";
@@ -28,7 +28,7 @@ export function UserDetailsDialog({
 }: UserDetailsDialogProps) {
   const [imageError, setImageError] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<AdminMessage[]>([]); // Use AdminMessage
   const [messagesLoading, setMessagesLoading] = useState(false);
 
   useEffect(() => {
@@ -128,7 +128,7 @@ export function UserDetailsDialog({
                                 : "text-yellow-500"
                             }`}
                           >
-                            {message.isRead ? "Citit" : "Necitit"}
+                            {message.isRead ? `Citit ${message.readByUserName ? `de ${message.readByUserName}` : ''}` : "Necitit"}
                           </span>
                         </div>
                       </div>

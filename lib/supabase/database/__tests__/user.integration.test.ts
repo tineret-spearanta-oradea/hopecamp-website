@@ -1,12 +1,15 @@
-import {supabaseAdmin} from '@/lib/supabase/server';
-import {getUserProfile} from '../user';
-import {createTestEdition, createTestEditionObject, deleteAllEditions} from './helpers/edition';
-import {deleteAllAuthUsers} from './helpers/user'; // Still needed
-import {Edition} from '@/types/edition';
-import {createUserWithRegistration} from "@/lib/supabase/database/__tests__/helpers/registration";
+import { supabaseAdmin } from '@/lib/supabase/server';
+import { getUserProfile } from '../user';
+import { createTestEdition, createTestEditionObject, deleteAllEditions } from './helpers/edition';
+import { deleteAllAuthUsers } from './helpers/user'; // Still needed
+import { Edition } from '@/types/edition';
+import { createUserWithRegistration } from "@/lib/supabase/database/__tests__/helpers/registration";
 
-const testSupabaseAdmin = supabaseAdmin!;
-
+jest.mock('@/lib/supabase/client', () => {
+    return {
+        supabaseBrowserClient: supabaseAdmin
+    };
+});
 
 describe('User Database Integration Tests', () => {
     let activeEdition: Edition;
@@ -41,7 +44,7 @@ describe('User Database Integration Tests', () => {
             // Need a short delay for the trigger to potentially complete
             await new Promise(resolve => setTimeout(resolve, 100)); // Adjust delay if needed
 
-            const userProfile = await getUserProfile(testRegData.userId, testSupabaseAdmin); // Use admin client for fetch
+            const userProfile = await getUserProfile(testRegData.userId);
 
             // Verify the profile exists and matches the input data
             expect(userProfile).not.toBeNull();

@@ -1,6 +1,13 @@
 import {getActiveEdition, insertEdition} from '../edition'; // Import insertEdition
 import {createTestEdition, createTestEditionObject, deleteAllEditions} from './helpers/edition'; // Import the helper
+import { supabaseAdmin } from '@/lib/supabase/server'; // Import supabaseAdmin
 
+// Mock the browser client. Dynamically require the admin client *inside* the factory.
+jest.mock('@/lib/supabase/client', () => {
+    return {
+        supabaseBrowserClient: supabaseAdmin
+    };
+});
 
 describe('Edition Database Integration Tests', () => {
 

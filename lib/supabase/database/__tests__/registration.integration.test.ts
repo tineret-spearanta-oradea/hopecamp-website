@@ -11,6 +11,14 @@ import { Edition } from '@/types/edition';
 import { FormData } from "@/types/form";
 import {createTestRegistrationWithProfile, createUserWithRegistration} from './helpers/registration';
 import {RegistrationWithProfile} from "@/types/registrationWithProfile"; // Import helper
+import { supabaseAdmin } from '@/lib/supabase/server'; // Import supabaseAdmin
+
+// Mock the browser client. Dynamically require the admin client *inside* the factory.
+jest.mock('@/lib/supabase/client', () => {
+    return {
+        supabaseBrowserClient: supabaseAdmin
+    };
+});
 
 describe('Registration Database Integration Tests', () => {
     let activeEdition: Edition;
