@@ -11,6 +11,14 @@ import { Edition } from '@/types/edition';
 import { FormData } from "@/types/form";
 import {createTestRegistrationWithProfile, createUserWithRegistration} from './helpers/registration';
 import {RegistrationWithProfile} from "@/types/registrationWithProfile"; // Import helper
+import { supabaseAdmin } from '@/lib/supabase/server'; // Import supabaseAdmin
+
+// Mock the browser client. Dynamically require the admin client *inside* the factory.
+jest.mock('@/lib/supabase/client', () => {
+    return {
+        supabaseBrowserClient: supabaseAdmin
+    };
+});
 
 describe('Registration Database Integration Tests', () => {
     let activeEdition: Edition;
@@ -44,7 +52,6 @@ describe('Registration Database Integration Tests', () => {
                 editionId: activeEdition.id,
                 name: "Full Data Test User",
                 age: 30,
-                phone: "0712312312",
                 church: "Betel, Oradea",
                 payTaxTo: "Andrei Micula",
                 transport: "autocar",
@@ -74,7 +81,7 @@ describe('Registration Database Integration Tests', () => {
             // Verify registration fields against the original formData.userData
             expect(registration?.name).toBe(formData.userData.name);
             expect(registration?.age).toBe(parseInt(formData.userData.age, 10));
-            expect(registration?.phone).toBe(formData.userData.phone);
+            expect(registration?.phone).toBe(formData.authData.phone);
             expect(registration?.church).toBe(formData.userData.church);
             expect(registration?.payTaxTo).toBe(formData.userData.payTaxTo);
             expect(registration?.transport).toBe(formData.userData.transport);
@@ -106,28 +113,27 @@ describe('Registration Database Integration Tests', () => {
             expect(registration?.userId).toBe(testRegData.userId);
             expect(registration?.editionId).toBe(activeEdition.id);
             expect(registration?.name).toBe("Fetch Me By ID");
-            expect(registration?.email).toBe(testRegData.email);
             expect(registration?.isAdmin).toBe(false); // Default
             expect(registration?.isSuperAdmin).toBe(false); // Default
         });
 
-        it('should return the correct registration by email', async () => {
+        it('should return the correct registration by phone', async () => {
             // Arrange
             const testRegData = await createUserWithRegistration(activeEdition.id, {name: "Fetch Me By Email"});
             await new Promise(resolve => setTimeout(resolve, 100)); // Allow trigger to complete
 
             // Act
-            const registration = await getUserRegistrationByEditionId(activeEdition.id, {email: testRegData.email});
+            const registration = await getUserRegistrationByEditionId(activeEdition.id, {phone: testRegData.phone});
 
             // Assert
             expect(registration).not.toBeNull();
             expect(registration?.userId).toBe(testRegData.userId);
             expect(registration?.editionId).toBe(activeEdition.id);
             expect(registration?.name).toBe("Fetch Me By Email");
-            expect(registration?.email).toBe(testRegData.email);
+            expect(registration?.phone).toBe(testRegData.phone);
         });
 
-        it('should return null if email does not exist', async () => {
+        it('should return null if phone does not exist', async () => {
             // Arrange
             const nonExistentEmail = 'nonexistent@example.com';
 
@@ -135,7 +141,7 @@ describe('Registration Database Integration Tests', () => {
             await new Promise(resolve => setTimeout(resolve, 100));
 
             // Act
-            const registration = await getUserRegistrationByEditionId(activeEdition.id, {email: nonExistentEmail});
+            const registration = await getUserRegistrationByEditionId(activeEdition.id, {phone: nonExistentEmail});
 
             // Assert
             expect(registration).toBeNull();
@@ -256,7 +262,6 @@ describe('Registration Database Integration Tests', () => {
                 ...initialReg!, // Spread the fetched registration data
                 // Update profile fields
                 name: "Updated Name",
-                phone: "0722222222",
                 age: 26,
                 imageUrl: "updated.jpg",
                 // Update registration fields
@@ -281,7 +286,6 @@ describe('Registration Database Integration Tests', () => {
             expect(updatedReg).not.toBeNull();
             // Check updated fields
             expect(updatedReg?.name).toBe("Updated Name");
-            expect(updatedReg?.phone).toBe("0722222222");
             expect(updatedReg?.age).toBe(26);
             expect(updatedReg?.imageUrl).toBe("updated.jpg");
             expect(updatedReg?.church).toBe("Updated Church");

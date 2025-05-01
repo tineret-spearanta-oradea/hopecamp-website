@@ -199,7 +199,7 @@ export const columns = ({
           <DropdownMenuLabel>Acțiuni</DropdownMenuLabel>
           <DropdownMenuItem
             onClick={() => {
-              navigator.clipboard.writeText(row.original.email);
+              navigator.clipboard.writeText(row.original.phone);
             }}
             className="cursor-pointer"
           >

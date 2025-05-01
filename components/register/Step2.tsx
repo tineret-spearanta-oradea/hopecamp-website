@@ -1,4 +1,4 @@
-import { FormData, ValidationErrors } from "@/types/form";
+import { StepProps } from "@/types/form"; // Added StepProps
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -9,25 +9,7 @@ import {
   transportOptions,
 } from "@/lib/constants";
 import { DatePickerWithRange } from "../ui/date-picker";
-import { UploadButton } from "@/utils/uploadthing";
-import { useState, useEffect } from "react";
-import { cn } from "@/lib/utils";
-import { toast } from "sonner";
-import Image from "next/image";
-
-interface Step2Props {
-  formData: FormData;
-  handleChange: (
-    objectName: "authData" | "userData",
-    e: { name: string; value: string }
-  ) => void;
-  handleNext: () => void;
-  handlePrev: () => void;
-  handleDateChange: (dates: { from: Date; to: Date }) => void;
-  handleImageChange: (imageUrl: string) => void;
-  validationErrors: ValidationErrors;
-  isLoading: boolean;
-}
+import Link from "next/link"; // Added
 
 export default function Step2({
   formData,
@@ -35,45 +17,9 @@ export default function Step2({
   handleNext,
   handlePrev,
   handleDateChange,
-  handleImageChange,
   validationErrors,
   isLoading,
-}: Step2Props) {
-  const [isUploading, setIsUploading] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      toast.info("Ai nevoie de ajutor?", {
-        description: (
-          <div>
-            Dacă întâmpini probleme, ne poți contacta pe{" "}
-            <a
-              href="https://wa.me/40773311577"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-hope-darkcyan hover:underline"
-            >
-              WhatsApp
-            </a>{" "}
-            (0773 311 577) sau la{" "}
-            <a
-              href="mailto:dev@hopecamp.ro"
-              className="text-hope-darkcyan hover:underline"
-            >
-              dev@hopecamp.ro
-            </a>
-          </div>
-        ),
-        duration: 45000,
-        action: {
-          label: "Închide",
-          onClick: () => console.log("Closed"),
-        },
-      });
-    }, 45000); // 45 seconds
-
-    return () => clearTimeout(timer);
-  }, []); // Only run once when component mounts
+}: StepProps) { // Use StepProps
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -86,68 +32,22 @@ export default function Step2({
     from: Date | null;
     to: Date | null;
   }) => {
-    if (dates.from && dates.to) {
+    // Check if handleDateChange exists before calling
+    if (dates.from && dates.to && handleDateChange) {
       handleDateChange({ from: dates.from, to: dates.to });
     }
   };
 
   return (
     <div>
+      {/* Changed Title */}
       <h2 className="text-xl font-black text-center mb-4 py-4">
-        Pasul 2/3: Detalii personale
+        Pasul 2/3: Detalii Înregistrare
       </h2>
 
-      {isLoading && (
-        <p className="text-sm my-4 text-center text-hope-lightcyan">
-          Te-am recunoscut din taberele trecute! Verifică şi completează
-          câmpurile lipsă.
-        </p>
-      )}
 
       <div className="space-y-8">
-        <div className="space-y-2">
-          <Label className="text-base font-semibold">Numele întreg *</Label>
-          <Input
-            type="text"
-            name="name"
-            value={formData.userData.name}
-            onChange={(e) => handleInputChange(e, "userData")}
-            className={validationErrors.name ? "border-destructive" : ""}
-          />
-          {validationErrors.name && (
-            <p className="text-destructive text-xs">{validationErrors.name}</p>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <Label className="text-base font-semibold">Vârsta *</Label>
-          <Input
-            type="number"
-            name="age"
-            value={formData.userData.age}
-            onChange={(e) => handleInputChange(e, "userData")}
-            className={validationErrors.age ? "border-destructive" : ""}
-          />
-          {validationErrors.age && (
-            <p className="text-destructive text-xs">{validationErrors.age}</p>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <Label className="text-base font-semibold">Număr de telefon *</Label>
-          <Input
-            type="tel"
-            name="phone"
-            value={formData.userData.phone}
-            onChange={(e) => handleInputChange(e, "userData")}
-            className={validationErrors.phone ? "border-destructive" : ""}
-          />
-          {validationErrors.phone && (
-            <p className="text-destructive text-xs">{validationErrors.phone}</p>
-          )}
-        </div>
-
-        <div className="space-y-2">
+         <div className="space-y-2">
           <Label className="text-base font-semibold">
             Perioada în care stai în tabără *
           </Label>
@@ -164,79 +64,8 @@ export default function Step2({
           )}
         </div>
 
-        <div className="space-y-2">
-          <Label className="text-base font-semibold">
-            Încarcă poză cu tine
-          </Label>
-          <div className="space-y-4">
-            <UploadButton
-              endpoint="profileImage"
-              onClientUploadComplete={(res) => {
-                if (res?.[0]?.url) {
-                  handleImageChange(res[0].url);
-                  setIsUploading(false);
-                  toast.success("Poza a fost încărcată cu succes!", {
-                    description: "Poți continua cu înregistrarea.",
-                  });
-                }
-              }}
-              onUploadError={(error: Error) => {
-                console.error("Upload error:", error);
-                setIsUploading(false);
 
-                if (error.message.includes("FileSizeMismatch")) {
-                  toast.error("Fișierul este prea mare", {
-                    description: "Te rugăm să încarci o poză mai mică de 4MB.",
-                  });
-                } else {
-                  toast.error("Eroare la încărcare", {
-                    description:
-                      "Te rugăm să încerci din nou. Dacă problema persistă, contactează-ne. Dacă nu reușești nicicum să încarci poza, poti trece la urmatorul pas, si te vom contacta mai tarziu.",
-                  });
-                }
-              }}
-              onUploadBegin={() => {
-                setIsUploading(true);
-              }}
-              appearance={{
-                button: cn(
-                  "bg-secondary text-secondary-foreground hover:bg-secondary/90",
-                  formData.userData.imageUrl && "opacity-50 cursor-not-allowed"
-                ),
-                allowedContent: "text-sm text-muted-foreground text-center",
-              }}
-            />
-            {isUploading && (
-              <p className="text-sm text-muted-foreground text-center animate-pulse">
-                Se încarcă poza...
-              </p>
-            )}
-            {formData.userData.imageUrl ? (
-              <div className="flex items-center gap-2 text-xs text-emerald-600 font-medium">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border bg-muted">
-                  <Image
-                    src={formData.userData.imageUrl}
-                    alt="Preview"
-                    width={36}
-                    height={36}
-                    className="rounded-md object-cover h-full w-full"
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <span>✓ Poza a fost încărcată cu succes!</span>
-                  <button
-                    onClick={() => handleImageChange("")}
-                    className="text-left text-muted-foreground hover:text-destructive"
-                  >
-                    Șterge poza
-                  </button>
-                </div>
-              </div>
-            ) : null}
-          </div>
-        </div>
-
-        <div className="space-y-2">
+         <div className="space-y-2">
           <Label className="text-base font-semibold">
             Biserica din care provii *
           </Label>
@@ -402,21 +231,24 @@ export default function Step2({
           <Button
             variant="outline"
             onClick={handlePrev}
-            disabled={isLoading || isUploading}
+            disabled={isLoading}
           >
             ← Înapoi
           </Button>
-          <Button onClick={handleNext} disabled={isLoading || isUploading}>
-            {isUploading
-              ? "Se încarcă poza..."
-              : isLoading
-              ? "Se procesează..."
-              : "Continuă →"}
+          <Button onClick={handleNext} disabled={isLoading}>
+            {isLoading ? "Se procesează..." : "Continuă →"}
           </Button>
         </div>
 
         <p className="text-center text-sm text-muted-foreground mt-4">
           Câmpurile marcate cu * sunt obligatorii
+        </p>
+        <p className="text-center text-sm text-muted-foreground mt-2">
+          Ai deja cont?{" "}
+          <Link href="/login" className="text-hope-lightcyan hover:underline">
+            Autentifică-te aici
+          </Link>
+          .
         </p>
       </div>
     </div>

@@ -1,13 +1,15 @@
-import {supabaseAdmin} from '@/lib/supabase/server';
-import {getUserProfile} from '../user';
-import {insertEdition} from '../edition';
-import {createTestEdition, createTestEditionObject, deleteAllEditions} from './helpers/edition';
-import {deleteAllAuthUsers} from './helpers/user'; // Still needed
-import {Edition} from '@/types/edition';
-import {createUserWithRegistration} from "@/lib/supabase/database/__tests__/helpers/registration";
+import { supabaseAdmin } from '@/lib/supabase/server';
+import { getUserProfile } from '../user';
+import { createTestEdition, createTestEditionObject, deleteAllEditions } from './helpers/edition';
+import { deleteAllAuthUsers } from './helpers/user'; // Still needed
+import { Edition } from '@/types/edition';
+import { createUserWithRegistration } from "@/lib/supabase/database/__tests__/helpers/registration";
 
-const testSupabaseAdmin = supabaseAdmin!;
-
+jest.mock('@/lib/supabase/client', () => {
+    return {
+        supabaseBrowserClient: supabaseAdmin
+    };
+});
 
 describe('User Database Integration Tests', () => {
     let activeEdition: Edition;
@@ -42,14 +44,13 @@ describe('User Database Integration Tests', () => {
             // Need a short delay for the trigger to potentially complete
             await new Promise(resolve => setTimeout(resolve, 100)); // Adjust delay if needed
 
-            const userProfile = await getUserProfile(testRegData.userId, testSupabaseAdmin); // Use admin client for fetch
+            const userProfile = await getUserProfile(testRegData.userId);
 
             // Verify the profile exists and matches the input data
             expect(userProfile).not.toBeNull();
             expect(userProfile?.userId).toBe(testRegData.userId);
             expect(userProfile?.name).toBe(testRegData.name); // Compare against Registration data
             expect(userProfile?.age).toBe(testRegData.age); // Compare against Registration data (number)
-            expect(userProfile?.phone).toBe(testRegData.phone); // Compare against Registration data
             expect(userProfile?.imageUrl).toBe(testRegData.imageUrl || ''); // Check default/provided value
             expect(userProfile?.isSuperAdmin).toBe(false); // Default value from registration helper
         });

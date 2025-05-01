@@ -129,7 +129,7 @@ export function AdminNav() {
             <div className="flex-1 overflow-hidden">
               <p className="truncate text-sm font-medium">{user?.name}</p>
               <p className="truncate text-xs text-muted-foreground">
-                {user?.email}
+                {user?.name}
               </p>
             </div>
           </div>
