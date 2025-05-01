@@ -6,25 +6,13 @@ CREATE POLICY "Allow admins full access to user profiles"
     ON public.user_profiles
     FOR ALL
     USING (is_admin(auth.uid())) -- Assuming is_admin() function exists
-    WITH CHECK (is_admin(auth.uid())); -- Assuming is_admin() function exists
+    WITH CHECK (is_admin(auth.uid()));
 
--- Grant users select access to their own profile AND profiles of users who read their messages
-CREATE POLICY "Allow users to view their own profile and readers of their messages"
+-- Grant users select access ONLY to their own profile
+CREATE POLICY "Allow users to view their own profile"
     ON public.user_profiles
     FOR SELECT
-    USING (
-        -- Allow access to their own profile
-        auth.uid() = user_id
-        OR
-        -- Allow access if the profile belongs to someone who read a message linked to the user's registration
-        EXISTS (
-            SELECT 1
-            FROM public.messages m
-            JOIN public.registrations r ON m.registration_id = r.id
-            WHERE m.read_by_user_id = user_profiles.user_id -- The profile belongs to the reader
-              AND r.user_id = auth.uid() -- The message belongs to the current user's registration
-        )
-    );
+    USING (auth.uid() = user_id);
 
 -- Grant users insert access for their own profile
 CREATE POLICY "Allow users to insert their own profile"

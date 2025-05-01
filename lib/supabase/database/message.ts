@@ -1,16 +1,49 @@
-import {supabaseBrowserClient} from "@/lib/supabase/client";
-import {Message} from "@/types/message";
-import {PostgrestError} from "@supabase/supabase-js";
+import { supabaseBrowserClient } from "@/lib/supabase/client";
+import { UserMessage, AdminMessage } from "@/types/message"; // Import both types
+import { PostgrestError } from "@supabase/supabase-js";
 
-// Function to get the last message sent by a specific user
-export async function getLastUserMessage(registrationId: number): Promise<Message | null> {
+// Helper function to map database row to UserMessage type
+function mapUserMessageDbRow(data: any): UserMessage {
+  return {
+    id: data.id,
+    registrationId: data.registration_id,
+    text: data.text,
+    sentDate: new Date(data.sent_date),
+    isRead: data.is_read,
+    readAt: data.read_at ? new Date(data.read_at) : undefined,
+  };
+}
+
+// Helper function to map database row to AdminMessage type
+function mapAdminMessageDbRow(data: any): AdminMessage {
+  // Access nested data based on the aliases used in the select statements
+  const senderProfile = data.sender_registration?.user_profiles;
+  const readerProfile = data.reader_profile;
+
+  return {
+    // UserMessage fields
+    id: data.id,
+    registrationId: data.registration_id,
+    text: data.text,
+    sentDate: new Date(data.sent_date),
+    isRead: data.is_read,
+    readAt: data.read_at ? new Date(data.read_at) : undefined,
+    // AdminMessage specific fields
+    userId: data.sender_registration?.user_id ?? 'Unknown User ID', // Sender's user_id
+    userName: senderProfile?.name ?? 'Unknown Sender', // Sender's name
+    phone: senderProfile?.phone ?? 'N/A', // Sender's phone
+    readByUserId: data.read_by_user_id, // Reader's user ID (might be null)
+    readByUserName: readerProfile?.name, // Reader's name (might be null if not read)
+  };
+}
+
+
+// Function to get the last message for a specific registration (user-facing)
+export async function getLastUserMessage(registrationId: number): Promise<UserMessage | null> {
   const { data, error } = await supabaseBrowserClient
       .from("messages")
-      .select(`
-        *,
-        sender_registration:registrations!inner ( user_id, user_profiles!inner(name, ...auth_users_view!inner ( email, phone )) ),
-        reader_profile:user_profiles!fk_messages_read_by_user_id ( name )
-      `)
+      // Select only fields needed for UserMessage
+      .select(`id, registration_id, text, sent_date, is_read, read_at`)
       .eq("registration_id", registrationId)
       .order("sent_date", { ascending: false })
       .limit(1)
@@ -25,23 +58,21 @@ export async function getLastUserMessage(registrationId: number): Promise<Messag
     return null; // Return null if no message found
   }
 
-  return mapMessageDbRow(data);
+  // Use the UserMessage mapper
+  return mapUserMessageDbRow(data);
 }
 
-// Function to insert a new message
+// Function to insert a new message (user-facing)
 // Throws an error if insertion fails
-export async function insertMessage(messageData: { registrationId: number; text: string }): Promise<Message> {
+export async function insertMessage(messageData: { registrationId: number; text: string }): Promise<UserMessage> {
   const { data, error } = await supabaseBrowserClient
       .from("messages")
       .insert({
         registration_id: messageData.registrationId,
         text: messageData.text,
       })
-      .select(`
-        *,
-        sender_registration:registrations!inner ( user_id, user_profiles!inner(name, ...auth_users_view!inner ( email, phone )) ),
-        reader_profile:user_profiles!fk_messages_read_by_user_id ( name )
-      `) // Select the newly inserted row with sender and reader info
+      // Select only fields needed for UserMessage after insert
+      .select(`id, registration_id, text, sent_date, is_read, read_at`)
       .single();
 
   if (error || !data) {
@@ -50,37 +81,19 @@ export async function insertMessage(messageData: { registrationId: number; text:
     throw error || new Error("Failed to insert message and received no data.");
   }
 
-  // Return only the mapped message data on success
-  return mapMessageDbRow(data);
+  // Use the UserMessage mapper
+  return mapUserMessageDbRow(data);
 }
 
-// Helper function to map database row to Message type
-function mapMessageDbRow(data: any): Message {
-  // Access nested data based on the aliases used in the select statements
-  const senderProfile = data.sender_registration?.user_profiles;
-  const readerProfile = data.reader_profile;
 
-  return {
-    id: data.id,
-    // userId is the sender's user_id from the registration join
-    userId: data.sender_registration?.user_id,
-    userName: senderProfile?.name ?? 'Unknown Sender', // Sender's name
-    phone: senderProfile?.phone ?? 'N/A', // Sender's phone
-    text: data.text,
-    sentDate: new Date(data.sent_date),
-    isRead: data.is_read,
-    readByUserName: readerProfile?.name, // Reader's name (might be null if not read)
-    readAt: data.read_at ? new Date(data.read_at) : undefined,
-  };
-}
+// --- Admin Functionality ---
 
-// admin functionality
-
-// Function to get all messages for a specific user
+// Function to get all messages for a specific user (admin-facing)
 // Throws an error if fetching fails
-export async function getUserMessages(userId: string): Promise<Message[]> {
+export async function getUserMessages(userId: string): Promise<AdminMessage[]> {
   const { data, error } = await supabaseBrowserClient
       .from("messages")
+      // Keep the detailed select for AdminMessage
       .select(`
         *,
         sender_registration:registrations!inner ( user_id, user_profiles!inner(name, ...auth_users_view!inner ( email, phone )) ),
@@ -95,14 +108,16 @@ export async function getUserMessages(userId: string): Promise<Message[]> {
     throw error; // Throw the error to be caught by the calling function
   }
 
-  return data?.map(mapMessageDbRow) || []; // Return the array of messages
+  // Use the AdminMessage mapper
+  return data?.map(mapAdminMessageDbRow) || [];
 }
 
-// Function to get all messages with user names
+// Function to get all messages for an edition (admin-facing)
 // Throws an error if fetching fails
-export async function getAllMessages(editionId:number): Promise<Message[]> {
+export async function getAllMessages(editionId:number): Promise<AdminMessage[]> {
   const { data, error } = await supabaseBrowserClient
     .from("messages")
+    // Keep the detailed select for AdminMessage
     .select(`
       *,
       sender_registration:registrations!inner ( edition_id, user_id, user_profiles!inner(name, ...auth_users_view!inner ( email, phone )) ),
@@ -117,11 +132,12 @@ export async function getAllMessages(editionId:number): Promise<Message[]> {
     throw error; // Throw the error to be caught by the calling function
   }
 
-  return data?.map(mapMessageDbRow) || []; // Return only the array of messages
+  // Use the AdminMessage mapper
+  return data?.map(mapAdminMessageDbRow) || [];
 }
 
-// Function to mark a message as read
-export async function setMessageRead(messageId: number, readByUserId: string): Promise<{ data: Message | null; error: PostgrestError | null }> { // Changed messageId type to number
+// Function to mark a message as read (admin-facing)
+export async function setMessageRead(messageId: number, readByUserId: string): Promise<{ data: AdminMessage | null; error: PostgrestError | null }> {
   const { data, error } = await supabaseBrowserClient
     .from("messages")
     .update({
@@ -130,11 +146,12 @@ export async function setMessageRead(messageId: number, readByUserId: string): P
       read_at: new Date(),
     })
     .eq("id", messageId)
+    // Keep the detailed select for AdminMessage
     .select(`
       *,
       sender_registration:registrations!inner ( user_id, user_profiles!inner(name, ...auth_users_view!inner ( email, phone )) ),
       reader_profile:user_profiles!fk_messages_read_by_user_id ( name )
-    `) // Select the updated row with sender and reader info
+    `)
     .single();
 
   if (error) {
@@ -142,5 +159,6 @@ export async function setMessageRead(messageId: number, readByUserId: string): P
     return { data: null, error };
   }
 
-  return { data: data ? mapMessageDbRow(data) : null, error: null };
+  // Use the AdminMessage mapper
+  return { data: data ? mapAdminMessageDbRow(data) : null, error: null };
 }
