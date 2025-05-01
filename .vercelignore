@@ -1,0 +1,3 @@
+# Ignore the SMS OTP redirection function during Vercel builds
+supabase/functions/redirect_sms_otp_to_console_and_mail/index.ts
+
