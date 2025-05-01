@@ -14,6 +14,12 @@ import { RegistrationWithProfile } from '@/types/registrationWithProfile';
 import { createUserWithRegistration } from "@/lib/supabase/database/__tests__/helpers/registration";
 import { UserMessage, AdminMessage } from '@/types/message'; // Import new types
 
+// Mock the browser client. Dynamically require the admin client *inside* the factory.
+jest.mock('@/lib/supabase/client', () => {
+    return {
+        supabaseBrowserClient: supabaseAdmin
+    };
+});
 
 describe('Message Database Integration Tests', () => {
     let activeEdition: Edition;
