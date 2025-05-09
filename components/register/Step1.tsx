@@ -20,6 +20,8 @@ export default function Step1({
   handleImageChange,
 }: StepProps & { handleImageChange: (imageUrl: string) => void }) {
   const [isUploading, setIsUploading] = useState(false);
+  const [localValidationErrors, setLocalValidationErrors] =
+    useState<ValidationErrors>({});
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -33,6 +35,7 @@ export default function Step1({
       if (formData.userData.imageUrl) {
         await deleteProfileImage(formData.userData.imageUrl);
         handleImageChange("");
+        setLocalValidationErrors((prev) => ({ ...prev, image: undefined }));
       }
     } catch (error) {
       console.error("Error deleting image:", error);
@@ -49,6 +52,25 @@ export default function Step1({
       userAge: formData.userData.age || undefined,
       category: "profile",
     };
+  };
+
+  const validateStep = (): boolean => {
+    const errors: ValidationErrors = {};
+    if (!formData.userData.imageUrl) {
+      errors.image = "Te rugăm să încarci o poză.";
+    }
+    setLocalValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleContinue = () => {
+    if (validateStep() && handleNext) {
+      handleNext();
+    } else if (!formData.userData.imageUrl) {
+      toast.error("Poză obligatorie", {
+        description: "Te rugăm să încarci o poză pentru a continua.",
+      });
+    }
   };
 
   useEffect(() => {
@@ -84,6 +106,12 @@ export default function Step1({
 
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (formData.userData.imageUrl && localValidationErrors.image) {
+      setLocalValidationErrors((prev) => ({ ...prev, image: undefined }));
+    }
+  }, [formData.userData.imageUrl, localValidationErrors.image]);
 
   return (
     <StepWrapper title="Pasul 1/3: Detalii Personale" isLoading={isLoading}>
@@ -121,7 +149,7 @@ export default function Step1({
 
           <div className="space-y-2">
             <Label className="text-base font-semibold">
-              Încarcă poză cu tine
+              Încarcă poză cu tine *
             </Label>
             <div className="space-y-4">
               <SupabaseUploader
@@ -144,14 +172,14 @@ export default function Step1({
                   } else {
                     toast.error("Eroare la încărcare", {
                       description:
-                        "Te rugăm să încerci din nou. Dacă problema persistă, contactează-ne. Dacă nu reușești nicicum să încarci poza, poti trece la urmatorul pas, si te vom contacta mai tarziu.",
+                        "Te rugăm să încerci din nou. Dacă problema persistă, contactează-ne.",
                     });
                   }
                 }}
                 onUploadBegin={() => {
                   setIsUploading(true);
                 }}
-                disabled={!!formData.userData.imageUrl}
+                disabled={!!formData.userData.imageUrl || isUploading}
                 metadata={getMetadata()}
                 category="profile"
               />
@@ -182,9 +210,9 @@ export default function Step1({
                   </div>
                 </div>
               ) : null}
-              {validationErrors.image && (
+              {(validationErrors.image || localValidationErrors.image) && (
                 <p className="text-destructive text-xs">
-                  {validationErrors.image}
+                  {validationErrors.image || localValidationErrors.image}
                 </p>
               )}
             </div>
@@ -192,7 +220,7 @@ export default function Step1({
         </div>
 
         <div className="flex justify-end pt-4">
-          <Button onClick={handleNext} disabled={isLoading || isUploading}>
+          <Button onClick={handleContinue} disabled={isLoading || isUploading}>
             {isUploading
               ? "Se încarcă poza..."
               : isLoading
