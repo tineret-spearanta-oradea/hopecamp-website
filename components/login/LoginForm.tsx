@@ -179,7 +179,9 @@ export default function LoginForm() {
           // OTP Verification Stage
           <>
             <div className="space-y-2 flex flex-col items-center">
-              <label htmlFor="otp-input" className="text-base font-semibold">Introdu codul OTP</label>
+              <label htmlFor="otp-input" className="text-base font-semibold">
+                Introdu codul OTP
+              </label>
               <Input
                 id="otp-input"
                 type="text"
@@ -194,38 +196,39 @@ export default function LoginForm() {
               />
             </div>
 
-             <div className="flex items-center justify-between gap-4">
-                 <Button
-                    onClick={handleVerifyOtp}
-                    className="flex-grow rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={loading}
-                 >
-                    {loading ? "Se verifică..." : "Verifică codul"}
-                 </Button>
-                 <Button
-                    variant="outline"
-                    onClick={handleResendOtp}
-                    disabled={resendDisabled || loading}
-                    className="flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
-                 >
-                    Retrimite {resendDisabled && resendTimer > 0 ? `(${resendTimer}s)` : ''}
-                 </Button>
-             </div>
-             <Button
-                variant="link"
-                size="sm"
-                className="text-hope-darkcyan hover:underline p-0 h-auto"
-                onClick={() => {
-                    setOtpSent(false);
-                    setOtp("");
-                    // Keep phone number
-                    setResendDisabled(true); // Reset resend state
-                    setResendTimer(RESEND_TIMEOUT_SECONDS);
-                }}
+            <div className="flex items-center justify-between gap-4">
+              <Button
+                onClick={handleVerifyOtp}
+                className="flex-grow rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={loading}
-             >
-                Schimbă numărul de telefon
-             </Button>
+              >
+                {loading ? "Se verifică..." : "Verifică codul"}
+              </Button>
+              <Button
+                variant="outline"
+                onClick={handleResendOtp}
+                disabled={resendDisabled || loading}
+                className="flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Retrimite{" "}
+                {resendDisabled && resendTimer > 0 ? `(${resendTimer}s)` : ""}
+              </Button>
+            </div>
+            <Button
+              variant="link"
+              size="sm"
+              className="text-hope-darkcyan hover:underline p-0 h-auto"
+              onClick={() => {
+                setOtpSent(false);
+                setOtp("");
+                // Keep phone number
+                setResendDisabled(true); // Reset resend state
+                setResendTimer(RESEND_TIMEOUT_SECONDS);
+              }}
+              disabled={loading}
+            >
+              Schimbă numărul de telefon
+            </Button>
           </>
         )}
       </div>
@@ -233,7 +236,7 @@ export default function LoginForm() {
         Nu te-ai înscris încă în tabără?{" "}
         <Link
           href="/inscrie-te"
-          className="text-hope-darkcyan hover:underline font-medium"
+          className="text-primary hover:underline font-medium"
         >
           Înscrie-te aici
         </Link>

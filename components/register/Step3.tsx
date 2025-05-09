@@ -50,11 +50,13 @@ export default function Step3({
 
   return (
     // Changed Title
-    <StepWrapper title="Pasul 3/3: Autentificare & Confirmare" isLoading={isLoading}>
+    <StepWrapper
+      title="Pasul 3/3: Autentificare & Confirmare"
+      isLoading={isLoading}
+    >
       <div className="space-y-8">
-
-         {/* Added Phone Number Input */}
-         <div className="space-y-2">
+        {/* Added Phone Number Input */}
+        <div className="space-y-2">
           <Label className="text-base font-semibold">Număr de telefon *</Label>
           <Input
             type="tel"
@@ -67,9 +69,9 @@ export default function Step3({
           {validationErrors.phone && (
             <p className="text-destructive text-xs">{validationErrors.phone}</p>
           )}
-           <p className="text-xs text-muted-foreground">
-             Vom folosi acest număr pentru a te autentifica și a te contacta.
-           </p>
+          <p className="text-xs text-muted-foreground">
+            Vom folosi acest număr pentru a te autentifica și a te contacta.
+          </p>
         </div>
 
         {/* Kept Download Rules Button */}
@@ -153,7 +155,6 @@ export default function Step3({
                     setAgreementChecked(checked as boolean);
                   }
                 }}
-                className="mt-0.5 h-4 w-4 rounded-sm border border-third text-third data-[state=checked]:bg-third data-[state=checked]:text-primary-foreground"
               />
               {agreementChecked && (
                 <Check className="h-3 w-3 absolute top-1 left-0.5 text-white pointer-events-none" />
@@ -179,7 +180,6 @@ export default function Step3({
           <Button
             onClick={handleNext}
             disabled={!agreementChecked || isLoading}
-            className="bg-secondary text-white hover:bg-secondary/90"
           >
             {isLoading ? "Se trimite codul..." : "Trimite cod verificare ↗"}
           </Button>

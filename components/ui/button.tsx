@@ -10,7 +10,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-secondary border border-2 border-secondary text-white hover:bg-third hover:text-primary hover:border-third",
+          "bg-primary border border-2 border-primary text-white hover:bg-secondary hover:text-primary hover:border-secondary",
         outline:
           "bg-transparent border border-2 border-third text-third hover:bg-third/10 hover:text-third hover:border-third",
         link: "bg-transparent text-primary hover:text-secondary",

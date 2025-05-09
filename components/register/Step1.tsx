@@ -1,14 +1,15 @@
 import { StepProps, FormData, ValidationErrors } from "@/types/form";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Label } from "../ui/label"; // Added
+import { Label } from "../ui/label";
 import { StepWrapper } from "./StepWrapper";
-import { UploadButton } from "@/utils/uploadthing"; // Added
-import { useState, useEffect } from "react"; // Added useEffect
-import { cn } from "@/lib/utils"; // Added
+import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import Image from "next/image";
-import Link from "next/link"; // Added
+import Link from "next/link";
+import { SupabaseUploader } from "../ui/SupabaseUploader";
+import { deleteProfileImage } from "@/utils/supabaseClient";
 
 export default function Step1({
   formData,
@@ -17,7 +18,7 @@ export default function Step1({
   validationErrors,
   isLoading,
   handleImageChange,
-}: StepProps & { handleImageChange: (imageUrl: string) => void }) { // Adjusted props type
+}: StepProps & { handleImageChange: (imageUrl: string) => void }) {
   const [isUploading, setIsUploading] = useState(false);
 
   const handleInputChange = (
@@ -27,7 +28,29 @@ export default function Step1({
     handleChange(objectName, e.target);
   };
 
-  // Added useEffect for help toast (copied from original Step2)
+  const handleDeleteImage = async () => {
+    try {
+      if (formData.userData.imageUrl) {
+        await deleteProfileImage(formData.userData.imageUrl);
+        handleImageChange("");
+      }
+    } catch (error) {
+      console.error("Error deleting image:", error);
+      toast.error("Eroare la ștergerea imaginii", {
+        description:
+          "Imaginea nu a putut fi ștearsă. Te rugăm să încerci din nou.",
+      });
+    }
+  };
+
+  const getMetadata = () => {
+    return {
+      userName: formData.userData.name || undefined,
+      userAge: formData.userData.age || undefined,
+      category: "profile",
+    };
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => {
       toast.info("Ai nevoie de ajutor?", {
@@ -57,17 +80,15 @@ export default function Step1({
           onClick: () => console.log("Closed"),
         },
       });
-    }, 45000); // 45 seconds
+    }, 45000);
 
     return () => clearTimeout(timer);
-  }, []); // Only run once when component mounts
+  }, []);
 
   return (
     <StepWrapper title="Pasul 1/3: Detalii Personale" isLoading={isLoading}>
       <div className="space-y-8">
-
         <div className="space-y-4">
-          {/* Name Input */}
           <div className="space-y-2">
             <Label className="text-base font-semibold">Numele întreg *</Label>
             <Input
@@ -78,11 +99,12 @@ export default function Step1({
               className={validationErrors.name ? "border-destructive" : ""}
             />
             {validationErrors.name && (
-              <p className="text-destructive text-xs">{validationErrors.name}</p>
+              <p className="text-destructive text-xs">
+                {validationErrors.name}
+              </p>
             )}
           </div>
 
-          {/* Age Input */}
           <div className="space-y-2">
             <Label className="text-base font-semibold">Vârsta *</Label>
             <Input
@@ -97,22 +119,18 @@ export default function Step1({
             )}
           </div>
 
-          {/* Image Upload */}
           <div className="space-y-2">
             <Label className="text-base font-semibold">
               Încarcă poză cu tine
             </Label>
             <div className="space-y-4">
-              <UploadButton
-                endpoint="profileImage"
-                onClientUploadComplete={(res) => {
-                  if (res?.[0]?.url) {
-                    handleImageChange(res[0].url);
-                    setIsUploading(false);
-                    toast.success("Poza a fost încărcată cu succes!", {
-                      description: "Poți continua cu înregistrarea.",
-                    });
-                  }
+              <SupabaseUploader
+                onUploadSuccess={(url) => {
+                  handleImageChange(url);
+                  setIsUploading(false);
+                  toast.success("Poza a fost încărcată cu succes!", {
+                    description: "Poți continua cu înregistrarea.",
+                  });
                 }}
                 onUploadError={(error: Error) => {
                   console.error("Upload error:", error);
@@ -120,7 +138,8 @@ export default function Step1({
 
                   if (error.message.includes("FileSizeMismatch")) {
                     toast.error("Fișierul este prea mare", {
-                      description: "Te rugăm să încarci o poză mai mică de 4MB.",
+                      description:
+                        "Te rugăm să încarci o poză mai mică de 4MB.",
                     });
                   } else {
                     toast.error("Eroare la încărcare", {
@@ -132,13 +151,9 @@ export default function Step1({
                 onUploadBegin={() => {
                   setIsUploading(true);
                 }}
-                appearance={{
-                  button: cn(
-                    "bg-secondary text-secondary-foreground hover:bg-secondary/90",
-                    formData.userData.imageUrl && "opacity-50 cursor-not-allowed"
-                  ),
-                  allowedContent: "text-sm text-muted-foreground text-center",
-                }}
+                disabled={!!formData.userData.imageUrl}
+                metadata={getMetadata()}
+                category="profile"
               />
               {isUploading && (
                 <p className="text-sm text-muted-foreground text-center animate-pulse">
@@ -159,7 +174,7 @@ export default function Step1({
                   <div className="flex flex-col">
                     <span>✓ Poza a fost încărcată cu succes!</span>
                     <button
-                      onClick={() => handleImageChange("")}
+                      onClick={handleDeleteImage}
                       className="text-left text-muted-foreground hover:text-destructive"
                     >
                       Șterge poza
@@ -167,9 +182,11 @@ export default function Step1({
                   </div>
                 </div>
               ) : null}
-               {validationErrors.image && (
-                 <p className="text-destructive text-xs">{validationErrors.image}</p>
-               )}
+              {validationErrors.image && (
+                <p className="text-destructive text-xs">
+                  {validationErrors.image}
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -184,7 +201,7 @@ export default function Step1({
           </Button>
         </div>
 
-         <p className="text-center text-sm text-muted-foreground mt-4">
+        <p className="text-center text-sm text-muted-foreground mt-4">
           Câmpurile marcate cu * sunt obligatorii
         </p>
         <p className="text-center text-sm text-muted-foreground mt-2">
