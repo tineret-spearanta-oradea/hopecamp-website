@@ -1,4 +1,4 @@
-export const title = "Winter Camp #2";
+export const title = "Hope Camp #6";
 
 export const churchOptions = [
   { value: "Speranta, Oradea", label: "Speranța, Oradea" },
@@ -9,13 +9,13 @@ export const churchOptions = [
 export const payTaxToOptions = [
   {
     value: "Denisa Șandor",
-    label: "Denisa Șandor (pe BT Pay sau cash)",
+    label: "Denisa Șandor (pe Revolut / BT Pay / cash)",
     phone: "+40 774 608 791",
   },
   {
-    value: "Eugen Petrila",
-    label: "Eugen Petrila (pe Revolut sau cash)",
-    phone: "+40 753 914 149",
+    value: "Carina Ban",
+    label: "Carina Ban (pe Revolut / BT Pay / BCR / cash)",
+    phone: "+40 735 566 211",
   },
 ];
 
@@ -26,6 +26,7 @@ export const transportOptions = [
 ];
 
 export const sumToPay = {
+  // TODO: change these values
   normal: 500,
   withFamilyMember: null,
   deposit: 250,
@@ -35,7 +36,7 @@ export const sumToPay = {
 export const dateRange = {
   startDate: new Date("2025-08-04"),
   endDate: new Date("2025-08-09"),
-  depositPaymentDueDate: new Date("2025-07-20"),
+  depositPaymentDueDate: new Date("2025-06-20"),
 };
 
 export const MinimumAge = {
