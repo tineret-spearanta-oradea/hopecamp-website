@@ -22,9 +22,14 @@ export default function Footer() {
         </div>
 
         <div className="w-1/2 flex flex-col  items-center gap-5 ">
-          {/* <Button className="hover:bg-[#A2BCCB]" asChild>
-            <Link href="/inscrie-te">Înscrie-te</Link>
-          </Button> */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Button variant="link" className="hover:bg-[#A2BCCB]" asChild>
+              <Link href="/privacy-policy">Politica de Confidențialitate</Link>
+            </Button>
+            <Button variant="link" className="hover:bg-[#A2BCCB]" asChild>
+              <Link href="/terms-of-service">Termeni și Condiții</Link>
+            </Button>
+          </div>
 
           <div className="flex items-center gap-2">
             <Link
@@ -87,14 +92,11 @@ export default function Footer() {
         </div>
       </div>
       <div className="flex justify-center pt-10">
-        <p className="text-white text-xs text-center  ">
+        <p className="text-white text-xs text-center">
           © {new Date().getFullYear()} copyright
           <br /> Tineret Speranta Oradea
         </p>
       </div>
     </footer>
   );
-}
-{
-  
 }

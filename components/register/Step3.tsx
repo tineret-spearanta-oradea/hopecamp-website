@@ -95,6 +95,14 @@ export default function Step3({
             </svg>
             DESCARCĂ REGULAMENT
           </Button>
+          <div className="flex gap-2 justify-center">
+            <Button className="text-xs" variant="link" asChild>
+              <Link href="/privacy-policy">Politica de Confidențialitate</Link>
+            </Button>
+            <Button className="text-xs" variant="link" asChild>
+              <Link href="/terms-of-service">Termeni și Condiții</Link>
+            </Button>
+          </div>
         </div>
 
         <div className="space-y-4 text-sm">
