@@ -213,6 +213,7 @@ export function useRegistrationForm() {
           if (!error.message.includes("User already registered")) {
             return;
           }
+          return;
         }
 
         // DEBUG: Log Supabase response
