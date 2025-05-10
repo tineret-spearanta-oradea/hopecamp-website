@@ -3,19 +3,22 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { Input } from "../ui/input"; // Assuming you have an Input component
+import { PhoneInput } from "../ui/phone-input"; // Changed from Input to PhoneInput
 import { toast } from "sonner";
 import { supabaseBrowserClient } from "@/lib/supabase/client";
+import { Input } from "../ui/input";
 
 const RESEND_TIMEOUT_SECONDS = 60;
 
 export default function LoginForm() {
   const [phone, setPhone] = useState("");
+  const [phonePrefix, setPhonePrefix] = useState("+4"); // Add phone prefix state
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [resendDisabled, setResendDisabled] = useState(true);
   const [resendTimer, setResendTimer] = useState(RESEND_TIMEOUT_SECONDS);
+  const [phoneError, setPhoneError] = useState(""); // Add state for phone validation error
 
   // Effect for the resend timer
   useEffect(() => {
@@ -44,16 +47,42 @@ export default function LoginForm() {
   }, [otpSent, resendDisabled]); // Rerun effect when otpSent or resendDisabled changes
 
   const handleSendOtp = async () => {
-    // Validate Romanian phone number format (07XXXXXXXX)
-    if (!phone || !/^07\d{8}$/.test(phone)) {
-      toast.error("Te rugăm să introduci un număr de telefon valid (ex: 0770123456).");
-      return;
+    // Validate based on country code prefix
+    setPhoneError(""); // Clear previous errors
+
+    let isValid = false;
+    if (phonePrefix === "+4") {
+      // Romanian number validation
+      isValid = /^07\d{8}$/.test(phone);
+      if (!isValid) {
+        setPhoneError(
+          "Numărul de telefon trebuie să înceapă cu 07 și să aibă 10 cifre (ex: 0770123456)."
+        );
+        return;
+      }
+    } else if (phonePrefix === "+1") {
+      // US/Canada number validation
+      isValid = /^\d{10}$/.test(phone);
+      if (!isValid) {
+        setPhoneError("Numărul de telefon pentru US trebuie să aibă 10 cifre.");
+        return;
+      }
+    } else {
+      // Generic validation for other countries
+      isValid = /^\d{6,}$/.test(phone);
+      if (!isValid) {
+        setPhoneError(
+          "Numărul de telefon trebuie să conțină cel puțin 6 cifre."
+        );
+        return;
+      }
     }
+
     setLoading(true);
     setResendDisabled(true); // Disable resend immediately
 
     // Normalize phone number to E.164 format for Supabase
-    const normalizedPhone = '+4' + phone;
+    const normalizedPhone = phonePrefix + phone; // Use dynamic prefix
 
     const { error } = await supabaseBrowserClient.auth.signInWithOtp({
       phone: normalizedPhone, // Use normalized phone
@@ -66,12 +95,14 @@ export default function LoginForm() {
     if (error) {
       console.error("OTP Send Error:", error);
       // Handle specific errors
-      if (error.code === "otp_disabled") { // Adjust based on actual error message
-          toast.error("Numărul de telefon nu este înregistrat. Te rugăm să te înscrii mai întâi.");
+      if (error.code === "otp_disabled") {
+        // Adjust based on actual error message
+        toast.error(
+          "Numărul de telefon nu este înregistrat. Te rugăm să te înscrii mai întâi."
+        );
       } else if (error.code === "over_sms_send_rate_limit") {
-          toast.error("Prea multe încercări. Te rugăm să încerci mai târziu.");
-      }
-       else {
+        toast.error("Prea multe încercări. Te rugăm să încerci mai târziu.");
+      } else {
         toast.error("A apărut o eroare la trimiterea codului.", {
           description: error.message,
         });
@@ -81,21 +112,22 @@ export default function LoginForm() {
     }
 
     toast.success("Codul OTP a fost trimis!", {
-        description: `Verifică SMS-ul primit la ${phone}.` // Show original number
+      description: `Verifică SMS-ul primit la ${phone}.`, // Show original number
     });
     setOtpSent(true);
     // Timer will start via useEffect
   };
 
   const handleVerifyOtp = async () => {
-    if (!otp || otp.length !== 6) { // Assuming OTP is 6 digits
+    if (!otp || otp.length !== 6) {
+      // Assuming OTP is 6 digits
       toast.error("Te rugăm să introduci codul OTP valid (6 cifre).");
       return;
     }
     setLoading(true);
 
     // Normalize phone number to E.164 format for Supabase
-    const normalizedPhone = '+4' + phone;
+    const normalizedPhone = phonePrefix + phone; // Use dynamic prefix
 
     const {
       data: { session },
@@ -109,36 +141,38 @@ export default function LoginForm() {
     setLoading(false);
     if (error) {
       console.error("OTP Verify Error:", error);
-       if (error.message.includes("expired") || error.message.includes("invalid")) {
-           toast.error("Codul OTP este invalid sau a expirat. Încearcă din nou.");
-       } else {
-           toast.error("A apărut o eroare la verificarea codului.", {
-               description: error.message,
-           });
-       }
+      if (
+        error.message.includes("expired") ||
+        error.message.includes("invalid")
+      ) {
+        toast.error("Codul OTP este invalid sau a expirat. Încearcă din nou.");
+      } else {
+        toast.error("A apărut o eroare la verificarea codului.", {
+          description: error.message,
+        });
+      }
       return;
     }
 
     if (session) {
-        console.log("Login successful with OTP");
-        toast.success("Autentificare reușită!");
-        // No need to redirect here, AuthToAccountRedirect should handle it based on session change
+      console.log("Login successful with OTP");
+      toast.success("Autentificare reușită!");
+      // No need to redirect here, AuthToAccountRedirect should handle it based on session change
     } else {
-        // Should not happen if error is null, but good to handle
-        toast.error("Autentificarea a eșuat. Te rugăm să încerci din nou.");
+      // Should not happen if error is null, but good to handle
+      toast.error("Autentificarea a eșuat. Te rugăm să încerci din nou.");
     }
   };
 
   const handleResendOtp = () => {
-      if (!resendDisabled) {
-          setOtp(""); // Clear previous OTP input
-          setOtpSent(false); // Reset state to allow handleSendOtp logic to run fully
-          setResendDisabled(true); // Disable button immediately
-          setResendTimer(RESEND_TIMEOUT_SECONDS); // Reset timer display
-          handleSendOtp(); // Trigger sending OTP again
-      }
+    if (!resendDisabled) {
+      setOtp(""); // Clear previous OTP input
+      setOtpSent(false); // Reset state to allow handleSendOtp logic to run fully
+      setResendDisabled(true); // Disable button immediately
+      setResendTimer(RESEND_TIMEOUT_SECONDS); // Reset timer display
+      handleSendOtp(); // Trigger sending OTP again
+    }
   };
-
 
   return (
     <div className="bg-white rounded-lg shadow-md p-8 w-full max-w-md mx-auto">
@@ -149,24 +183,23 @@ export default function LoginForm() {
         {!otpSent ? (
           // Phone Input Stage
           <>
-            <div>
-              <label
-                htmlFor="phone"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Număr de telefon (ex: 0770123456)
-              </label>
-              <Input
-                type="tel"
-                id="phone"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="0770123456"
-                className="mt-1 block w-full"
-                disabled={loading}
-                autoComplete="tel"
-              />
-            </div>
+            <PhoneInput
+              label="Număr de telefon"
+              value={phone}
+              prefix={phonePrefix}
+              onChange={(value) => {
+                setPhone(value);
+                setPhoneError(""); // Clear error on input change
+              }}
+              onPrefixChange={(value) => {
+                setPhonePrefix(value);
+                setPhoneError(""); // Clear error on prefix change
+              }}
+              placeholder="0770123456"
+              disabled={loading}
+              helpText="Introdu numărul de telefon cu care te-ai înregistrat."
+              error={phoneError}
+            />
             <Button
               onClick={handleSendOtp}
               className="w-full rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"

@@ -2,7 +2,7 @@ import { StepProps, FormData } from "@/types/form"; // Added FormData
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";
-import { Input } from "../ui/input"; // Added Input
+import { PhoneInput } from "../ui/phone-input"; // Changed from Input to PhoneInput
 import { StepWrapper } from "./StepWrapper";
 import { Check } from "lucide-react";
 import { sumToPay, dateRange } from "@/lib/constants";
@@ -20,6 +20,7 @@ export default function Step3({
   downloadCampRules,
   isLoading,
   validationErrors,
+  handlePhonePrefixChange = () => {}, // Add default empty function to fix TypeScript error
 }: StepProps) {
   const retrieveNumberOfDays = () => {
     if (!formData.userData.startDate || !formData.userData.endDate) {
@@ -48,6 +49,11 @@ export default function Step3({
     handleChange(objectName, e.target);
   };
 
+  // Added handler for direct value change
+  const handlePhoneChange = (value: string) => {
+    handleChange("authData", { name: "phone", value });
+  };
+
   return (
     // Changed Title
     <StepWrapper
@@ -55,24 +61,17 @@ export default function Step3({
       isLoading={isLoading}
     >
       <div className="space-y-8">
-        {/* Added Phone Number Input */}
-        <div className="space-y-2">
-          <Label className="text-base font-semibold">Număr de telefon *</Label>
-          <Input
-            type="tel"
-            name="phone"
-            value={formData.authData.phone}
-            onChange={(e) => handleInputChange(e, "authData")}
-            className={validationErrors.phone ? "border-destructive" : ""}
-            placeholder="Ex: 0712345678"
-          />
-          {validationErrors.phone && (
-            <p className="text-destructive text-xs">{validationErrors.phone}</p>
-          )}
-          <p className="text-xs text-muted-foreground">
-            Vom folosi acest număr pentru a te autentifica și a te contacta.
-          </p>
-        </div>
+        {/* Replace Phone Number Input with PhoneInput component */}
+        <PhoneInput
+          label="Număr de telefon *"
+          value={formData.authData.phone}
+          prefix={formData.authData.phonePrefix}
+          onChange={handlePhoneChange}
+          onPrefixChange={handlePhonePrefixChange}
+          error={validationErrors.phone}
+          helpText="Vom folosi acest număr pentru a te autentifica și a te contacta."
+          disabled={isLoading}
+        />
 
         {/* Kept Download Rules Button */}
         <div className="text-center mb-6">

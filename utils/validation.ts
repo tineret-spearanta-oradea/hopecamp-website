@@ -18,12 +18,31 @@ export const validateAuthFields = (
     authData: FormData["authData"]
 ): ValidationErrors => {
   const errors: ValidationErrors = { ...initialValidationErrors };
-  // Validate Romanian phone number format (07XXXXXXXX)
+  
   if (!authData.phone) {
     errors.phone = "Numărul de telefon este necesar.";
-  } else if (!/^07\d{8}$/.test(authData.phone)) {
-    errors.phone = "Numărul de telefon trebuie să înceapă cu 07 și să aibă 10 cifre (ex: 0770123456).";
+    return errors;
   }
+
+  // Different validation based on country code prefix
+  if (authData.phonePrefix === "+4") {
+    // Romanian number validation
+    if (!/^07\d{8}$/.test(authData.phone)) {
+      errors.phone =
+        "Numărul de telefon trebuie să înceapă cu 07 și să aibă 10 cifre (ex: 0770123456).";
+    }
+  } else if (authData.phonePrefix === "+1") {
+    // US/Canada number validation (10 digits)
+    if (!/^\d{10}$/.test(authData.phone)) {
+      errors.phone = "Numărul de telefon pentru US trebuie să aibă 10 cifre.";
+    }
+  } else {
+    // Generic validation for other countries (at least 6 digits)
+    if (!/^\d{6,}$/.test(authData.phone)) {
+      errors.phone = "Numărul de telefon trebuie să conțină cel puțin 6 cifre.";
+    }
+  }
+  
   return errors;
 };
 

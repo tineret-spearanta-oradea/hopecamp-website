@@ -1,5 +1,6 @@
 export interface AuthData {
   phone: string;
+  phonePrefix: string;
 }
 
 export interface UserData {
@@ -50,6 +51,7 @@ export interface StepProps {
   handleSubmit?: () => void;
   isLoading?: boolean;
   downloadCampRules?: () => void; // Added missing prop
+  handlePhonePrefixChange?: (prefix: string) => void; // Add prefix handler
 }
 
 export interface Step3Props {

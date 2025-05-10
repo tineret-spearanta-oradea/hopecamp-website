@@ -66,7 +66,9 @@ export default function Step4({
         </p>
         {/* Replace InputOTP with standard Input */}
         <div className="space-y-2 flex flex-col items-center">
-          <Label htmlFor="otp-input" className="text-base font-semibold">Introdu codul OTP</Label>
+          <Label htmlFor="otp-input" className="text-base font-semibold">
+            Introdu codul OTP
+          </Label>
           <Input
             id="otp-input"
             type="text"
@@ -74,11 +76,15 @@ export default function Step4({
             maxLength={6}
             value={otp}
             onChange={(e) => handleOtpChange(e.target.value)} // Use handleOtpChange directly
-            className={`w-32 text-center text-lg tracking-[0.3em] ${validationErrors.otp ? "border-destructive" : ""}`}
+            className={`w-32 text-center text-lg tracking-[0.3em] ${
+              validationErrors.otp ? "border-destructive" : ""
+            }`}
             placeholder="------"
           />
           {validationErrors.otp && (
-            <p className="text-destructive text-xs mt-1">{validationErrors.otp}</p>
+            <p className="text-destructive text-xs mt-1">
+              {validationErrors.otp}
+            </p>
           )}
         </div>
 
@@ -89,24 +95,33 @@ export default function Step4({
           <Button
             onClick={handleSubmit} // Final submit action
             disabled={isLoading || otp.length !== 6}
-            className="bg-secondary text-white hover:bg-secondary/90"
           >
             {isLoading ? "Se procesează..." : "Verifică și Înscrie-te ↗"}
           </Button>
         </div>
-         <p className="text-center text-sm text-muted-foreground mt-4">
-            Nu ai primit codul?{" "}
-            <button
-              type="button"
-              className="text-hope-lightcyan hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
-              onClick={handleResendClick}
-              disabled={resendDisabled || isLoading}
-            >
-              Retrimite codul {resendDisabled && resendTimer > 0 ? `(${resendTimer}s)` : ""}
-            </button>
-            . Sau <button type="button" className="text-hope-lightcyan hover:underline disabled:opacity-50 disabled:cursor-not-allowed" onClick={handlePrev} disabled={isLoading}>verifică numărul</button>.
+        <p className="text-center text-sm text-muted-foreground mt-4">
+          Nu ai primit codul?{" "}
+          <button
+            type="button"
+            className="text-hope-lightcyan hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handleResendClick}
+            disabled={resendDisabled || isLoading}
+          >
+            Retrimite codul{" "}
+            {resendDisabled && resendTimer > 0 ? `(${resendTimer}s)` : ""}
+          </button>
+          . Sau{" "}
+          <button
+            type="button"
+            className="text-hope-lightcyan hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handlePrev}
+            disabled={isLoading}
+          >
+            verifică numărul
+          </button>
+          .
         </p>
-         <p className="text-center text-sm text-muted-foreground mt-2">
+        <p className="text-center text-sm text-muted-foreground mt-2">
           Ai deja cont?{" "}
           <Link href="/login" className="text-hope-lightcyan hover:underline">
             Autentifică-te aici
