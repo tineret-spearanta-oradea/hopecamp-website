@@ -24,12 +24,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import React, { useState } from "react";
-import {
-  transportOptions,
-  payTaxToOptions,
-  slopeActivityOptions,
-  sumToPay,
-} from "@/lib/constants";
+import { transportOptions, payTaxToOptions, sumToPay } from "@/lib/constants";
 import { Label } from "@/components/ui/label";
 import {
   Accordion,
@@ -252,7 +247,7 @@ export function EditUserSheet({
                           <FormItem>
                             <FormLabel>Telefon</FormLabel>
                             <FormControl>
-                              <Input {...field} type="tel" disabled/>
+                              <Input {...field} type="tel" disabled />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -462,7 +457,7 @@ export function EditUserSheet({
                   </AccordionContent>
                 </AccordionItem>
 
-                <AccordionItem
+                {/* <AccordionItem
                   value="activities"
                   className="border-none bg-muted/50 rounded-lg"
                 >
@@ -540,7 +535,7 @@ export function EditUserSheet({
                       )}
                     />
                   </AccordionContent>
-                </AccordionItem>
+                </AccordionItem> */}
               </Accordion>
 
               <div className="flex justify-end space-x-4 pt-4">

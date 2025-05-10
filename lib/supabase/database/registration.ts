@@ -43,14 +43,17 @@ export async function getUserRegistrationByEditionId(editionId: number, filterPa
 
 export async function getRegistrationsByEditionId(editionId: number): Promise<RegistrationWithProfile[]> {
     try {
-        const {data, error} = await supabaseBrowserClient
-            .from("registrations")
-            .select(`
+        const { data, error } = await supabaseBrowserClient
+          .from("registrations")
+          .select(
+            `
                 *,
                 user_registration_roles!left ( is_admin ),
                 user_profiles!inner ( user_id, name, image_url, age, ...user_roles!left ( is_super_admin ), ...auth_users_view!inner ( email, phone ) )
-            `)
-            .eq("edition_id", editionId);
+            `
+          )
+          .order("created_at", { ascending: false })
+          .eq("edition_id", editionId);
 
         if (error) {
             console.error("Error fetching registrations:", error.message);

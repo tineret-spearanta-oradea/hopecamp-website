@@ -25,13 +25,6 @@ export const transportOptions = [
   { value: "autocar", label: "Autocar de la biserică" },
 ];
 
-export const slopeActivityOptions = [
-  { value: "nu", label: "Nu voi merge pe pârtie" },
-  { value: "vizita", label: "Da, dar doar în vizită" },
-  { value: "schi", label: "Da, cu ski/snowboard" },
-  { value: "sanie", label: "Da, cu sania" },
-];
-
 export const sumToPay = {
   normal: 500,
   withFamilyMember: null,

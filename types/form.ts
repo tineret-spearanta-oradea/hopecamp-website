@@ -15,7 +15,6 @@ export interface UserData {
   transport: string;
   imageUrl: string;
   preferences?: string;
-  slopeActivity: string;
 }
 
 export interface FormData {
