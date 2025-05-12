@@ -58,7 +58,7 @@ export default function Activities() {
   return (
     <section className="bg-secondary py-16 sm:py-24">
       <div className="container mx-auto px-4 text-center overflow-visible">
-        <h3 className="text-sm uppercase text-foreground font-semibold tracking-wider mb-4">
+        <h3 className="font-jersey text-base uppercase text-foreground font-semibold tracking-wider mb-4">
           ACTIVITĂȚI
         </h3>
         <div

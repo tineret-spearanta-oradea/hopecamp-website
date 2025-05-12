@@ -44,22 +44,22 @@ export default function AboutSection() {
         {/* --- Second Row: Contact Links + Contact Text --- */}
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
           {/* Contact Links */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 w-32 mx-auto">
             <Link
               href={`mailto:${contactInfo.email}`}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg p-4 flex items-center gap-4 transition-colors duration-200 shadow-md"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg p-4 flex items-center gap-4 transition-colors duration-200 shadow-md w-full"
             >
               <i className="bi bi-envelope-fill text-3xl"></i>
-              <span className="font-semibold text-lg tracking-wider">
+              <span className="font-semibold text-lg tracking-wider text-ellipsis overflow-hidden">
                 {contactInfo.email.toUpperCase()}
               </span>
             </Link>
             <Link
               href={`tel:${contactInfo.phone}`}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg p-4 flex items-center gap-4 transition-colors duration-200 shadow-md"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg p-4 flex items-center gap-4 transition-colors duration-200 shadow-md w-full"
             >
               <i className="bi bi-telephone-fill text-3xl"></i>
-              <span className="font-semibold text-lg tracking-wider">
+              <span className="font-semibold text-lg tracking-wider text-ellipsis overflow-hidden">
                 {contactInfo.phone}
               </span>
             </Link>
