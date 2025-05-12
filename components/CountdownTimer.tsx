@@ -79,7 +79,7 @@ export default function CountdownTimer() {
           <span className="font-mono text-4xl sm:text-5xl md:text-6xl font-bold">
             00
           </span>
-          <span className="font-inter text-xs sm:text-sm uppercase tracking-wider mt-1">
+          <span className="font-jersey text-xs sm:text-sm uppercase tracking-wider mt-1">
             Min
           </span>
         </div>
@@ -87,7 +87,7 @@ export default function CountdownTimer() {
           <span className="font-mono text-4xl sm:text-5xl md:text-6xl font-bold">
             00
           </span>
-          <span className="font-inter text-xs sm:text-sm uppercase tracking-wider mt-1">
+          <span className="font-jersey text-xs sm:text-sm uppercase tracking-wider mt-1">
             Sec
           </span>
         </div>
@@ -112,7 +112,7 @@ export default function CountdownTimer() {
           <span className="font-mono text-4xl sm:text-5xl md:text-6xl font-bold">
             00
           </span>
-          <span className="font-inter text-xs sm:text-sm uppercase tracking-wider mt-1">
+          <span className=" text-xs sm:text-sm uppercase tracking-wider mt-1">
             Zile
           </span>
         </div>
@@ -120,23 +120,23 @@ export default function CountdownTimer() {
           <span className="font-mono text-4xl sm:text-5xl md:text-6xl font-bold">
             00
           </span>
-          <span className="font-inter text-xs sm:text-sm uppercase tracking-wider mt-1">
+          <span className=" text-xs sm:text-sm uppercase tracking-wider mt-1">
             Ore
           </span>
         </div>
         <div className="flex flex-col items-center">
-          <span className="font-mono text-4xl sm:text-5xl md:text-6xl font-bold">
+          <span className=" text-4xl sm:text-5xl md:text-6xl font-bold">
             00
           </span>
-          <span className="font-inter text-xs sm:text-sm uppercase tracking-wider mt-1">
+          <span className=" text-xs sm:text-sm uppercase tracking-wider mt-1">
             Min
           </span>
         </div>
         <div className="flex flex-col items-center">
-          <span className="font-mono text-4xl sm:text-5xl md:text-6xl font-bold">
+          <span className=" text-4xl sm:text-5xl md:text-6xl font-bold">
             00
           </span>
-          <span className="font-inter text-xs sm:text-sm uppercase tracking-wider mt-1">
+          <span className=" text-xs sm:text-sm uppercase tracking-wider mt-1">
             Sec
           </span>
         </div>
@@ -149,34 +149,34 @@ export default function CountdownTimer() {
   return (
     <div className="grid grid-flow-col gap-3 sm:gap-5 text-center auto-cols-max justify-center my-4 sm:my-6">
       <div className="flex flex-col items-center">
-        <span className="font-mono text-4xl sm:text-5xl md:text-6xl font-bold">
+        <span className="font-poppins text-4xl sm:text-5xl md:text-6xl font-bold">
           {pad(timeLeft.days)}
         </span>
-        <span className="font-inter text-xs sm:text-sm uppercase tracking-wider mt-1">
+        <span className="font-jersey text-xs sm:text-sm uppercase tracking-wider mt-1">
           Zile
         </span>
       </div>
       <div className="flex flex-col items-center">
-        <span className="font-mono text-4xl sm:text-5xl md:text-6xl font-bold">
+        <span className="font-poppins text-4xl sm:text-5xl md:text-6xl font-bold">
           {pad(timeLeft.hours)}
         </span>
-        <span className="font-inter text-xs sm:text-sm uppercase tracking-wider mt-1">
+        <span className="font-jersey text-xs sm:text-sm uppercase tracking-wider mt-1">
           Ore
         </span>
       </div>
       <div className="flex flex-col items-center">
-        <span className="font-mono text-4xl sm:text-5xl md:text-6xl font-bold">
+        <span className="font-poppins text-4xl sm:text-5xl md:text-6xl font-bold">
           {pad(timeLeft.minutes)}
         </span>
-        <span className="font-inter text-xs sm:text-sm uppercase tracking-wider mt-1">
+        <span className="font-jersey text-xs sm:text-sm uppercase tracking-wider mt-1">
           Min
         </span>
       </div>
       <div className="flex flex-col items-center">
-        <span className="font-mono text-4xl sm:text-5xl md:text-6xl font-bold">
+        <span className="font-poppins text-4xl sm:text-5xl md:text-6xl font-bold">
           {pad(timeLeft.seconds)}
         </span>
-        <span className="font-inter text-xs sm:text-sm uppercase tracking-wider mt-1">
+        <span className="font-jersey text-xs sm:text-sm uppercase tracking-wider mt-1">
           Sec
         </span>
       </div>
