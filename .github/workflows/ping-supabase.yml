@@ -73,16 +73,39 @@ jobs:
 
               console.log('Found existing ping record:', pingData);
 
-              // Call the update_ping function to update the ping status
+              // Try to call the update_ping function
               console.log('Calling update_ping function...');
-              const { data, error } = await supabase.rpc('update_ping');
-
-              if (error) {
-                console.error('Error calling update_ping function:', error);
-                throw error;
+              try {
+                const { data, error } = await supabase.rpc('update_ping');
+                
+                if (error) {
+                  console.error('Error calling update_ping function:', error);
+                  throw error;
+                }
+                
+                console.log('Dev Ping successful. Updated ping status:', data);
+              } catch (funcError) {
+                // If function call fails, try direct table update as fallback
+                console.log('Function call failed, trying direct table update...');
+                
+                const currentTime = new Date().toISOString();
+                const { data: updateData, error: updateError } = await supabase
+                  .from('ping_status')
+                  .update({ 
+                    last_ping: currentTime,
+                    ping_count: (pingData.ping_count || 0) + 1,
+                    notes: `Updated directly via ping script at ${currentTime} due to function error`
+                  })
+                  .eq('id', 1)
+                  .select();
+                
+                if (updateError) {
+                  console.error('Direct update error:', updateError);
+                  throw updateError;
+                }
+                
+                console.log('Dev Ping successful via direct update. Updated data:', updateData);
               }
-
-              console.log('Dev Ping successful. Updated ping status:', data);
             } catch (err) {
               console.error('Error pinging Dev Supabase:', err.message);
               process.exit(1);
@@ -155,16 +178,39 @@ jobs:
 
               console.log('Found existing ping record:', pingData);
 
-              // Call the update_ping function to update the ping status
+              // Try to call the update_ping function
               console.log('Calling update_ping function...');
-              const { data, error } = await supabase.rpc('update_ping');
-
-              if (error) {
-                console.error('Error calling update_ping function:', error);
-                throw error;
+              try {
+                const { data, error } = await supabase.rpc('update_ping');
+                
+                if (error) {
+                  console.error('Error calling update_ping function:', error);
+                  throw error;
+                }
+                
+                console.log('Prod Ping successful. Updated ping status:', data);
+              } catch (funcError) {
+                // If function call fails, try direct table update as fallback
+                console.log('Function call failed, trying direct table update...');
+                
+                const currentTime = new Date().toISOString();
+                const { data: updateData, error: updateError } = await supabase
+                  .from('ping_status')
+                  .update({ 
+                    last_ping: currentTime,
+                    ping_count: (pingData.ping_count || 0) + 1,
+                    notes: `Updated directly via ping script at ${currentTime} due to function error`
+                  })
+                  .eq('id', 1)
+                  .select();
+                
+                if (updateError) {
+                  console.error('Direct update error:', updateError);
+                  throw updateError;
+                }
+                
+                console.log('Prod Ping successful via direct update. Updated data:', updateData);
               }
-
-              console.log('Prod Ping successful. Updated ping status:', data);
             } catch (err) {
               console.error('Error pinging Prod Supabase:', err.message);
               process.exit(1);
