@@ -50,7 +50,7 @@ export default function Navbar() {
   return (
     <>
       {/* Mobile Navbar */}
-      <div className="bg-primary p-3 block lg:hidden fixed w-full top-0 z-50">
+      <div className="bg-primary p-3 block lg:hidden  w-full top-0 z-50">
         <button onClick={() => setIsOpen(!isOpen)} className="text-white p-2">
           {isOpen ? (
             <svg
