@@ -107,6 +107,14 @@ export default function LoginForm() {
           Înscrie-te aici
         </Link>
       </p>
+      <div className="mt-4 flex justify-center">
+        <Link
+          href="/"
+          className="inline-block bg-primary px-4 py-2 bg-hope-darkcyan text-white font-medium text-sm rounded-md shadow-md hover:bg-hope-darkcyan-dark transition-colors duration-200"
+        >
+          Pagina principală
+        </Link>
+      </div>
     </div>
   );
 }
