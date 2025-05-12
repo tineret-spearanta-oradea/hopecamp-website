@@ -49,14 +49,15 @@ export default function Activities() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handlers = useSwipeable({
-    onSwipedLeft: () => setCurrentIndex((prev) => Math.min(prev + 1, activities.length - 1)),
+    onSwipedLeft: () =>
+      setCurrentIndex((prev) => Math.min(prev + 1, activities.length - 1)),
     onSwipedRight: () => setCurrentIndex((prev) => Math.max(prev - 1, 0)),
     trackMouse: true,
   });
 
   return (
     <section className="bg-secondary py-16 sm:py-24">
-      <div className="container mx-auto px-4 text-center">
+      <div className="container mx-auto px-4 text-center overflow-visible">
         <h3 className="text-sm uppercase text-foreground font-semibold tracking-wider mb-4">
           ACTIVITĂȚI
         </h3>
@@ -65,9 +66,9 @@ export default function Activities() {
           className="relative overflow-hidden"
         >
           <div
-            className="flex transition-transform duration-300"
+            className="flex transition-transform duration-300 gap-6"
             style={{
-              transform: `translateX(-${currentIndex * 100}%)`,
+              transform: `translateX(-${currentIndex * (100 + 6)}%)`,
             }}
           >
             {activities.map((activity, index) => (
