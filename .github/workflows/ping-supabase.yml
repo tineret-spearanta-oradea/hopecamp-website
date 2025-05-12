@@ -22,43 +22,43 @@ jobs:
       - name: Install Supabase Client
         run: npm install @supabase/supabase-js
 
-      # Step 3: Ping Dev Supabase by calling the update_ping function
+      # Step 3: Ping Dev Supabase with simpler script to avoid syntax errors
       - name: Ping Dev Supabase
         env:
-          SUPABASE_URL: ${{ secrets.DEV_SUPABASE_URL }} # Your Dev Supabase project URL
-          SUPABASE_KEY: ${{ secrets.DEV_SUPABASE_SERVICE_ROLE_KEY }} # Your Dev Supabase service role key
+          SUPABASE_URL: ${{ secrets.DEV_SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.DEV_SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           node -e "
-          (async () => {
+          const { createClient } = require('@supabase/supabase-js');
+          
+          async function pingSupabase() {
             try {
-              // Import Supabase client
-              const { createClient } = require('@supabase/supabase-js');
-
               // Check if environment variables are set
               const supabaseUrl = process.env.SUPABASE_URL;
               const supabaseKey = process.env.SUPABASE_KEY;
-
+              
               if (!supabaseUrl || !supabaseKey) {
                 throw new Error('Supabase URL or Key is missing in environment variables.');
               }
-
+              
               console.log('Dev Supabase URL:', supabaseUrl);
               console.log('Dev Supabase Key: Present');
-
+              
               const supabase = createClient(supabaseUrl, supabaseKey);
-
-              // First verify ping_status table exists by querying it
+              
+              // First try to query the ping_status table
               console.log('Verifying ping_status table exists...');
               const { data: pingData, error: pingError } = await supabase
                 .from('ping_status')
                 .select('id, last_ping, ping_count')
                 .eq('id', 1)
                 .single();
-
+                
+              // If ping_status table doesn't exist or query failed
               if (pingError) {
                 console.error('Error querying ping_status table:', pingError);
                 
-                // Fallback to editions table if ping_status doesn't exist yet
+                // Fallback to editions table
                 console.log('Falling back to editions table ping...');
                 const { data, error } = await supabase.from('editions').select('id').limit(1);
                 
@@ -70,12 +70,12 @@ jobs:
                 console.log('Dev Ping successful via fallback. Received data:', data);
                 return;
               }
-
+              
               console.log('Found existing ping record:', pingData);
-
+              
               // Try to call the update_ping function
-              console.log('Calling update_ping function...');
               try {
+                console.log('Calling update_ping function...');
                 const { data, error } = await supabase.rpc('update_ping');
                 
                 if (error) {
@@ -85,7 +85,7 @@ jobs:
                 
                 console.log('Dev Ping successful. Updated ping status:', data);
               } catch (funcError) {
-                // If function call fails, try direct table update as fallback
+                // If function call fails, try direct table update
                 console.log('Function call failed, trying direct table update...');
                 
                 const currentTime = new Date().toISOString();
@@ -94,7 +94,7 @@ jobs:
                   .update({ 
                     last_ping: currentTime,
                     ping_count: (pingData.ping_count || 0) + 1,
-                    notes: `Updated directly via ping script at ${currentTime} due to function error`
+                    notes: 'Updated directly via ping script at ' + currentTime + ' due to function error'
                   })
                   .eq('id', 1)
                   .select();
@@ -110,7 +110,9 @@ jobs:
               console.error('Error pinging Dev Supabase:', err.message);
               process.exit(1);
             }
-          })();
+          }
+          
+          pingSupabase();
           "
 
   ping_prod:
@@ -127,43 +129,43 @@ jobs:
       - name: Install Supabase Client
         run: npm install @supabase/supabase-js
 
-      # Step 3: Ping Prod Supabase by calling the update_ping function
+      # Step 3: Ping Prod Supabase with simpler script to avoid syntax errors
       - name: Ping Prod Supabase
         env:
-          SUPABASE_URL: ${{ secrets.PROD_SUPABASE_URL }} # Your Prod Supabase project URL
-          SUPABASE_KEY: ${{ secrets.PROD_SUPABASE_SERVICE_ROLE_KEY }} # Your Prod Supabase service role key
+          SUPABASE_URL: ${{ secrets.PROD_SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.PROD_SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           node -e "
-          (async () => {
+          const { createClient } = require('@supabase/supabase-js');
+          
+          async function pingSupabase() {
             try {
-              // Import Supabase client
-              const { createClient } = require('@supabase/supabase-js');
-
               // Check if environment variables are set
               const supabaseUrl = process.env.SUPABASE_URL;
               const supabaseKey = process.env.SUPABASE_KEY;
-
+              
               if (!supabaseUrl || !supabaseKey) {
                 throw new Error('Supabase URL or Key is missing in environment variables.');
               }
-
+              
               console.log('Prod Supabase URL:', supabaseUrl);
               console.log('Prod Supabase Key: Present');
-
+              
               const supabase = createClient(supabaseUrl, supabaseKey);
-
-              // First verify ping_status table exists by querying it
+              
+              // First try to query the ping_status table
               console.log('Verifying ping_status table exists...');
               const { data: pingData, error: pingError } = await supabase
                 .from('ping_status')
                 .select('id, last_ping, ping_count')
                 .eq('id', 1)
                 .single();
-
+                
+              // If ping_status table doesn't exist or query failed
               if (pingError) {
                 console.error('Error querying ping_status table:', pingError);
                 
-                // Fallback to editions table if ping_status doesn't exist yet
+                // Fallback to editions table
                 console.log('Falling back to editions table ping...');
                 const { data, error } = await supabase.from('editions').select('id').limit(1);
                 
@@ -175,12 +177,12 @@ jobs:
                 console.log('Prod Ping successful via fallback. Received data:', data);
                 return;
               }
-
+              
               console.log('Found existing ping record:', pingData);
-
+              
               // Try to call the update_ping function
-              console.log('Calling update_ping function...');
               try {
+                console.log('Calling update_ping function...');
                 const { data, error } = await supabase.rpc('update_ping');
                 
                 if (error) {
@@ -190,7 +192,7 @@ jobs:
                 
                 console.log('Prod Ping successful. Updated ping status:', data);
               } catch (funcError) {
-                // If function call fails, try direct table update as fallback
+                // If function call fails, try direct table update
                 console.log('Function call failed, trying direct table update...');
                 
                 const currentTime = new Date().toISOString();
@@ -199,7 +201,7 @@ jobs:
                   .update({ 
                     last_ping: currentTime,
                     ping_count: (pingData.ping_count || 0) + 1,
-                    notes: `Updated directly via ping script at ${currentTime} due to function error`
+                    notes: 'Updated directly via ping script at ' + currentTime + ' due to function error'
                   })
                   .eq('id', 1)
                   .select();
@@ -215,5 +217,7 @@ jobs:
               console.error('Error pinging Prod Supabase:', err.message);
               process.exit(1);
             }
-          })();
+          }
+          
+          pingSupabase();
           "
