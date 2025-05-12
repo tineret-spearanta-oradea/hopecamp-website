@@ -87,8 +87,9 @@ const config: Config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontFamily: {
-        lemon: ["Lemon", "sans-serif"],
-        inter: ["Inter", "sans-serif"],
+        nunito: ["Nunito"],
+        jersey: ["Jersey 25"],
+        poppins: ["Poppins"],
       },
     },
   },
