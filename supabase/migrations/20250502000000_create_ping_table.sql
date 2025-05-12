@@ -22,20 +22,20 @@ RETURNS TABLE (
 LANGUAGE plpgsql
 SECURITY DEFINER
 AS $$
+DECLARE
+    updated_record RECORD;
 BEGIN
-    -- Update the first ping record (id=1)
+    -- Update the first ping record (id=1) and store the result in updated_record
     UPDATE public.ping_status
     SET 
         last_ping = NOW(),
-        ping_count = ping_count + 1
-    WHERE id = 1;
+        ping_count = ping_status.ping_count + 1
+    WHERE id = 1
+    RETURNING ping_status.last_ping, ping_status.ping_count INTO updated_record;
     
-    -- Return the updated values
-    RETURN QUERY
-    SELECT 
-        p.last_ping,
-        p.ping_count
-    FROM public.ping_status p
-    WHERE id = 1;
+    -- Return the updated values using the variables instead of a query
+    last_ping := updated_record.last_ping;
+    ping_count := updated_record.ping_count;
+    RETURN NEXT;
 END;
 $$; 
