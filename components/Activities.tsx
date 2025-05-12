@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { useState } from "react";
+import { useSwipeable } from "react-swipeable";
 
 interface ActivityItemProps {
   imageSrc: string;
@@ -6,7 +8,7 @@ interface ActivityItemProps {
 }
 
 const ActivityItem: React.FC<ActivityItemProps> = ({ imageSrc, title }) => (
-  <div className="relative w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full overflow-hidden shadow-lg mx-auto">
+  <div className="relative w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full overflow-hidden shadow-lg mx-auto flex-shrink-0">
     <Image
       src={imageSrc}
       alt={title}
@@ -44,18 +46,36 @@ export default function Activities() {
     },
   ];
 
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handlers = useSwipeable({
+    onSwipedLeft: () => setCurrentIndex((prev) => Math.min(prev + 1, activities.length - 1)),
+    onSwipedRight: () => setCurrentIndex((prev) => Math.max(prev - 1, 0)),
+    trackMouse: true,
+  });
+
   return (
     <section className="bg-secondary py-16 sm:py-24">
       <div className="container mx-auto px-4 text-center">
         <h3 className="text-sm uppercase text-foreground font-semibold tracking-wider mb-4">
           ACTIVITĂȚI
         </h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 sm:gap-8 mb-10 sm:mb-16">
-          {activities.map((activity, index) => (
-            <ActivityItem key={index} {...activity} />
-          ))}
+        <div
+          {...handlers}
+          className="relative overflow-hidden"
+        >
+          <div
+            className="flex transition-transform duration-300"
+            style={{
+              transform: `translateX(-${currentIndex * 100}%)`,
+            }}
+          >
+            {activities.map((activity, index) => (
+              <ActivityItem key={index} {...activity} />
+            ))}
+          </div>
         </div>
-        <div className="max-w-3xl mx-auto text-center text-foreground">
+        <div className="max-w-3xl mx-auto text-center text-foreground mt-10">
           <p className="mb-4">
             🔥 Fie că vrei să le faci pe toate sau doar să-ți alegi preferatele,
             ai o mulțime de activități din care să alegi.
