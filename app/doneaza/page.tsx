@@ -165,13 +165,13 @@ export default function DonatiiPage() {
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <a
               href={`tel:${contactInfo.phone}`}
-              className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-primary text-primary-foreground hover:bg-primary/90"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-card-foreground text-card hover:bg-primary/90"
             >
               Telefon: {contactInfo.phone}
             </a>
             <a
               href={`mailto:${contactInfo.email}`}
-              className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-primary text-primary-foreground hover:bg-primary/90"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-card-foreground text-card hover:bg-primary/90"
             >
               Email: {contactInfo.email}
             </a>
