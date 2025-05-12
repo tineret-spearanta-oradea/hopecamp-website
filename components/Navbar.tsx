@@ -12,7 +12,7 @@ export default function Navbar() {
   const navLinks = [
     { href: "/", label: "acasă" },
     // { href: "/inscrie-te", label: "înscrie-te" },
-    { href: "/donatii", label: "donează" },
+    { href: "/doneaza", label: "donează" },
     { href: "/cont", label: "contul meu" },
     { href: "/galerie", label: "galerie" },
   ];
