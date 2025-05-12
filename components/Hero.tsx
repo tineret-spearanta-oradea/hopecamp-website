@@ -62,12 +62,7 @@ export default function Hero() {
           <CountdownTimer />
 
           {/* Button */}
-          <Button
-            variant="default"
-            size="lg"
-            asChild
-            className="mt-4 sm:mt-6 bg-primary hover:bg-primary/90 text-primary-foreground"
-          >
+          <Button variant="default" size="lg" asChild>
             {/* Link this button appropriately */}
             <Link href="/inscrie-te">
               <p className="text-lg sm:text-xl font-semibold">Înscrie-te</p>

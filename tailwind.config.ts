@@ -1,6 +1,8 @@
 import type { Config } from "tailwindcss";
 import { withUt } from "uploadthing/tw";
 
+
+
 const config: Config = {
   darkMode: ["class"],
   content: [
