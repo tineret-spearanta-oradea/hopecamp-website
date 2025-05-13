@@ -30,7 +30,7 @@ export default function WhyAttend() {
   return (
     <>
       <section className="bg-white py-16 sm:py-24">
-        <div className="container mx-auto flex flex-col lg:flex-row items-start gap-10 lg:gap-16">
+        <div className="container mx-auto flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-16">
           <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-start">
             <h4 className="font-jersey text-sm uppercase text-muted-foreground font-semibold tracking-wider mb-2">
               VINO ȘI TU!
