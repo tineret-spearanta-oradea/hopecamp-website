@@ -22,7 +22,7 @@ export default function Locatie() {
           <div className="w-full lg:w-1/2 h-auto order-first md:order-last">
             <iframe
               className="rounded-lg w-full h-64 sm:h-72 md:h-80 lg:h-96"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2736.3146723274435!2d23.183039977602224!3d46.699525571121065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47491e408ad19e71%3A0x5ac3f5b1a6fb26a3!2zQ2FtcHVzIE3Eg3JpyJllbA!5e0!3m2!1sro!2sro!4v1733930231713!5m2!1sro!2sro"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11134.621256157536!2d22.135968478728515!3d45.75805570813609!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x474fafec73045557%3A0x446e222c52488df1!2sPrecept%20Ministries%20Rom%C3%A2nia!5e0!3m2!1sro!2sro!4v1746890986650!5m2!1sro!2sro"
               allowFullScreen={true}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"

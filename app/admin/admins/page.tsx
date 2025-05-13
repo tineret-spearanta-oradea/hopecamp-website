@@ -3,7 +3,6 @@
 import {useEffect, useState} from "react";
 import {useAuth} from "@/contexts/auth-context";
 import {useRouter} from "next/navigation";
-import { updateUserRegistrationProfile} from "@/lib/supabase/database/registration"; // Import Supabase functions
 import {getUserRegistrationByEditionId, changeUserAdminStatusForRegistration} from "@/lib/supabase/database/registration";
 import {
     Table,
@@ -47,7 +46,7 @@ export default function AdminsPage() {
     const router = useRouter();
     const [admins, setAdmins] = useState<RegistrationWithProfile[]>([]);
     const [loading, setLoading] = useState(true);
-    const [newAdminEmail, setNewAdminEmail] = useState("");
+    const [newAdminPhone, setNewAdminPhone] = useState("");
     const [isAddingAdmin, setIsAddingAdmin] = useState(false);
     const [superAdminPrompt, setSuperAdminPrompt] =
         useState<SuperAdminPromptData>(null);
@@ -86,8 +85,8 @@ export default function AdminsPage() {
     }, [toast]);
 
     const handleRoleUpdate = async (userId: string, updates: Partial<Omit<RegistrationWithProfile, 'userId'>>) => {
-        const adminToUpdate = admins.find(admin => admin.userId === userId);
-        if (!adminToUpdate) {
+        const adminRegistrationToUpdate = admins.find(admin => admin.userId === userId);
+        if (!adminRegistrationToUpdate) {
             console.error("User not found for update:", userId);
             toast({title: "Eroare", description: "Userul nu a fost găsit.", variant: "destructive"});
             return;
@@ -95,8 +94,7 @@ export default function AdminsPage() {
 
         try {
             if (updates.isAdmin !== undefined) {
-                const currentEdition = await getActiveEdition();
-                await changeUserAdminStatusForRegistration(currentEdition.id, updates.isAdmin);
+                await changeUserAdminStatusForRegistration(adminRegistrationToUpdate.id, updates.isAdmin);
             }
             if (updates.isSuperAdmin !== undefined) {
                 await changeUserSuperAdminStatus(userId, updates.isSuperAdmin);
@@ -157,10 +155,10 @@ export default function AdminsPage() {
     };
 
     const handleAddAdmin = async () => {
-        if (!newAdminEmail.trim()) {
+        if (!newAdminPhone.trim()) {
             toast({
                 title: "Eroare",
-                description: "Te rugăm să introduci o adresă de email",
+                description: "Te rugăm să introduci un numar de telefon",
                 variant: "destructive",
             });
             return;
@@ -168,20 +166,20 @@ export default function AdminsPage() {
 
         setIsAddingAdmin(true);
         try {
-            // Find user by email
+            // Find user by phone
             const currentEdition = await getActiveEdition(); // TODO remove this after we have edition selector on the UI
-            const userToAdd: RegistrationWithProfile | null = await getUserRegistrationByEditionId(currentEdition.id, {email:newAdminEmail.trim().toLowerCase()});
+            const registrationToAdd: RegistrationWithProfile | null = await getUserRegistrationByEditionId(currentEdition.id, {phone:`4${newAdminPhone.trim().toLowerCase()}`});
 
-            if (!userToAdd) {
+            if (!registrationToAdd) {
                 toast({
                     title: "Eroare",
-                    description: "Nu am găsit niciun utilizator cu acest email",
+                    description: "Nu am găsit niciun utilizator cu acest numar de telefon",
                     variant: "destructive",
                 });
                 return;
             }
 
-            if (userToAdd.isAdmin) {
+            if (registrationToAdd.isAdmin) {
                 toast({
                     title: "Eroare",
                     description: "Acest utilizator este deja admin",
@@ -190,17 +188,17 @@ export default function AdminsPage() {
                 return;
             }
 
-            await changeUserAdminStatusForRegistration(currentEdition.id, true);
+            await changeUserAdminStatusForRegistration(registrationToAdd.id, true);
 
             // Add to local admins list
-            setAdmins([...admins, {...userToAdd, isAdmin: true}]);
+            setAdmins([...admins, {...registrationToAdd, isAdmin: true}]);
 
             toast({
                 title: "Succes",
                 description: "Admin adăugat cu succes",
             });
 
-            setNewAdminEmail("");
+            setNewAdminPhone("");
         } catch (error) {
             console.error("Error adding admin:", error);
             toast({
@@ -226,18 +224,18 @@ export default function AdminsPage() {
             <div className="flex gap-4 items-end">
                 <div className="flex-1 space-y-2">
                     <label className="text-sm font-medium">
-                        Adaugă admin nou după email
+                        Adaugă admin nou după telefon
                     </label>
                     <Input
                         type="email"
-                        placeholder="utilizator@exemplu.com"
-                        value={newAdminEmail}
-                        onChange={(e) => setNewAdminEmail(e.target.value)}
+                        placeholder="0770123456"
+                        value={newAdminPhone}
+                        onChange={(e) => setNewAdminPhone(e.target.value)}
                     />
                 </div>
                 <Button
                     onClick={handleAddAdmin}
-                    disabled={isAddingAdmin || !newAdminEmail.trim()}
+                    disabled={isAddingAdmin || !newAdminPhone.trim()}
                 >
                     {isAddingAdmin ? "Se adaugă..." : "Adaugă Admin"}
                 </Button>
@@ -266,7 +264,7 @@ export default function AdminsPage() {
                             admins.map((admin) => (
                                 <TableRow key={admin.userId}>
                                     <TableCell>{admin.name}</TableCell>
-                                    <TableCell>{admin.email}</TableCell>
+                                    <TableCell>{admin.phone}</TableCell>
                                     <TableCell>
                                         {admin.isSuperAdmin ? (
                                             <div className="flex items-center gap-2">

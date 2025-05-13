@@ -7,7 +7,12 @@ import { Edition } from '@/types/edition';
 import { RegistrationWithProfile } from '@/types/registrationWithProfile';
 import { createUserWithRegistration } from "@/lib/supabase/database/__tests__/helpers/registration";
 
-const testSupabaseAdmin = supabaseAdmin!;
+// Mock the browser client. Dynamically require the admin client *inside* the factory.
+jest.mock('@/lib/supabase/client', () => {
+    return {
+        supabaseBrowserClient: supabaseAdmin
+    };
+});
 
 describe('Expense Database Integration Tests', () => {
     let activeEdition: Edition;

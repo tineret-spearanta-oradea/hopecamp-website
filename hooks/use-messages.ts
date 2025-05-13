@@ -1,11 +1,12 @@
 import { useCallback, useState } from "react";
-import { Message } from "@/types/message";
+import { AdminMessage } from "@/types/message"; // Use AdminMessage for the admin panel
 import { toast } from "sonner";
-import {getAllMessages, setMessageRead} from "@/lib/supabase/database/message";
-import {getActiveEdition} from "@/lib/supabase/database/edition";
+import { getAllMessages, setMessageRead } from "@/lib/supabase/database/message";
+import { getActiveEdition } from "@/lib/supabase/database/edition";
 
 export function useMessages() {
-  const [messages, setMessages] = useState<Message[]>([]);
+  // State holds AdminMessage objects
+  const [messages, setMessages] = useState<AdminMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
@@ -25,23 +26,26 @@ export function useMessages() {
   }, []);
 
   const updateMessageStatus = useCallback(
-    async (messageId: number, newStatus: boolean, userId?: string) => {
+    async (messageId: number, newStatus: boolean, readerUserId?: string) => {
+      if (!readerUserId) {
+          console.error("Reader user ID is required to update message status.");
+          toast.error("Eroare: ID utilizator lipsă pentru actualizare status.");
+          return; // Prevent update if reader ID is missing
+      }
       try {
-          await setMessageRead(messageId,userId || "Unknown");
-        // Update local state
+        // Call API to update the status in the DB
+        // setMessageRead now returns the updated AdminMessage with reader details
+        const { data: updatedMessageData, error: updateError } = await setMessageRead(messageId, readerUserId);
+
+        if (updateError || !updatedMessageData) {
+            throw updateError || new Error("Failed to update message status or retrieve updated data.");
+        }
+
+        // Update local state using the data returned from the API
         setMessages((prevMessages) =>
           prevMessages.map((message) =>
             message.id === messageId
-              ? {
-                  ...message,
-                  isRead: newStatus,
-                  readBy: newStatus
-                    ? {
-                        userId: userId || "Unknown",
-                        readAt: new Date(),
-                      }
-                    : undefined,
-                }
+              ? updatedMessageData // Replace the old message with the updated one from DB
               : message
           )
         );

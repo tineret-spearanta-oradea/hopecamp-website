@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { Message } from "@/types/message";
+import { AdminMessage } from "@/types/message"; // Use AdminMessage
 import {
   Select,
   SelectContent,
@@ -34,15 +34,17 @@ import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
 
 interface DataTableProps {
-  columns: ColumnDef<Message>[];
-  data: Message[];
+  columns: ColumnDef<AdminMessage>[]; // Use AdminMessage
+  data: AdminMessage[]; // Use AdminMessage
 }
 
 const FILTERABLE_COLUMNS = [
   { value: "userName", label: "Nume" },
   { value: "phone", label: "Telefon" },
   { value: "text", label: "Mesaj" },
-  { value: "isRead", label: "Status" },
+  // isRead is handled by the status component, maybe filter by readByUserName?
+  // { value: "isRead", label: "Status" },
+  { value: "readByUserName", label: "Citit De" },
 ];
 
 export function DataTable({ columns, data }: DataTableProps) {
@@ -152,7 +154,7 @@ export function DataTable({ columns, data }: DataTableProps) {
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row: Row<Message>) => (
+              table.getRowModel().rows.map((row: Row<AdminMessage>) => ( // Use AdminMessage
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}

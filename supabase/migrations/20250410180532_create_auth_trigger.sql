@@ -23,12 +23,10 @@ BEGIN
     INSERT INTO public.user_profiles (user_id,
                                       name,
                                       age,
-                                      phone,
                                       image_url)
     VALUES (NEW.id, -- from auth.users
             meta ->> 'display_name',
             (meta ->> 'age')::INTEGER,
-            meta ->> 'phone',
             COALESCE(meta ->> 'imageUrl', ''));
 
     -- 2) Parse edition_id (if provided) and check if that edition is open

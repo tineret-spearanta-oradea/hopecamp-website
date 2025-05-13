@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { Message } from "@/types/message";
+import { AdminMessage } from "@/types/message";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, Circle, PencilIcon } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
@@ -69,9 +69,9 @@ export const createColumns = (
   updateMessageStatus: (
     messageId: number,
     newStatus: boolean,
-    userId?: string
+    readerUserId?: string // Renamed for clarity
   ) => Promise<void>
-): ColumnDef<Message>[] => [
+): ColumnDef<AdminMessage>[] => [ // Use AdminMessage
   {
     id: "userName",
     accessorKey: "userName",
@@ -111,5 +111,21 @@ export const createColumns = (
     cell: ({ row }) => (
       <StatusCellWrapper row={row} updateMessageStatus={updateMessageStatus} />
     ),
+  },
+  {
+      id: "readByUserName",
+      accessorKey: "readByUserName",
+      header: "Citit De",
+      cell: ({ row }) => {
+          const readBy = row.original.readByUserName;
+          const readAt = row.original.readAt;
+          if (!readBy) return <span className="text-xs text-muted-foreground">-</span>;
+          return (
+              <div className="flex flex-col text-xs">
+                  <span>{readBy}</span>
+                  {readAt && <span className="text-muted-foreground">{format(readAt, "dd/MM HH:mm")}</span>}
+              </div>
+          );
+      },
   },
 ];

@@ -9,7 +9,7 @@ export async function getUserProfile(userId: string, client?: SupabaseClient): P
     try {
         const {data, error} = await supabase
             .from("user_profiles")
-            .select('*, user_roles!left ( is_super_admin )')
+            .select('*, user_roles!left ( is_super_admin ), ...auth_users_view!inner ( email, phone )')
             .eq("user_id", userId)
             .single();
 
@@ -28,9 +28,8 @@ export function mapUserProfileDbRow(data: any): UserProfile { // Add export
     return {
         userId: data.user_id,
         name: data.name,
-        email: data.email,
-        isSuperAdmin: data.user_roles?.is_super_admin ?? false,
         phone: data.phone,
+        isSuperAdmin: data.user_roles?.is_super_admin ?? false,
         imageUrl: data.image_url,
         createdAt: new Date(data.created_at),
         updatedAt: new Date(data.updated_at),
@@ -53,7 +52,6 @@ export const getNewUserMetadata = (
             edition_id: editionId,
             display_name: formData.userData.name,
             age: formData.userData.age,
-            phone: formData.userData.phone,
             church:
                 formData.userData.church === "alta"
                     ? formData.userData.churchOther

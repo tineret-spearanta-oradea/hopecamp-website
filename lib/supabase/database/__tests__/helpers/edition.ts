@@ -12,13 +12,14 @@ export function createTestEditionObject(overrides: Partial<Edition> = {}): Editi
     const endDate = new Date(2025, 1, 5); // End of current month
 
     const defaults: Edition = {
-        id:1,
-        name: `Test Edition ${Date.now()}`, // Unique name by default
-        start_date: startDate,
-        end_date: endDate,
-        is_open: true,
-        created_at: new Date(),
-        updated_at: new Date(),
+      id: 1,
+      name: `Test Edition ${Date.now()}`, // Unique name by default
+      start_date: startDate,
+      end_date: endDate,
+      is_open: true,
+      title: `Test Edition ${Date.now()}`,
+      created_at: new Date(),
+      updated_at: new Date(),
     };
 
     return {

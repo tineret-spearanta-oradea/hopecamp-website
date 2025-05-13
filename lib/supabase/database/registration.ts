@@ -2,7 +2,7 @@ import {supabaseBrowserClient} from "@/lib/supabase/client";
 import {RegistrationWithProfile} from "@/types/registrationWithProfile"; // Assuming browser client usage
 export {getUserProfile} from "@/lib/supabase/database/user";
 
-type FilterParams = { userId: string } | { email: string };
+type FilterParams = { userId: string } | { phone: string };
 
 export async function getUserRegistrationByEditionId(editionId: number, filterParams: FilterParams): Promise<RegistrationWithProfile | null> {
 
@@ -11,14 +11,14 @@ export async function getUserRegistrationByEditionId(editionId: number, filterPa
         .select(`
         *,
         user_registration_roles!left ( is_admin ),
-        user_profiles!inner ( user_id, name, phone, image_url, age, ...user_roles!left ( is_super_admin ), ...auth_users_view!inner ( email ) )
+        user_profiles!inner ( user_id, name, image_url, age, ...user_roles!left ( is_super_admin ), ...auth_users_view!inner ( email, phone ) )
         `)
         .eq("edition_id", editionId);
 
     if ("userId" in filterParams) {
         query = query.eq("user_id", filterParams.userId);
     } else {
-        query = query.eq('user_profiles.auth_users_view.email', filterParams.email);
+        query = query.eq('user_profiles.auth_users_view.phone', filterParams.phone);
     }
 
 
@@ -43,14 +43,17 @@ export async function getUserRegistrationByEditionId(editionId: number, filterPa
 
 export async function getRegistrationsByEditionId(editionId: number): Promise<RegistrationWithProfile[]> {
     try {
-        const {data, error} = await supabaseBrowserClient
-            .from("registrations")
-            .select(`
+        const { data, error } = await supabaseBrowserClient
+          .from("registrations")
+          .select(
+            `
                 *,
                 user_registration_roles!left ( is_admin ),
-                user_profiles!inner ( user_id, name, phone, image_url, age, ...user_roles!left ( is_super_admin ), ...auth_users_view!inner ( email ) )
-            `)
-            .eq("edition_id", editionId);
+                user_profiles!inner ( user_id, name, image_url, age, ...user_roles!left ( is_super_admin ), ...auth_users_view!inner ( email, phone ) )
+            `
+          )
+          .order("created_at", { ascending: false })
+          .eq("edition_id", editionId);
 
         if (error) {
             console.error("Error fetching registrations:", error.message);
@@ -89,7 +92,6 @@ function mapRegistrationWithProfile(row: any): RegistrationWithProfile {
         withFamilyMember: row.with_family_member,
         isAdmin: row.user_registration_roles?.is_admin ?? false,
         name: row.user_profiles.name,
-        email: row.user_profiles.email,
         phone: row.user_profiles.phone,
         imageUrl: row.user_profiles.image_url,
         age: row.user_profiles.age,
@@ -108,7 +110,6 @@ export async function updateUserRegistrationProfile(registration: UpdateRegistra
         // Update user_profiles table
         const userUpdates = {
             name: registration.name,
-            phone: registration.phone,
             image_url: registration.imageUrl,
             age: registration.age,
             updated_at: now
