@@ -29,9 +29,16 @@ const availableTags = ["înscriere", "reguli", "financiar", "transport"];
 export default function FaqSection() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTag, setSelectedTag] = useState<string | null>(null); // Single selection state
+  const [openItem, setOpenItem] = useState<string | null>(null);
 
   const handleTagClick = (tag: string | null) => {
     setSelectedTag(tag);
+    setOpenItem(null); // Close any open items when changing filters
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    setOpenItem(null); // Close any open items when searching
   };
 
   const filteredFaqData = (faqData as FaqItem[]) // Type assertion
@@ -72,7 +79,7 @@ export default function FaqSection() {
             type="text"
             placeholder="caută..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={handleSearchChange}
             // Adjusted styling for better contrast on primary bg
             className="bg-white font-nunito text-primary placeholder:text-primary/60 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-white/50 w-full md:w-auto"
           />
@@ -130,23 +137,39 @@ export default function FaqSection() {
 
         {/* FAQ Accordion */}
         <div className="max-w-4xl mx-auto">
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion
+            type="single"
+            collapsible
+            className="w-full"
+            value={openItem || undefined}
+            onValueChange={setOpenItem}
+          >
             {filteredFaqData.length > 0 ? (
-              filteredFaqData.map((faq, index) => (
-                <AccordionItem
-                  key={index}
-                  value={`item-${index + 1}`}
-                  // Style accordion items for contrast
-                  className="bg-white rounded-lg mb-3 shadow-sm overflow-hidden border-none"
-                >
-                  <AccordionTrigger className="text-primary hover:bg-secondary/10 px-6 py-4 text-left font-semibold text-lg hover:no-underline">
-                    {faq.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-foreground/90 px-6 pb-4 pt-0">
-                    <div dangerouslySetInnerHTML={{ __html: faq.answer }}></div>
-                  </AccordionContent>
-                </AccordionItem>
-              ))
+              filteredFaqData.map((faq, index) => {
+                // Create a unique ID for each FAQ based on the question
+                const faqId = `faq-${removeDiacritics(faq.question)
+                  .toLowerCase()
+                  .replace(/\s+/g, "-")
+                  .substring(0, 20)}-${index}`;
+
+                return (
+                  <AccordionItem
+                    key={faqId}
+                    value={faqId}
+                    // Style accordion items for contrast
+                    className="bg-white rounded-lg mb-3 shadow-sm overflow-hidden border-none"
+                  >
+                    <AccordionTrigger className="text-primary hover:bg-secondary/10 px-6 py-4 text-left font-semibold text-lg hover:no-underline">
+                      {faq.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-foreground/90 px-6 pb-4 pt-0">
+                      <div
+                        dangerouslySetInnerHTML={{ __html: faq.answer }}
+                      ></div>
+                    </AccordionContent>
+                  </AccordionItem>
+                );
+              })
             ) : (
               <p className="text-center text-white/80 italic">
                 Nu s-au găsit întrebări care să corespundă filtrelor selectate.
