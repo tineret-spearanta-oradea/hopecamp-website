@@ -8,22 +8,22 @@ export default function WhyAttend() {
   {
     icon: "/assets/svgs/relatii-autentice.svg", // Elimină "public/"
     title: "RELAȚII AUTENTICE",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    description: "Leagă relații autentice, care țin o viață întreagă.",
   },
   {
     icon: "/assets/svgs/deconectare-digitala.svg",
     title: "DECONECTARE DIGITALĂ",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    description: "Ia o pauză de la ecrane, bucură-te de natură.",
   },
   {
     icon: "/assets/svgs/apropiere-spirituala.svg",
     title: "APROPIERE SPIRITUALĂ",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    description: "Întărește-ți relația cu Dumnezeu și descoperă-ți darurile.",
   },
   {
     icon: "/assets/svgs/voie-buna.svg",
     title: "VOIE BUNĂ",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    description: "Distracție, voie bună și amintiri de neuitat.",
   },
 ];
 
@@ -38,7 +38,7 @@ export default function WhyAttend() {
             <h2 className="font-poppins font-bold text-3xl sm:text-4xl md:text-5xl text-primary mb-6">
               DE CE SĂ VII?
             </h2>
-            <p className="font-nunito text-foreground mb-8 max-w-lg">
+            <p className="font-nunito mb-8">
               Fiecare tabără are jocuri și mâncare bună, dar noi vrem să-ți
               oferim mai mult decât atât. Aici nu vei doar să te distrezi, ci să
               te (re)conectezi cu Dumnezeu, cu tine și cu oameni faini. Am
@@ -52,11 +52,11 @@ export default function WhyAttend() {
               </Button>
             </div>
           </div>
-          <div className="w-full lg:w-1/2 grid grid-cols-1 gap-4">
+          <div className="w-full flex flex-col gap-4 max-w-lg">
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="bg-primary text-primary-foreground border-none shadow-md rounded-lg p-4 flex items-center gap-4"
+                className="bg-primary text-white shadow-md rounded-lg p-4 flex items-center gap-4"
               >
                 {/* SVG Image */}
                 <div className="flex-shrink-0">
@@ -71,8 +71,8 @@ export default function WhyAttend() {
 
                 {/* Title and Description */}
                 <div className="flex flex-col">
-                  <h3 className="text-lg font-semibold">{feature.title}</h3>
-                  <p className="text-base font-light opacity-90">
+                  <h3 className="font-jersey text-xl font-semibold">{feature.title}</h3>
+                  <p className="text-base font-light">
                     {feature.description}
                   </p>
                 </div>
