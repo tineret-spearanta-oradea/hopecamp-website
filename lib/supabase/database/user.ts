@@ -37,36 +37,29 @@ export function mapUserProfileDbRow(data: any): UserProfile { // Add export
     };
 }
 
-const slopeActivityMap: Record<string, string> = {
-    no: "nu",
-    visit: "vizita",
-    ski: "schi",
-    sled: "sanie",
-};
 export const getNewUserMetadata = (
     formData: FormData,
     editionId: number // TODO remove this after we have edition selector on the UI
 ) => {
     return {
-        userSignUpMetaData: {
-            edition_id: editionId,
-            display_name: formData.userData.name,
-            age: formData.userData.age,
-            church:
-                formData.userData.church === "alta"
-                    ? formData.userData.churchOther
-                    : formData.userData.church,
-            churchContact: formData.userData.churchContact || "",
-            payTaxTo: formData.userData.payTaxTo,
-            transport: formData.userData.transport,
-            preferences: formData.userData.preferences,
-            startDate: formData.userData.startDate,
-            endDate: formData.userData.endDate,
-            imageUrl: formData.userData.imageUrl,
-            slopeActivity: slopeActivityMap[formData.userData.slopeActivity] || "nu",
-            withFamilyMember: false,
-        },
-        display_name: formData.userData.name
+      userSignUpMetaData: {
+        edition_id: editionId,
+        display_name: formData.userData.name,
+        age: formData.userData.age,
+        church:
+          formData.userData.church === "alta"
+            ? formData.userData.churchOther
+            : formData.userData.church,
+        churchContact: formData.userData.churchContact || "",
+        payTaxTo: formData.userData.payTaxTo,
+        transport: formData.userData.transport,
+        preferences: formData.userData.preferences,
+        startDate: formData.userData.startDate,
+        endDate: formData.userData.endDate,
+        imageUrl: formData.userData.imageUrl,
+        withFamilyMember: false,
+      },
+      display_name: formData.userData.name,
     };
 
 };

@@ -140,7 +140,6 @@ export default function UsersPage() {
       "withFamilyMember",
       "startDate",
       "endDate",
-      "slopeActivity",
     ];
 
     // Create CSV header

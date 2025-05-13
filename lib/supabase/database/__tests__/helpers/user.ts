@@ -61,19 +61,18 @@ export function createTestFormData( // Add export
 ): FormData {
     // Extract UserData fields from RegistrationWithProfile
     const userData: UserData = {
-        name: registration.name,
-        age: registration.age.toString(), // Convert number back to string for form
+      name: registration.name,
+      age: registration.age.toString(), // Convert number back to string for form
 
-        startDate: registration.startDate,
-        endDate: registration.endDate,
-        church: registration.church,
-        churchOther: registration.churchOther,
-        churchContact: registration.churchContact,
-        payTaxTo: registration.payTaxTo,
-        transport: registration.transport,
-        imageUrl: registration.imageUrl,
-        preferences: registration.preferences,
-        slopeActivity: registration.slopeActivity, // Assuming slopeActivity string matches form values
+      startDate: registration.startDate,
+      endDate: registration.endDate,
+      church: registration.church,
+      churchOther: registration.churchOther,
+      churchContact: registration.churchContact,
+      payTaxTo: registration.payTaxTo,
+      transport: registration.transport,
+      imageUrl: registration.imageUrl,
+      preferences: registration.preferences,
     };
 
     // Create AuthData using phone from registration and any overrides

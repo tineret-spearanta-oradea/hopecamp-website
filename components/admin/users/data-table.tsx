@@ -47,14 +47,6 @@ const FILTERABLE_COLUMNS = [
   { value: "payTaxTo", label: "Casier" },
   { value: "transport", label: "Transport" },
   { value: "amountPaid", label: "Plătit" },
-  { value: "slopeActivity", label: "Pârtie" },
-];
-
-const slopeActivityOptions = [
-  { value: "nu", label: "Nu merge" },
-  { value: "vizita", label: "Doar vizită" },
-  { value: "schi", label: "Ski/Snowboard" },
-  { value: "sanie", label: "Sanie" },
 ];
 
 export function DataTable<TData, TValue>({
@@ -109,28 +101,6 @@ export function DataTable<TData, TValue>({
 
   const renderFilterInput = () => {
     if (!selectedColumn) return null;
-
-    if (selectedColumn === "slopeActivity") {
-      return (
-        <Select
-          value={
-            (table.getColumn(selectedColumn)?.getFilterValue() as string) ?? ""
-          }
-          onValueChange={(value) => handleFilterChange(value)}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Alege activitatea..." />
-          </SelectTrigger>
-          <SelectContent>
-            {slopeActivityOptions.map(({ value, label }) => (
-              <SelectItem key={value} value={value}>
-                {label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      );
-    }
 
     return (
       <Input

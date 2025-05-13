@@ -166,10 +166,6 @@ export function UserDetailsDialog({
             <InfoItem label="Transport" value={registration.transport || "-"} />
             <InfoItem label="Plătește taxa la" value={registration.payTaxTo || "-"} />
             <InfoItem
-              label="Activitate pârtie"
-              value={registration.slopeActivity || "-"}
-            />
-            <InfoItem
               label="Sumă plătită"
               value={`${registration.amountPaid || 0} RON`}
               className={

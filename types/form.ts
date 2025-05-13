@@ -31,7 +31,6 @@ export interface ValidationErrors {
   payTaxTo?: string;
   transport?: string;
   image?: string;
-  slopeActivity?: string;
   otp?: string; // Added OTP validation error
 }
 

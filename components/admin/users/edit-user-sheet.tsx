@@ -59,10 +59,6 @@ const userFormSchema = z.object({
     invalid_type_error: "Mijlocul de transport nu este valid",
   }),
   payTaxTo: z.string().min(1, "Metoda de plată este obligatorie"),
-  slopeActivity: z.enum(["nu", "vizita", "schi", "sanie"], {
-    required_error: "Activitatea la pârtie este obligatorie",
-    invalid_type_error: "Opțiunea pentru pârtie nu este validă",
-  }),
   amountPaid: z.number().min(0, "Suma plătită nu poate fi negativă"),
   isConfirmed: z.boolean(),
   preferences: z.string().optional(),
@@ -100,7 +96,6 @@ export function EditUserSheet({
       age: 0,
       transport: "personal",
       payTaxTo: "",
-      slopeActivity: "nu",
       amountPaid: 0,
       isConfirmed: false,
       preferences: "",
@@ -120,13 +115,16 @@ export function EditUserSheet({
         age: registration.age || 0,
         transport: registration.transport as "personal" | "prieten" | "autocar",
         payTaxTo: registration.payTaxTo || "",
-        slopeActivity: registration.slopeActivity as "nu" | "vizita" | "schi" | "sanie",
         amountPaid: registration.amountPaid || 0,
         isConfirmed: registration.isConfirmed || false,
         preferences: registration.preferences || "",
         withFamilyMember: registration.withFamilyMember || false,
-        startDate: registration.startDate ? new Date(registration.startDate) : new Date(),
-        endDate: registration.endDate ? new Date(registration.endDate) : new Date(),
+        startDate: registration.startDate
+          ? new Date(registration.startDate)
+          : new Date(),
+        endDate: registration.endDate
+          ? new Date(registration.endDate)
+          : new Date(),
       };
       form.reset(formValues);
       setIsDirty(false);
@@ -456,86 +454,6 @@ export function EditUserSheet({
                     />
                   </AccordionContent>
                 </AccordionItem>
-
-                {/* <AccordionItem
-                  value="activities"
-                  className="border-none bg-muted/50 rounded-lg"
-                >
-                  <AccordionTrigger className="px-4">
-                    Activități și Preferințe
-                  </AccordionTrigger>
-                  <AccordionContent className="space-y-4 px-4 pb-4">
-                    <FormField
-                      control={form.control}
-                      name="slopeActivity"
-                      render={({ field }) => (
-                        <FormItem className="space-y-2">
-                          <FormLabel>Activitate la pârtie</FormLabel>
-                          <FormControl>
-                            <RadioGroup
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                              className="flex flex-col space-y-1"
-                            >
-                              {slopeActivityOptions.map((option) => (
-                                <div
-                                  key={option.value}
-                                  className="flex items-center space-x-2"
-                                >
-                                  <RadioGroupItem
-                                    value={option.value}
-                                    id={option.value}
-                                  />
-                                  <Label htmlFor={option.value}>
-                                    {option.label}
-                                  </Label>
-                                </div>
-                              ))}
-                            </RadioGroup>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="withFamilyMember"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                          <FormControl>
-                            <input
-                              type="checkbox"
-                              checked={field.value}
-                              onChange={field.onChange}
-                              className="h-4 w-4 rounded border-gray-300"
-                            />
-                          </FormControl>
-                          <div className="space-y-1 leading-none">
-                            <FormLabel>Cu membru familie</FormLabel>
-                            <FormDescription>
-                              Participă împreună cu un membru al familiei
-                            </FormDescription>
-                          </div>
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="preferences"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Preferințe colegi de cameră</FormLabel>
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </AccordionContent>
-                </AccordionItem> */}
               </Accordion>
 
               <div className="flex justify-end space-x-4 pt-4">

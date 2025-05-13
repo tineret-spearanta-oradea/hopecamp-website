@@ -21,32 +21,31 @@ export function createTestRegistrationWithProfile(overrides: Partial<Registratio
     const endDate = overrides.endDate || new Date(2025, 1, 23); // Feb 23, 2025
 
     const defaults: RegistrationWithProfile = {
-        // UserProfile fields
-        userId: userId,
-        name: 'Test Reg User',
-        phone: `40${770123456+ Math.floor(Math.random() * 10000) + 1}`,
-        age: 28,
-        imageUrl: '',
-        isSuperAdmin: false,
-        createdAt: now, // Will be slightly different from DB, used for structure
-        updatedAt: now,
+      // UserProfile fields
+      userId: userId,
+      name: "Test Reg User",
+      phone: `40${770123456 + Math.floor(Math.random() * 10000) + 1}`,
+      age: 28,
+      imageUrl: "",
+      isSuperAdmin: false,
+      createdAt: now, // Will be slightly different from DB, used for structure
+      updatedAt: now,
 
-        // UserRegistration fields
-        id: Math.floor(Math.random() * 10000) + 1, // Registration ID
-        editionId: 1, // Default or specify via overrides
-        church: 'Speranta, Oradea',
-        churchOther: '',
-        churchContact: '',
-        payTaxTo: 'Denisa Șandor',
-        transport: 'personal',
-        preferences: 'Test registration preferences',
-        slopeActivity: 'nu',
-        startDate: startDate,
-        endDate: endDate,
-        isConfirmed: false,
-        amountPaid: 0,
-        withFamilyMember: false,
-        isAdmin: false,
+      // UserRegistration fields
+      id: Math.floor(Math.random() * 10000) + 1, // Registration ID
+      editionId: 1, // Default or specify via overrides
+      church: "Speranta, Oradea",
+      churchOther: "",
+      churchContact: "",
+      payTaxTo: "Denisa Șandor",
+      transport: "personal",
+      preferences: "Test registration preferences",
+      startDate: startDate,
+      endDate: endDate,
+      isConfirmed: false,
+      amountPaid: 0,
+      withFamilyMember: false,
+      isAdmin: false,
     };
 
     return {...defaults, ...overrides};

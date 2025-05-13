@@ -89,10 +89,6 @@ export const validateUserFields = (
     errors.transport = "Te rugăm să selectezi mijlocul de transport.";
   }
 
-  if (!userData.slopeActivity) {
-    errors.slopeActivity = "Te rugăm să selectezi o opțiune.";
-  }
-
   return errors;
 };
 

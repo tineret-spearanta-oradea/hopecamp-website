@@ -72,31 +72,30 @@ export async function getRegistrationsByEditionId(editionId: number): Promise<Re
 }
 
 function mapRegistrationWithProfile(row: any): RegistrationWithProfile {
-    return ({
-        id: row.id,
-        userId: row.user_id,
-        editionId: row.edition_id,
-        church: row.church,
-        churchOther: row.church_other,
-        churchContact: row.church_contact,
-        payTaxTo: row.pay_tax_to,
-        transport: row.transport,
-        preferences: row.preferences,
-        slopeActivity: row.slope_activity,
-        createdAt: new Date(row.created_at),
-        updatedAt: new Date(row.updated_at),
-        startDate: new Date(row.start_date),
-        endDate: new Date(row.end_date),
-        isConfirmed: row.is_confirmed,
-        amountPaid: row.amount_paid,
-        withFamilyMember: row.with_family_member,
-        isAdmin: row.user_registration_roles?.is_admin ?? false,
-        name: row.user_profiles.name,
-        phone: row.user_profiles.phone,
-        imageUrl: row.user_profiles.image_url,
-        age: row.user_profiles.age,
-        isSuperAdmin: row.user_profiles?.is_super_admin ?? false,
-    });
+    return {
+      id: row.id,
+      userId: row.user_id,
+      editionId: row.edition_id,
+      church: row.church,
+      churchOther: row.church_other,
+      churchContact: row.church_contact,
+      payTaxTo: row.pay_tax_to,
+      transport: row.transport,
+      preferences: row.preferences,
+      createdAt: new Date(row.created_at),
+      updatedAt: new Date(row.updated_at),
+      startDate: new Date(row.start_date),
+      endDate: new Date(row.end_date),
+      isConfirmed: row.is_confirmed,
+      amountPaid: row.amount_paid,
+      withFamilyMember: row.with_family_member,
+      isAdmin: row.user_registration_roles?.is_admin ?? false,
+      name: row.user_profiles.name,
+      phone: row.user_profiles.phone,
+      imageUrl: row.user_profiles.image_url,
+      age: row.user_profiles.age,
+      isSuperAdmin: row.user_profiles?.is_super_admin ?? false,
+    };
 }
 
 // Allow updating most fields except roles (handled separately)
@@ -125,19 +124,18 @@ export async function updateUserRegistrationProfile(registration: UpdateRegistra
 
         // Update registrations table
         const registrationUpdates = {
-            church: registration.church,
-            church_other: registration.churchOther,
-            church_contact: registration.churchContact || "",
-            transport: registration.transport,
-            preferences: registration.preferences,
-            slope_activity: registration.slopeActivity,
-            start_date: registration.startDate,
-            end_date: registration.endDate,
-            is_confirmed: registration.isConfirmed,
-            amount_paid: registration.amountPaid,
-            pay_tax_to: registration.payTaxTo,
-            with_family_member: registration.withFamilyMember,
-            updated_at: now
+          church: registration.church,
+          church_other: registration.churchOther,
+          church_contact: registration.churchContact || "",
+          transport: registration.transport,
+          preferences: registration.preferences,
+          start_date: registration.startDate,
+          end_date: registration.endDate,
+          is_confirmed: registration.isConfirmed,
+          amount_paid: registration.amountPaid,
+          pay_tax_to: registration.payTaxTo,
+          with_family_member: registration.withFamilyMember,
+          updated_at: now,
         };
         const {error: registrationError} = await supabaseBrowserClient
             .from("registrations")

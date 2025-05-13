@@ -46,56 +46,65 @@ describe('Registration Database Integration Tests', () => {
 
     describe('when creating a user with metadata', () => {
         it('handle_new_user trigger should create a user_profile and registration when a user is inserted into auth.users with valid metadata', async () => {
-            // Arrange
-            // 1. Define the registration data we want to create
-            const registrationInput = createTestRegistrationWithProfile({
-                editionId: activeEdition.id,
-                name: "Full Data Test User",
-                age: 30,
-                church: "Betel, Oradea",
-                payTaxTo: "Andrei Micula",
-                transport: "autocar",
-                preferences: "Vegetarian meal",
-                slopeActivity: "ski", // Use the key expected by the form/metadata mapping
-                startDate: new Date(2025, 1, 20),
-                endDate: new Date(2025, 1, 23),
-                imageUrl: "http://example.com/image.jpg",
-            });
+          // Arrange
+          // 1. Define the registration data we want to create
+          const registrationInput = createTestRegistrationWithProfile({
+            editionId: activeEdition.id,
+            name: "Full Data Test User",
+            age: 30,
+            church: "Betel, Oradea",
+            payTaxTo: "Andrei Micula",
+            transport: "autocar",
+            preferences: "Vegetarian meal",
+            startDate: new Date(2025, 1, 20),
+            endDate: new Date(2025, 1, 23),
+            imageUrl: "http://example.com/image.jpg",
+          });
 
-            // 2. Create the corresponding FormData using the helper
-            const formData: FormData = createTestFormData(registrationInput);
+          // 2. Create the corresponding FormData using the helper
+          const formData: FormData = createTestFormData(registrationInput);
 
-            // 3. Create the user using the helper, passing the specific formData
-            // Note: createUserWithRegistration internally generates metadata based on formData
-            const testRegData = await createUserWithRegistration(activeEdition.id, registrationInput, formData);
+          // 3. Create the user using the helper, passing the specific formData
+          // Note: createUserWithRegistration internally generates metadata based on formData
+          const testRegData = await createUserWithRegistration(
+            activeEdition.id,
+            registrationInput,
+            formData
+          );
 
-            // Assert: Fetch the profile created by the trigger
-            // Need a short delay for the trigger to potentially complete
-            await new Promise(resolve => setTimeout(resolve, 100)); // Adjust delay if needed
+          // Assert: Fetch the profile created by the trigger
+          // Need a short delay for the trigger to potentially complete
+          await new Promise((resolve) => setTimeout(resolve, 100)); // Adjust delay if needed
 
-            // Also check if the registration was created by the trigger
-            const registration = await getUserRegistrationByEditionId(activeEdition.id, {userId: testRegData.userId});
-            expect(registration).not.toBeNull();
-            expect(registration?.userId).toBe(testRegData.userId);
-            expect(registration?.editionId).toBe(activeEdition.id);
-            // Verify registration fields against the original formData.userData
-            expect(registration?.name).toBe(formData.userData.name);
-            expect(registration?.age).toBe(parseInt(formData.userData.age, 10));
-            expect(registration?.phone).toBe(formData.authData.phone);
-            expect(registration?.church).toBe(formData.userData.church);
-            expect(registration?.payTaxTo).toBe(formData.userData.payTaxTo);
-            expect(registration?.transport).toBe(formData.userData.transport);
-            expect(registration?.preferences).toBe(formData.userData.preferences);
-            // The trigger stores the mapped value ('schi'), not the key ('ski')
-            expect(registration?.slopeActivity).toBe('schi');
-            expect(registration?.startDate.toISOString()).toBe(formData.userData.startDate?.toISOString());
-            expect(registration?.endDate.toISOString()).toBe(formData.userData.endDate?.toISOString());
-            expect(registration?.imageUrl).toBe(formData.userData.imageUrl);
-            // Check default values set by trigger/table
-            expect(registration?.isConfirmed).toBe(false);
-            expect(registration?.amountPaid).toBe(0);
-            expect(registration?.withFamilyMember).toBe(false);
-            expect(registration?.isAdmin).toBe(false);
+          // Also check if the registration was created by the trigger
+          const registration = await getUserRegistrationByEditionId(
+            activeEdition.id,
+            { userId: testRegData.userId }
+          );
+          expect(registration).not.toBeNull();
+          expect(registration?.userId).toBe(testRegData.userId);
+          expect(registration?.editionId).toBe(activeEdition.id);
+          // Verify registration fields against the original formData.userData
+          expect(registration?.name).toBe(formData.userData.name);
+          expect(registration?.age).toBe(parseInt(formData.userData.age, 10));
+          expect(registration?.phone).toBe(formData.authData.phone);
+          expect(registration?.church).toBe(formData.userData.church);
+          expect(registration?.payTaxTo).toBe(formData.userData.payTaxTo);
+          expect(registration?.transport).toBe(formData.userData.transport);
+          expect(registration?.preferences).toBe(formData.userData.preferences);
+          // The trigger stores the mapped value ('schi'), not the key ('ski')
+          expect(registration?.startDate.toISOString()).toBe(
+            formData.userData.startDate?.toISOString()
+          );
+          expect(registration?.endDate.toISOString()).toBe(
+            formData.userData.endDate?.toISOString()
+          );
+          expect(registration?.imageUrl).toBe(formData.userData.imageUrl);
+          // Check default values set by trigger/table
+          expect(registration?.isConfirmed).toBe(false);
+          expect(registration?.amountPaid).toBe(0);
+          expect(registration?.withFamilyMember).toBe(false);
+          expect(registration?.isAdmin).toBe(false);
         });
     });
 
@@ -268,7 +277,6 @@ describe('Registration Database Integration Tests', () => {
                 church: "Updated Church",
                 transport: "updated transport",
                 preferences: "updated prefs",
-                slopeActivity: "schi", // Use the mapped value expected by the DB
                 startDate: new Date(2025, 1, 21),
                 endDate: new Date(2025, 1, 23),
                 isConfirmed: true, // Explicitly update isConfirmed
@@ -291,7 +299,6 @@ describe('Registration Database Integration Tests', () => {
             expect(updatedReg?.church).toBe("Updated Church");
             expect(updatedReg?.transport).toBe("updated transport");
             expect(updatedReg?.preferences).toBe("updated prefs");
-            expect(updatedReg?.slopeActivity).toBe("schi");
             expect(updatedReg?.startDate.toISOString()).toBe(new Date(2025, 1, 21).toISOString());
             expect(updatedReg?.endDate.toISOString()).toBe(new Date(2025, 1, 23).toISOString());
             expect(updatedReg?.isConfirmed).toBe(true); // Verify isConfirmed was updated

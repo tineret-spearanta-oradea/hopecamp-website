@@ -25,7 +25,6 @@ const initialFormData: FormData = {
     startDate: dateRange.startDate,
     endDate: dateRange.endDate,
     imageUrl: "",
-    slopeActivity: "no",
   },
 };
 

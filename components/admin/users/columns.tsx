@@ -152,10 +152,7 @@ export const columns = ({
       const start = row.original.startDate;
       const end = row.original.endDate;
 
-      if (
-        !start ||
-        !end
-      ) {
+      if (!start || !end) {
         return "-";
       }
 
@@ -173,17 +170,6 @@ export const columns = ({
   {
     accessorKey: "transport",
     header: "Transport",
-  },
-  {
-    accessorKey: "slopeActivity",
-    header: ({ column }) => <SortButton column={column}>Pârtie</SortButton>,
-    cell: ({ row }) => {
-      const activity = row.getValue("slopeActivity") as string;
-      return <span>{activity}</span>;
-    },
-    filterFn: (row, id, value) => {
-      return value.length === 0 || value.includes(row.getValue(id));
-    },
   },
   {
     id: "actions",
