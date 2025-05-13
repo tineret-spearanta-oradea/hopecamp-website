@@ -4,18 +4,18 @@ export default function Locatie() {
       <section className="bg-white py-16 sm:py-32">
         <div className="container mx-auto flex flex-col-reverse md:flex-row items-center gap-10">
           <div className="w-full text-center  md:text-start lg:w-1/2 flex flex-col gap-5">
-            <h4 className="text-sm uppercase text-primary font-semibold tracking-wider">
+            <h4 className="font-jersey text-base uppercase text-primary font-semibold tracking-wider">
               Locație
             </h4>
-            <h2 className="text-primary font-lemon text-3xl sm:text-4xl md:text-5xl">
+            <h2 className="text-primary font-poppins uppercase font-bold text-3xl sm:text-4xl md:text-5xl">
               Unde mergem anul acesta?
             </h2>
-            <p className="text-foreground">
-              Tabăra se va desfășura în localitatea Fârdea din județul Timiș, la
-              Precept Ministries, langa lacul Surduc, oferind un cadru ideal
-              pentru relaxare, reflecție și socializare. Cu aer limpede de
-              natură și cu o echipă de prieteni în jur, vei putea trăi cele mai
-              intense momente de vacanță.
+            <p className="font-nunito">
+              Tabăra se va desfășura în localitatea Mărișel din județul Cluj, la
+              Campus Mărișel, oferind un cadru ideal pentru relaxare, reflecție
+              și socializare. Cu aer limpede de natură și cu o echipă de
+              prieteni în jur, vei putea trăi cele mai intense momente de
+              vacanță.
             </p>
           </div>
 

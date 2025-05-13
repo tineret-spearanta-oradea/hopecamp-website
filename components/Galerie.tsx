@@ -6,16 +6,17 @@ import Link from "next/link";
 
 export default function Galerie() {
   const images = [
-    "/assets/images/wintercamp/wc1-1.png",
-    "/assets/images/wintercamp/Day2-5.jpg",
-    "/assets/images/wintercamp/Day1-51.jpg",
-    "/assets/images/wintercamp/Day2-17.jpg",
-    "/assets/images/wintercamp/wc1-2.png",
-    "/assets/images/wintercamp/wc1-3.png",
-    "/assets/images/wintercamp/Day2-26.jpg",
-    "/assets/images/wintercamp/Day2-28.jpg",
-    "/assets/images/placeholder.jpg",
-    "/assets/images/placeholder.jpg",
+    "/assets/images/hopecamp/paxchristi/ZVE07821.jpg",
+    "/assets/images/hopecamp/paxchristi/ZVE07869.jpg",
+    "/assets/images/hopecamp/paxchristi/ZVE07946.jpg",
+    "/assets/images/hopecamp/paxchristi/ZVE08042.jpg",
+    "/assets/images/hopecamp/paxchristi/ZVE08798.jpg",
+    "/assets/images/hopecamp/paxchristi/ZVE08191.jpg",
+    "/assets/images/hopecamp/paxchristi/ZVE08359.jpg",
+    "/assets/images/hopecamp/paxchristi/ZVE08650.jpg",
+    "/assets/images/hopecamp/paxchristi/9.png",
+    "/assets/images/hopecamp/paxchristi/ZVE09213.jpg",
+    
   ];
 
   return (
@@ -24,7 +25,7 @@ export default function Galerie() {
       <section className="bg-secondary py-16 sm:py-24">
         <div className="container mx-auto px-4 text-center">
           {/* Updated title styling */}
-          <h3 className="text-sm uppercase text-foreground font-semibold tracking-wider mb-10 sm:mb-16">
+          <h3 className="font-poppins font-bold uppercase text-foreground text-3xl tracking-wider mb-10 sm:mb-16">
             GALERIE
           </h3>
 

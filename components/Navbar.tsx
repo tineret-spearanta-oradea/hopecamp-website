@@ -35,7 +35,8 @@ export default function Navbar() {
       if (window.scrollY > 0) {
         setIsScrolled(true);
         setIsNearBottom(
-          window.innerHeight + window.scrollY >= document.body.offsetHeight - 100
+          window.innerHeight + window.scrollY >=
+            document.body.offsetHeight - 100
         );
       } else {
         setIsScrolled(false);
@@ -51,7 +52,7 @@ export default function Navbar() {
   return (
     <>
       {/* Mobile Navbar */}
-      <div className="bg-primary p-3 block lg:hidden fixed w-full top-0 z-50">
+      <div className="bg-primary p-3 block lg:hidden w-full top-0 z-50">
         <button onClick={() => setIsOpen(!isOpen)} className="text-white p-2">
           {isOpen ? (
             <svg
@@ -84,9 +85,13 @@ export default function Navbar() {
 
       {/* Mobile Menu Overlay */}
       {isOpen && (
-        <div className="bg-primary min-h-screen text-white font-bold flex flex-col fixed top-0 left-0 w-full h-full z-50">
-          <div className="text-5xl flex justify-center pt-5">
-            <button onClick={() => setIsOpen(false)} className="text-white">
+        <div
+          className={`bg-primary min-h-screen text-white font-bold flex flex-col fixed top-0 left-0 w-full h-full z-50 transition-all duration-600  ${
+            isOpen ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-full"
+          }`}
+        >
+          <div className="text-5xl flex pt-5 pl-4">
+            <button onClick={() => setIsOpen(false)} className="text-white ">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="40"
@@ -98,13 +103,13 @@ export default function Navbar() {
               </svg>
             </button>
           </div>
-          <div className="flex flex-col items-center justify-center h-full">
-            <div className="flex flex-col items-center -mt-5">
+          <div className="flex flex-col items-startjustify-start capitalize pl-4 h-full">
+            <div className="flex flex-col gap-8 mt-12">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-xl m-4 transition-colors"
+                  className="text-xl ml-4 transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
                   {link.label}

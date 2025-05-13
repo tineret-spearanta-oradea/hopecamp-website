@@ -274,6 +274,15 @@ export default function LoginForm() {
           Înscrie-te aici
         </Link>
       </p>
+      <div className="mt-4 flex justify-center">
+        <Link
+          href="/"
+          className="inline-block bg-primary px-4 py-2 bg-hope-darkcyan text-white font-medium text-sm rounded-md shadow-md hover:bg-hope-darkcyan-dark transition-colors duration-200"
+        >
+          Pagina principală
+        </Link>
+      </div>
+      
       {/* Optional: Add a link back to phone/password login if needed */}
       {/* <p className="mt-4 text-center text-sm text-gray-500">
         <Link href="/login-phone" className="text-hope-darkcyan hover:underline">

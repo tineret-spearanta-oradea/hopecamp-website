@@ -40,34 +40,31 @@ export default function Hero() {
         <div className="absolute inset-0 bg-black bg-opacity-40 z-10"></div>
 
         {/* Content */}
-        <div className="relative z-20 container mx-auto flex flex-col items-center gap-4 sm:gap-6 px-4">
+        <div className="relative z-20 container mx-auto flex flex-col items-center px-4">
           {/* Optional LOGO above title */}
 
           {/* Main Title */}
-          <h1 className="font-lemon text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-white leading-tight">
+          <h1 className="font-poppins font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-white leading-tight">
             HOPECAMP #6 - [EDITIE]
           </h1>
 
           {/* Subtitle */}
-          <h2 className="font-inter text-lg sm:text-xl md:text-2xl mt-2 font-light">
+          <h2 className="font-jersey text-xl sm:text-xl md:text-2xl mt-2 font-semilight">
             Tabăra care nu se uită!
           </h2>
 
           {/* Display Date Range */}
-          <p className="font-inter text-md sm:text-lg mt-3 font-medium bg-white/20 backdrop-blur-sm px-4 py-1 rounded-md">
-            {formattedDate}
-          </p>
+          
 
           {/* Countdown Timer */}
           <CountdownTimer />
 
+          <p className="font-poppins text-md sm:text-lg mt-3 font-medium  px-4 py-1 rounded-md">
+            {formattedDate}
+          </p>
+
           {/* Button */}
-          <Button
-            variant="default"
-            size="lg"
-            asChild
-            className="mt-4 sm:mt-6 bg-primary hover:bg-primary/90 text-primary-foreground"
-          >
+          <Button variant="default" size="lg" asChild>
             {/* Link this button appropriately */}
             <Link href="/inscrie-te">
               <p className="text-lg sm:text-xl font-semibold">Înscrie-te</p>
