@@ -14,8 +14,10 @@ const buttonVariants = cva(
 
         secondary:
           "font-jersey bg-secondary border border-2 border-secondary uppercase text-black hover:bg-primary hover:text-white hover:border-primary",
+
         outline:
-          "bg-transparent border border-2 border-third text-third hover:bg-third/10 hover:text-third hover:border-third",
+          "font-jersey bg-transparent border border-2 border-primary text-primary uppercase hover:bg-secondary hover:text-primary hover:border-secondary",
+
         link: "bg-transparent text-primary hover:text-secondary",
         destructive: "bg-destructive text-white hover:bg-destructive-hover",
         muted: "bg-muted text-white hover:bg-muted-hover",
