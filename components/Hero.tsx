@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import CountdownTimer from "./CountdownTimer";
-import { dateRange } from "@/lib/constants";
+import { dateRange, location } from "@/lib/constants";
 
 // Helper function to format date range
 const formatDateRange = (start: Date, end: Date): string => {
@@ -53,14 +53,19 @@ export default function Hero() {
             Tabăra care nu se uită!
           </h2>
 
-          {/* Display Date Range */}
-          
-
           {/* Countdown Timer */}
           <CountdownTimer />
 
           <p className="font-poppins text-md sm:text-lg mt-3 font-medium  px-4 py-1 rounded-md">
-            {formattedDate}
+            {formattedDate} @{" "}
+            <Link
+              href={location.googleMapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline"
+            >
+              {location.name}
+            </Link>
           </p>
 
           {/* Button */}

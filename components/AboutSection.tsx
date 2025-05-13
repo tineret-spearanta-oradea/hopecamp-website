@@ -53,10 +53,12 @@ export default function AboutSection() {
               </span>
             </Link>
             <Link
-              href={`tel:${contactInfo.phone}`}
+              href={`${contactInfo.whatsapp}`}
+              target="_blank"
+              rel="noopener noreferrer"
               className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg p-4 flex items-center gap-4 transition-colors duration-200 shadow-md w-full"
             >
-              <i className="bi bi-telephone-fill text-3xl"></i>
+              <i className="bi bi-whatsapp text-3xl"></i>
               <span className="font-semibold text-lg tracking-wider text-ellipsis overflow-hidden">
                 {contactInfo.phone}
               </span>

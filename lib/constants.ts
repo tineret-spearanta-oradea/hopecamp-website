@@ -26,10 +26,9 @@ export const transportOptions = [
 ];
 
 export const sumToPay = {
-  // TODO: change these values
-  normal: 500,
-  withFamilyMember: null,
-  deposit: 250,
+  normal: 790,
+  withFamilyMember: 730,
+  deposit: 350,
   perDay: 200,
 };
 
@@ -37,6 +36,15 @@ export const dateRange = {
   startDate: new Date("2025-08-04"),
   endDate: new Date("2025-08-09"),
   depositPaymentDueDate: new Date("2025-06-20"),
+};
+
+export const location = {
+  name: "Lacul Surduc",
+  campusName: "Precept Ministries Romania",
+  addressLine: "localitatea Fârdea din județul Timiș, lângă lacul Surduc",
+  googleMapsUrl: "https://maps.app.goo.gl/NZBCd3oL17HQe3YZ7",
+  iframeSrc:
+    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11134.621256157536!2d22.135968478728515!3d45.75805570813609!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x474fafec73045557%3A0x446e222c52488df1!2sPrecept%20Ministries%20Rom%C3%A2nia!5e0!3m2!1sro!2sro!4v1746890986650!5m2!1sro!2sro",
 };
 
 export const MinimumAge = {
@@ -68,24 +76,26 @@ export const faqData = [
   },
   {
     question: "După ce mă înscriu ce trebuie să fac?",
-    answer: `După ce te înscrii aștepți confirmarea de la noi printr-un mesaj pe care trebuie să-l primești în maxim 3 zile. 
-    După asta, trebuie sa achiți avansul de ${
+    answer: `După ce te înscrii <strong>astepți confirmarea de la noi</strong> printr-un mesaj pe care trebuie să-l primești în maxim 3 zile. 
+    După asta, trebuie sa achiți avansul de <strong>${
       sumToPay.deposit
     } RON până la data de ${new Date(
       dateRange.depositPaymentDueDate
     ).getDate()} ${new Date(dateRange.depositPaymentDueDate).toLocaleString(
       "ro",
       { month: "long" }
-    )}`,
+    )}</strong>`,
     tags: ["înscriere", "financiar"],
   },
   {
     question: "Care este taxa taberei și ce include aceasta?",
-    answer: `Taxa taberei este de ${sumToPay.normal} RON. ${
+    answer: `Taxa taberei este de <strong>${
+      sumToPay.normal
+    } RON</strong>.<br/> ${
       sumToPay.withFamilyMember !== null
-        ? `Pentru persoanele care au membru de familie în tabără (soț sau frate/soră) suma este de ${sumToPay.withFamilyMember} RON.`
+        ? `Pentru persoanele care au <strong><i>membru de familie</i></strong> în tabără (soț sau frate/soră) suma este de <strong>${sumToPay.withFamilyMember} RON</strong>.`
         : ""
-    } Taxa include cazarea, mesele, materialele și toate activitățile din programul taberei pe cele ${
+    }<br/>Taxa include cazarea, mesele, materialele și toate activitățile din programul taberei pe cele ${
       dateRange.endDate.getDate() - dateRange.startDate.getDate() + 1
     } zile si ${
       dateRange.endDate.getDate() - dateRange.startDate.getDate()
@@ -94,7 +104,7 @@ export const faqData = [
   },
   {
     question: "Care sunt modalitățile de plată?",
-    answer: `Poți achita la ${payTaxToOptions[0].label} sau la ${payTaxToOptions[1].label}. Pentru alte variante sau ajutor te rugăm să ne scrii pe WhatsApp la ${contactInfo.phone}`,
+    answer: `Poți achita la <ol><li><strong>${payTaxToOptions[0].label}</strong> pe telefon ${payTaxToOptions[0].phone}</li><li><strong>${payTaxToOptions[1].label}</strong> pe telefon ${payTaxToOptions[1].phone}</li></ol>Pentru alte variante sau ajutor te rugăm să ne scrii pe WhatsApp la <strong> <a href="${contactInfo.whatsapp}" target="_blank" rel="noopener noreferrer">${contactInfo.phone}</a></strong>`,
     tags: ["financiar"],
   },
   {
@@ -105,7 +115,7 @@ export const faqData = [
   },
   {
     question: "Care este vârsta minimă pentru participarea în tabără?",
-    answer: `Vârsta minimă pentru participarea în tabără este ${MinimumAge.normal} ani împliniți în prima zi de tabără sau ${MinimumAge.memberOfChurch} ani dacă participantul face parte din Biserica Speranța Oradea.`,
+    answer: `Vârsta minimă pentru participarea în tabără este <strong>${MinimumAge.normal} ani împliniți în prima zi de tabără</strong> sau <strong>${MinimumAge.memberOfChurch} ani dacă participantul face parte din Biserica Speranța Oradea</strong>.`,
     tags: ["reguli", "înscriere"],
   },
   {

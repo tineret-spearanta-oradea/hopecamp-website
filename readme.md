@@ -69,4 +69,7 @@ Please check [DB.md for more details and examples.](./DB.md)
 
 ## Prepare prod
 - supabase storage: create public bucket profile-images, put row access policy `bucket_id = 'profile-images'  AND auth.role() = 'anon'`
-- auth by phone
+- auth by phone enable with twilio keys
+- env secrets in github for migrations (access token get from https://supabase.com/dashboard/account/tokens)
+- (i manually deleted phone column from user_profiles. idk why it was even there in the first place.)
+- also ran `ALTER VIEW "public"."auth_users_view" RENAME COLUMN auth_phone TO phone` idk why it was auth_phone

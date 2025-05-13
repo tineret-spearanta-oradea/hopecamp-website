@@ -143,7 +143,7 @@ export default function FaqSection() {
                     {faq.question}
                   </AccordionTrigger>
                   <AccordionContent className="text-foreground/90 px-6 pb-4 pt-0">
-                    {faq.answer}
+                    <div dangerouslySetInnerHTML={{ __html: faq.answer }}></div>
                   </AccordionContent>
                 </AccordionItem>
               ))
