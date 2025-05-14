@@ -196,6 +196,7 @@ export default function Step1({
                       alt="Preview"
                       width={36}
                       height={36}
+                      unoptimized={true}
                       className="rounded-md object-cover h-full w-full"
                     />
                   </div>
