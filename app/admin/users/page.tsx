@@ -4,53 +4,74 @@ import { useState, useEffect } from "react";
 import { columns } from "@/components/admin/users/columns";
 import { DataTable } from "@/components/admin/users/data-table";
 import { EditUserSheet } from "@/components/admin/users/edit-user-sheet";
-import { useUsers } from "@/hooks/use-users";
+import { useRegistrations } from "@/hooks/use-registrations";
 import { useAuth } from "@/contexts/auth-context";
 import { useToast } from "@/hooks/use-toast";
 import { Download } from "lucide-react";
-import { User } from "@/types/user";
-import { doc, updateDoc, deleteDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase/config";
+import { UserProfile } from "@/types/userProfile";
+import { updateUserRegistrationProfile } from "@/lib/supabase/database/registration"; // Import Supabase functions
 import { UserDetailsDialog } from "@/components/admin/users/user-details-dialog";
 import { DeleteUserDialog } from "@/components/admin/users/delete-user-dialog";
 import { Button } from "@/components/ui/button";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
+import {RegistrationWithProfile} from "@/types/registrationWithProfile";
+
 export default function UsersPage() {
   const { toast } = useToast();
-  const { user: currentUser } = useAuth();
-  const { users, isLoading, error, fetchUsers } = useUsers();
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const { userData: currentUser } = useAuth();
+  const { registrations, isLoading, error, fetchRegistrations } = useRegistrations();
+  const [selectedRegistration, setSelectedRegistration] = useState<RegistrationWithProfile | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [selectedUserForDetails, setSelectedUserForDetails] =
-    useState<User | null>(null);
+  const [selectedRegistrationForDetails, setSelectedRegistrationForDetails] =
+    useState<RegistrationWithProfile | null>(null);
   const [selectedUserForDelete, setSelectedUserForDelete] =
-    useState<User | null>(null);
+    useState<UserProfile | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
+    fetchRegistrations();
+  }, [fetchRegistrations]);
 
-  const handleEditUser = (user: User | null) => {
-    setSelectedUser(user);
+  const handleEditUser = (registration: RegistrationWithProfile | null) => {
+    setSelectedRegistration(registration);
     setIsDrawerOpen(true);
   };
 
-  const handleDeleteUser = async (user: User) => {
+  const handleDeleteUser = async (user: UserProfile) => {
     if (!currentUser?.isSuperAdmin) return;
     setSelectedUserForDelete(user);
   };
 
-  const handleConfirmDelete = async (user: User) => {
+  const handleConfirmDelete = async (userToDelete: UserProfile) => {
+    if (!currentUser?.isSuperAdmin) {
+       toast({
+        title: "Eroare",
+        description: "Nu aveți permisiunea de a șterge utilizatori.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
-      await deleteDoc(doc(db, "users", user.uid));
-      await fetchUsers();
+      const response = await fetch(`/api/admin/delete-user?userId=${userToDelete.userId}`, {
+        method: 'DELETE',
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || `HTTP error! status: ${response.status}`);
+      }
+
+      await fetchRegistrations(); // Refetch registrations after deletion
       toast({
         title: "Succes",
-        description: "Participantul a fost șters cu succes",
+        description: "Participantul a fost șters cu succes.",
       });
-    } catch (error) {
+      setSelectedUserForDelete(null); // Close the confirmation dialog
+
+    } catch (error: any) {
       console.error("Failed to delete user:", error);
       toast({
         title: "Eroare",
@@ -61,22 +82,14 @@ export default function UsersPage() {
     }
   };
 
-  const handleUpdateUser = async (updatedUser: User) => {
-    console.log("Updating user:", updatedUser);
+  const handleUpdateUser = async (updatedRegistration: RegistrationWithProfile) => {
+    console.log("Updating user with Supabase:", updatedRegistration);
     try {
       setIsUpdating(true);
-      const userRef = doc(db, "users", updatedUser.uid);
 
-      const cleanedUser = Object.fromEntries(
-        Object.entries(updatedUser).filter(([_, v]) => v !== undefined)
-      );
+      await updateUserRegistrationProfile(updatedRegistration);
 
-      await updateDoc(userRef, {
-        ...cleanedUser,
-        updatedAt: new Date(),
-      });
-
-      await fetchUsers();
+      await fetchRegistrations(); // Refetch registrations after update
 
       toast({
         title: "Succes!",
@@ -84,7 +97,7 @@ export default function UsersPage() {
       });
 
       setIsDrawerOpen(false);
-      setSelectedUser(null);
+      setSelectedRegistration(null);
     } catch (error) {
       console.error("Failed to update user:", error);
       toast({
@@ -98,12 +111,12 @@ export default function UsersPage() {
     }
   };
 
-  const handleViewDetails = (user: User) => {
-    setSelectedUserForDetails(user);
+  const handleViewDetails = (user: RegistrationWithProfile) => {
+    setSelectedRegistrationForDetails(user);
   };
 
   const handleExportCsv = () => {
-    if (!users?.length) {
+    if (!registrations?.length) {
       toast({
         title: "Eroare",
         description: "Nu există date pentru export",
@@ -127,16 +140,15 @@ export default function UsersPage() {
       "withFamilyMember",
       "startDate",
       "endDate",
-      "slopeActivity",
     ];
 
     // Create CSV header
     const csvData = [fields.join(",")];
 
     // Add user data
-    users.forEach((user) => {
+    registrations.forEach((user) => {
       const rowData = fields.map((field) => {
-        const value = user[field as keyof User];
+        const value = user[field as keyof UserProfile];
         if (value === undefined || value === null) return "";
         if (typeof value === "boolean") return value ? "Da" : "Nu";
         if (value instanceof Date) return value.toLocaleDateString("ro-RO");
@@ -197,18 +209,18 @@ export default function UsersPage() {
               onViewDetails: handleViewDetails,
               isSuperAdmin: currentUser?.isSuperAdmin,
             })}
-            data={users || []}
+            data={registrations || []}
           />
         </div>
       )}
 
-      {selectedUser && (
+      {selectedRegistration && (
         <EditUserSheet
-          user={selectedUser}
+          registration={selectedRegistration}
           isOpen={isDrawerOpen}
           onClose={() => {
             setIsDrawerOpen(false);
-            setSelectedUser(null);
+            setSelectedRegistration(null);
           }}
           onUpdate={handleUpdateUser}
           isSuperAdmin={currentUser?.isSuperAdmin}
@@ -216,11 +228,11 @@ export default function UsersPage() {
         />
       )}
 
-      {selectedUserForDetails && (
+      {selectedRegistrationForDetails && (
         <UserDetailsDialog
-          user={selectedUserForDetails}
-          isOpen={!!selectedUserForDetails}
-          onClose={() => setSelectedUserForDetails(null)}
+          registration={selectedRegistrationForDetails}
+          isOpen={!!selectedRegistrationForDetails}
+          onClose={() => setSelectedRegistrationForDetails(null)}
         />
       )}
 

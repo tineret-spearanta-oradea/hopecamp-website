@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { User } from "@/types/user";
 import {
   Dialog,
   DialogContent,
@@ -14,7 +13,6 @@ import { Label } from "@/components/ui/label";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { payTaxToOptions, sumToPay } from "@/lib/constants";
 import {
   Select,
@@ -24,10 +22,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import {RegistrationWithProfile} from "@/types/registrationWithProfile";
+
 interface AddIncomeDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  users: User[];
+  registration: RegistrationWithProfile[];
   selectedCollector: string | null;
   onSave: (data: {
     userId: string;
@@ -39,7 +39,7 @@ interface AddIncomeDialogProps {
 export function AddIncomeDialog({
   open,
   onOpenChange,
-  users,
+  registration,
   selectedCollector: defaultCollector,
   onSave,
 }: AddIncomeDialogProps) {
@@ -65,18 +65,18 @@ export function AddIncomeDialog({
   };
 
   // Get selected user's current amount
-  const selectedUserData = users.find((u) => u.uid === selectedUser);
+  const selectedUserData = registration.find((u) => u.userId === selectedUser);
   const currentAmount = selectedUserData?.amountPaid || 0;
 
-  // Filter users based on search query
-  const filteredUsers = users.filter(
+  // Filter registrations based on search query
+  const filteredUsers = registration.filter(
     (user) =>
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchQuery.toLowerCase())
+      user.phone.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleUserSelect = (user: User) => {
-    setSelectedUser(user.uid);
+  const handleUserSelect = (user: RegistrationWithProfile) => {
+    setSelectedUser(user.userId);
     setSearchQuery(user.name);
     setShowDropdown(false);
 
@@ -158,22 +158,22 @@ export function AddIncomeDialog({
                   ) : (
                     filteredUsers.map((user) => (
                       <div
-                        key={user.uid}
+                        key={user.userId}
                         className={cn(
                           "flex items-center gap-2 p-2 cursor-pointer hover:bg-accent",
-                          selectedUser === user.uid && "bg-accent"
+                          selectedUser === user.userId && "bg-accent"
                         )}
                         onClick={() => handleUserSelect(user)}
                       >
                         <div className="min-w-[16px]">
-                          {selectedUser === user.uid && (
+                          {selectedUser === user.userId && (
                             <Check className="h-4 w-4" />
                           )}
                         </div>
                         <div className="flex flex-col flex-1">
                           <span>{user.name}</span>
                           <span className="text-xs text-muted-foreground">
-                            {user.email}
+                            {user.phone}
                           </span>
                         </div>
                         {user.amountPaid && user.amountPaid > 0 && (

@@ -1,0 +1,2 @@
+# Ignore the SMS OTP redirect function used for local developement
+supabase/functions/redirect_sms_otp_to_console_and_mail/

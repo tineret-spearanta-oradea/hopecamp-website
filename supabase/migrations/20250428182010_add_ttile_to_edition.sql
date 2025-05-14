@@ -1,0 +1,1 @@
+ALTER TABLE editions ADD COLUMN title TEXT; -- nullable

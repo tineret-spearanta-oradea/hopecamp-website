@@ -1,13 +1,11 @@
 export interface AuthData {
-  email: string;
-  password: string;
-  confirmPassword: string;
+  phone: string;
+  phonePrefix: string;
 }
 
 export interface UserData {
   name: string;
   age: string;
-  phone: string;
   startDate: Date | undefined;
   endDate: Date | undefined;
   church: string;
@@ -17,7 +15,6 @@ export interface UserData {
   transport: string;
   imageUrl: string;
   preferences?: string;
-  slopeActivity: string;
 }
 
 export interface FormData {
@@ -26,9 +23,6 @@ export interface FormData {
 }
 
 export interface ValidationErrors {
-  email?: string;
-  password?: string;
-  confirmPassword?: string;
   name?: string;
   age?: string;
   phone?: string;
@@ -37,16 +31,16 @@ export interface ValidationErrors {
   payTaxTo?: string;
   transport?: string;
   image?: string;
-  slopeActivity?: string;
+  otp?: string; // Added OTP validation error
 }
 
 export interface StepProps {
   formData: FormData;
   handleChange: (
-    objectName: keyof FormData,
+    objectName: keyof FormData | "otp", // Allow 'otp' as objectName
     e: { name: string; value: string }
   ) => void;
-  handleNext?: () => void;
+  handleNext?: () => Promise<void>; // Make async for signup call
   handlePrev?: () => void;
   handleDateChange?: (dates: { from: Date; to: Date }) => void;
   validationErrors: ValidationErrors;
@@ -54,6 +48,8 @@ export interface StepProps {
   setAgreementChecked?: (checked: boolean) => void;
   handleSubmit?: () => void;
   isLoading?: boolean;
+  downloadCampRules?: () => void; // Added missing prop
+  handlePhonePrefixChange?: (prefix: string) => void; // Add prefix handler
 }
 
 export interface Step3Props {

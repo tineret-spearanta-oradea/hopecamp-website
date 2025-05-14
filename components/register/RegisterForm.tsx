@@ -4,6 +4,7 @@ import { Card, CardContent } from "../ui/card";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
+import Step4 from "./Step4"; // Added Step 4 import
 import { useRegistrationForm } from "@/hooks/useRegistrationForm";
 import { ErrorBoundary } from "../ErrorBoundary";
 
@@ -11,6 +12,7 @@ export default function RegisterForm() {
   const {
     step,
     formData,
+    otp, // Added otp state from hook
     validationErrors,
     agreementChecked,
     isLoading,
@@ -18,9 +20,11 @@ export default function RegisterForm() {
     handleDateChange,
     handleNext,
     handlePrev,
-    handleSubmit,
+    handleSubmit, // This is now the verifyOtp handler
     setAgreementChecked,
     handleImageChange,
+    handleOtpChange,
+    resendOtp, // Added resendOtp handler from hook
   } = useRegistrationForm();
 
   const downloadCampRules = () => {
@@ -43,6 +47,7 @@ export default function RegisterForm() {
               handleNext={handleNext}
               validationErrors={validationErrors}
               isLoading={isLoading}
+              handleImageChange={handleImageChange} // Pass image handler
             />
           )}
 
@@ -53,7 +58,6 @@ export default function RegisterForm() {
               handleNext={handleNext}
               handlePrev={handlePrev}
               handleDateChange={handleDateChange}
-              handleImageChange={handleImageChange}
               validationErrors={validationErrors}
               isLoading={isLoading}
             />
@@ -62,12 +66,32 @@ export default function RegisterForm() {
           {step === 3 && (
             <Step3
               formData={formData}
+              handleChange={handleChange}
+              handleNext={handleNext} // Pass handleNext here
               handlePrev={handlePrev}
               handleSubmit={handleSubmit}
               agreementChecked={agreementChecked}
               setAgreementChecked={setAgreementChecked}
               downloadCampRules={downloadCampRules}
               isLoading={isLoading}
+              validationErrors={validationErrors}
+            />
+          )}
+
+          {step === 4 && (
+            <Step4
+              formData={formData}
+              handleChange={handleChange} // Pass handleChange as required by StepProps
+              handlePrev={handlePrev}
+              handleSubmit={handleSubmit} // Pass the verifyOtp handler
+              isLoading={isLoading}
+              validationErrors={validationErrors}
+              otp={otp}
+              handleOtpChange={handleOtpChange}
+              resendOtp={resendOtp} // Pass the resendOtp handler
+              agreementChecked={agreementChecked} // Keep required props
+              setAgreementChecked={setAgreementChecked} // Keep required props
+              downloadCampRules={downloadCampRules} // Keep required props
             />
           )}
         </CardContent>

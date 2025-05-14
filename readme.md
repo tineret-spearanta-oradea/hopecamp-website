@@ -13,8 +13,8 @@
 3. Create a new branch: `git checkout -b <branch-name>`
 4. Make changes and commit: `git commit -m "Add new feature"`
 5. Push changes: `git push origin <branch-name>`
-6. Create a PR in the GitHub web interface.
-7. When the PR is approved, merge the changes into main: `git checkout main`
+6. Create a PR in the GitHub web interface. (into develop branch)
+7. When the PR is approved, merge the changes into develop: `git checkout develop`
 
 ## Some guidelines
 
@@ -23,25 +23,53 @@
 * Test changes before submitting a PR.
 * Use GitHub issues for useful comments, technical details, and progress tracking.
 
-## Run locally using Firebase Emulator
+## Run locally using Supabase
 
-1. [Install firebase CLI](https://firebase.google.com/docs/emulator-suite/install_and_configure)
-   using `npm install -g firebase-tools`. You can check what firebase version was installed using `firebase --version`
-2. Initialise firebase: `firebase init` and select `Emulators: Set up local emulators for Firebase products`. When
-   asked to select a project, select `Don't set up a default project `
-3. For emulator setup, select `Authentication Emulator` and `Firestore Emulator`
-4. Download the emulators when prompted `Would you like to download the emulators now?`
-5. Start the emulator: `firebase emulators:start --project demo-hopecamp`. You can see the Users created locally
-   at http://127.0.0.1:4000/auth and the firestore at http://127.0.0.1:4000/firestore
-6. Create a new `.env.local` based on `.env.local.example`: `cp .env.local.example .env.local`.
+If something goes wrong, please refer to https://supabase.com/docs/guides/local-development
+
+1. You need to have docker installed. [Read the setup guide here](https://www.docker.com/products/docker-desktop/)
+2. [Verify that supabase cli is installed](https://supabase.com/docs/guides/local-development/cli/getting-started?queryGroups=platform&platform=macos#installing-the-supabase-cli)
+   using `supabase -v`.
+3. Start the emulator: `supabase start` (this will take some time). Please note down the `API URL`, `anon key`
+   and `service_role key`!
+   You can see the dashboard at http://127.0.0.1:54323/project/default . For postgres you can use this db
+   url: `postgresql://postgres:postgres@127.0.0.1:54322/postgres`.
+
+   **Note:** If you have previously run `supabase start` and are switching branches or pulling changes that include new
+   database migrations, it's recommended to reset your local database to apply the latest schema.
+   Run `supabase db reset` to drop the existing local database and reapply all migrations from
+   your `supabase/migrations` folder. Be aware that this will delete all local data.
+4. Create a new `.env.local` based on `.env.local.example`: `cp .env.local.example .env.local`.
+   Populate `NEXT_PUBLIC_SUPABASE_ANON_KEY` with the `anon key`, `SUPABASE_SERVICE_ROLE_KEY` with `service_role key:`
+   from step 3. Please also check that the `API URL` is the same as `NEXT_PUBLIC_SUPABASE_URL`
 7. (Optional) Create a new account for https://uploadthing.com and set the `UPLOADTHING_TOKEN` env var in `.env.local`
 8. Start the server with `npm run dev`
-9. Register a user. Please note that a picture is not needed.
-10. Make the user admin and super admin: Go to Firestore http://127.0.0.1:4000/firestore , click on users collection,
-    find your user UID and set the `isAdmin` and `isSuperAdmin` to `true`
+9. Register a user. Please note that a picture is not needed. You can see the emails sent at http://127.0.0.1:54324/.
+
+   **Note:** For local development, SMS OTP codes (e.g., for phone verification) are also redirected to this Mailpit
+   interface instead of being sent as actual SMS messages. This is configured via a Supabase Auth hook (`send_sms`) to
+   simplify testing.
+
+   **Tip:** You can also hardcode OTPs for specific phone numbers in `supabase/config.toml` under
+   the `[auth.sms.test_otp]` section. This bypasses the need to check Mailpit. Remember to
+   run `supabase stop; supabase start` after modifying `config.toml` for changes to take effect.
+10. Make the user admin and super admin: Go to http://127.0.0.1:54323/project/default/editor, select
+    the `users_data` table find your user UID and set the `isAdmin` and `isSuperAdmin` to `true`
 11. Reload the page, and you should see a button for admin page. Or you can go to http://localhost:3000/admin
+12. `supabase stop` to stop the containers
 
-### Firestore access rules
+### Supabase access rules
 
-You can test the access rules in emulator by changing `./firestore.emulator.rules`. The rules should be loaded after
-your changes without restarting the emulator.
+Supabase uses [psql row level security](https://supabase.com/docs/guides/database/postgres/row-level-security)
+
+### Querying the db & applying migrations
+
+Please check [DB.md for more details and examples.](./DB.md)
+
+
+## Prepare prod (replicate dev steps)
+- supabase storage: create public bucket profile-images, put row access policy `bucket_id = 'profile-images'  AND auth.role() = 'anon'`
+- auth by phone enable with twilio keys
+- env secrets in github for migrations (access token get from https://supabase.com/dashboard/account/tokens)
+- (i manually deleted phone column from user_profiles. idk why it was even there in the first place.)
+- also ran `ALTER VIEW "public"."auth_users_view" RENAME COLUMN auth_phone TO phone` idk why it was auth_phone

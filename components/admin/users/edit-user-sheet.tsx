@@ -23,14 +23,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { User } from "@/types/user";
 import React, { useState } from "react";
-import {
-  transportOptions,
-  payTaxToOptions,
-  slopeActivityOptions,
-  sumToPay,
-} from "@/lib/constants";
+import { transportOptions, payTaxToOptions, sumToPay } from "@/lib/constants";
 import { Label } from "@/components/ui/label";
 import {
   Accordion,
@@ -40,6 +34,8 @@ import {
 } from "@/components/ui/accordion";
 import { DatePickerWithRange } from "@/components/ui/date-picker";
 import { toast } from "sonner";
+
+import {RegistrationWithProfile} from "@/types/registrationWithProfile";
 
 const userFormSchema = z.object({
   // Read-only fields for regular admins, editable for superAdmin
@@ -63,10 +59,6 @@ const userFormSchema = z.object({
     invalid_type_error: "Mijlocul de transport nu este valid",
   }),
   payTaxTo: z.string().min(1, "Metoda de plată este obligatorie"),
-  slopeActivity: z.enum(["nu", "vizita", "schi", "sanie"], {
-    required_error: "Activitatea la pârtie este obligatorie",
-    invalid_type_error: "Opțiunea pentru pârtie nu este validă",
-  }),
   amountPaid: z.number().min(0, "Suma plătită nu poate fi negativă"),
   isConfirmed: z.boolean(),
   preferences: z.string().optional(),
@@ -76,16 +68,16 @@ const userFormSchema = z.object({
 type UserFormValues = z.infer<typeof userFormSchema>;
 
 interface EditUserSheetProps {
-  user: User;
+  registration: RegistrationWithProfile;
   isOpen: boolean;
   onClose: () => void;
-  onUpdate: (user: User) => Promise<void>;
+  onUpdate: (user: RegistrationWithProfile) => Promise<void>;
   isSuperAdmin?: boolean;
   isUpdating?: boolean;
 }
 
 export function EditUserSheet({
-  user,
+  registration,
   isOpen,
   onClose,
   onUpdate,
@@ -104,7 +96,6 @@ export function EditUserSheet({
       age: 0,
       transport: "personal",
       payTaxTo: "",
-      slopeActivity: "nu",
       amountPaid: 0,
       isConfirmed: false,
       preferences: "",
@@ -116,26 +107,29 @@ export function EditUserSheet({
   });
 
   React.useEffect(() => {
-    if (user) {
+    if (registration) {
       const formValues = {
-        name: user.name,
-        phone: user.phone || "",
-        church: user.church || "",
-        age: user.age || 0,
-        transport: user.transport as "personal" | "prieten" | "autocar",
-        payTaxTo: user.payTaxTo || "",
-        slopeActivity: user.slopeActivity as "nu" | "vizita" | "schi" | "sanie",
-        amountPaid: user.amountPaid || 0,
-        isConfirmed: user.isConfirmed || false,
-        preferences: user.preferences || "",
-        withFamilyMember: user.withFamilyMember || false,
-        startDate: user.startDate ? new Date(user.startDate) : new Date(),
-        endDate: user.endDate ? new Date(user.endDate) : new Date(),
+        name: registration.name,
+        phone: registration.phone || "",
+        church: registration.church || "",
+        age: registration.age || 0,
+        transport: registration.transport as "personal" | "prieten" | "autocar",
+        payTaxTo: registration.payTaxTo || "",
+        amountPaid: registration.amountPaid || 0,
+        isConfirmed: registration.isConfirmed || false,
+        preferences: registration.preferences || "",
+        withFamilyMember: registration.withFamilyMember || false,
+        startDate: registration.startDate
+          ? new Date(registration.startDate)
+          : new Date(),
+        endDate: registration.endDate
+          ? new Date(registration.endDate)
+          : new Date(),
       };
       form.reset(formValues);
       setIsDirty(false);
     }
-  }, [user, form]);
+  }, [registration, form]);
 
   const handleClose = () => {
     if (isDirty) {
@@ -149,7 +143,7 @@ export function EditUserSheet({
   async function onSubmit(data: UserFormValues) {
     try {
       const updatedUser = {
-        ...user,
+        ...registration,
         ...data,
         updatedAt: new Date(),
         startDate: data.startDate,
@@ -173,7 +167,7 @@ export function EditUserSheet({
       <SheetContent className="sm:max-w-[500px] overflow-y-auto">
         <SheetHeader>
           <SheetTitle>Editare Participant</SheetTitle>
-          <SheetDescription>{user.name}</SheetDescription>
+          <SheetDescription>{registration.name}</SheetDescription>
         </SheetHeader>
         <div className="py-4">
           <Form {...form}>
@@ -251,7 +245,7 @@ export function EditUserSheet({
                           <FormItem>
                             <FormLabel>Telefon</FormLabel>
                             <FormControl>
-                              <Input {...field} type="tel" />
+                              <Input {...field} type="tel" disabled />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -453,86 +447,6 @@ export function EditUserSheet({
                                 </div>
                               ))}
                             </RadioGroup>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem
-                  value="activities"
-                  className="border-none bg-muted/50 rounded-lg"
-                >
-                  <AccordionTrigger className="px-4">
-                    Activități și Preferințe
-                  </AccordionTrigger>
-                  <AccordionContent className="space-y-4 px-4 pb-4">
-                    <FormField
-                      control={form.control}
-                      name="slopeActivity"
-                      render={({ field }) => (
-                        <FormItem className="space-y-2">
-                          <FormLabel>Activitate la pârtie</FormLabel>
-                          <FormControl>
-                            <RadioGroup
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                              className="flex flex-col space-y-1"
-                            >
-                              {slopeActivityOptions.map((option) => (
-                                <div
-                                  key={option.value}
-                                  className="flex items-center space-x-2"
-                                >
-                                  <RadioGroupItem
-                                    value={option.value}
-                                    id={option.value}
-                                  />
-                                  <Label htmlFor={option.value}>
-                                    {option.label}
-                                  </Label>
-                                </div>
-                              ))}
-                            </RadioGroup>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="withFamilyMember"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                          <FormControl>
-                            <input
-                              type="checkbox"
-                              checked={field.value}
-                              onChange={field.onChange}
-                              className="h-4 w-4 rounded border-gray-300"
-                            />
-                          </FormControl>
-                          <div className="space-y-1 leading-none">
-                            <FormLabel>Cu membru familie</FormLabel>
-                            <FormDescription>
-                              Participă împreună cu un membru al familiei
-                            </FormDescription>
-                          </div>
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="preferences"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Preferințe colegi de cameră</FormLabel>
-                          <FormControl>
-                            <Input {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>

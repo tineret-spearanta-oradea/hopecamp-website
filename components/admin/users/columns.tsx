@@ -18,15 +18,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User } from "@/types/user";
-import { cn } from "@/lib/utils";
 import { sortingFns } from "@tanstack/react-table";
-import { slopeActivityOptions, sumToPay } from "@/lib/constants";
+import { sumToPay } from "@/lib/constants";
+
+import {RegistrationWithProfile} from "@/types/registrationWithProfile";
 
 interface ColumnProps {
-  onEdit?: (user: User) => void;
-  onDelete?: (user: User) => void;
-  onViewDetails?: (user: User) => void;
+  onEdit?: (user: RegistrationWithProfile) => void;
+  onDelete?: (user: RegistrationWithProfile) => void;
+  onViewDetails?: (user: RegistrationWithProfile) => void;
   isSuperAdmin?: boolean;
 }
 
@@ -63,9 +63,9 @@ export const columns = ({
   onDelete,
   onViewDetails,
   isSuperAdmin,
-}: ColumnProps): ColumnDef<User>[] => [
+}: ColumnProps): ColumnDef<RegistrationWithProfile>[] => [
   {
-    accessorKey: "uid",
+    accessorKey: "userId",
     header: "Id",
     cell: ({ row, table }) => {
       const totalRows = table.getCoreRowModel().rows.length;
@@ -152,12 +152,7 @@ export const columns = ({
       const start = row.original.startDate;
       const end = row.original.endDate;
 
-      if (
-        !start ||
-        !end ||
-        !(start instanceof Date) ||
-        !(end instanceof Date)
-      ) {
+      if (!start || !end) {
         return "-";
       }
 
@@ -177,17 +172,6 @@ export const columns = ({
     header: "Transport",
   },
   {
-    accessorKey: "slopeActivity",
-    header: ({ column }) => <SortButton column={column}>Pârtie</SortButton>,
-    cell: ({ row }) => {
-      const activity = row.getValue("slopeActivity") as string;
-      return <span>{activity}</span>;
-    },
-    filterFn: (row, id, value) => {
-      return value.length === 0 || value.includes(row.getValue(id));
-    },
-  },
-  {
     id: "actions",
     cell: ({ row }) => (
       <DropdownMenu>
@@ -201,7 +185,7 @@ export const columns = ({
           <DropdownMenuLabel>Acțiuni</DropdownMenuLabel>
           <DropdownMenuItem
             onClick={() => {
-              navigator.clipboard.writeText(row.original.email);
+              navigator.clipboard.writeText(row.original.phone);
             }}
             className="cursor-pointer"
           >

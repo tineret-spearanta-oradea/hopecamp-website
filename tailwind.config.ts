@@ -1,6 +1,8 @@
 import type { Config } from "tailwindcss";
 import { withUt } from "uploadthing/tw";
 
+
+
 const config: Config = {
   darkMode: ["class"],
   content: [
@@ -19,27 +21,28 @@ const config: Config = {
     },
     extend: {
       colors: {
-        primary: "#132C4B",
-        secondary: "#547BAA",
-        third: "#A4C4EC",
-        contrast: "#2989FF",
-        white: "#F9FCFF",
-        black: "#1D1D1D",
-        gray: "#EDF4FD",
+        /* Commenting out direct color definitions to use CSS variables from globals.css */
+        // primary: "#132C4B",
+        // secondary: "#547BAA",
+        // third: "#A4C4EC",
+        // contrast: "#2989FF",
+        // white: "#F9FCFF",
+        // black: "#1D1D1D",
+        // gray: "#EDF4FD",
 
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        // primary: {
-        //   DEFAULT: "hsl(var(--primary))",
-        //   foreground: "hsl(var(--primary-foreground))",
-        // },
-        // secondary: {
-        //   DEFAULT: "hsl(var(--secondary))",
-        //   foreground: "hsl(var(--secondary-foreground))",
-        // },
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
@@ -84,8 +87,9 @@ const config: Config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontFamily: {
-        lemon: ['Lemon', 'sans-serif'], 
-        inter: ['Inter', 'sans-serif'],
+        nunito: ["Nunito"],
+        jersey: ["Jersey 25"],
+        poppins: ["Poppins"],
       },
     },
   },

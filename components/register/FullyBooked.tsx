@@ -26,7 +26,8 @@ export default function FullyBooked() {
                 pentru a te pune pe lista de așteptare
               </li>
               <li className="mb-4">
-                Sau ne poti vizita pe timp de zi fără a te înscrie!
+                Sau ne poti vizita pe timp de zi fără a te înscrie! (se va
+                percepe o taxă)
               </li>
             </ul>
           </p>

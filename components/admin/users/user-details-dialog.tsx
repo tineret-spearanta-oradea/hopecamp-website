@@ -6,46 +6,47 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { User } from "@/types/user";
-import { Message } from "@/types/message";
+import { AdminMessage } from "@/types/message"; // Use AdminMessage
 import Image from "next/image";
 import { format } from "date-fns";
 import { useState, useEffect } from "react";
-import { getUserMessages } from "@/lib/firebase/firestore";
+import { getUserMessages } from "@/lib/supabase/database/message"; // Updated import
 import { Loader2 } from "lucide-react";
 
+import {RegistrationWithProfile} from "@/types/registrationWithProfile";
+
 interface UserDetailsDialogProps {
-  user: User | null;
+  registration: RegistrationWithProfile | null;
   isOpen: boolean;
   onClose: () => void;
 }
 
 export function UserDetailsDialog({
-  user,
+  registration,
   isOpen,
   onClose,
 }: UserDetailsDialogProps) {
   const [imageError, setImageError] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<AdminMessage[]>([]); // Use AdminMessage
   const [messagesLoading, setMessagesLoading] = useState(false);
 
   useEffect(() => {
     async function fetchMessages() {
-      if (user) {
+      if (registration) {
         setMessagesLoading(true);
-        const userMessages = await getUserMessages(user.uid);
+        const userMessages = await getUserMessages(registration.userId);
         setMessages(userMessages);
         setMessagesLoading(false);
       }
     }
 
     fetchMessages();
-  }, [user]);
+  }, [registration]);
 
-  if (!user) return null;
+  if (!registration) return null;
 
-  const initials = user.name
+  const initials = registration.name
     .split(" ")
     .map((word) => word[0])
     .join("")
@@ -58,14 +59,14 @@ export function UserDetailsDialog({
         <DialogHeader>
           <DialogTitle>Detalii Participant</DialogTitle>
           <div className="text-[10px] text-muted-foreground/50 font-mono">
-            {user?.uid}
+            {registration?.userId}
           </div>
         </DialogHeader>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
           <div className="space-y-4">
             <div className="relative w-48 h-48 mx-auto rounded-lg overflow-hidden border">
-              {user.imageUrl && !imageError ? (
+              {registration.imageUrl && !imageError ? (
                 <>
                   {imageLoading && (
                     <div className="absolute inset-0 flex items-center justify-center bg-muted">
@@ -75,8 +76,8 @@ export function UserDetailsDialog({
                     </div>
                   )}
                   <Image
-                    src={user.imageUrl}
-                    alt={user.name}
+                    src={registration.imageUrl}
+                    alt={registration.name}
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -95,8 +96,8 @@ export function UserDetailsDialog({
             </div>
 
             <div className="text-center">
-              <h3 className="text-xl font-semibold">{user.name}</h3>
-              <p className="text-sm text-muted-foreground mb-4">{user.email}</p>
+              <h3 className="text-xl font-semibold">{registration.name}</h3>
+              <p className="text-sm text-muted-foreground mb-4">{registration.phone}</p>
 
               {/* Messages Section */}
               <div className="text-left border rounded-lg p-4 mt-4">
@@ -127,7 +128,7 @@ export function UserDetailsDialog({
                                 : "text-yellow-500"
                             }`}
                           >
-                            {message.isRead ? "Citit" : "Necitit"}
+                            {message.isRead ? `Citit ${message.readByUserName ? `de ${message.readByUserName}` : ''}` : "Necitit"}
                           </span>
                         </div>
                       </div>
@@ -145,37 +146,33 @@ export function UserDetailsDialog({
           <div className="space-y-4">
             <InfoItem
               label="Confirmare"
-              value={user.isConfirmed ? "Aprobat" : "În așteptare"}
+              value={registration.isConfirmed ? "Aprobat" : "În așteptare"}
               className={
-                user.isConfirmed ? "text-emerald-600" : "text-yellow-500"
+                registration.isConfirmed ? "text-emerald-600" : "text-yellow-500"
               }
             />
-            <InfoItem label="Vârstă" value={user.age?.toString() || "-"} />
-            <InfoItem label="Telefon" value={user.phone || "-"} />
-            <InfoItem label="Biserică" value={user.church || "-"} />
-            {user.church === "alta" && (
+            <InfoItem label="Vârstă" value={registration.age?.toString() || "-"} />
+            <InfoItem label="Telefon" value={registration.phone || "-"} />
+            <InfoItem label="Biserică" value={registration.church || "-"} />
+            {registration.church === "alta" && (
               <InfoItem
                 label="Numele bisericii"
-                value={user.churchOther || "-"}
+                value={registration.churchOther || "-"}
               />
             )}
-            {user.churchContact && (
-              <InfoItem label="Contact TSO" value={user.churchContact} />
+            {registration.churchContact && (
+              <InfoItem label="Contact TSO" value={registration.churchContact} />
             )}
-            <InfoItem label="Transport" value={user.transport || "-"} />
-            <InfoItem label="Plătește taxa la" value={user.payTaxTo || "-"} />
-            <InfoItem
-              label="Activitate pârtie"
-              value={user.slopeActivity || "-"}
-            />
+            <InfoItem label="Transport" value={registration.transport || "-"} />
+            <InfoItem label="Plătește taxa la" value={registration.payTaxTo || "-"} />
             <InfoItem
               label="Sumă plătită"
-              value={`${user.amountPaid || 0} RON`}
+              value={`${registration.amountPaid || 0} RON`}
               className={
-                !user.amountPaid || user.amountPaid === 0
+                !registration.amountPaid || registration.amountPaid === 0
                   ? "text-red-500"
-                  : (user.amountPaid || 0) >=
-                    (user.withFamilyMember ? 1000 : 800)
+                  : (registration.amountPaid || 0) >=
+                    (registration.withFamilyMember ? 1000 : 800)
                   ? "text-emerald-600"
                   : "text-yellow-500"
               }
@@ -183,25 +180,25 @@ export function UserDetailsDialog({
             <InfoItem
               label="Perioada"
               value={
-                user.startDate && user.endDate
+                registration.startDate && registration.endDate
                   ? `${format(
-                      new Date(user.startDate),
+                      new Date(registration.startDate),
                       "dd MMM yyyy"
-                    )} - ${format(new Date(user.endDate), "dd MMM yyyy")}`
+                    )} - ${format(new Date(registration.endDate), "dd MMM yyyy")}`
                   : "-"
               }
             />
             <InfoItem
               label="Preferințe colegi"
-              value={user.preferences || "Fără preferințe"}
+              value={registration.preferences || "Fără preferințe"}
             />
             <InfoItem
               label="Are membru de familie"
-              value={user.withFamilyMember ? "Da" : "Nu"}
+              value={registration.withFamilyMember ? "Da" : "Nu"}
             />
             <InfoItem
               label="Data înscrierii"
-              value={format(new Date(user.createdAt), "dd MMM yyyy HH:mm")}
+              value={format(new Date(registration.createdAt), "dd MMM yyyy HH:mm")}
             />
           </div>
         </div>

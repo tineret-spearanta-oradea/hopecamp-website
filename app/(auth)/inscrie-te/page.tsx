@@ -1,7 +1,6 @@
 "use client";
 
 import RegisterForm from "@/components/register/RegisterForm";
-import AuthRedirect from "@/components/auth/AuthRedirect";
 import FullyBooked from "@/components/register/FullyBooked";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
@@ -20,11 +19,7 @@ function RegistrationContent() {
   const mode = searchParams.get("mode");
   const shouldShowForm = !IS_REGISTRATION_DISABLED || mode === BYPASS_MODE;
 
-  return (
-    <AuthRedirect>
-      {shouldShowForm ? <RegisterForm /> : <FullyBooked />}
-    </AuthRedirect>
-  );
+  return <>{shouldShowForm ? <RegisterForm /> : <FullyBooked />}</>;
 }
 
 export default function RegistrationPage() {

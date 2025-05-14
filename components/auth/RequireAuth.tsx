@@ -1,34 +1,28 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/lib/firebase/config";
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import LoadingSpinner from "../ui/LoadingSpinner";
+import { useAuth } from "@/contexts/auth-context";
 
 export default function RequireAuth({
-  children,
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }) {
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
+    const { supabaseUser, loading } = useAuth();
+    const router = useRouter();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        router.push("/login");
-      } else {
-        setLoading(false);
-      }
-    });
+    useEffect(() => {
+        if (!loading && !supabaseUser) {
+            console.log("RequireAuth - No user found! Redirecting to login");
+            router.push("/login");
+        }
+    }, [supabaseUser, loading, router]);
 
-    return () => unsubscribe();
-  }, [router]);
+    if (loading) {
+        return <LoadingSpinner />;
+    }
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-
-  return <>{children}</>;
+    return <>{children}</>;
 }

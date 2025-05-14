@@ -1,9 +1,9 @@
 import { FormData, ValidationErrors } from "@/types/form";
 
 const initialValidationErrors: ValidationErrors = {
-  email: "",
-  password: "",
-  confirmPassword: "",
+  // phone: "", // Removed
+  // password: "", // Removed
+  // confirmPassword: "", // Removed
   name: "",
   age: "",
   phone: "",
@@ -11,36 +11,43 @@ const initialValidationErrors: ValidationErrors = {
   church: "",
   payTaxTo: "",
   transport: "",
+  otp: "", // Added OTP initial error
 };
 
 export const validateAuthFields = (
-  authData: FormData["authData"]
+    authData: FormData["authData"]
 ): ValidationErrors => {
   const errors: ValidationErrors = { ...initialValidationErrors };
-
-  if (!authData.email) {
-    errors.email = "Adresa de email este necesară.";
-  } else if (!/\S+@\S+\.\S+/.test(authData.email)) {
-    errors.email = "Adresa de email nu este validă.";
+  
+  if (!authData.phone) {
+    errors.phone = "Numărul de telefon este necesar.";
+    return errors;
   }
 
-  if (!authData.password) {
-    errors.password = "Parola este necesară.";
-  } else if (authData.password.length < 6) {
-    errors.password = "Parola trebuie să aibă cel puțin 6 caractere.";
+  // Different validation based on country code prefix
+  if (authData.phonePrefix === "+4") {
+    // Romanian number validation
+    if (!/^07\d{8}$/.test(authData.phone)) {
+      errors.phone =
+        "Numărul de telefon trebuie să înceapă cu 07 și să aibă 10 cifre (ex: 0770123456).";
+    }
+  } else if (authData.phonePrefix === "+1") {
+    // US/Canada number validation (10 digits)
+    if (!/^\d{10}$/.test(authData.phone)) {
+      errors.phone = "Numărul de telefon pentru US trebuie să aibă 10 cifre.";
+    }
+  } else {
+    // Generic validation for other countries (at least 6 digits)
+    if (!/^\d{6,}$/.test(authData.phone)) {
+      errors.phone = "Numărul de telefon trebuie să conțină cel puțin 6 cifre.";
+    }
   }
-
-  if (!authData.confirmPassword) {
-    errors.confirmPassword = "Te rugăm să confirmi parola.";
-  } else if (authData.password !== authData.confirmPassword) {
-    errors.confirmPassword = "Parolele nu se potrivesc.";
-  }
-
+  
   return errors;
 };
 
 export const validateUserFields = (
-  userData: FormData["userData"]
+  userData: Partial<FormData["userData"]>
 ): ValidationErrors => {
   const errors: ValidationErrors = { ...initialValidationErrors };
 
@@ -52,12 +59,6 @@ export const validateUserFields = (
     errors.age = "Vârsta este necesară.";
   } else if (parseInt(userData.age) < 7 || parseInt(userData.age) > 99) {
     errors.age = "Vârsta trebuie să fie între 7 și 99 ani.";
-  }
-
-  if (!userData.phone) {
-    errors.phone = "Numărul de telefon este necesar.";
-  } else if (!/^[0-9]{7,15}$/.test(userData.phone)) {
-    errors.phone = "Numărul de telefon trebuie să aibă între 7 și 15 cifre.";
   }
 
   if (
@@ -88,9 +89,16 @@ export const validateUserFields = (
     errors.transport = "Te rugăm să selectezi mijlocul de transport.";
   }
 
-  if (!userData.slopeActivity) {
-    errors.slopeActivity = "Te rugăm să selectezi o opțiune.";
-  }
-
   return errors;
 };
+
+// Added OTP validation function
+export const validateOtp = (otp: string): ValidationErrors => {
+    const errors: ValidationErrors = { ...initialValidationErrors };
+    if (!otp) {
+        errors.otp = "Codul OTP este necesar.";
+    } else if (!/^\d{6}$/.test(otp)) { // Assuming 6-digit OTP
+        errors.otp = "Codul OTP trebuie să conțină 6 cifre.";
+    }
+    return errors;
+}
