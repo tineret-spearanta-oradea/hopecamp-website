@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 // import { Snowfall } from "@/components/ui/Snowfall";
 import { Toaster } from "sonner";
-import {AuthProvider} from "@/contexts/auth-context";
+import { AuthProvider } from "@/contexts/auth-context";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
