@@ -45,7 +45,7 @@ export default function Hero() {
 
           {/* Main Title */}
           <h1 className="font-poppins font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-white leading-tight">
-            HOPECAMP #6 - [EDITIE]
+            HOPECAMP #6: GRATIA DEI
           </h1>
 
           {/* Subtitle */}
