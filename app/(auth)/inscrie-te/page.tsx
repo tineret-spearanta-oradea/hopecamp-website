@@ -5,6 +5,7 @@ import FullyBooked from "@/components/register/FullyBooked";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import AuthToAccountRedirect from "@/components/auth/AuthToAccountRedirect";
 
 // This would typically come from your environment variables or a database
 const IS_REGISTRATION_DISABLED =
@@ -25,7 +26,9 @@ function RegistrationContent() {
 export default function RegistrationPage() {
   return (
     <Suspense fallback={<LoadingSpinner />}>
-      <RegistrationContent />
+      <AuthToAccountRedirect>
+        <RegistrationContent />
+      </AuthToAccountRedirect>
     </Suspense>
   );
 }
