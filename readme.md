@@ -67,7 +67,7 @@ Supabase uses [psql row level security](https://supabase.com/docs/guides/databas
 Please check [DB.md for more details and examples.](./DB.md)
 
 
-## Prepare prod
+## Prepare prod (replicate dev steps)
 - supabase storage: create public bucket profile-images, put row access policy `bucket_id = 'profile-images'  AND auth.role() = 'anon'`
 - auth by phone enable with twilio keys
 - env secrets in github for migrations (access token get from https://supabase.com/dashboard/account/tokens)

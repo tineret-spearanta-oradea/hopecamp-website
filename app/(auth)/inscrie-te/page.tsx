@@ -19,11 +19,7 @@ function RegistrationContent() {
   const mode = searchParams.get("mode");
   const shouldShowForm = !IS_REGISTRATION_DISABLED || mode === BYPASS_MODE;
 
-  return (
-    <>
-      {shouldShowForm ? <RegisterForm /> : <FullyBooked />}
-    </>
-  );
+  return <>{shouldShowForm ? <RegisterForm /> : <FullyBooked />}</>;
 }
 
 export default function RegistrationPage() {

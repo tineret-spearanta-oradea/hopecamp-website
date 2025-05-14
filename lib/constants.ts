@@ -61,12 +61,6 @@ export const contactInfo = {
   youtube: "https://www.youtube.com/@TineretSperantaOradea",
 };
 
-// Registration status
-export const REGISTRATION_STATUS = {
-  IS_DISABLED: true, // Set this to true to disable registrations
-  BYPASS_MODE: "temp", // The query parameter value that allows bypassing the disabled state
-};
-
 export const faqData = [
   {
     question: "Cum pot să mă înscriu?",
