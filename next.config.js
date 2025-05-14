@@ -7,6 +7,23 @@ const nextConfig = {
       "127.0.0.1",
       "hopecamp.ro",
     ],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
+      {
+        protocol: "https",
+        hostname: "**.vercel.app",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "3000",
+      },
+    ],
+    unoptimized: process.env.NODE_ENV === "production",
   },
   // other config options...
 };
