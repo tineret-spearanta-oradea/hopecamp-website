@@ -3,8 +3,13 @@
 import AdminProtected from "@/components/auth/AdminProtected";
 import { Sidebar } from "@/components/ui/sidebar";
 import { AdminNav } from "@/components/admin/nav";
-import { AuthProvider } from "@/contexts/auth-context";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Metadata } from "next";
+import { title } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: `Admin | ${title}`,
+};
 
 export default function AdminLayout({
   children,
