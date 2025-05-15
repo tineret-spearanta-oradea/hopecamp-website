@@ -21,6 +21,7 @@ export default function Step1({
 }: StepProps & { handleImageChange: (imageUrl: string) => void }) {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [uploadAttempted, setUploadAttempted] = useState(false);
   const [localValidationErrors, setLocalValidationErrors] =
     useState<ValidationErrors>({});
 
@@ -62,9 +63,6 @@ export default function Step1({
 
   const validateStep = (): boolean => {
     const errors: ValidationErrors = {};
-    if (!formData.userData.imageUrl) {
-      errors.image = "Te rugăm să încarci o poză.";
-    }
     setLocalValidationErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -72,11 +70,6 @@ export default function Step1({
   const handleContinue = () => {
     if (validateStep() && handleNext) {
       handleNext();
-    } else if (!formData.userData.imageUrl) {
-      setUploadError("Trebuie să încarci o poză pentru a continua.");
-      toast.error("Poză obligatorie", {
-        description: "Te rugăm să încarci o poză pentru a continua.",
-      });
     }
   };
 
@@ -166,6 +159,10 @@ export default function Step1({
                   handleImageChange(url);
                   setIsUploading(false);
                   setUploadError(null);
+                  setUploadAttempted(true);
+                  console.log(
+                    "Setting uploadAttempted to true after successful upload"
+                  );
                   toast.success("Poza a fost încărcată cu succes!", {
                     description: "Poți continua cu înregistrarea.",
                   });
@@ -174,6 +171,10 @@ export default function Step1({
                   console.error("Upload error:", error);
                   setIsUploading(false);
                   setUploadError(error.message);
+                  setUploadAttempted(true);
+                  console.log(
+                    "Setting uploadAttempted to true after upload error"
+                  );
 
                   if (error.message.includes("FileSizeMismatch")) {
                     toast.error("Fișierul este prea mare", {
@@ -190,6 +191,10 @@ export default function Step1({
                 onUploadBegin={() => {
                   setIsUploading(true);
                   setUploadError(null);
+                  setUploadAttempted(true);
+                  console.log(
+                    "Setting uploadAttempted to true when upload begins"
+                  );
                 }}
                 disabled={!!formData.userData.imageUrl || isUploading}
                 metadata={getMetadata()}
@@ -233,6 +238,19 @@ export default function Step1({
               {(validationErrors.image || localValidationErrors.image) && (
                 <p className="text-destructive text-xs">
                   {validationErrors.image || localValidationErrors.image}
+                </p>
+              )}
+
+              {/* Add a debugging message to check if uploadAttempted is true */}
+              {/* Display the current state values in a hidden comment for debugging */}
+              {/* uploadAttempted: {uploadAttempted.toString()}, imageUrl: {formData.userData.imageUrl ? 'exists' : 'none'} */}
+
+              {/* Only show the note if they've attempted an upload AND don't have a successful image upload */}
+              {uploadAttempted && !formData.userData.imageUrl && (
+                <p className="text-xs text-muted-foreground italic mt-1">
+                  Nota: Încărcarea unei fotografii este recomandată pentru
+                  identificare, dar dacă întâmpini probleme, poți continua fără
+                  aceasta. Îți vom cere ulterior prin mesaj.
                 </p>
               )}
             </div>

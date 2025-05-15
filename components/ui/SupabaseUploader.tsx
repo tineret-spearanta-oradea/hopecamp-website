@@ -36,6 +36,11 @@ export function SupabaseUploader({
   const handleClick = () => {
     // Clear any previous error messages when starting a new upload
     setErrorMessage(null);
+
+    // Call onUploadBegin when the button is clicked, not just when a file is selected
+    // This ensures uploadAttempted is set to true immediately when the button is clicked
+    onUploadBegin();
+
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
@@ -78,7 +83,8 @@ export function SupabaseUploader({
     try {
       setIsUploading(true);
       setErrorMessage(null);
-      onUploadBegin();
+      // No need to call onUploadBegin again here since we already called it in handleClick
+      // onUploadBegin();
 
       console.log("Starting upload process...");
 
