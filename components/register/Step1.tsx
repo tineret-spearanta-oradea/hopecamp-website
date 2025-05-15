@@ -20,6 +20,8 @@ export default function Step1({
   handleImageChange,
 }: StepProps & { handleImageChange: (imageUrl: string) => void }) {
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [uploadAttempted, setUploadAttempted] = useState(false);
   const [localValidationErrors, setLocalValidationErrors] =
     useState<ValidationErrors>({});
 
@@ -36,9 +38,14 @@ export default function Step1({
         await deleteProfileImage(formData.userData.imageUrl);
         handleImageChange("");
         setLocalValidationErrors((prev) => ({ ...prev, image: undefined }));
+        setUploadError(null);
       }
     } catch (error) {
       console.error("Error deleting image:", error);
+      const errorMessage =
+        error instanceof Error ? error.message : "Eroare la ștergerea imaginii";
+
+      setUploadError(errorMessage);
       toast.error("Eroare la ștergerea imaginii", {
         description:
           "Imaginea nu a putut fi ștearsă. Te rugăm să încerci din nou.",
@@ -56,9 +63,6 @@ export default function Step1({
 
   const validateStep = (): boolean => {
     const errors: ValidationErrors = {};
-    if (!formData.userData.imageUrl) {
-      errors.image = "Te rugăm să încarci o poză.";
-    }
     setLocalValidationErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -66,10 +70,6 @@ export default function Step1({
   const handleContinue = () => {
     if (validateStep() && handleNext) {
       handleNext();
-    } else if (!formData.userData.imageUrl) {
-      toast.error("Poză obligatorie", {
-        description: "Te rugăm să încarci o poză pentru a continua.",
-      });
     }
   };
 
@@ -110,6 +110,7 @@ export default function Step1({
   useEffect(() => {
     if (formData.userData.imageUrl && localValidationErrors.image) {
       setLocalValidationErrors((prev) => ({ ...prev, image: undefined }));
+      setUploadError(null);
     }
   }, [formData.userData.imageUrl, localValidationErrors.image]);
 
@@ -154,8 +155,14 @@ export default function Step1({
             <div className="space-y-4">
               <SupabaseUploader
                 onUploadSuccess={(url) => {
+                  console.log("Upload successful, updating image URL:", url);
                   handleImageChange(url);
                   setIsUploading(false);
+                  setUploadError(null);
+                  setUploadAttempted(true);
+                  console.log(
+                    "Setting uploadAttempted to true after successful upload"
+                  );
                   toast.success("Poza a fost încărcată cu succes!", {
                     description: "Poți continua cu înregistrarea.",
                   });
@@ -163,6 +170,11 @@ export default function Step1({
                 onUploadError={(error: Error) => {
                   console.error("Upload error:", error);
                   setIsUploading(false);
+                  setUploadError(error.message);
+                  setUploadAttempted(true);
+                  console.log(
+                    "Setting uploadAttempted to true after upload error"
+                  );
 
                   if (error.message.includes("FileSizeMismatch")) {
                     toast.error("Fișierul este prea mare", {
@@ -178,6 +190,11 @@ export default function Step1({
                 }}
                 onUploadBegin={() => {
                   setIsUploading(true);
+                  setUploadError(null);
+                  setUploadAttempted(true);
+                  console.log(
+                    "Setting uploadAttempted to true when upload begins"
+                  );
                 }}
                 disabled={!!formData.userData.imageUrl || isUploading}
                 metadata={getMetadata()}
@@ -196,6 +213,7 @@ export default function Step1({
                       alt="Preview"
                       width={36}
                       height={36}
+                      unoptimized={true}
                       className="rounded-md object-cover h-full w-full"
                     />
                   </div>
@@ -210,9 +228,29 @@ export default function Step1({
                   </div>
                 </div>
               ) : null}
+
+              {uploadError && (
+                <div className="mt-2 text-sm text-destructive bg-destructive/10 p-2 rounded-md">
+                  <span className="font-semibold">Eroare:</span> {uploadError}
+                </div>
+              )}
+
               {(validationErrors.image || localValidationErrors.image) && (
                 <p className="text-destructive text-xs">
                   {validationErrors.image || localValidationErrors.image}
+                </p>
+              )}
+
+              {/* Add a debugging message to check if uploadAttempted is true */}
+              {/* Display the current state values in a hidden comment for debugging */}
+              {/* uploadAttempted: {uploadAttempted.toString()}, imageUrl: {formData.userData.imageUrl ? 'exists' : 'none'} */}
+
+              {/* Only show the note if they've attempted an upload AND don't have a successful image upload */}
+              {uploadAttempted && !formData.userData.imageUrl && (
+                <p className="text-xs text-muted-foreground italic mt-1">
+                  Nota: Încărcarea unei fotografii este recomandată pentru
+                  identificare, dar dacă întâmpini probleme, poți continua fără
+                  aceasta. Îți vom cere ulterior prin mesaj.
                 </p>
               )}
             </div>
