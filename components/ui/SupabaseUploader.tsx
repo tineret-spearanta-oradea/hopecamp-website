@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "./button";
 import { cn } from "@/lib/utils";
 import { uploadProfileImage, UploadOptions } from "@/utils/supabaseClient";
@@ -8,6 +8,7 @@ interface SupabaseUploaderProps {
   onUploadSuccess: (url: string) => void;
   onUploadError: (error: Error) => void;
   onUploadBegin: () => void;
+  onUploadCancel?: () => void; // Make this prop optional
   className?: string;
   disabled?: boolean;
   buttonText?: string;
@@ -21,6 +22,7 @@ export function SupabaseUploader({
   onUploadSuccess,
   onUploadError,
   onUploadBegin,
+  onUploadCancel = () => {}, // Default no-op function if not provided
   className,
   disabled = false,
   buttonText = "Încarcă imagine",
@@ -32,13 +34,35 @@ export function SupabaseUploader({
   const [isUploading, setIsUploading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectionStartTime, setSelectionStartTime] = useState<number | null>(
+    null
+  );
+
+  // Handle file input change cancellation
+  useEffect(() => {
+    // Monitor for possible cancellation
+    if (selectionStartTime) {
+      const checkCancellation = setTimeout(() => {
+        // After 2 seconds, if we're not uploading and there's no error, assume it was canceled
+        if (selectionStartTime && !isUploading && !errorMessage) {
+          console.log("File selection appears to have been canceled");
+          setSelectionStartTime(null);
+          onUploadCancel();
+        }
+      }, 2000);
+
+      return () => clearTimeout(checkCancellation);
+    }
+  }, [selectionStartTime, isUploading, errorMessage, onUploadCancel]);
 
   const handleClick = () => {
     // Clear any previous error messages when starting a new upload
     setErrorMessage(null);
 
-    // Call onUploadBegin when the button is clicked, not just when a file is selected
-    // This ensures uploadAttempted is set to true immediately when the button is clicked
+    // Set the selection start time to track possible cancellations
+    setSelectionStartTime(Date.now());
+
+    // Call onUploadBegin when the button is clicked
     onUploadBegin();
 
     if (fileInputRef.current) {
@@ -47,9 +71,13 @@ export function SupabaseUploader({
   };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Clear the selection start time since a file was selected
+    setSelectionStartTime(null);
+
     const files = e.target.files;
     if (!files || files.length === 0) {
       console.log("No files selected");
+      onUploadCancel(); // Notify when no files are selected (could be a cancel)
       return;
     }
 
@@ -84,7 +112,6 @@ export function SupabaseUploader({
       setIsUploading(true);
       setErrorMessage(null);
       // No need to call onUploadBegin again here since we already called it in handleClick
-      // onUploadBegin();
 
       console.log("Starting upload process...");
 
@@ -132,7 +159,7 @@ export function SupabaseUploader({
         ref={fileInputRef}
         onChange={handleFileChange}
         disabled={disabled || isUploading}
-        capture="environment" // Add capture for mobile devices
+        // Remove capture attribute to allow selection from gallery
       />
       <Button
         type="button"
