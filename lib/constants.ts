@@ -1,4 +1,5 @@
 export const title = "Hope Camp #6";
+export const editionName = "Gratia Dei";
 
 export const churchOptions = [
   { value: "Speranta, Oradea", label: "Speranța, Oradea" },

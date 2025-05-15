@@ -19,7 +19,8 @@ export default function Step2({
   handleDateChange,
   validationErrors,
   isLoading,
-}: StepProps) { // Use StepProps
+}: StepProps) {
+  // Use StepProps
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -45,9 +46,8 @@ export default function Step2({
         Pasul 2/3: Detalii Înregistrare
       </h2>
 
-
       <div className="space-y-8">
-         <div className="space-y-2">
+        <div className="space-y-2">
           <Label className="text-base font-semibold">
             Perioada în care stai în tabără *
           </Label>
@@ -64,13 +64,12 @@ export default function Step2({
           )}
         </div>
 
-
-         <div className="space-y-2">
+        <div className="space-y-2">
           <Label className="text-base font-semibold">
             Biserica din care provii *
           </Label>
           <RadioGroup
-            value={formData.userData.church}
+            value={formData.userData.church || ""}
             className="flex flex-col space-y-1"
             onValueChange={(value) =>
               handleChange("userData", { name: "church", value })
@@ -132,7 +131,7 @@ export default function Step2({
             Cui plătești taxa de înscriere *
           </Label>
           <RadioGroup
-            value={formData.userData.payTaxTo}
+            value={formData.userData.payTaxTo || ""}
             className="flex flex-col space-y-1"
             onValueChange={(value) =>
               handleChange("userData", { name: "payTaxTo", value })
@@ -157,7 +156,7 @@ export default function Step2({
             Mijloc de transport *
           </Label>
           <RadioGroup
-            value={formData.userData.transport}
+            value={formData.userData.transport || ""}
             onValueChange={(value) =>
               handleChange("userData", {
                 name: "transport",
@@ -193,11 +192,7 @@ export default function Step2({
         </div>
 
         <div className="flex justify-between pt-4">
-          <Button
-            variant="outline"
-            onClick={handlePrev}
-            disabled={isLoading}
-          >
+          <Button variant="outline" onClick={handlePrev} disabled={isLoading}>
             ← Înapoi
           </Button>
           <Button onClick={handleNext} disabled={isLoading}>
