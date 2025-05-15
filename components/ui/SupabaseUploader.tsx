@@ -25,14 +25,17 @@ export function SupabaseUploader({
   disabled = false,
   buttonText = "Încarcă imagine",
   allowedTypes = ["image/jpeg", "image/png", "image/jpg", "image/webp"],
-  maxFileSize = 4 * 1024 * 1024, // 4MB by default
+  maxFileSize = 5 * 1024 * 1024, // 5MB by default
   metadata = {},
   category = "profile",
 }: SupabaseUploaderProps) {
   const [isUploading, setIsUploading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleClick = () => {
+    // Clear any previous error messages when starting a new upload
+    setErrorMessage(null);
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
@@ -40,37 +43,44 @@ export function SupabaseUploader({
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (!files || files.length === 0) return;
+    if (!files || files.length === 0) {
+      console.log("No files selected");
+      return;
+    }
 
     const file = files[0];
+    console.log(
+      `File selected: ${file.name}, type: ${file.type}, size: ${file.size} bytes`
+    );
 
     // Validate file type
     if (!allowedTypes.includes(file.type)) {
-      onUploadError(
-        new Error(
-          `Tipul fișierului nu este acceptat. Formatele permise: ${allowedTypes.join(
-            ", "
-          )}`
-        )
-      );
+      const errorMsg = `Tipul fișierului nu este acceptat. Formatele permise: ${allowedTypes.join(
+        ", "
+      )}`;
+      console.error(errorMsg);
+      setErrorMessage(errorMsg);
+      onUploadError(new Error(errorMsg));
       return;
     }
 
     // Validate file size
     if (file.size > maxFileSize) {
-      onUploadError(
-        new Error(
-          `FileSizeMismatch: Fișierul este prea mare. Dimensiunea maximă permisă este de ${
-            maxFileSize / (1024 * 1024)
-          }MB`
-        )
-      );
+      const errorMsg = `Fișierul este prea mare. Dimensiunea maximă permisă este de ${
+        maxFileSize / (1024 * 1024)
+      }MB`;
+      console.error(`FileSizeMismatch: ${errorMsg}`);
+      setErrorMessage(errorMsg);
+      onUploadError(new Error(`FileSizeMismatch: ${errorMsg}`));
       return;
     }
 
     try {
       setIsUploading(true);
+      setErrorMessage(null);
       onUploadBegin();
+
+      console.log("Starting upload process...");
 
       // Prepare metadata options with the category
       const uploadOptions: UploadOptions = {
@@ -79,7 +89,9 @@ export function SupabaseUploader({
       };
 
       // Upload file to Supabase Storage with metadata
+      console.log("Uploading to Supabase with options:", uploadOptions);
       const url = await uploadProfileImage(file, uploadOptions);
+      console.log("Upload successful, URL:", url);
 
       // Clear the input so the same file can be selected again if needed
       if (fileInputRef.current) {
@@ -89,6 +101,12 @@ export function SupabaseUploader({
       onUploadSuccess(url);
     } catch (error) {
       console.error("Upload failed:", error);
+      const errorMsg =
+        error instanceof Error
+          ? error.message
+          : "Eroare necunoscută la încărcarea imaginii";
+
+      setErrorMessage(errorMsg);
       onUploadError(
         error instanceof Error
           ? error
@@ -108,6 +126,7 @@ export function SupabaseUploader({
         ref={fileInputRef}
         onChange={handleFileChange}
         disabled={disabled || isUploading}
+        capture="environment" // Add capture for mobile devices
       />
       <Button
         type="button"
@@ -123,6 +142,13 @@ export function SupabaseUploader({
       <p className="text-sm text-muted-foreground text-center">
         Fișiere acceptate: JPG, PNG, WEBP (max {maxFileSize / (1024 * 1024)}MB)
       </p>
+
+      {/* Display error message if there is one */}
+      {errorMessage && (
+        <div className="mt-2 text-sm text-destructive bg-destructive/10 p-2 rounded-md">
+          <span className="font-semibold">Eroare:</span> {errorMessage}
+        </div>
+      )}
     </div>
   );
 }
