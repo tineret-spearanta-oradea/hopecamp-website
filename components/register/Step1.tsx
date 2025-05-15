@@ -63,6 +63,12 @@ export default function Step1({
 
   const validateStep = (): boolean => {
     const errors: ValidationErrors = {};
+
+    // Instead of requiring an image, require at least an upload attempt
+    if (!uploadAttempted) {
+      errors.image = "Te rugăm să încerci să încarci o poză.";
+    }
+
     setLocalValidationErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -70,6 +76,12 @@ export default function Step1({
   const handleContinue = () => {
     if (validateStep() && handleNext) {
       handleNext();
+    } else if (!uploadAttempted) {
+      // Only show error toast if they haven't attempted an upload
+      setUploadError("Te rugăm să încerci să încarci o poză înainte de a continua.");
+      toast.error("Încercare necesară", {
+        description: "Te rugăm să încerci să încarci o poză înainte de a continua.",
+      });
     }
   };
 
