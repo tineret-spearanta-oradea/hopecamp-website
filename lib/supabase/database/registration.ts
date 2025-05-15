@@ -91,7 +91,7 @@ function mapRegistrationWithProfile(row: any): RegistrationWithProfile {
       withFamilyMember: row.with_family_member,
       isAdmin: row.user_registration_roles?.is_admin ?? false,
       name: row.user_profiles.name,
-      phone: row.user_profiles.phone,
+      phone: row.user_profiles.phone.slice(1), // REMOVE THE PREFIX "4"
       imageUrl: row.user_profiles.image_url,
       age: row.user_profiles.age,
       isSuperAdmin: row.user_profiles?.is_super_admin ?? false,

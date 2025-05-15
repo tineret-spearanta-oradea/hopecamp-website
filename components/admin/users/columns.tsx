@@ -22,6 +22,7 @@ import { sortingFns } from "@tanstack/react-table";
 import { sumToPay } from "@/lib/constants";
 
 import {RegistrationWithProfile} from "@/types/registrationWithProfile";
+import { toast } from "sonner";
 
 interface ColumnProps {
   onEdit?: (user: RegistrationWithProfile) => void;
@@ -99,6 +100,20 @@ export const columns = ({
   {
     accessorKey: "phone",
     header: "Telefon",
+    cell: ({ row }) => {
+      const phone = row.getValue("phone") as string;
+      const handleCopy = () => {
+        navigator.clipboard.writeText(phone);
+        toast.info("Telefonul a fost copiat în clipboard.");
+      };
+      return (
+        <div>
+          <span className="text-blue-500 cursor-pointer" onClick={handleCopy}>
+            {phone}
+          </span>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "church",
@@ -190,7 +205,7 @@ export const columns = ({
             className="cursor-pointer"
           >
             <Copy className="mr-2 h-4 w-4" />
-            Copiază email
+            Copiază telefon
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => onViewDetails?.(row.original)}
