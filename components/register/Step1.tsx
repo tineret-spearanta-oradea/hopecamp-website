@@ -204,9 +204,13 @@ export default function Step1({
                   setIsUploading(true);
                   setUploadError(null);
                   setUploadAttempted(true);
-                  console.log(
-                    "Setting uploadAttempted to true when upload begins"
-                  );
+                  console.log("Setting uploadAttempted to true when upload begins");
+                }}
+                onUploadCancel={() => {
+                  console.log("Upload canceled by user");
+                  setIsUploading(false);
+                  setUploadAttempted(false);
+                  setUploadError(null);
                 }}
                 disabled={!!formData.userData.imageUrl || isUploading}
                 metadata={getMetadata()}
