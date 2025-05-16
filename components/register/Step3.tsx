@@ -12,7 +12,6 @@ import Link from "next/link"; // Added
 export default function Step3({
   formData,
   handleChange,
-  handleNext, // Added missing handleNext
   handlePrev,
   handleSubmit,
   agreementChecked,
@@ -183,12 +182,11 @@ export default function Step3({
           <Button variant="outline" onClick={handlePrev}>
             ← Înapoi
           </Button>
-          {/* Ensure this button calls handleNext to trigger signUp/OTP send */}
           <Button
-            onClick={handleNext}
+            onClick={handleSubmit}
             disabled={!agreementChecked || isLoading}
           >
-            {isLoading ? "Se trimite codul..." : "Trimite cod verificare ↗"}
+            {isLoading ? "Se procesează..." : "Înscrie-te ↗"}
           </Button>
         </div>
         <p className="text-center text-sm text-muted-foreground mt-4">

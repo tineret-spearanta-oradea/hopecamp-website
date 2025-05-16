@@ -282,7 +282,7 @@ export default function LoginForm() {
           Pagina principală
         </Link>
       </div>
-      
+
       {/* Optional: Add a link back to phone/password login if needed */}
       {/* <p className="mt-4 text-center text-sm text-gray-500">
         <Link href="/login-phone" className="text-hope-darkcyan hover:underline">
