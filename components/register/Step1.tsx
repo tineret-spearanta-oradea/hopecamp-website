@@ -201,7 +201,9 @@ export default function Step1({
                   setIsUploading(true);
                   setUploadError(null);
                   setUploadAttempted(true);
-                  console.log("Setting uploadAttempted to true when upload begins");
+                  console.log(
+                    "Setting uploadAttempted to true when upload begins"
+                  );
                 }}
                 onUploadCancel={() => {
                   console.log("Upload canceled by user");
@@ -259,13 +261,13 @@ export default function Step1({
               {/* uploadAttempted: {uploadAttempted.toString()}, imageUrl: {formData.userData.imageUrl ? 'exists' : 'none'} */}
 
               {/* Only show the note if they've attempted an upload AND don't have a successful image upload */}
-              {uploadAttempted && !formData.userData.imageUrl && (
+              {/* {uploadAttempted && !formData.userData.imageUrl && (
                 <p className="text-xs text-muted-foreground italic mt-1">
                   Nota: Încărcarea unei fotografii este recomandată pentru
                   identificare, dar dacă întâmpini probleme, poți continua fără
                   aceasta. Îți vom cere ulterior prin mesaj.
                 </p>
-              )}
+              )} */}
             </div>
           </div>
         </div>
