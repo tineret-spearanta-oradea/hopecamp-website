@@ -24,13 +24,13 @@ const menuItems = [
     superAdminOnly: false,
   },
   {
-    title: "Users",
+    title: "Participanți",
     icon: Users,
     href: "/admin/users",
     superAdminOnly: false,
   },
   {
-    title: "Messages",
+    title: "Mesaje",
     icon: MessageSquare,
     href: "/admin/messages",
     superAdminOnly: false,
@@ -42,13 +42,13 @@ const menuItems = [
     superAdminOnly: false,
   },
   {
-    title: "Admins",
+    title: "Admini",
     icon: Shield,
     href: "/admin/admins",
     superAdminOnly: true,
   },
   {
-    title: "Settings",
+    title: "Configurații",
     icon: Settings,
     href: "/admin/settings",
     superAdminOnly: true,
