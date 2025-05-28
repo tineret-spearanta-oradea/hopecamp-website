@@ -40,7 +40,7 @@ export default function WhyAttend() {
             </h2>
             <p className="font-nunito mb-8">
               Fiecare tabără are jocuri și mâncare bună, dar noi vrem să-ți
-              oferim mai mult decât atât. Aici nu vei doar să te distrezi, ci să
+              oferim mai mult decât atât. Aici nu vii doar să te distrezi, ci să
               te (re)conectezi cu Dumnezeu, cu tine și cu oameni faini. Am
               pregătit un loc unde râdem mult, ne aprindem spiritele artistic,
               descoperim lucruri reale despre noi și despre credință, și ne
@@ -71,10 +71,10 @@ export default function WhyAttend() {
 
                 {/* Title and Description */}
                 <div className="flex flex-col">
-                  <h3 className="font-jersey text-xl font-semibold">{feature.title}</h3>
-                  <p className="text-base font-light">
-                    {feature.description}
-                  </p>
+                  <h3 className="font-jersey text-xl font-semibold">
+                    {feature.title}
+                  </h3>
+                  <p className="text-base font-light">{feature.description}</p>
                 </div>
               </div>
             ))}

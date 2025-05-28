@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
+import { Calendar as CalendarIcon, HelpCircle } from "lucide-react";
 import { DateRange } from "react-day-picker";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { dateRange } from "@/lib/constants";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface DatePickerWithRangeProps {
   from: Date | null;
@@ -50,19 +56,35 @@ export function DatePickerWithRange({
             id="date"
             className={cn(
               "w-full justify-start text-left font-normal border-2",
-              !date && "text-muted-foreground",
+              !date?.from && "text-muted-foreground",
+              date?.from && date?.to && "bg-primary/5 border-primary/30",
               "hover:bg-accent/10 focus:ring-2 focus:ring-ring focus:ring-offset-2"
             )}
           >
-            <CalendarIcon className="mr-2 h-4 w-4" />
+            <CalendarIcon
+              className={cn(
+                "mr-2 h-4 w-4",
+                date?.from && date?.to && "text-primary"
+              )}
+            />
             {date?.from ? (
               date.to ? (
                 <>
-                  {format(date.from, "dd.MM.yyyy")} -{" "}
-                  {format(date.to, "dd.MM.yyyy")}
+                  <span className="font-medium text-primary">
+                    {format(date.from, "dd.MM.yyyy")} -{" "}
+                    {format(date.to, "dd.MM.yyyy")}
+                  </span>
                 </>
               ) : (
-                format(date.from, "dd.MM.yyyy")
+                <>
+                  <span className="font-medium">
+                    {format(date.from, "dd.MM.yyyy")}
+                  </span>
+                  <span className="ml-1 text-muted-foreground">
+                    {" "}
+                    (selectează data de sfârșit)
+                  </span>
+                </>
               )
             ) : (
               <span>Alege perioada</span>
@@ -87,6 +109,16 @@ export function DatePickerWithRange({
             }}
             className="rounded-md bg-card"
           />
+          <div className="p-3 border-t border-border bg-muted/50 flex items-center justify-between text-xs text-muted-foreground">
+            <div className="flex items-center gap-1.5">
+              <div className="h-3 w-3 rounded-full bg-primary"></div>
+              <span>Start/Sfârșit</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="h-3 w-3 rounded-full bg-accent"></div>
+              <span>Zile intermediare</span>
+            </div>
+          </div>
         </PopoverContent>
       </Popover>
     </div>

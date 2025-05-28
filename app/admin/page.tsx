@@ -117,19 +117,54 @@ export default function AdminDashboardPage() {
   }
 
   // Calculate registrations per day
-  const registrationsByDay =
-    registrations?.reduce((acc: { date: Date; count: number }[], user) => {
-      const userDate = startOfDay(new Date(user.createdAt));
-      const existingDay = acc.find((item) => isSameDay(item.date, userDate));
+  const registrationsByDay = (() => {
+    if (!registrations || registrations.length === 0) return [];
 
-      if (existingDay) {
-        existingDay.count++;
-      } else {
-        acc.push({ date: userDate, count: 1 });
-      }
+    // First, get all registration dates and count them
+    const registrationCounts = registrations.reduce(
+      (acc: { date: Date; count: number }[], user) => {
+        const userDate = startOfDay(new Date(user.createdAt));
+        const existingDay = acc.find((item) => isSameDay(item.date, userDate));
 
-      return acc.sort((a, b) => a.date.getTime() - b.date.getTime());
-    }, []) || [];
+        if (existingDay) {
+          existingDay.count++;
+        } else {
+          acc.push({ date: userDate, count: 1 });
+        }
+
+        return acc;
+      },
+      []
+    );
+
+    if (registrationCounts.length === 0) return [];
+
+    // Sort by date to find the range
+    registrationCounts.sort((a, b) => a.date.getTime() - b.date.getTime());
+
+    // Get the date range
+    const startDate = registrationCounts[0].date;
+    const endDate = registrationCounts[registrationCounts.length - 1].date;
+
+    // Generate all days between start and end date
+    const allDays: { date: Date; count: number }[] = [];
+    let currentDate = new Date(startDate);
+
+    while (currentDate <= endDate) {
+      const existingRegistration = registrationCounts.find((reg) =>
+        isSameDay(reg.date, currentDate)
+      );
+
+      allDays.push({
+        date: new Date(currentDate),
+        count: existingRegistration ? existingRegistration.count : 0,
+      });
+
+      currentDate = addDays(currentDate, 1);
+    }
+
+    return allDays;
+  })();
 
   const maxRegistrations = Math.max(...registrationsByDay.map((d) => d.count));
 

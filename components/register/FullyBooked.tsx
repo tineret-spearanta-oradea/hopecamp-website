@@ -9,11 +9,10 @@ export default function FullyBooked() {
       <CardContent className="p-6 py-12">
         <div className="text-center space-y-4">
           <h1 className="text-3xl font-bold text-hope-orange">Ne pare rău</h1>
-          <p>
-            <h2 className="text-2xl font-bold text-gray-800">
-              Locurile din tabără au fost ocupate!
-            </h2>
-            <br />
+          <h2 className="text-2xl font-bold text-gray-800">
+            Locurile din tabără au fost ocupate!
+          </h2>
+          <div className="mt-4">
             <ul className="list-disc list-inside">
               <li className="mt-2">
                 Dacă dorești ne poți contacta la{" "}
@@ -30,8 +29,8 @@ export default function FullyBooked() {
                 percepe o taxă)
               </li>
             </ul>
-          </p>
-          <Link className="mt-8" href="/">
+          </div>
+          <Link className="mt-8 block" href="/">
             <Button>Înapoi la pagina principală</Button>
           </Link>
         </div>

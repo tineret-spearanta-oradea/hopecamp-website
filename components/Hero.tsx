@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import CountdownTimer from "./CountdownTimer";
-import { dateRange, location } from "@/lib/constants";
+import { dateRange, editionName, location } from "@/lib/constants";
 
 // Helper function to format date range
 const formatDateRange = (start: Date, end: Date): string => {
@@ -45,7 +45,7 @@ export default function Hero() {
 
           {/* Main Title */}
           <h1 className="font-poppins font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-white leading-tight">
-            HOPECAMP #6: GRATIA DEI
+            HOPECAMP #6: {editionName.toUpperCase()}
           </h1>
 
           {/* Subtitle */}

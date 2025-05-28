@@ -1,4 +1,5 @@
 export const title = "Hope Camp #6";
+export const editionName = "Gratia Dei";
 
 export const churchOptions = [
   { value: "Speranta, Oradea", label: "Speranța, Oradea" },
@@ -109,7 +110,7 @@ export const faqData = [
   },
   {
     question: "Care este vârsta minimă pentru participarea în tabără?",
-    answer: `Vârsta minimă pentru participarea în tabără este <strong>${MinimumAge.normal} ani împliniți în prima zi de tabără</strong> sau <strong>${MinimumAge.memberOfChurch} ani dacă participantul face parte din Biserica Speranța Oradea</strong>.`,
+    answer: `Vârsta minimă pentru participarea în tabără este <strong>${MinimumAge.normal} ani împliniți în prima zi de tabără</strong> sau <strong>${MinimumAge.memberOfChurch} ani dacă participantul face parte din Biserica Penticostală Speranța Oradea</strong>.`,
     tags: ["reguli", "înscriere"],
   },
   {
