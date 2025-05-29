@@ -68,6 +68,7 @@ export const columns = ({
   {
     accessorKey: "userId",
     header: "Id",
+    enableHiding: false,
     cell: ({ row, table }) => {
       const totalRows = table.getCoreRowModel().rows.length;
       return totalRows - row.index;
@@ -76,10 +77,12 @@ export const columns = ({
   {
     accessorKey: "name",
     header: ({ column }) => <SortButton column={column}>Nume</SortButton>,
+    enableHiding: false,
   },
   {
     accessorKey: "isConfirmed",
     header: ({ column }) => <SortButton column={column}>Confirmat</SortButton>,
+    enableHiding: true,
     cell: ({ row }) => <span>{row.getValue("isConfirmed") ? "Da" : "Nu"}</span>,
     sortingFn: (rowA, rowB, columnId) => {
       const a = rowA.getValue(columnId);
@@ -90,6 +93,7 @@ export const columns = ({
   {
     accessorKey: "age",
     header: ({ column }) => <SortButton column={column}>Ani</SortButton>,
+    enableHiding: true,
     cell: ({ row }) => {
       const age = row.getValue("age") as number | undefined;
       if (!age) return "-";
@@ -100,6 +104,7 @@ export const columns = ({
   {
     accessorKey: "phone",
     header: "Telefon",
+    enableHiding: true,
     cell: ({ row }) => {
       const phone = row.getValue("phone") as string;
       const handleCopy = () => {
@@ -118,14 +123,17 @@ export const columns = ({
   {
     accessorKey: "church",
     header: ({ column }) => <SortButton column={column}>Biserică</SortButton>,
+    enableHiding: true,
   },
   {
     accessorKey: "payTaxTo",
     header: "Casier",
+    enableHiding: true,
   },
   {
     accessorKey: "amountPaid",
     header: ({ column }) => <SortButton column={column}>Plătit</SortButton>,
+    enableHiding: true,
     cell: ({ row }) => {
       const amount = (row.getValue("amountPaid") as number) || 0;
 
@@ -163,6 +171,7 @@ export const columns = ({
   {
     accessorKey: "numberOfDays",
     header: "Zile",
+    enableHiding: true,
     cell: ({ row }) => {
       const start = row.original.startDate;
       const end = row.original.endDate;
@@ -185,9 +194,11 @@ export const columns = ({
   {
     accessorKey: "transport",
     header: "Transport",
+    enableHiding: true,
   },
   {
     id: "actions",
+    enableHiding: false,
     cell: ({ row }) => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

@@ -22,6 +22,8 @@ export default function MessagesPage() {
         "Poți schimba statusul mesajelor făcând click pe butonul de status",
         {
           duration: 5000,
+          dismissible: true,
+          closeButton: true,
         }
       );
       toastShownRef.current = true;

@@ -179,9 +179,9 @@ export default function UsersPage() {
   };
 
   return (
-    <div className="w-full max-w-[90vw] mx-auto py-10 overflow-hidden">
-      <div className="mb-8 flex justify-between items-center">
-        <h1 className="text-3xl font-bold tracking-tight">Users</h1>
+    <div className="w-full max-w-[90vw] mx-auto py-2 overflow-hidden">
+      <div className=" flex justify-between items-center">
+        <h1 className="text-3xl font-bold tracking-tight">Participanți</h1>
         <Button
           onClick={handleExportCsv}
           className="flex  text-sm items-center gap-2"
