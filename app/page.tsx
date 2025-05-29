@@ -8,6 +8,7 @@ import Activities from "@/components/Activities";
 import WhyAttend from "@/components/WhyAttend";
 import ProgramSection from "@/components/ProgramSection";
 import Locatie from "@/components/Locatie";
+import VideoSection from "@/components/VideoSection";
 import Galerie from "@/components/Galerie";
 import AboutSection from "@/components/AboutSection";
 
@@ -20,6 +21,7 @@ export default function Home() {
       <WhyAttend />
       <ProgramSection />
       <Locatie />
+      <VideoSection />
       <Galerie />
       <AboutSection />
       <FaqSection />
