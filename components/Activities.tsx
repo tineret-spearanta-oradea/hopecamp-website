@@ -10,6 +10,7 @@ interface ActivityItemProps {
 const ActivityItem: React.FC<ActivityItemProps> = ({ imageSrc, title }) => (
   <div className="relative w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full overflow-hidden shadow-lg mx-auto flex-shrink-0">
     <Image
+      loading="lazy"
       src={imageSrc}
       alt={title}
       layout="fill"
