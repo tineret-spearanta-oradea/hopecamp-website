@@ -37,6 +37,7 @@ export default function Galerie() {
                 className="overflow-hidden rounded-lg shadow-md aspect-square"
               >
                 <Image
+                  loading="lazy"
                   src={src}
                   alt={`Galerie imagine ${index + 1}`}
                   width={300}
