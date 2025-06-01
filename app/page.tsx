@@ -11,10 +11,12 @@ import Locatie from "@/components/Locatie";
 import VideoSection from "@/components/VideoSection";
 import Galerie from "@/components/Galerie";
 import AboutSection from "@/components/AboutSection";
+import CampInProgressPopup from "@/components/CampInProgressPopup";
 
 export default function Home() {
   return (
     <main className="min-h-screen">
+      <CampInProgressPopup />
       <Navbar />
       <Hero />
       <Activities />
