@@ -93,7 +93,7 @@ export default function Footer() {
       </div>
       <div className="flex justify-center pt-10">
         <p className="text-white text-xs text-center">
-          © {new Date().getFullYear()} copyright
+          © {new Date().getFullYear()}
           <br /> Tineret Speranta Oradea
         </p>
       </div>
