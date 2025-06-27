@@ -36,6 +36,7 @@ import { DatePickerWithRange } from "@/components/ui/date-picker";
 import { toast } from "sonner";
 
 import {RegistrationWithProfile} from "@/types/registrationWithProfile";
+import { Textarea } from "@/components/ui/textarea";
 
 const userFormSchema = z.object({
   // Read-only fields for regular admins, editable for superAdmin
@@ -214,100 +215,112 @@ export function EditUserSheet({
                 )}
               />
 
-              {isSuperAdmin && (
-                <Accordion type="single" collapsible className="w-full">
-                  <AccordionItem
-                    value="personal"
-                    className="border-none bg-muted/50 rounded-lg"
-                  >
-                    <AccordionTrigger className="px-4">
-                      Date Personale
-                    </AccordionTrigger>
-                    <AccordionContent className="space-y-4 px-4 pb-4">
-                      <FormField
-                        control={form.control}
-                        name="name"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Nume</FormLabel>
-                            <FormControl>
-                              <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem
+                  value="personal"
+                  className="border-none bg-muted/50 rounded-lg"
+                >
+                  <AccordionTrigger className="px-4">
+                    Date Personale
+                  </AccordionTrigger>
+                  <AccordionContent className="space-y-4 px-4 pb-4">
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Nume</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                      <FormField
-                        control={form.control}
-                        name="phone"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Telefon</FormLabel>
-                            <FormControl>
-                              <Input {...field} type="tel" disabled />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Telefon</FormLabel>
+                          <FormControl>
+                            <Input {...field} type="tel" disabled />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                      <FormField
-                        control={form.control}
-                        name="church"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Biserica</FormLabel>
-                            <FormControl>
-                              <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                    <FormField
+                      control={form.control}
+                      name="church"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Biserica</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                      <FormField
-                        control={form.control}
-                        name="age"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Vârsta</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="number"
-                                {...field}
-                                onChange={(e) =>
-                                  field.onChange(e.target.valueAsNumber)
-                                }
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                    <FormField
+                      control={form.control}
+                      name="age"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Vârsta</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="number"
+                              {...field}
+                              onChange={(e) =>
+                                field.onChange(e.target.valueAsNumber)
+                              }
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                      <div className="space-y-2">
-                        <FormLabel>Perioada în tabără</FormLabel>
-                        <DatePickerWithRange
-                          from={form.getValues("startDate")}
-                          to={form.getValues("endDate")}
-                          onChange={({ from, to }) => {
-                            form.setValue("startDate", from);
-                            form.setValue("endDate", to);
-                            setIsDirty(true);
-                          }}
-                        />
-                        <FormMessage>
-                          {form.formState.errors.startDate?.message}
-                        </FormMessage>
-                        <FormMessage>
-                          {form.formState.errors.endDate?.message}
-                        </FormMessage>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              )}
+                    <div className="space-y-2">
+                      <FormLabel>Perioada în tabără</FormLabel>
+                      <DatePickerWithRange
+                        from={form.getValues("startDate")}
+                        to={form.getValues("endDate")}
+                        onChange={({ from, to }) => {
+                          form.setValue("startDate", from);
+                          form.setValue("endDate", to);
+                          setIsDirty(true);
+                        }}
+                      />
+                      <FormMessage>
+                        {form.formState.errors.startDate?.message}
+                      </FormMessage>
+                      <FormMessage>
+                        {form.formState.errors.endDate?.message}
+                      </FormMessage>
+                    </div>
+
+                    <FormField
+                      control={form.control}
+                      name="preferences"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Preferințe cazare</FormLabel>
+                          <FormControl>
+                            <Textarea {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
 
               <Accordion
                 type="multiple"
