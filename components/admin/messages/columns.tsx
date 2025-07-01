@@ -4,6 +4,13 @@ import { AdminMessage } from "@/types/message";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, Circle, PencilIcon } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
+import { toast } from "sonner";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 // Separate component for the status cell
 function MessageStatusCell({
@@ -19,7 +26,10 @@ function MessageStatusCell({
     <Button
       variant="ghost"
       size="sm"
-      onClick={() => onStatusChange(!isRead)}
+      onClick={(e) => {
+        e.stopPropagation(); // Prevent row click
+        onStatusChange(!isRead);
+      }}
       className={`flex items-center gap-1 ${
         isRead ? "text-emerald-600" : "text-yellow-600"
       } group hover:bg-muted`}
@@ -52,7 +62,7 @@ function StatusCellWrapper({
     userId?: string
   ) => Promise<void>;
 }) {
-  const { userData:user } = useAuth();
+  const { userData: user } = useAuth();
 
   const handleStatusChange = async (newStatus: boolean) => {
     try {
@@ -71,7 +81,8 @@ export const createColumns = (
     newStatus: boolean,
     readerUserId?: string // Renamed for clarity
   ) => Promise<void>
-): ColumnDef<AdminMessage>[] => [ // Use AdminMessage
+): ColumnDef<AdminMessage>[] => [
+  // Use AdminMessage
   {
     id: "userName",
     accessorKey: "userName",
@@ -81,6 +92,21 @@ export const createColumns = (
     id: "phone",
     accessorKey: "phone",
     header: "Telefon",
+    cell: ({ row }) => {
+      const phone = row.getValue("phone") as string;
+      const handleCopy = (e: React.MouseEvent) => {
+        e.stopPropagation(); // Prevent row click
+        navigator.clipboard.writeText(phone);
+        toast.info("Telefonul a fost copiat în clipboard.");
+      };
+      return (
+        <div>
+          <span className="text-blue-500 cursor-pointer" onClick={handleCopy}>
+            {phone}
+          </span>
+        </div>
+      );
+    },
   },
   {
     id: "text",
@@ -89,9 +115,16 @@ export const createColumns = (
     cell: ({ row }) => {
       const text = row.getValue("text") as string;
       return (
-        <div className="max-w-[500px] truncate" title={text}>
-          {text}
-        </div>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="max-w-[500px] truncate cursor-help">{text}</div>
+            </TooltipTrigger>
+            <TooltipContent className="max-w-[400px] whitespace-normal">
+              <p>{text}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       );
     },
   },
@@ -113,19 +146,24 @@ export const createColumns = (
     ),
   },
   {
-      id: "readByUserName",
-      accessorKey: "readByUserName",
-      header: "Citit De",
-      cell: ({ row }) => {
-          const readBy = row.original.readByUserName;
-          const readAt = row.original.readAt;
-          if (!readBy) return <span className="text-xs text-muted-foreground">-</span>;
-          return (
-              <div className="flex flex-col text-xs">
-                  <span>{readBy}</span>
-                  {readAt && <span className="text-muted-foreground">{format(readAt, "dd/MM HH:mm")}</span>}
-              </div>
-          );
-      },
+    id: "readByUserName",
+    accessorKey: "readByUserName",
+    header: "Citit De",
+    cell: ({ row }) => {
+      const readBy = row.original.readByUserName;
+      const readAt = row.original.readAt;
+      if (!readBy)
+        return <span className="text-xs text-muted-foreground">-</span>;
+      return (
+        <div className="flex flex-col text-xs">
+          <span>{readBy}</span>
+          {readAt && (
+            <span className="text-muted-foreground">
+              {format(readAt, "dd/MM HH:mm")}
+            </span>
+          )}
+        </div>
+      );
+    },
   },
 ];
