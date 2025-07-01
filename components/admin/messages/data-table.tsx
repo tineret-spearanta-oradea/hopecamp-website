@@ -23,6 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { AdminMessage } from "@/types/message"; // Use AdminMessage
+import { MessageDetailsDialog } from "./message-details-dialog";
 import {
   Select,
   SelectContent,
@@ -51,6 +52,10 @@ export function DataTable({ columns, data }: DataTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [selectedColumn, setSelectedColumn] = useState<string>("userName");
+  const [selectedMessage, setSelectedMessage] = useState<AdminMessage | null>(
+    null
+  );
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const table = useReactTable({
     data,
@@ -77,6 +82,16 @@ export function DataTable({ columns, data }: DataTableProps) {
   };
 
   const activeFilters = columnFilters.filter((filter) => filter.value);
+
+  const handleRowClick = (message: AdminMessage) => {
+    setSelectedMessage(message);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedMessage(null);
+  };
 
   return (
     <div className="w-full">
@@ -154,22 +169,29 @@ export function DataTable({ columns, data }: DataTableProps) {
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row: Row<AdminMessage>) => ( // Use AdminMessage
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                  className={!row.original.isRead ? "bg-muted/50" : ""}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="whitespace-nowrap">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
+              table.getRowModel().rows.map(
+                (
+                  row: Row<AdminMessage> // Use AdminMessage
+                ) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                    className={`cursor-pointer transition-colors hover:bg-muted/70 ${
+                      !row.original.isRead ? "bg-muted/50" : ""
+                    }`}
+                    onClick={() => handleRowClick(row.original)}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id} className="whitespace-nowrap">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                )
+              )
             ) : (
               <TableRow>
                 <TableCell
@@ -183,6 +205,12 @@ export function DataTable({ columns, data }: DataTableProps) {
           </TableBody>
         </Table>
       </div>
+
+      <MessageDetailsDialog
+        message={selectedMessage}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 }
