@@ -200,6 +200,10 @@ export function UserDetailsDialog({
               label="Data înscrierii"
               value={format(new Date(registration.createdAt), "dd MMM yyyy HH:mm")}
             />
+            <InfoItem
+              label="Ultima modificare"
+              value={format(new Date(registration.updatedAt), "dd MMM yyyy HH:mm")}
+            />
           </div>
         </div>
       </DialogContent>

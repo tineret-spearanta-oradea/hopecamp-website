@@ -5,6 +5,7 @@ import {
 } from "@/lib/supabase/database/expense";
 import {getActiveEdition} from "@/lib/supabase/database/edition";
 import {getRegistrationsByEditionId, updateRegistrationPayment} from "@/lib/supabase/database/registration";
+import {getUserNameById} from "@/lib/supabase/database/user";
 import {Expense as SupabaseExpense, NewExpense} from "@/types/expense"; // Use UserProfile type
 
 export interface Expense {
@@ -27,6 +28,8 @@ export interface Income {
   collectedBy: string;
   createdAt: Date;
   paidOn?: Date;
+  updatedByName?: string;
+  paymentUpdatedAt?: Date;
 }
 
 export function useFinancials() {
@@ -41,6 +44,21 @@ export function useFinancials() {
     try {
         const currentEdition = await getActiveEdition(); // TODO remove this after we have edition selector on the UI
         const registrations=await getRegistrationsByEditionId(currentEdition.id);
+      
+      // Get unique user IDs for payment updated by field
+      const updatedByUserIds = Array.from(new Set(registrations
+        .filter(reg => reg.paymentUpdatedBy)
+        .map(reg => reg.paymentUpdatedBy!)));
+      
+      // Fetch user names for payment updated by field
+      const userNamesMap = new Map<string, string>();
+      await Promise.all(updatedByUserIds.map(async (userId) => {
+        const userName = await getUserNameById(userId);
+        if (userName) {
+          userNamesMap.set(userId, userName);
+        }
+      }));
+      
       // Map UserProfile to Income structure
       const incomesData: Income[] = registrations
         .filter(registration => registration.amountPaid !== undefined && registration.amountPaid > 0) // Ensure amountPaid exists and is > 0
@@ -51,7 +69,9 @@ export function useFinancials() {
             amount: registration.amountPaid || 0,
             collectedBy: registration.payTaxTo || "", // Use payTaxTo directly as collector's name
             createdAt: registration.createdAt ? new Date(registration.createdAt) : new Date(),
-            paidOn: undefined,
+            paidOn: registration.paymentUpdatedAt ? new Date(registration.paymentUpdatedAt) : undefined,
+            updatedByName: registration.paymentUpdatedBy ? userNamesMap.get(registration.paymentUpdatedBy) : undefined,
+            paymentUpdatedAt: registration.paymentUpdatedAt ? new Date(registration.paymentUpdatedAt) : undefined,
         }));
 
       setIncomes(incomesData);

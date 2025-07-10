@@ -10,10 +10,13 @@ export interface UserRegistration {
   preferences?: string;
   createdAt: Date;
   updatedAt: Date;
+  updatedBy?: string;
   startDate: Date;
   endDate: Date;
   isConfirmed: boolean;
   amountPaid: number;
+  paymentUpdatedAt?: Date;
+  paymentUpdatedBy?: string;
   withFamilyMember: boolean;
   // Fields from user_registration_roles
   isAdmin: boolean;
