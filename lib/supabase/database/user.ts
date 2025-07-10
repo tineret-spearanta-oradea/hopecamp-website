@@ -77,3 +77,22 @@ export async function changeUserSuperAdminStatus(userId: string, newIsSuperAdmin
          throw error;
     }
 }
+
+export async function getUserNameById(userId: string): Promise<string | null> {
+    try {
+        const { data, error } = await supabaseBrowserClient
+            .from("user_profiles")
+            .select('name')
+            .eq("user_id", userId)
+            .single();
+
+        if (error) {
+            console.error("Error fetching user name:", error.message);
+            return null;
+        }
+        return data?.name || null;
+    } catch (error: any) {
+        console.error("Unexpected error fetching user name:", error.message);
+        return null;
+    }
+}

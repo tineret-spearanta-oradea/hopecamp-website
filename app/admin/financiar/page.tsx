@@ -327,6 +327,7 @@ export default function FinanciarPage() {
                     <TableHead>Sumă</TableHead>
                     <TableHead>Casier</TableHead>
                     <TableHead>Data</TableHead>
+                    <TableHead>Actualizat de</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -354,6 +355,9 @@ export default function FinanciarPage() {
                               timeStyle: "short",
                             }
                           )}
+                        </TableCell>
+                        <TableCell>
+                          {income.updatedByName || "-"}
                         </TableCell>
                       </TableRow>
                     ))}
