@@ -286,24 +286,29 @@ export function EditUserSheet({
                       )}
                     />
 
-                    <div className="space-y-2">
-                      <FormLabel>Perioada în tabără</FormLabel>
-                      <DatePickerWithRange
-                        from={form.getValues("startDate")}
-                        to={form.getValues("endDate")}
-                        onChange={({ from, to }) => {
-                          form.setValue("startDate", from);
-                          form.setValue("endDate", to);
-                          setIsDirty(true);
-                        }}
-                      />
-                      <FormMessage>
-                        {form.formState.errors.startDate?.message}
-                      </FormMessage>
-                      <FormMessage>
-                        {form.formState.errors.endDate?.message}
-                      </FormMessage>
-                    </div>
+                    <FormField
+                      control={form.control}
+                      name="startDate"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Perioada în tabără</FormLabel>
+                          <FormControl>
+                            <DatePickerWithRange
+                              from={form.watch("startDate")}
+                              to={form.watch("endDate")}
+                              onChange={({ from, to }) => {
+                                if (from && to) {
+                                  form.setValue("startDate", from);
+                                  form.setValue("endDate", to);
+                                  setIsDirty(true);
+                                }
+                              }}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
                     <FormField
                       control={form.control}
