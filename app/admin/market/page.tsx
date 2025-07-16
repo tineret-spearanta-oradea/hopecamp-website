@@ -124,7 +124,7 @@ export default function MarketTransactionsPage() {
   return (
     <div className="max-w-[90vw] mx-auto py-2 overflow-hidden">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold tracking-tight">Tranzacții Piața</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Market</h1>
         <Button onClick={() => setIsDialogOpen(true)}>
           <Plus className="h-4 w-4 mr-2" />
           Adaugă Tranzacție

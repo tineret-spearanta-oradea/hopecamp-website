@@ -43,9 +43,9 @@ const menuItems = [
     superAdminOnly: false,
   },
   {
-    title: "Tranzacții Piața",
+    title: "Market",
     icon: ShoppingCart,
-    href: "/admin/tranzactii-piata",
+    href: "/admin/market",
     superAdminOnly: false,
   },
   {
