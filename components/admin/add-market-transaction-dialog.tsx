@@ -122,7 +122,7 @@ export function AddMarketTransactionDialog({
         transaction_type: transactionType,
         amount: amountInCents,
         description: description.trim() || null,
-        created_by: "", // Will be set by the database trigger
+        created_by: "", // Will be set by the database function
       });
 
       onSave();

@@ -42,9 +42,18 @@ export async function getMarketTransactionsByRegistrationId(registrationId: numb
 // Add a new market transaction
 export async function addMarketTransaction(transactionData: NewMarketTransaction): Promise<MarketTransaction> {
     try {
+        // Get current user to set created_by
+        const { data: { user } } = await supabaseBrowserClient.auth.getUser();
+        if (!user) {
+            throw new Error("User not authenticated");
+        }
+
         const { data, error } = await supabaseBrowserClient
             .from("market_transactions")
-            .insert(transactionData)
+            .insert({
+                ...transactionData,
+                created_by: user.id
+            })
             .select(`
                 *,
                 creator:user_profiles ( name )
