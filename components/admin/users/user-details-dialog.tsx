@@ -11,7 +11,9 @@ import Image from "next/image";
 import { format } from "date-fns";
 import { useState, useEffect } from "react";
 import { getUserMessages } from "@/lib/supabase/database/message"; // Updated import
-import { Loader2 } from "lucide-react";
+import { Loader2, CreditCard, AlertCircle, CheckCircle2 } from "lucide-react";
+import { getCurrentDebtForRegistration } from "@/lib/supabase/database/marketTransaction";
+import { formatAmount } from "@/types/marketTransaction";
 
 import {RegistrationWithProfile} from "@/types/registrationWithProfile";
 
@@ -30,6 +32,8 @@ export function UserDetailsDialog({
   const [imageLoading, setImageLoading] = useState(true);
   const [messages, setMessages] = useState<AdminMessage[]>([]); // Use AdminMessage
   const [messagesLoading, setMessagesLoading] = useState(false);
+  const [currentDebt, setCurrentDebt] = useState<number | null>(null);
+  const [debtLoading, setDebtLoading] = useState(false);
 
   useEffect(() => {
     async function fetchMessages() {
@@ -42,6 +46,25 @@ export function UserDetailsDialog({
     }
 
     fetchMessages();
+  }, [registration]);
+
+  useEffect(() => {
+    async function fetchCurrentDebt() {
+      if (registration) {
+        setDebtLoading(true);
+        try {
+          const debt = await getCurrentDebtForRegistration(registration.id);
+          setCurrentDebt(debt);
+        } catch (error) {
+          console.error("Error fetching current debt:", error);
+          setCurrentDebt(null);
+        } finally {
+          setDebtLoading(false);
+        }
+      }
+    }
+
+    fetchCurrentDebt();
   }, [registration]);
 
   if (!registration) return null;
@@ -177,6 +200,51 @@ export function UserDetailsDialog({
                   : "text-yellow-500"
               }
             />
+            
+            {/* Market Debt Section */}
+            <div className="border-b pb-2">
+              <div className="flex items-center gap-2 mb-1">
+                <CreditCard className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-medium text-muted-foreground">
+                  Datorie piața:
+                </span>
+              </div>
+              {debtLoading ? (
+                <div className="flex items-center gap-2">
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                  <span className="text-sm text-muted-foreground">Se încarcă...</span>
+                </div>
+              ) : currentDebt !== null ? (
+                <div className="flex items-center gap-2">
+                  {currentDebt === 0 ? (
+                    <>
+                      <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                      <span className="text-sm font-medium text-emerald-600">
+                        Fără datorii
+                      </span>
+                    </>
+                  ) : currentDebt > 0 ? (
+                    <>
+                      <AlertCircle className="h-4 w-4 text-red-600" />
+                      <span className="text-sm font-medium text-red-600">
+                        {formatAmount(currentDebt)} RON
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 className="h-4 w-4 text-blue-600" />
+                      <span className="text-sm font-medium text-blue-600">
+                        Plată în plus: {formatAmount(Math.abs(currentDebt))} RON
+                      </span>
+                    </>
+                  )}
+                </div>
+              ) : (
+                <span className="text-sm text-muted-foreground">
+                  Nu s-a putut încărca
+                </span>
+              )}
+            </div>
             <InfoItem
               label="Perioada"
               value={

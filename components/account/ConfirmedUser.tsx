@@ -6,8 +6,10 @@ import {Textarea} from "@/components/ui/textarea";
 import {useToast} from "@/hooks/use-toast";
 import Link from "next/link";
 import {differenceInHours, format} from "date-fns";
-import {CheckCircle2, Circle} from "lucide-react";
+import {CheckCircle2, Circle, AlertCircle, CreditCard} from "lucide-react";
 import {getLastUserMessage, insertMessage} from "@/lib/supabase/database/message";
+import {getCurrentDebtForRegistration} from "@/lib/supabase/database/marketTransaction";
+import {formatAmount} from "@/types/marketTransaction";
 
 import {RegistrationWithProfile} from "@/types/registrationWithProfile";
 
@@ -24,6 +26,8 @@ export default function ConfirmedUser({userRegistrationData}: ConfirmedUserProps
     const [lastMessageText, setLastMessageText] = useState<string | null>(null);
     const [lastMessageIsRead, setLastMessageIsRead] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [currentDebt, setCurrentDebt] = useState<number | null>(null);
+    const [debtLoading, setDebtLoading] = useState(true);
     const {toast} = useToast();
 
     // Fetch last message time on component mount
@@ -46,6 +50,23 @@ export default function ConfirmedUser({userRegistrationData}: ConfirmedUserProps
 
         fetchLastMessageTime();
         // Depend on userId prop
+    }, [userRegistrationData.id]);
+
+    // Fetch current debt on component mount
+    useEffect(() => {
+        async function fetchCurrentDebt() {
+            try {
+                const debt = await getCurrentDebtForRegistration(userRegistrationData.id);
+                setCurrentDebt(debt);
+            } catch (error) {
+                console.error("Error fetching current debt:", error);
+                setCurrentDebt(null);
+            } finally {
+                setDebtLoading(false);
+            }
+        }
+
+        fetchCurrentDebt();
     }, [userRegistrationData.id]);
 
     const getHoursUntilNextMessage = () => {
@@ -123,6 +144,49 @@ export default function ConfirmedUser({userRegistrationData}: ConfirmedUserProps
                     📝 În curând vei primi mai multe informații despre tabără și următorii
                     pași.
                 </p>
+                
+                {/* Market Debt Section */}
+                <div className="pt-4 border-t">
+                    <div className="flex items-center gap-2 mb-2">
+                        <CreditCard className="h-4 w-4 text-muted-foreground" />
+                        <h3 className="font-semibold">Situația financiară - Piața din tabără</h3>
+                    </div>
+                    {debtLoading ? (
+                        <p className="text-sm text-muted-foreground">Se încarcă...</p>
+                    ) : currentDebt !== null ? (
+                        <div className="space-y-2">
+                            {currentDebt === 0 ? (
+                                <div className="flex items-center gap-2 text-green-600">
+                                    <CheckCircle2 className="h-4 w-4" />
+                                    <span className="text-sm">Fără datorii la piață</span>
+                                </div>
+                            ) : currentDebt > 0 ? (
+                                <div className="flex items-center gap-2 text-red-600">
+                                    <AlertCircle className="h-4 w-4" />
+                                    <span className="text-sm">
+                                        Datorie la piață: <strong>{formatAmount(currentDebt)} RON</strong>
+                                    </span>
+                                </div>
+                            ) : (
+                                <div className="flex items-center gap-2 text-blue-600">
+                                    <CheckCircle2 className="h-4 w-4" />
+                                    <span className="text-sm">
+                                        Plată în plus: <strong>{formatAmount(Math.abs(currentDebt))} RON</strong>
+                                    </span>
+                                </div>
+                            )}
+                            <p className="text-xs text-muted-foreground">
+                                Această sumă reprezintă balanța ta la piața din tabără. 
+                                Pentru detalii sau clarificări, contactează organizatorii.
+                            </p>
+                        </div>
+                    ) : (
+                        <p className="text-sm text-muted-foreground">
+                            Nu s-a putut încărca informația despre datorii
+                        </p>
+                    )}
+                </div>
+
                 {/* Show admin link if user is admin (from registration) OR super admin (from profile) */}
                 {(userRegistrationData.isAdmin || userRegistrationData.isSuperAdmin) && (
                     <div className="pt-2">
