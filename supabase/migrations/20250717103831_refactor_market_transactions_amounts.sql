@@ -9,12 +9,12 @@ SET amount = CASE
     ELSE amount
 END;
 
--- Remove the transaction_type column
-ALTER TABLE market_transactions DROP COLUMN transaction_type;
-
--- Update the amount constraint to allow negative values
+-- Update the amount constraint to allow negative values first
 ALTER TABLE market_transactions DROP CONSTRAINT market_transactions_amount_check;
 ALTER TABLE market_transactions ADD CONSTRAINT market_transactions_amount_check CHECK (amount != 0);
+
+-- Remove the transaction_type column
+ALTER TABLE market_transactions DROP COLUMN transaction_type;
 
 -- Update the comment for the amount column
 COMMENT ON COLUMN market_transactions.amount IS 'Amount in RON cents: positive = debt (user owes), negative = payment (user pays)';

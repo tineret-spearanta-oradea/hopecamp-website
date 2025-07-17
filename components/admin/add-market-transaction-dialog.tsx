@@ -17,11 +17,7 @@ import { toast } from "sonner";
 import { formatAmount, parseAmount } from "@/types/marketTransaction";
 import { RegistrationWithProfile } from "@/types/registrationWithProfile";
 import { addMarketTransaction, getCurrentDebtForRegistration } from "@/lib/supabase/database/marketTransaction";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { useState as useReactState } from "react";
 
 interface AddMarketTransactionDialogProps {
   open: boolean;
@@ -318,18 +314,20 @@ export function AddMarketTransactionDialog({
 
           {/* Status and Preview Section */}
           {selectedRegistration && (
-            <Collapsible open={isStatusOpen} onOpenChange={setIsStatusOpen}>
-              <CollapsibleTrigger asChild>
-                <Button variant="ghost" className="w-full justify-between p-3 h-auto">
-                  <div className="flex items-center gap-2">
-                    <AlertCircle className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm font-medium">Status și Previzualizare</span>
-                  </div>
-                  {isStatusOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-                </Button>
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <div className="p-3 bg-muted/50 rounded-lg mt-2">
+            <div className="border rounded-lg">
+              <Button 
+                variant="ghost" 
+                className="w-full justify-between p-3 h-auto"
+                onClick={() => setIsStatusOpen(!isStatusOpen)}
+              >
+                <div className="flex items-center gap-2">
+                  <AlertCircle className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm font-medium">Status și Previzualizare</span>
+                </div>
+                {isStatusOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              </Button>
+              {isStatusOpen && (
+                <div className="p-3 bg-muted/50 rounded-lg mt-2 mx-3 mb-3">
                   {loadingDebt ? (
                     <div className="flex items-center gap-2">
                       <Loader2 className="h-3 w-3 animate-spin" />
@@ -373,8 +371,8 @@ export function AddMarketTransactionDialog({
                     </p>
                   )}
                 </div>
-              </CollapsibleContent>
-            </Collapsible>
+              )}
+            </div>
           )}
         </div>
 
