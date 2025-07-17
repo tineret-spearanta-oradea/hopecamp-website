@@ -144,7 +144,7 @@ export async function getAllMarketTransactions(): Promise<MarketTransaction[]> {
                 creator:user_profiles ( name ),
                 registration:registrations ( 
                     id,
-                    user_profiles ( name, phone )
+                    user_profiles ( name, ...auth_users_view!inner ( phone ) )
                 )
             `)
             .order("created_at", { ascending: false });
