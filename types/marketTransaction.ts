@@ -7,6 +7,7 @@ export interface MarketTransaction {
     created_at: string;
     created_by: string; // UUID of the admin who created it
     created_by_name?: string; // Added field for the creator's name
+    running_balance?: number; // Running balance calculation (optional, from detailed function)
 }
 
 // Type for adding a new market transaction (omits id, created_at, created_by_name)
