@@ -1,7 +1,10 @@
--- Fix BIGINT/INTEGER type mismatch in market transaction functions
+-- Drop and recreate market transaction functions to fix BIGINT/INTEGER type mismatch
 
--- Update the get_market_transaction_summaries function to fix type issues
-CREATE OR REPLACE FUNCTION public.get_market_transaction_summaries(
+-- Drop the existing function first
+DROP FUNCTION IF EXISTS public.get_market_transaction_summaries(INT, TEXT, INT, INT);
+
+-- Recreate with correct types
+CREATE FUNCTION public.get_market_transaction_summaries(
     p_edition_id INT DEFAULT 1,
     p_search_query TEXT DEFAULT '',
     p_limit INT DEFAULT 10,
@@ -12,7 +15,7 @@ RETURNS TABLE (
     registration_name TEXT,
     registration_phone TEXT,
     current_debt INTEGER,
-    total_transactions INTEGER,  -- Changed from BIGINT to INTEGER
+    total_transactions INTEGER,
     latest_transaction_date TIMESTAMPTZ,
     recent_transactions JSONB
 ) 
@@ -29,7 +32,7 @@ BEGIN
             up.name as user_name,
             auv.phone as user_phone,
             COALESCE(SUM(mt.amount), 0)::INTEGER as debt,
-            COUNT(mt.id)::INTEGER as trans_count,  -- Cast to INTEGER
+            COUNT(mt.id)::INTEGER as trans_count,
             MAX(mt.created_at) as latest_date
         FROM registrations r
         INNER JOIN user_profiles up ON r.user_id = up.user_id
