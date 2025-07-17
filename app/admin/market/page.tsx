@@ -1,107 +1,113 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Plus, Receipt, CreditCard, AlertCircle, Loader2, Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { 
+  Plus, 
+  CreditCard, 
+  AlertCircle, 
+  Loader2, 
+  Search, 
+  ChevronLeft, 
+  ChevronRight, 
+  ChevronDown, 
+  ChevronUp,
+  ExternalLink
+} from "lucide-react";
 import { toast } from "sonner";
 import { formatAmount } from "@/types/marketTransaction";
-import { MarketTransaction } from "@/types/marketTransaction";
 import { RegistrationWithProfile } from "@/types/registrationWithProfile";
 import { getRegistrationsByEditionId } from "@/lib/supabase/database/registration";
-import { 
-  getAllMarketTransactions, 
-  getCurrentDebtForRegistration, 
-  getMarketTransactionSummary 
-} from "@/lib/supabase/database/marketTransaction";
+import { getMarketTransactionSummaries } from "@/lib/supabase/database/marketTransaction";
 import { AddMarketTransactionDialog } from "@/components/admin/add-market-transaction-dialog";
 import { format } from "date-fns";
 import { ro } from "date-fns/locale";
+import Link from "next/link";
 
-interface TransactionWithRegistration extends MarketTransaction {
-  registration_name?: string;
-  registration_phone?: string;
-  current_debt?: number;
+interface MarketSummary {
+  registration_id: number;
+  registration_name: string;
+  registration_phone: string;
+  current_debt: number;
+  total_transactions: number;
+  latest_transaction_date?: string;
+  recent_transactions: any[];
 }
 
 export default function MarketTransactionsPage() {
-  const [transactions, setTransactions] = useState<TransactionWithRegistration[]>([]);
+  const [summaries, setSummaries] = useState<MarketSummary[]>([]);
   const [registrations, setRegistrations] = useState<RegistrationWithProfile[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [refreshKey, setRefreshKey] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+  const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const [pageSize] = useState(10);
 
+  // Debounce search query
   useEffect(() => {
-    fetchData();
-  }, [refreshKey]);
+    const timer = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 300);
 
-  const fetchData = async () => {
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  // Reset page when search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearchQuery]);
+
+  const fetchData = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
 
-      // Get current active edition (assuming id 1 for now - should be dynamic)
-      const [transactionsData, registrationsData] = await Promise.all([
-        getAllMarketTransactions(),
+      const offset = (currentPage - 1) * pageSize;
+      
+      const [summariesResult, registrationsData] = await Promise.all([
+        getMarketTransactionSummaries(1, debouncedSearchQuery, pageSize, offset),
         getRegistrationsByEditionId(1)
       ]);
 
-      // Enrich transactions with current debt info
-      const enrichedTransactions = await Promise.all(
-        transactionsData.map(async (transaction) => {
-          const currentDebt = await getCurrentDebtForRegistration(transaction.registration_id);
-          return {
-            ...transaction,
-            current_debt: currentDebt
-          };
-        })
-      );
-
-      setTransactions(enrichedTransactions);
+      setSummaries(summariesResult.data);
+      setTotalCount(summariesResult.count);
+      setTotalPages(Math.ceil(summariesResult.count / pageSize));
       setRegistrations(registrationsData);
     } catch (err) {
-      console.error("Error fetching market transactions:", err);
+      console.error("Error fetching market data:", err);
       setError("A apărut o eroare la încărcarea datelor");
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [currentPage, debouncedSearchQuery, pageSize]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const handleTransactionAdded = () => {
-    setRefreshKey(prev => prev + 1);
+    fetchData();
     setIsDialogOpen(false);
     toast.success("Tranzacția a fost adăugată cu succes");
   };
 
-  // Filter transactions based on search query
-  const filteredTransactions = transactions.filter(transaction => 
-    transaction.registration_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    transaction.registration_phone?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    transaction.description?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  // Group filtered transactions by registration
-  const groupedTransactions = filteredTransactions.reduce((acc, transaction) => {
-    const key = transaction.registration_id;
-    if (!acc[key]) {
-      acc[key] = [];
+  const toggleCardExpansion = (registrationId: number) => {
+    const newExpanded = new Set(expandedCards);
+    if (newExpanded.has(registrationId)) {
+      newExpanded.delete(registrationId);
+    } else {
+      newExpanded.add(registrationId);
     }
-    acc[key].push(transaction);
-    return acc;
-  }, {} as Record<number, TransactionWithRegistration[]>);
-
-  // Pagination logic
-  const groupedKeys = Object.keys(groupedTransactions);
-  const totalPages = Math.ceil(groupedKeys.length / pageSize);
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
-  const paginatedKeys = groupedKeys.slice(startIndex, endIndex);
+    setExpandedCards(newExpanded);
+  };
 
   const getTransactionTypeColor = (amount: number) => {
     return amount > 0 ? 'destructive' : 'default';
@@ -123,7 +129,15 @@ export default function MarketTransactionsPage() {
     return `Plată în plus: ${formatAmount(Math.abs(debt))} RON`;
   };
 
-  if (isLoading) {
+  const calculateStats = () => {
+    const withDebt = summaries.filter(s => s.current_debt > 0).length;
+    const totalDebt = summaries.reduce((sum, s) => sum + (s.current_debt > 0 ? s.current_debt : 0), 0);
+    return { withDebt, totalDebt };
+  };
+
+  const stats = calculateStats();
+
+  if (isLoading && summaries.length === 0) {
     return (
       <div className="flex h-[450px] items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin" />
@@ -151,49 +165,33 @@ export default function MarketTransactionsPage() {
       </div>
 
       {/* Search and Statistics */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-6">
-        <div className="relative flex-1">
+      <div className="flex flex-col lg:flex-row gap-4 mb-6">
+        <div className="relative flex-1 max-w-md">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Caută participant, telefon sau descriere..."
+            placeholder="Caută participant, telefon..."
             value={searchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-              setCurrentPage(1);
-            }}
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10"
           />
         </div>
-        <div className="grid grid-cols-2 gap-4 sm:w-80">
-          <Card>
+        <div className="flex gap-4">
+          <Card className="flex-1 min-w-[140px]">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Cu Datorii</CardTitle>
               <AlertCircle className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
-                {Object.values(groupedTransactions).filter(group => {
-                  const latestTransaction = group[0];
-                  return latestTransaction?.current_debt && latestTransaction.current_debt > 0;
-                }).length}
-              </div>
+              <div className="text-2xl font-bold">{stats.withDebt}</div>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="flex-1 min-w-[140px]">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Datorii Totale</CardTitle>
               <CreditCard className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
-                {formatAmount(
-                  Object.values(groupedTransactions).reduce((sum, group) => {
-                    const latestTransaction = group[0];
-                    const debt = latestTransaction?.current_debt || 0;
-                    return sum + (debt > 0 ? debt : 0);
-                  }, 0)
-                )} RON
-              </div>
+              <div className="text-2xl font-bold">{formatAmount(stats.totalDebt)} RON</div>
             </CardContent>
           </Card>
         </div>
@@ -201,7 +199,14 @@ export default function MarketTransactionsPage() {
 
       {/* Transactions List */}
       <div className="space-y-4">
-        {paginatedKeys.length === 0 ? (
+        {isLoading && (
+          <div className="flex items-center justify-center py-8">
+            <Loader2 className="h-4 w-4 animate-spin mr-2" />
+            <span className="text-sm text-muted-foreground">Se încarcă...</span>
+          </div>
+        )}
+        
+        {!isLoading && summaries.length === 0 ? (
           <Card>
             <CardContent className="flex items-center justify-center py-8">
               <p className="text-muted-foreground">
@@ -210,55 +215,85 @@ export default function MarketTransactionsPage() {
             </CardContent>
           </Card>
         ) : (
-          paginatedKeys.map((registrationId) => {
-            const regTransactions = groupedTransactions[parseInt(registrationId)];
-            const latestTransaction = regTransactions[0];
-            const participantName = latestTransaction?.registration_name || 'Necunoscut';
-            const participantPhone = latestTransaction?.registration_phone || 'N/A';
-            const currentDebt = latestTransaction?.current_debt || 0;
+          summaries.map((summary) => {
+            const isExpanded = expandedCards.has(summary.registration_id);
+            const recentTransactions = summary.recent_transactions.slice(0, 5);
 
             return (
-              <Card key={registrationId} className="overflow-hidden">
+              <Card key={summary.registration_id} className="overflow-hidden">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <CardTitle className="text-lg">{participantName}</CardTitle>
-                      <p className="text-sm text-muted-foreground">{participantPhone}</p>
+                      <CardTitle className="text-lg">{summary.registration_name}</CardTitle>
+                      <p className="text-sm text-muted-foreground">{summary.registration_phone}</p>
                     </div>
                     <div className="text-right">
-                      <p className={`font-semibold ${getDebtStatusColor(currentDebt)}`}>
-                        {getDebtStatusText(currentDebt)}
+                      <p className={`font-semibold ${getDebtStatusColor(summary.current_debt)}`}>
+                        {getDebtStatusText(summary.current_debt)}
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        {regTransactions.length} tranzacții
+                        {summary.total_transactions} tranzacții
                       </p>
                     </div>
                   </div>
                 </CardHeader>
+                
                 <CardContent>
-                  <div className="space-y-3">
-                    {regTransactions.map((transaction) => (
-                      <div key={transaction.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                        <div className="flex items-center space-x-3">
-                          <Badge variant={getTransactionTypeColor(transaction.amount)} className={transaction.amount < 0 ? 'bg-green-500 hover:bg-green-600' : ''}>
-                            {getTransactionTypeText(transaction.amount)}
-                          </Badge>
-                          <div>
-                            <p className="font-medium">{formatAmount(Math.abs(transaction.amount))} RON</p>
-                            {transaction.description && (
-                              <p className="text-sm text-muted-foreground">{transaction.description}</p>
-                            )}
+                  <div className="flex items-center justify-between mb-3">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => toggleCardExpansion(summary.registration_id)}
+                      className="flex items-center gap-2"
+                    >
+                      {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                      {isExpanded ? 'Ascunde tranzacțiile' : 'Arată tranzacțiile'}
+                    </Button>
+                    
+                    <Link href={`/admin/market/${summary.registration_id}`}>
+                      <Button variant="outline" size="sm" className="flex items-center gap-2">
+                        <ExternalLink className="h-3 w-3" />
+                        Vezi toate
+                      </Button>
+                    </Link>
+                  </div>
+
+                  {isExpanded && (
+                    <div className="space-y-3">
+                      {recentTransactions.map((transaction) => (
+                        <div key={transaction.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                          <div className="flex items-center space-x-3">
+                            <Badge 
+                              variant={getTransactionTypeColor(transaction.amount)} 
+                              className={transaction.amount < 0 ? 'bg-green-500 hover:bg-green-600' : ''}
+                            >
+                              {getTransactionTypeText(transaction.amount)}
+                            </Badge>
+                            <div>
+                              <p className="font-medium">{formatAmount(Math.abs(transaction.amount))} RON</p>
+                              {transaction.description && (
+                                <p className="text-sm text-muted-foreground">{transaction.description}</p>
+                              )}
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-sm font-medium">{transaction.created_by_name}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {format(new Date(transaction.created_at), "dd MMM yyyy HH:mm", { locale: ro })}
+                            </p>
                           </div>
                         </div>
-                        <div className="text-right">
-                          <p className="text-sm font-medium">{transaction.created_by_name}</p>
-                          <p className="text-xs text-muted-foreground">
-                            {format(new Date(transaction.created_at), "dd MMM yyyy HH:mm", { locale: ro })}
+                      ))}
+                      
+                      {summary.total_transactions > 5 && (
+                        <div className="text-center py-2">
+                          <p className="text-sm text-muted-foreground">
+                            ... și încă {summary.total_transactions - 5} tranzacții
                           </p>
                         </div>
-                      </div>
-                    ))}
-                  </div>
+                      )}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             );
@@ -268,38 +303,59 @@ export default function MarketTransactionsPage() {
 
       {/* Pagination Controls */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-center space-x-2 mt-6">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-            disabled={currentPage === 1}
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
+        <div className="flex items-center justify-between mt-6">
+          <p className="text-sm text-muted-foreground">
+            Afișând {((currentPage - 1) * pageSize) + 1}-{Math.min(currentPage * pageSize, totalCount)} din {totalCount} rezultate
+          </p>
           
-          <div className="flex items-center space-x-1">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-              <Button
-                key={page}
-                variant={currentPage === page ? "default" : "outline"}
-                size="sm"
-                onClick={() => setCurrentPage(page)}
-                className="w-8"
-              >
-                {page}
-              </Button>
-            ))}
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              disabled={currentPage === 1 || isLoading}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            
+            <div className="flex items-center space-x-1">
+              {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+                let page = i + 1;
+                if (totalPages > 5) {
+                  if (currentPage > 3) {
+                    page = currentPage - 2 + i;
+                  }
+                  if (currentPage > totalPages - 2) {
+                    page = totalPages - 4 + i;
+                  }
+                }
+                
+                if (page > totalPages) return null;
+                
+                return (
+                  <Button
+                    key={page}
+                    variant={currentPage === page ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setCurrentPage(page)}
+                    disabled={isLoading}
+                    className="w-8"
+                  >
+                    {page}
+                  </Button>
+                );
+              })}
+            </div>
+            
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+              disabled={currentPage === totalPages || isLoading}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
           </div>
-          
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-            disabled={currentPage === totalPages}
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
         </div>
       )}
 

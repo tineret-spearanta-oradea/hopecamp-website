@@ -41,6 +41,34 @@ export async function getUserRegistrationByEditionId(editionId: number, filterPa
     }
 }
 
+export async function getRegistrationById(registrationId: number): Promise<RegistrationWithProfile | null> {
+    try {
+        const { data, error } = await supabaseBrowserClient
+            .from("registrations")
+            .select(`
+                *,
+                user_registration_roles!left ( is_admin ),
+                user_profiles!inner ( user_id, name, image_url, age, ...user_roles!left ( is_super_admin ), ...auth_users_view!inner ( email, phone ) )
+            `)
+            .eq("id", registrationId)
+            .single();
+
+        if (error) {
+            console.error("Error fetching registration by ID:", error.message);
+            return null;
+        }
+
+        if (!data) {
+            return null;
+        }
+
+        return mapRegistrationWithProfile(data);
+    } catch (err) {
+        console.error("Unexpected error fetching registration by ID:", err);
+        return null;
+    }
+}
+
 export async function getRegistrationsByEditionId(editionId: number): Promise<RegistrationWithProfile[]> {
     try {
         const { data, error } = await supabaseBrowserClient

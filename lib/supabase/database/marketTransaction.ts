@@ -134,51 +134,118 @@ export async function getMarketTransactionSummary(registrationId: number): Promi
     }
 }
 
-// Get market transactions for all registrations (admin overview)
-export async function getAllMarketTransactions(): Promise<MarketTransaction[]> {
+// Get market transaction summaries with pagination (optimized for performance)
+export async function getMarketTransactionSummaries(
+    editionId: number = 1,
+    searchQuery: string = '',
+    limit: number = 10,
+    offset: number = 0
+): Promise<{
+    data: Array<{
+        registration_id: number;
+        registration_name: string;
+        registration_phone: string;
+        current_debt: number;
+        total_transactions: number;
+        latest_transaction_date?: string;
+        recent_transactions: MarketTransaction[];
+    }>;
+    count: number;
+}> {
+    try {
+        const [summariesResult, countResult] = await Promise.all([
+            supabaseBrowserClient.rpc('get_market_transaction_summaries', {
+                p_edition_id: editionId,
+                p_search_query: searchQuery,
+                p_limit: limit,
+                p_offset: offset
+            }),
+            supabaseBrowserClient.rpc('get_market_transaction_summaries_count', {
+                p_edition_id: editionId,
+                p_search_query: searchQuery
+            })
+        ]);
+
+        if (summariesResult.error) {
+            console.error("Error fetching market transaction summaries:", summariesResult.error);
+            throw summariesResult.error;
+        }
+
+        if (countResult.error) {
+            console.error("Error fetching market transaction summaries count:", countResult.error);
+            throw countResult.error;
+        }
+
+        const data = summariesResult.data?.map((summary: any) => ({
+            registration_id: summary.registration_id,
+            registration_name: summary.registration_name,
+            registration_phone: summary.registration_phone,
+            current_debt: summary.current_debt,
+            total_transactions: summary.total_transactions,
+            latest_transaction_date: summary.latest_transaction_date,
+            recent_transactions: summary.recent_transactions || []
+        })) || [];
+
+        return {
+            data,
+            count: countResult.data || 0
+        };
+    } catch (err) {
+        console.error("Unexpected error fetching market transaction summaries:", err);
+        throw err;
+    }
+}
+
+// Get detailed transactions for a specific registration with pagination
+export async function getRegistrationMarketTransactionsDetailed(
+    registrationId: number,
+    limit: number = 50,
+    offset: number = 0
+): Promise<MarketTransaction[]> {
     try {
         const { data, error } = await supabaseBrowserClient
-            .from("market_transactions")
-            .select(`
-                *,
-                creator:user_profiles ( name ),
-                registration:registrations ( 
-                    id,
-                    user_profiles ( name, ...auth_users_view!inner ( phone ) )
-                )
-            `)
-            .order("created_at", { ascending: false });
+            .rpc('get_registration_market_transactions_detailed', {
+                p_registration_id: registrationId,
+                p_limit: limit,
+                p_offset: offset
+            });
 
         if (error) {
-            console.error("Error fetching all market transactions:", error);
+            console.error("Error fetching detailed market transactions:", error);
             throw error;
         }
 
-        if (!data) {
-            return [];
-        }
-
-        // Map the data to include creator name and registration info
-        const processedData = data.map(transaction => {
-            const creatorData = transaction.creator as { name: string } | null;
-            const registrationData = transaction.registration as { 
-                id: number; 
-                user_profiles: { name: string; phone: string } 
-            } | null;
-
-            return {
-                ...transaction,
-                created_by_name: creatorData?.name ?? 'Unknown User',
-                registration_name: registrationData?.user_profiles?.name ?? 'Unknown',
-                registration_phone: registrationData?.user_profiles?.phone ?? 'Unknown',
-                creator: undefined,
-                registration: undefined,
-            };
-        }) as MarketTransaction[];
-
-        return processedData;
+        return data || [];
     } catch (err) {
-        console.error("Unexpected error fetching all market transactions:", err);
+        console.error("Unexpected error fetching detailed market transactions:", err);
+        throw err;
+    }
+}
+
+// Legacy function - keep for backward compatibility but mark as deprecated
+/** @deprecated Use getMarketTransactionSummaries instead for better performance */
+export async function getAllMarketTransactions(): Promise<MarketTransaction[]> {
+    console.warn("getAllMarketTransactions is deprecated. Use getMarketTransactionSummaries for better performance.");
+    
+    try {
+        const result = await getMarketTransactionSummaries(1, '', 1000, 0);
+        
+        // Flatten the data to match the old format
+        const transactions: MarketTransaction[] = [];
+        result.data.forEach(summary => {
+            summary.recent_transactions.forEach(transaction => {
+                transactions.push({
+                    ...transaction,
+                    registration_name: summary.registration_name,
+                    registration_phone: summary.registration_phone,
+                    current_debt: summary.current_debt
+                } as any);
+            });
+        });
+        
+        return transactions;
+    } catch (err) {
+        console.error("Unexpected error in legacy getAllMarketTransactions:", err);
         throw err;
     }
 }

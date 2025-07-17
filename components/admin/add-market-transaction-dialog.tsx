@@ -23,6 +23,7 @@ interface AddMarketTransactionDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   registrations: RegistrationWithProfile[];
+  defaultRegistrationId?: number;
   onSave: () => void;
 }
 
@@ -30,6 +31,7 @@ export function AddMarketTransactionDialog({
   open,
   onOpenChange,
   registrations,
+  defaultRegistrationId,
   onSave,
 }: AddMarketTransactionDialogProps) {
   const [selectedRegistration, setSelectedRegistration] = useState<number | null>(null);
@@ -43,14 +45,25 @@ export function AddMarketTransactionDialog({
   const [loadingDebt, setLoadingDebt] = useState(false);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
 
+  // Set default registration when dialog opens
+  useEffect(() => {
+    if (open && defaultRegistrationId) {
+      const defaultRegistration = registrations.find(reg => reg.id === defaultRegistrationId);
+      if (defaultRegistration) {
+        setSelectedRegistration(defaultRegistrationId);
+        setSearchQuery(defaultRegistration.name);
+      }
+    }
+  }, [open, defaultRegistrationId, registrations]);
+
   // Reset states when dialog opens/closes
   const handleOpenChange = (open: boolean) => {
     if (!open) {
-      setSelectedRegistration(null);
+      setSelectedRegistration(defaultRegistrationId || null);
       setTransactionType('debt');
       setAmount("");
       setDescription("");
-      setSearchQuery("");
+      setSearchQuery(defaultRegistrationId ? registrations.find(reg => reg.id === defaultRegistrationId)?.name || "" : "");
       setShowDropdown(false);
       setCurrentDebt(null);
       setIsStatusOpen(false);
