@@ -84,3 +84,53 @@ $$;
 
 -- Grant execute permission
 GRANT EXECUTE ON FUNCTION public.get_market_transaction_summaries(INT, TEXT, INT, INT) TO authenticated;
+
+-- Also fix the detailed transactions function
+DROP FUNCTION IF EXISTS public.get_registration_market_transactions_detailed(INT, INT, INT);
+
+CREATE FUNCTION public.get_registration_market_transactions_detailed(
+    p_registration_id INT,
+    p_limit INT DEFAULT 50,
+    p_offset INT DEFAULT 0
+)
+RETURNS TABLE (
+    id INT,
+    registration_id INT,
+    amount INTEGER,
+    description TEXT,
+    created_at TIMESTAMPTZ,
+    created_by UUID,
+    created_by_name TEXT,
+    running_balance INTEGER
+)
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+    RETURN QUERY
+    WITH ordered_transactions AS (
+        SELECT 
+            mt.id,
+            mt.registration_id,
+            mt.amount,
+            mt.description,
+            mt.created_at,
+            mt.created_by,
+            COALESCE(up.name, 'Unknown') as created_by_name,
+            SUM(mt2.amount)::INTEGER as running_balance  -- Cast to INTEGER
+        FROM market_transactions mt
+        LEFT JOIN user_profiles up ON mt.created_by = up.user_id
+        LEFT JOIN market_transactions mt2 ON mt2.registration_id = mt.registration_id 
+            AND mt2.created_at <= mt.created_at
+        WHERE mt.registration_id = p_registration_id
+        GROUP BY mt.id, mt.registration_id, mt.amount, mt.description, mt.created_at, mt.created_by, up.name
+        ORDER BY mt.created_at DESC
+        LIMIT p_limit OFFSET p_offset
+    )
+    SELECT * FROM ordered_transactions;
+END;
+$$;
+
+-- Grant execute permission for the detailed function
+GRANT EXECUTE ON FUNCTION public.get_registration_market_transactions_detailed(INT, INT, INT) TO authenticated;

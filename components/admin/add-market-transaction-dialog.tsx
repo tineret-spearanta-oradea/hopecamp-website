@@ -218,16 +218,14 @@ export function AddMarketTransactionDialog({
             <div className="grid grid-cols-2 gap-2">
               <Button
                 type="button"
-                variant={transactionType === 'debt' ? 'default' : 'outline'}
-                className={transactionType === 'debt' ? 'bg-red-500 hover:bg-red-600' : ''}
+                variant={transactionType === 'debt' ? 'default' : 'secondary'}
                 onClick={() => setTransactionType('debt')}
               >
                 Datorie
               </Button>
               <Button
                 type="button"
-                variant={transactionType === 'payment' ? 'default' : 'outline'}
-                className={transactionType === 'payment' ? 'bg-green-500 hover:bg-green-600' : ''}
+                variant={transactionType === 'payment' ? 'default' : 'secondary'}
                 onClick={() => setTransactionType('payment')}
               >
                 Plată
@@ -235,7 +233,7 @@ export function AddMarketTransactionDialog({
             </div>
             <p className="text-xs text-muted-foreground">
               {transactionType === 'debt' 
-                ? 'Participantul datorește bani (se adaugă la datorie)'
+                ? 'Participantul datoriează bani (se adaugă la datorie)'
                 : 'Participantul plătește datoria (se scade din datorie)'
               }
             </p>
@@ -327,7 +325,7 @@ export function AddMarketTransactionDialog({
 
           {/* Status and Preview Section */}
           {selectedRegistration && (
-            <div className="border rounded-lg">
+            <div className="">
               <Button 
                 variant="ghost" 
                 className="w-full justify-between p-3 h-auto"
@@ -335,7 +333,7 @@ export function AddMarketTransactionDialog({
               >
                 <div className="flex items-center gap-2">
                   <AlertCircle className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm font-medium">Status și Previzualizare</span>
+                  <span className="text-sm font-thin">Vezi datoria actuală</span>
                 </div>
                 {isStatusOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
               </Button>
@@ -358,7 +356,7 @@ export function AddMarketTransactionDialog({
                         <>
                           <div className="flex justify-between">
                             <span>
-                              {transactionType === 'debt' ? 'Se adaugă datorie:' : 'Se plătește:'}
+                              {transactionType === 'debt' ? 'Se adaugă datorie:' : 'Se scade datorie:'}
                             </span>
                             <span className={transactionType === 'debt' ? 'text-red-600' : 'text-green-600'}>
                               {transactionType === 'debt' ? '+' : '-'}{amount} RON

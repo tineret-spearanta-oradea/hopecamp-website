@@ -109,22 +109,6 @@ export default function RegistrationMarketDetailPage() {
     toast.success("Tranzacția a fost adăugată cu succes");
   };
 
-  const handleDeleteTransaction = async (transactionId: number) => {
-    if (!confirm("Ești sigur că vrei să ștergi această tranzacție?")) {
-      return;
-    }
-
-    try {
-      await deleteMarketTransaction(transactionId);
-      fetchRegistrationData();
-      fetchTransactions();
-      toast.success("Tranzacția a fost ștearsă cu succes");
-    } catch (err) {
-      console.error("Error deleting transaction:", err);
-      toast.error("A apărut o eroare la ștergerea tranzacției");
-    }
-  };
-
   const loadMoreTransactions = () => {
     if (hasMore && !isLoadingMore) {
       fetchTransactions(currentPage + 1, true);
@@ -167,7 +151,7 @@ export default function RegistrationMarketDetailPage() {
 
   if (error) {
     return (
-      <div className="max-w-[90vw] mx-auto py-2">
+      <div className="container mx-auto px-4 py-6 max-w-7xl">
         <div className="flex items-center gap-4 mb-6">
           <Link href="/admin/market">
             <Button variant="outline" size="sm">
@@ -185,35 +169,39 @@ export default function RegistrationMarketDetailPage() {
   }
 
   return (
-    <div className="max-w-[90vw] mx-auto py-2 overflow-hidden">
+    <div className="container mx-auto px-4 py-6 max-w-7xl">
       {/* Header with back button */}
-      <div className="flex items-center gap-4 mb-6">
-        <Link href="/admin/market">
-          <Button variant="outline" size="sm">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Înapoi
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
+        <div className="flex items-center gap-4">
+          <Link href="/admin/market">
+            <Button variant="outline" size="sm">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Înapoi
+            </Button>
+          </Link>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Tranzacții Market</h1>
+        </div>
+        <div className="sm:ml-auto">
+          <Button onClick={() => setIsDialogOpen(true)}>
+            <Plus className="h-4 w-4 mr-2" />
+            Adaugă Tranzacție
           </Button>
-        </Link>
-        <h1 className="text-3xl font-bold tracking-tight">Tranzacții Market</h1>
-        <Button onClick={() => setIsDialogOpen(true)}>
-          <Plus className="h-4 w-4 mr-2" />
-          Adaugă Tranzacție
-        </Button>
+        </div>
       </div>
 
       {/* Registration info and debt status */}
       {registration && (
         <Card className="mb-6">
           <CardHeader>
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div>
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+              <div className="flex-1">
                 <CardTitle className="text-xl">{registration.name}</CardTitle>
                 <p className="text-muted-foreground">{registration.phone}</p>
                 {registration.church && (
                   <p className="text-sm text-muted-foreground">{registration.church}</p>
                 )}
               </div>
-              <div className="text-right">
+              <div className="lg:text-right">
                 <p className={`text-lg font-semibold ${getDebtStatusColor(currentDebt)}`}>
                   {getDebtStatusText(currentDebt)}
                 </p>
@@ -238,43 +226,32 @@ export default function RegistrationMarketDetailPage() {
           transactions.map((transaction, index) => (
             <Card key={transaction.id} className="overflow-hidden">
               <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-center space-x-3 min-w-0 flex-1">
                     <Badge 
                       variant={getTransactionTypeColor(transaction.amount)} 
                       className={transaction.amount < 0 ? 'bg-green-500 hover:bg-green-600' : ''}
                     >
                       {getTransactionTypeText(transaction.amount)}
                     </Badge>
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <p className="font-medium text-lg">{formatAmount(Math.abs(transaction.amount))} RON</p>
                       {transaction.description && (
-                        <p className="text-sm text-muted-foreground">{transaction.description}</p>
+                        <p className="text-sm text-muted-foreground truncate">{transaction.description}</p>
                       )}
                     </div>
                   </div>
                   
-                  <div className="text-right flex items-center gap-3">
-                    <div>
-                      <p className="text-sm font-medium">{transaction.created_by_name}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {format(new Date(transaction.created_at), "dd MMM yyyy HH:mm", { locale: ro })}
+                  <div className="flex-shrink-0 text-right">
+                    <p className="text-sm font-medium">{transaction.created_by_name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {format(new Date(transaction.created_at), "dd MMM yyyy HH:mm", { locale: ro })}
+                    </p>
+                    {transaction.running_balance !== undefined && (
+                      <p className={`text-xs font-medium ${getRunningBalanceColor(transaction.running_balance)}`}>
+                        Sold: {formatAmount(transaction.running_balance)} RON
                       </p>
-                      {transaction.running_balance !== undefined && (
-                        <p className={`text-xs font-medium ${getRunningBalanceColor(transaction.running_balance)}`}>
-                          Sold: {formatAmount(transaction.running_balance)} RON
-                        </p>
-                      )}
-                    </div>
-                    
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleDeleteTransaction(transaction.id)}
-                      className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    )}
                   </div>
                 </div>
               </CardContent>

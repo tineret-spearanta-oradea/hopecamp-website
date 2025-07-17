@@ -155,9 +155,9 @@ export default function MarketTransactionsPage() {
   }
 
   return (
-    <div className="max-w-[90vw] mx-auto py-2 overflow-hidden">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold tracking-tight">Market</h1>
+    <div className="container mx-auto px-4 py-6 max-w-7xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Market</h1>
         <Button onClick={() => setIsDialogOpen(true)}>
           <Plus className="h-4 w-4 mr-2" />
           Adaugă Tranzacție
@@ -165,18 +165,20 @@ export default function MarketTransactionsPage() {
       </div>
 
       {/* Search and Statistics */}
-      <div className="flex flex-col lg:flex-row gap-4 mb-6">
-        <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Caută participant, telefon..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10"
-          />
+      <div className="flex flex-col gap-4 mb-6">
+        <div className="relative flex-1 max-w-sm">
+          <div className="relative flex items-center">
+            <Search className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none z-10" />
+            <Input
+              placeholder="Caută participant, telefon..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 pr-4 w-full"
+            />
+          </div>
         </div>
-        <div className="flex gap-4">
-          <Card className="flex-1 min-w-[140px]">
+        <div className="flex flex-col sm:flex-row gap-4">
+          <Card className="flex-1 min-w-[180px]">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Cu Datorii</CardTitle>
               <AlertCircle className="h-4 w-4 text-muted-foreground" />
@@ -185,7 +187,7 @@ export default function MarketTransactionsPage() {
               <div className="text-2xl font-bold">{stats.withDebt}</div>
             </CardContent>
           </Card>
-          <Card className="flex-1 min-w-[140px]">
+          <Card className="flex-1 min-w-[180px]">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Datorii Totale</CardTitle>
               <CreditCard className="h-4 w-4 text-muted-foreground" />
@@ -222,12 +224,12 @@ export default function MarketTransactionsPage() {
             return (
               <Card key={summary.registration_id} className="overflow-hidden">
                 <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <div>
+                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div className="flex-1">
                       <CardTitle className="text-lg">{summary.registration_name}</CardTitle>
                       <p className="text-sm text-muted-foreground">{summary.registration_phone}</p>
                     </div>
-                    <div className="text-right">
+                    <div className="lg:text-right">
                       <p className={`font-semibold ${getDebtStatusColor(summary.current_debt)}`}>
                         {getDebtStatusText(summary.current_debt)}
                       </p>
@@ -239,7 +241,7 @@ export default function MarketTransactionsPage() {
                 </CardHeader>
                 
                 <CardContent>
-                  <div className="flex items-center justify-between mb-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
                     <Button
                       variant="ghost"
                       size="sm"
@@ -261,22 +263,22 @@ export default function MarketTransactionsPage() {
                   {isExpanded && (
                     <div className="space-y-3">
                       {recentTransactions.map((transaction) => (
-                        <div key={transaction.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                          <div className="flex items-center space-x-3">
+                        <div key={transaction.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 bg-muted/50 rounded-lg">
+                          <div className="flex items-center space-x-3 min-w-0 flex-1">
                             <Badge 
                               variant={getTransactionTypeColor(transaction.amount)} 
                               className={transaction.amount < 0 ? 'bg-green-500 hover:bg-green-600' : ''}
                             >
                               {getTransactionTypeText(transaction.amount)}
                             </Badge>
-                            <div>
+                            <div className="min-w-0 flex-1">
                               <p className="font-medium">{formatAmount(Math.abs(transaction.amount))} RON</p>
                               {transaction.description && (
-                                <p className="text-sm text-muted-foreground">{transaction.description}</p>
+                                <p className="text-sm text-muted-foreground truncate">{transaction.description}</p>
                               )}
                             </div>
                           </div>
-                          <div className="text-right">
+                          <div className="flex-shrink-0 text-right">
                             <p className="text-sm font-medium">{transaction.created_by_name}</p>
                             <p className="text-xs text-muted-foreground">
                               {format(new Date(transaction.created_at), "dd MMM yyyy HH:mm", { locale: ro })}
@@ -303,7 +305,7 @@ export default function MarketTransactionsPage() {
 
       {/* Pagination Controls */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between mt-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-6">
           <p className="text-sm text-muted-foreground">
             Afișând {((currentPage - 1) * pageSize) + 1}-{Math.min(currentPage * pageSize, totalCount)} din {totalCount} rezultate
           </p>
