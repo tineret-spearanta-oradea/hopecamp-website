@@ -7,6 +7,7 @@ import { supabaseBrowserClient } from "@/lib/supabase/client";
 import { useRouter} from "next/navigation";
 import {getNewUserMetadata} from "@/lib/supabase/database/user";
 import {getActiveEdition} from "@/lib/supabase/database/edition";
+import { predictAndUpdateGender } from "@/lib/supabase/genderPrediction";
 
 const initialFormData: FormData = {
   authData: {
@@ -16,6 +17,7 @@ const initialFormData: FormData = {
   userData: {
     name: "",
     age: "",
+    gender: "unknown" as 'male' | 'female' | 'unknown',
     church: "",
     churchOther: "",
     churchContact: "",
@@ -231,6 +233,19 @@ export function useRegistrationForm() {
             "Contul tău a fost creat cu succes și ești autentificat.",
         });
 
+        // Predict gender if it's unknown and user has provided a name
+        if (formData.userData.gender === 'unknown' && formData.userData.name && data.user?.id) {
+          predictAndUpdateGender(data.user.id, formData.userData.name)
+            .then((prediction) => {
+              if (prediction) {
+                console.log(`Gender prediction for ${formData.userData.name}:`, prediction);
+              }
+            })
+            .catch((error) => {
+              console.error('Error predicting gender:', error);
+            });
+        }
+
         // Redirect to account page after successful registration
         setTimeout(() => {
           router.replace("/cont");
@@ -355,6 +370,19 @@ export function useRegistrationForm() {
       toast.success("Înregistrare reușită!", {
         description: "Contul tău a fost creat cu succes și ești autentificat.",
       });
+
+      // Predict gender if it's unknown and user has provided a name
+      if (formData.userData.gender === 'unknown' && formData.userData.name && data.user?.id) {
+        predictAndUpdateGender(data.user.id, formData.userData.name)
+          .then((prediction) => {
+            if (prediction) {
+              console.log(`Gender prediction for ${formData.userData.name}:`, prediction);
+            }
+          })
+          .catch((error) => {
+            console.error('Error predicting gender:', error);
+          });
+      }
 
       // Redirect to account page after successful registration
       setTimeout(() => {

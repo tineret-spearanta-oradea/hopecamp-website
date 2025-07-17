@@ -44,6 +44,10 @@ const userFormSchema = z.object({
   phone: z.string().min(1, "Numărul de telefon este obligatoriu"),
   church: z.string().min(1, "Biserica este obligatorie"),
   age: z.number().min(1, "Vârsta este obligatorie"),
+  gender: z.enum(["male", "female", "unknown"], {
+    required_error: "Genul este obligatoriu",
+    invalid_type_error: "Genul nu este valid",
+  }),
   imageUrl: z.string().optional(),
   startDate: z.date({
     required_error: "Data de început este obligatorie",
@@ -95,6 +99,7 @@ export function EditUserSheet({
       phone: "",
       church: "",
       age: 0,
+      gender: "unknown" as "male" | "female" | "unknown",
       transport: "personal",
       payTaxTo: "",
       amountPaid: 0,
@@ -114,6 +119,7 @@ export function EditUserSheet({
         phone: registration.phone || "",
         church: registration.church || "",
         age: registration.age || 0,
+        gender: registration.gender || "unknown" as "male" | "female" | "unknown",
         transport: registration.transport as "personal" | "prieten" | "autocar",
         payTaxTo: registration.payTaxTo || "",
         amountPaid: registration.amountPaid || 0,
@@ -280,6 +286,37 @@ export function EditUserSheet({
                                 field.onChange(e.target.valueAsNumber)
                               }
                             />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="gender"
+                      render={({ field }) => (
+                        <FormItem className="space-y-2">
+                          <FormLabel>Gen</FormLabel>
+                          <FormControl>
+                            <RadioGroup
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                              className="flex flex-row gap-6"
+                            >
+                              <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="male" id="male" />
+                                <Label htmlFor="male">Masculin</Label>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="female" id="female" />
+                                <Label htmlFor="female">Feminin</Label>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="unknown" id="unknown" />
+                                <Label htmlFor="unknown">Necunoscut</Label>
+                              </div>
+                            </RadioGroup>
                           </FormControl>
                           <FormMessage />
                         </FormItem>

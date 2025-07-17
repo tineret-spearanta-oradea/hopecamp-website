@@ -104,6 +104,21 @@ export const columns = ({
     sortingFn: sortingFns.alphanumeric,
   },
   {
+    accessorKey: "gender",
+    header: ({ column }) => <SortButton column={column}>Gen</SortButton>,
+    enableHiding: true,
+    cell: ({ row }) => {
+      const gender = row.getValue("gender") as 'male' | 'female' | 'unknown';
+      if (!gender || gender === 'unknown') return "-";
+      return (
+        <span className={gender === 'male' ? "text-blue-600" : "text-pink-600"}>
+          {gender === 'male' ? 'M' : 'F'}
+        </span>
+      );
+    },
+    sortingFn: sortingFns.alphanumeric,
+  },
+  {
     accessorKey: "phone",
     header: "Telefon",
     enableHiding: true,
