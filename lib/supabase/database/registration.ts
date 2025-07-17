@@ -11,7 +11,7 @@ export async function getUserRegistrationByEditionId(editionId: number, filterPa
         .select(`
         *,
         user_registration_roles!left ( is_admin ),
-        user_profiles!inner ( user_id, name, image_url, age, ...user_roles!left ( is_super_admin ), ...auth_users_view!inner ( email, phone ) )
+        user_profiles!inner ( user_id, name, image_url, age, gender, ...user_roles!left ( is_super_admin ), ...auth_users_view!inner ( email, phone ) )
         `)
         .eq("edition_id", editionId);
 
@@ -41,6 +41,34 @@ export async function getUserRegistrationByEditionId(editionId: number, filterPa
     }
 }
 
+export async function getRegistrationById(registrationId: number): Promise<RegistrationWithProfile | null> {
+    try {
+        const { data, error } = await supabaseBrowserClient
+            .from("registrations")
+            .select(`
+                *,
+                user_registration_roles!left ( is_admin ),
+                user_profiles!inner ( user_id, name, image_url, age, gender, ...user_roles!left ( is_super_admin ), ...auth_users_view!inner ( email, phone ) )
+            `)
+            .eq("id", registrationId)
+            .single();
+
+        if (error) {
+            console.error("Error fetching registration by ID:", error.message);
+            return null;
+        }
+
+        if (!data) {
+            return null;
+        }
+
+        return mapRegistrationWithProfile(data);
+    } catch (err) {
+        console.error("Unexpected error fetching registration by ID:", err);
+        return null;
+    }
+}
+
 export async function getRegistrationsByEditionId(editionId: number): Promise<RegistrationWithProfile[]> {
     try {
         const { data, error } = await supabaseBrowserClient
@@ -49,7 +77,7 @@ export async function getRegistrationsByEditionId(editionId: number): Promise<Re
             `
                 *,
                 user_registration_roles!left ( is_admin ),
-                user_profiles!inner ( user_id, name, image_url, age, ...user_roles!left ( is_super_admin ), ...auth_users_view!inner ( email, phone ) )
+                user_profiles!inner ( user_id, name, image_url, age, gender, ...user_roles!left ( is_super_admin ), ...auth_users_view!inner ( email, phone ) )
             `
           )
           .order("created_at", { ascending: false })
@@ -97,6 +125,7 @@ function mapRegistrationWithProfile(row: any): RegistrationWithProfile {
       phone: row.user_profiles.phone.slice(1), // REMOVE THE PREFIX "4"
       imageUrl: row.user_profiles.image_url,
       age: row.user_profiles.age,
+      gender: row.user_profiles.gender || 'unknown',
       isSuperAdmin: row.user_profiles?.is_super_admin ?? false,
     };
 }
@@ -114,6 +143,7 @@ export async function updateUserRegistrationProfile(registration: UpdateRegistra
             name: registration.name,
             image_url: registration.imageUrl,
             age: registration.age,
+            gender: registration.gender,
             updated_at: now
         };
         const {error: profileError} = await supabaseBrowserClient

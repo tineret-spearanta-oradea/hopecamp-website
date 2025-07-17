@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "local-supabase-full-access": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-postgres-full-access",
+        "postgresql://postgres:postgres@localhost:54322/postgres"
+      ]
+    }
+  }
+}

@@ -10,6 +10,7 @@ import {
   Settings,
   Shield,
   Wallet,
+  ShoppingCart,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -39,6 +40,12 @@ const menuItems = [
     title: "Financiar",
     icon: Wallet,
     href: "/admin/financiar",
+    superAdminOnly: false,
+  },
+  {
+    title: "Market",
+    icon: ShoppingCart,
+    href: "/admin/market",
     superAdminOnly: false,
   },
   {

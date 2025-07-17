@@ -34,6 +34,7 @@ export function mapUserProfileDbRow(data: any): UserProfile { // Add export
         createdAt: new Date(data.created_at),
         updatedAt: new Date(data.updated_at),
         age: data.age,
+        gender: data.gender || 'unknown',
     };
 }
 
@@ -46,6 +47,7 @@ export const getNewUserMetadata = (
         edition_id: editionId,
         display_name: formData.userData.name,
         age: formData.userData.age,
+        gender: formData.userData.gender,
         church:
           formData.userData.church === "alta"
             ? formData.userData.churchOther
@@ -94,5 +96,25 @@ export async function getUserNameById(userId: string): Promise<string | null> {
     } catch (error: any) {
         console.error("Unexpected error fetching user name:", error.message);
         return null;
+    }
+}
+
+export async function updateUserGender(userId: string, gender: 'male' | 'female' | 'unknown'): Promise<void> {
+    try {
+        const { error } = await supabaseBrowserClient
+            .from("user_profiles")
+            .update({ 
+                gender: gender,
+                updated_at: new Date().toISOString()
+            })
+            .eq("user_id", userId);
+
+        if (error) {
+            console.error("Error updating user gender:", error.message);
+            throw error;
+        }
+    } catch (error: any) {
+        console.error("Unexpected error updating user gender:", error.message);
+        throw error;
     }
 }

@@ -8,6 +8,7 @@ import {
   ArrowUpDown,
   ArrowUp,
   ArrowDown,
+  CreditCard,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +24,7 @@ import { sumToPay } from "@/lib/constants";
 
 import {RegistrationWithProfile} from "@/types/registrationWithProfile";
 import { toast } from "sonner";
+import { useEffect, useState } from "react";
 
 interface ColumnProps {
   onEdit?: (user: RegistrationWithProfile) => void;
@@ -98,6 +100,21 @@ export const columns = ({
       const age = row.getValue("age") as number | undefined;
       if (!age) return "-";
       return <span className={age < 18 ? "text-purple-700" : ""}>{age}</span>;
+    },
+    sortingFn: sortingFns.alphanumeric,
+  },
+  {
+    accessorKey: "gender",
+    header: ({ column }) => <SortButton column={column}>Gen</SortButton>,
+    enableHiding: true,
+    cell: ({ row }) => {
+      const gender = row.getValue("gender") as 'male' | 'female' | 'unknown';
+      if (!gender || gender === 'unknown') return "-";
+      return (
+        <span className={gender === 'male' ? "text-blue-600" : "text-pink-600"}>
+          {gender === 'male' ? 'M' : 'F'}
+        </span>
+      );
     },
     sortingFn: sortingFns.alphanumeric,
   },

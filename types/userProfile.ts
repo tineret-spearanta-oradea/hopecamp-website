@@ -6,6 +6,7 @@ export interface UserProfile {
   updatedAt: Date;
   age: number;
   phone: string;
+  gender: 'male' | 'female' | 'unknown';
   // Field from user_roles
   isSuperAdmin: boolean;
 }

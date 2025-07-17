@@ -6,6 +6,7 @@ export interface AuthData {
 export interface UserData {
   name: string;
   age: string;
+  gender: 'male' | 'female' | 'unknown';
   startDate: Date | undefined;
   endDate: Date | undefined;
   church: string;
@@ -25,6 +26,7 @@ export interface FormData {
 export interface ValidationErrors {
   name?: string;
   age?: string;
+  gender?: string;
   phone?: string;
   dateRange?: string;
   church?: string;
