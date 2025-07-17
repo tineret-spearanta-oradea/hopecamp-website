@@ -147,44 +147,29 @@ export default function ConfirmedUser({userRegistrationData}: ConfirmedUserProps
                 
                 {/* Market Debt Section */}
                 <div className="pt-4 border-t">
-                    <div className="flex items-center gap-2 mb-2">
-                        <CreditCard className="h-4 w-4 text-muted-foreground" />
-                        <h3 className="font-semibold">Situația financiară - Piața din tabără</h3>
-                    </div>
-                    {debtLoading ? (
-                        <p className="text-sm text-muted-foreground">Se încarcă...</p>
-                    ) : currentDebt !== null ? (
-                        <div className="space-y-2">
-                            {currentDebt === 0 ? (
-                                <div className="flex items-center gap-2 text-green-600">
-                                    <CheckCircle2 className="h-4 w-4" />
-                                    <span className="text-sm">Fără datorii la piață</span>
-                                </div>
-                            ) : currentDebt > 0 ? (
-                                <div className="flex items-center gap-2 text-red-600">
-                                    <AlertCircle className="h-4 w-4" />
-                                    <span className="text-sm">
-                                        Datorie la piață: <strong>{formatAmount(currentDebt)} RON</strong>
-                                    </span>
-                                </div>
-                            ) : (
-                                <div className="flex items-center gap-2 text-blue-600">
-                                    <CheckCircle2 className="h-4 w-4" />
-                                    <span className="text-sm">
-                                        Plată în plus: <strong>{formatAmount(Math.abs(currentDebt))} RON</strong>
-                                    </span>
-                                </div>
-                            )}
-                            <p className="text-xs text-muted-foreground">
-                                Această sumă reprezintă balanța ta la piața din tabără. 
-                                Pentru detalii sau clarificări, contactează organizatorii.
-                            </p>
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                            <CreditCard className="h-4 w-4 text-muted-foreground" />
+                            <span className="font-semibold">Market:</span>
                         </div>
-                    ) : (
-                        <p className="text-sm text-muted-foreground">
-                            Nu s-a putut încărca informația despre datorii
-                        </p>
-                    )}
+                        {debtLoading ? (
+                            <span className="text-sm text-muted-foreground">Se încarcă...</span>
+                        ) : currentDebt !== null ? (
+                            currentDebt === 0 ? (
+                                <span className="text-sm text-green-600 font-medium">Fără datorii</span>
+                            ) : currentDebt > 0 ? (
+                                <span className="text-sm text-red-600 font-medium">
+                                    Datorie: {formatAmount(currentDebt)} RON
+                                </span>
+                            ) : (
+                                <span className="text-sm text-blue-600 font-medium">
+                                    Credit: {formatAmount(Math.abs(currentDebt))} RON
+                                </span>
+                            )
+                        ) : (
+                            <span className="text-sm text-muted-foreground">N/A</span>
+                        )}
+                    </div>
                 </div>
 
                 {/* Show admin link if user is admin (from registration) OR super admin (from profile) */}

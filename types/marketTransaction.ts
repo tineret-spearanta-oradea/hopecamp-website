@@ -2,8 +2,7 @@
 export interface MarketTransaction {
     id: number;
     registration_id: number;
-    transaction_type: 'debt' | 'payment';
-    amount: number; // Amount in RON cents (e.g., 1000 = 10 RON)
+    amount: number; // Amount in RON cents: positive = debt, negative = payment
     description?: string | null;
     created_at: string;
     created_by: string; // UUID of the admin who created it

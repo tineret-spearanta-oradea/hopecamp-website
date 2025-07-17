@@ -8,6 +8,7 @@ import {
   ArrowUpDown,
   ArrowUp,
   ArrowDown,
+  CreditCard,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,9 +21,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { sortingFns } from "@tanstack/react-table";
 import { sumToPay } from "@/lib/constants";
+import { getCurrentDebtForRegistration } from "@/lib/supabase/database/marketTransaction";
+import { formatAmount } from "@/types/marketTransaction";
 
 import {RegistrationWithProfile} from "@/types/registrationWithProfile";
 import { toast } from "sonner";
+import { useEffect, useState } from "react";
 
 interface ColumnProps {
   onEdit?: (user: RegistrationWithProfile) => void;
@@ -56,6 +60,50 @@ const SortButton = ({
         <ArrowUpDown className="ml-2 h-4 w-4 text-muted-foreground" />
       )}
     </Button>
+  );
+};
+
+// Market debt cell component
+const MarketDebtCell = ({ registrationId }: { registrationId: number }) => {
+  const [debt, setDebt] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadDebt = async () => {
+      try {
+        const currentDebt = await getCurrentDebtForRegistration(registrationId);
+        setDebt(currentDebt);
+      } catch (error) {
+        console.error("Error loading market debt:", error);
+        setDebt(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadDebt();
+  }, [registrationId]);
+
+  if (loading) {
+    return <span className="text-muted-foreground">...</span>;
+  }
+
+  if (debt === null) {
+    return <span className="text-muted-foreground">N/A</span>;
+  }
+
+  return (
+    <span
+      className={
+        debt === 0
+          ? "text-emerald-600"
+          : debt > 0
+          ? "text-red-600"
+          : "text-blue-600"
+      }
+    >
+      {debt === 0 ? "0" : formatAmount(Math.abs(debt))}
+    </span>
   );
 };
 
@@ -167,6 +215,23 @@ export const columns = ({
       );
     },
     sortingFn: sortingFns.alphanumeric,
+  },
+  {
+    accessorKey: "marketDebt",
+    header: ({ column }) => (
+      <div className="flex items-center gap-1">
+        <CreditCard className="h-4 w-4" />
+        <SortButton column={column}>Market</SortButton>
+      </div>
+    ),
+    enableHiding: true,
+    cell: ({ row }) => {
+      return <MarketDebtCell registrationId={row.original.id} />;
+    },
+    sortingFn: (rowA, rowB) => {
+      // Note: This won't work perfectly with async data, but provides basic sorting
+      return 0;
+    },
   },
   {
     accessorKey: "numberOfDays",

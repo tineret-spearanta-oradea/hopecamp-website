@@ -111,12 +111,12 @@ export async function getMarketTransactionSummary(registrationId: number): Promi
         ]);
 
         const totalDebt = transactions
-            .filter(t => t.transaction_type === 'debt')
+            .filter(t => t.amount > 0)
             .reduce((sum, t) => sum + t.amount, 0);
 
         const totalPayments = transactions
-            .filter(t => t.transaction_type === 'payment')
-            .reduce((sum, t) => sum + t.amount, 0);
+            .filter(t => t.amount < 0)
+            .reduce((sum, t) => sum + Math.abs(t.amount), 0);
 
         const lastTransaction = transactions.length > 0 ? transactions[0] : null;
 

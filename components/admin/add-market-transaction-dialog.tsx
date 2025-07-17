@@ -11,19 +11,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Check, AlertCircle, Loader2 } from "lucide-react";
+import { Check, AlertCircle, Loader2, ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { formatAmount, parseAmount } from "@/types/marketTransaction";
 import { RegistrationWithProfile } from "@/types/registrationWithProfile";
 import { addMarketTransaction, getCurrentDebtForRegistration } from "@/lib/supabase/database/marketTransaction";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 interface AddMarketTransactionDialogProps {
   open: boolean;
@@ -47,6 +45,7 @@ export function AddMarketTransactionDialog({
   const [showDropdown, setShowDropdown] = useState(false);
   const [currentDebt, setCurrentDebt] = useState<number | null>(null);
   const [loadingDebt, setLoadingDebt] = useState(false);
+  const [isStatusOpen, setIsStatusOpen] = useState(false);
 
   // Reset states when dialog opens/closes
   const handleOpenChange = (open: boolean) => {
@@ -58,6 +57,7 @@ export function AddMarketTransactionDialog({
       setSearchQuery("");
       setShowDropdown(false);
       setCurrentDebt(null);
+      setIsStatusOpen(false);
     }
     onOpenChange(open);
   };
@@ -111,16 +111,16 @@ export function AddMarketTransactionDialog({
       return;
     }
 
-    // Convert to cents for storage
+    // Convert to cents for storage and make negative for payments
     const amountInCents = parseAmount(amountNumber);
+    const finalAmount = transactionType === 'payment' ? -amountInCents : amountInCents;
 
     try {
       setIsSubmitting(true);
       
       await addMarketTransaction({
         registration_id: selectedRegistration,
-        transaction_type: transactionType,
-        amount: amountInCents,
+        amount: finalAmount,
         description: description.trim() || null,
         created_by: "", // Will be set by the database function
       });
@@ -151,7 +151,7 @@ export function AddMarketTransactionDialog({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Adaugă Tranzacție Piață</DialogTitle>
+          <DialogTitle>Adaugă Tranzacție Market</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           {/* Registration Selection */}
@@ -202,42 +202,34 @@ export function AddMarketTransactionDialog({
             </div>
           </div>
 
-          {/* Current Debt Display */}
-          {selectedRegistration && (
-            <div className="p-3 bg-muted/50 rounded-lg">
-              <div className="flex items-center gap-2">
-                <AlertCircle className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm font-medium">Status actual:</span>
-              </div>
-              {loadingDebt ? (
-                <div className="flex items-center gap-2 mt-1">
-                  <Loader2 className="h-3 w-3 animate-spin" />
-                  <span className="text-sm text-muted-foreground">Se încarcă...</span>
-                </div>
-              ) : currentDebt !== null ? (
-                <p className={`text-sm mt-1 ${getDebtStatusColor(currentDebt)}`}>
-                  {getDebtStatusText(currentDebt)}
-                </p>
-              ) : (
-                <p className="text-sm text-muted-foreground mt-1">
-                  Nu s-a putut încărca statusul
-                </p>
-              )}
-            </div>
-          )}
 
           {/* Transaction Type Selection */}
           <div className="grid gap-2">
             <Label>Tip Tranzacție *</Label>
-            <Select value={transactionType} onValueChange={(value: 'debt' | 'payment') => setTransactionType(value)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Selectează tipul tranzacției" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="debt">Datorie (participantul datorește bani)</SelectItem>
-                <SelectItem value="payment">Plată (participantul plătește datoria)</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="grid grid-cols-2 gap-2">
+              <Button
+                type="button"
+                variant={transactionType === 'debt' ? 'default' : 'outline'}
+                className={transactionType === 'debt' ? 'bg-red-500 hover:bg-red-600' : ''}
+                onClick={() => setTransactionType('debt')}
+              >
+                Datorie
+              </Button>
+              <Button
+                type="button"
+                variant={transactionType === 'payment' ? 'default' : 'outline'}
+                className={transactionType === 'payment' ? 'bg-green-500 hover:bg-green-600' : ''}
+                onClick={() => setTransactionType('payment')}
+              >
+                Plată
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {transactionType === 'debt' 
+                ? 'Participantul datorește bani (se adaugă la datorie)'
+                : 'Participantul plătește datoria (se scade din datorie)'
+              }
+            </p>
           </div>
 
           {/* Amount Input */}
@@ -293,43 +285,96 @@ export function AddMarketTransactionDialog({
             <Textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Ex: Băuturi, mâncare, etc..."
+              placeholder="Ex: Market, coffee, lemo, etc..."
               rows={2}
             />
+            <div className="flex flex-wrap gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setDescription("Market")}
+              >
+                Market
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setDescription("Coffee")}
+              >
+                Coffee
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setDescription("Lemo")}
+              >
+                Lemo
+              </Button>
+            </div>
           </div>
 
-          {/* Transaction Preview */}
-          {selectedRegistration && amount && currentDebt !== null && (
-            <div className="p-3 bg-muted/50 rounded-lg">
-              <h4 className="text-sm font-medium mb-2">Previzualizare:</h4>
-              <div className="space-y-1 text-sm">
-                <div className="flex justify-between">
-                  <span>Datorie actuală:</span>
-                  <span className={getDebtStatusColor(currentDebt)}>
-                    {formatAmount(currentDebt)} RON
-                  </span>
+          {/* Status and Preview Section */}
+          {selectedRegistration && (
+            <Collapsible open={isStatusOpen} onOpenChange={setIsStatusOpen}>
+              <CollapsibleTrigger asChild>
+                <Button variant="ghost" className="w-full justify-between p-3 h-auto">
+                  <div className="flex items-center gap-2">
+                    <AlertCircle className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm font-medium">Status și Previzualizare</span>
+                  </div>
+                  {isStatusOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <div className="p-3 bg-muted/50 rounded-lg mt-2">
+                  {loadingDebt ? (
+                    <div className="flex items-center gap-2">
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                      <span className="text-sm text-muted-foreground">Se încarcă...</span>
+                    </div>
+                  ) : currentDebt !== null ? (
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span>Datorie actuală:</span>
+                        <span className={getDebtStatusColor(currentDebt)}>
+                          {formatAmount(currentDebt)} RON
+                        </span>
+                      </div>
+                      {amount && (
+                        <>
+                          <div className="flex justify-between">
+                            <span>
+                              {transactionType === 'debt' ? 'Se adaugă datorie:' : 'Se plătește:'}
+                            </span>
+                            <span className={transactionType === 'debt' ? 'text-red-600' : 'text-green-600'}>
+                              {transactionType === 'debt' ? '+' : '-'}{amount} RON
+                            </span>
+                          </div>
+                          <hr className="my-2" />
+                          <div className="flex justify-between font-medium">
+                            <span>Datorie după tranzacție:</span>
+                            <span className={getDebtStatusColor(
+                              currentDebt + (transactionType === 'debt' ? parseAmount(amount || "0") : -parseAmount(amount || "0"))
+                            )}>
+                              {formatAmount(
+                                currentDebt + (transactionType === 'debt' ? parseAmount(amount || "0") : -parseAmount(amount || "0"))
+                              )} RON
+                            </span>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">
+                      Nu s-a putut încărca statusul
+                    </p>
+                  )}
                 </div>
-                <div className="flex justify-between">
-                  <span>
-                    {transactionType === 'debt' ? 'Se adaugă datorie:' : 'Se plătește:'}
-                  </span>
-                  <span className={transactionType === 'debt' ? 'text-red-600' : 'text-green-600'}>
-                    {transactionType === 'debt' ? '+' : '-'}{amount} RON
-                  </span>
-                </div>
-                <hr className="my-2" />
-                <div className="flex justify-between font-medium">
-                  <span>Datorie după tranzacție:</span>
-                  <span className={getDebtStatusColor(
-                    currentDebt + (transactionType === 'debt' ? parseAmount(amount || "0") : -parseAmount(amount || "0"))
-                  )}>
-                    {formatAmount(
-                      currentDebt + (transactionType === 'debt' ? parseAmount(amount || "0") : -parseAmount(amount || "0"))
-                    )} RON
-                  </span>
-                </div>
-              </div>
-            </div>
+              </CollapsibleContent>
+            </Collapsible>
           )}
         </div>
 
