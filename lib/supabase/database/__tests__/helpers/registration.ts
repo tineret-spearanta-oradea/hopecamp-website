@@ -26,6 +26,7 @@ export function createTestRegistrationWithProfile(overrides: Partial<Registratio
       name: "Test Reg User",
       phone: `40${770123456 + Math.floor(Math.random() * 10000) + 1}`,
       age: 28,
+      gender: 'male' as 'male' | 'female' | 'unknown',
       imageUrl: "",
       isSuperAdmin: false,
       createdAt: now, // Will be slightly different from DB, used for structure

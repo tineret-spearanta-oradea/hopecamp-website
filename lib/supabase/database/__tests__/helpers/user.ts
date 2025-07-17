@@ -63,7 +63,7 @@ export function createTestFormData( // Add export
     const userData: UserData = {
       name: registration.name,
       age: registration.age.toString(), // Convert number back to string for form
-
+      gender: registration.gender || 'unknown',
       startDate: registration.startDate,
       endDate: registration.endDate,
       church: registration.church,
@@ -78,6 +78,7 @@ export function createTestFormData( // Add export
     // Create AuthData using phone from registration and any overrides
     const authData: AuthData = {
         phone: registration.phone,
+        phonePrefix: "+40", // Default prefix
     };
 
     return {

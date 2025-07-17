@@ -11,6 +11,7 @@ import {
   Shield,
   Wallet,
   ShoppingCart,
+  Group,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -52,6 +53,12 @@ const menuItems = [
     title: "Admini",
     icon: Shield,
     href: "/admin/admins",
+    superAdminOnly: true,
+  },
+  {
+    title: "Grupuri mici",
+    icon: Group,
+    href: "/admin/grupuri-mici",
     superAdminOnly: true,
   },
   {
