@@ -19,6 +19,15 @@ export async function getGroupsByEditionId(editionId: number, client?: SupabaseC
             gender
           )
         ),
+        secondary_leader:registrations!secondary_leader_id (
+          id,
+          user_profiles!user_id (
+            user_id,
+            name,
+            age,
+            gender
+          )
+        ),
         group_members (
           user_id,
           registrations!user_id (
@@ -113,6 +122,7 @@ export async function createGroupsWithMembers(
   groupsData: Array<{
     name: string;
     leaderId: number; // Now using registration ID
+    secondaryLeaderId?: number | null; // Optional secondary leader using registration ID
     memberIds: number[]; // Now using registration IDs
   }>,
   client?: SupabaseClient
@@ -130,7 +140,8 @@ export async function createGroupsWithMembers(
         .insert({
           edition_id: editionId,
           name: groupData.name,
-          leader_id: groupData.leaderId
+          leader_id: groupData.leaderId,
+          secondary_leader_id: groupData.secondaryLeaderId || null
         })
         .select()
         .single();
@@ -163,6 +174,15 @@ export async function createGroupsWithMembers(
         .select(`
           *,
           leader:registrations!leader_id (
+            id,
+            user_profiles!user_id (
+              user_id,
+              name,
+              age,
+              gender
+            )
+          ),
+          secondary_leader:registrations!secondary_leader_id (
             id,
             user_profiles!user_id (
               user_id,
@@ -270,12 +290,16 @@ export async function getUnassignedUsers(editionId: number, client?: SupabaseCli
     const allUsers = await getUsersForGroupAssignment(editionId, client);
     const groups = await getGroupsByEditionId(editionId, client);
     
-    // Get all assigned registration IDs (both leaders and members)
+    // Get all assigned registration IDs (both leaders, secondary leaders and members)
     const assignedRegistrationIds = new Set<number>();
     
     groups.forEach(group => {
       // leaderId is stored as registration ID in the database
       assignedRegistrationIds.add(Number(group.leaderId));
+      // Add secondary leader if exists
+      if (group.secondaryLeaderId) {
+        assignedRegistrationIds.add(Number(group.secondaryLeaderId));
+      }
       group.members.forEach(member => {
         // Find the registration ID for this member
         const userRegistration = allUsers.find(u => u.userId === member.userId);
@@ -314,6 +338,7 @@ function mapGroupWithDetails(row: any): GroupWithDetails {
     editionId: row.edition_id,
     name: row.name,
     leaderId: row.leader_id,
+    secondaryLeaderId: row.secondary_leader_id,
     createdAt: new Date(row.created_at),
     updatedAt: new Date(row.updated_at),
     leader: {
@@ -322,6 +347,12 @@ function mapGroupWithDetails(row: any): GroupWithDetails {
       age: row.leader.user_profiles.age,
       gender: row.leader.user_profiles.gender || 'unknown'
     },
+    secondaryLeader: row.secondary_leader ? {
+      userId: row.secondary_leader.user_profiles.user_id,
+      name: row.secondary_leader.user_profiles.name,
+      age: row.secondary_leader.user_profiles.age,
+      gender: row.secondary_leader.user_profiles.gender || 'unknown'
+    } : null,
     members,
     memberCount: members.length,
     statistics
