@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body: GroupAssignmentRequest = await request.json();
-    const { selectedLeaderIds } = body;
+    const { selectedLeaderIds, selectedSecondaryLeaderIds, leaderPairs } = body;
 
     if (!selectedLeaderIds || selectedLeaderIds.length < 1) {
       return NextResponse.json(
@@ -92,6 +92,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Validate secondary leaders if provided
+    let invalidSecondaryLeaders: number[] = [];
+    if (selectedSecondaryLeaderIds && selectedSecondaryLeaderIds.length > 0) {
+      invalidSecondaryLeaders = selectedSecondaryLeaderIds.filter(id => !allRegistrationIds.includes(id));
+      
+      if (invalidSecondaryLeaders.length > 0) {
+        return NextResponse.json(
+          { error: `Invalid secondary leader IDs: ${invalidSecondaryLeaders.join(", ")}` },
+          { status: 400 }
+        );
+      }
+
+      // Ensure no overlap between primary and secondary leaders
+      const overlappingLeaders = selectedLeaderIds.filter(id => selectedSecondaryLeaderIds.includes(id));
+      if (overlappingLeaders.length > 0) {
+        return NextResponse.json(
+          { error: `Users cannot be both primary and secondary leaders: ${overlappingLeaders.join(", ")}` },
+          { status: 400 }
+        );
+      }
+    }
+
     // Calculate dynamic group sizes based on total users
     const totalUsers = allUsers.length;
     const numGroups = selectedLeaderIds.length;
@@ -107,7 +129,7 @@ export async function POST(request: NextRequest) {
       maxGroupSize,
       balanceGender: true,
       balanceAge: true // Enable age balancing for better age distribution
-    });
+    }, selectedSecondaryLeaderIds, leaderPairs);
 
     // Validate the assignment
     const validation = validateGroupAssignment(assignedGroups);
@@ -125,6 +147,7 @@ export async function POST(request: NextRequest) {
     const groupsData = assignedGroups.map(group => ({
       name: group.name,
       leaderId: group.leaderId,
+      secondaryLeaderId: group.secondaryLeaderId || null,
       memberIds: group.memberIds
     }));
 

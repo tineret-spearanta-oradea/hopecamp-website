@@ -10,6 +10,7 @@ export interface GroupAssignmentOptions {
 export interface AssignedGroup {
   name: string;
   leaderId: number;
+  secondaryLeaderId?: number | null;
   memberIds: number[];
   members: UserForGroupAssignment[];
   statistics: {
@@ -27,7 +28,9 @@ const DEFAULT_OPTIONS: GroupAssignmentOptions = {
 export function generateBalancedGroups(
   allUsers: UserForGroupAssignment[],
   selectedLeaderIds: number[],
-  options: Partial<GroupAssignmentOptions> = {}
+  options: Partial<GroupAssignmentOptions> = {},
+  selectedSecondaryLeaderIds: number[] = [],
+  leaderPairs?: Array<{primaryLeaderId: number; secondaryLeaderId?: number | null}>
 ): AssignedGroup[] {
   const opts = { ...DEFAULT_OPTIONS, ...options };
   
@@ -36,9 +39,10 @@ export function generateBalancedGroups(
     throw new Error("At least one leader must be selected");
   }
 
-  // Separate leaders from regular members
+  // Separate leaders and secondary leaders from regular members
   const leaders = allUsers.filter(user => selectedLeaderIds.includes(user.registrationId));
-  const availableMembers = allUsers.filter(user => !selectedLeaderIds.includes(user.registrationId));
+  const excludedIds = [...selectedLeaderIds, ...selectedSecondaryLeaderIds];
+  const availableMembers = allUsers.filter(user => !excludedIds.includes(user.registrationId));
 
   if (leaders.length !== selectedLeaderIds.length) {
     throw new Error("Some selected leaders are not found in the user list");
@@ -50,18 +54,31 @@ export function generateBalancedGroups(
   const targetGroupSize = Math.floor(totalMembers / numGroups);
   const remainder = totalMembers % numGroups;
 
-  // Create initial groups with leaders
-  const groups: AssignedGroup[] = leaders.map((leader, index) => ({
-    name: `Group ${index + 1}`,
-    leaderId: leader.registrationId,
-    memberIds: [],
-    members: [],
-    statistics: {
-      totalMembers: 0,
-      genderDistribution: { male: 0, female: 0, unknown: 0 },
-      averageAge: 0
+  // Create initial groups with leaders and their paired secondary leaders
+  const groups: AssignedGroup[] = leaders.map((leader, index) => {
+    // Find the corresponding secondary leader from the pairs (if using pairs)
+    let secondaryLeaderId: number | null = null;
+    if (leaderPairs) {
+      const pair = leaderPairs.find(p => p.primaryLeaderId === leader.registrationId);
+      secondaryLeaderId = pair?.secondaryLeaderId || null;
+    } else {
+      // Fallback to the old method for backward compatibility
+      secondaryLeaderId = index < selectedSecondaryLeaderIds.length ? selectedSecondaryLeaderIds[index] : null;
     }
-  }));
+    
+    return {
+      name: `Group ${index + 1}`,
+      leaderId: leader.registrationId,
+      secondaryLeaderId,
+      memberIds: [],
+      members: [],
+      statistics: {
+        totalMembers: 0,
+        genderDistribution: { male: 0, female: 0, unknown: 0 },
+        averageAge: 0
+      }
+    };
+  });
 
   // Sort members for better age distribution
   // First, separate into age groups to ensure good distribution
@@ -460,6 +477,11 @@ export function validateGroupAssignment(
     // Check for leader in members (should not happen)
     if (group.memberIds.includes(group.leaderId)) {
       issues.push(`${group.name} has leader as a member`);
+    }
+    
+    // Check for secondary leader in members (should not happen)
+    if (group.secondaryLeaderId && group.memberIds.includes(group.secondaryLeaderId)) {
+      issues.push(`${group.name} has secondary leader as a member`);
     }
   }
   

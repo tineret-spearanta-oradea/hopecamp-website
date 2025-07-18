@@ -72,7 +72,7 @@ export function useGroups() {
     }
   }, []);
 
-  const generateGroups = useCallback(async (editionId: number, selectedLeaderIds: number[]) => {
+  const generateGroups = useCallback(async (editionId: number, selectedLeaderIds: number[], selectedSecondaryLeaderIds?: number[], leaderPairs?: Array<{primaryLeaderId: number; secondaryLeaderId?: number | null}>) => {
     if (selectedLeaderIds.length < 1) {
       toast.error("Please select at least one leader");
       return false;
@@ -87,6 +87,8 @@ export function useGroups() {
         },
         body: JSON.stringify({
           selectedLeaderIds,
+          selectedSecondaryLeaderIds,
+          leaderPairs,
         }),
       });
 
