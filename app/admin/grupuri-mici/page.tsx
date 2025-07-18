@@ -28,10 +28,16 @@ export default function AssignGroupsPage() {
   const { userData } = useAuth();
   const searchParams = useSearchParams();
   const [selectedEditionId, setSelectedEditionId] = useState<number | null>(null);
-  const [selectedLeaderIds, setSelectedLeaderIds] = useState<number[]>([]);
+  const [leaderPairs, setLeaderPairs] = useState<Array<{
+    primaryLeaderId: number;
+    secondaryLeaderId?: number | null;
+  }>>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
+  const [secondarySearchQueries, setSecondarySearchQueries] = useState<{[key: number]: string}>({});
+  const [showSecondaryDropdowns, setShowSecondaryDropdowns] = useState<{[key: number]: boolean}>({});
+  const [showSecondarySearches, setShowSecondarySearches] = useState<{[key: number]: boolean}>({});
   
   const { 
     groups, 
@@ -78,49 +84,94 @@ export default function AssignGroupsPage() {
     }
   }, [selectedEditionId, loadGroupsForEdition]);
 
-  const handleLeaderSelection = (registrationId: number, isSelected: boolean) => {
-    if (isSelected) {
-      setSelectedLeaderIds(prev => [...prev, registrationId]);
-    } else {
-      setSelectedLeaderIds(prev => prev.filter(id => id !== registrationId));
-    }
-  };
-
-  const handleLeaderAdd = (user: RegistrationWithProfile) => {
-    if (!selectedLeaderIds.includes(user.id)) {
-      setSelectedLeaderIds(prev => [...prev, user.id]);
+  const handleAddLeaderPair = (user: RegistrationWithProfile) => {
+    const allUsedIds = leaderPairs.flatMap(pair => [pair.primaryLeaderId, pair.secondaryLeaderId].filter(id => id !== null));
+    if (!allUsedIds.includes(user.id)) {
+      setLeaderPairs(prev => [...prev, { primaryLeaderId: user.id, secondaryLeaderId: null }]);
       setSearchQuery("");
       setShowDropdown(false);
     }
   };
 
-  const handleLeaderRemove = (registrationId: number) => {
-    setSelectedLeaderIds(prev => prev.filter(id => id !== registrationId));
+  const handleRemoveLeaderPair = (index: number) => {
+    setLeaderPairs(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleUpdateSecondaryLeader = (pairIndex: number, secondaryLeaderId: number | null) => {
+    setLeaderPairs(prev => prev.map((pair, index) => 
+      index === pairIndex 
+        ? { ...pair, secondaryLeaderId }
+        : pair
+    ));
+  };
+
+  const handleSecondaryLeaderAdd = (pairIndex: number, user: RegistrationWithProfile) => {
+    const allUsedIds = leaderPairs.flatMap(pair => [pair.primaryLeaderId, pair.secondaryLeaderId].filter(id => id !== null));
+    const currentPair = leaderPairs[pairIndex];
+    
+    if (!allUsedIds.includes(user.id) && user.id !== currentPair.primaryLeaderId) {
+      handleUpdateSecondaryLeader(pairIndex, user.id);
+      setSecondarySearchQueries(prev => ({ ...prev, [pairIndex]: "" }));
+      setShowSecondaryDropdowns(prev => ({ ...prev, [pairIndex]: false }));
+      setShowSecondarySearches(prev => ({ ...prev, [pairIndex]: false }));
+    }
+  };
+
+  const handleSecondarySearchFocus = (pairIndex: number) => {
+    setShowSecondaryDropdowns(prev => ({ ...prev, [pairIndex]: true }));
+  };
+
+  const toggleSecondarySearch = (pairIndex: number) => {
+    setShowSecondarySearches(prev => ({ ...prev, [pairIndex]: !prev[pairIndex] }));
+    if (!showSecondarySearches[pairIndex]) {
+      setSecondarySearchQueries(prev => ({ ...prev, [pairIndex]: "" }));
+      setShowSecondaryDropdowns(prev => ({ ...prev, [pairIndex]: false }));
+    }
   };
 
   const handleSearchFocus = () => {
     setShowDropdown(true);
   };
 
-  // Filter users based on search query and exclude already selected leaders
+  // Filter users based on search query and exclude already used leaders
+  const allUsedIds = leaderPairs.flatMap(pair => [pair.primaryLeaderId, pair.secondaryLeaderId].filter(id => id !== null));
   const filteredUsers = (registrations || []).filter(user => 
-    !selectedLeaderIds.includes(user.id) &&
+    !allUsedIds.includes(user.id) &&
     (user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
      user.userId.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  // Get selected leaders data
-  const selectedLeaders = (registrations || []).filter(user => 
-    selectedLeaderIds.includes(user.id)
-  );
+  // Get available users for secondary leader selection (exclude already used users)
+  const getAvailableSecondaryUsers = (excludePrimaryId: number) => {
+    const usedIds = leaderPairs.flatMap(pair => [pair.primaryLeaderId, pair.secondaryLeaderId].filter(id => id !== null));
+    return (registrations || []).filter(user => 
+      !usedIds.includes(user.id) || user.id === excludePrimaryId // Allow the primary leader to be excluded from their own secondary selection
+    ).filter(user => user.id !== excludePrimaryId); // But don't allow them to be their own secondary
+  };
+
+  // Get filtered secondary users for search
+  const getFilteredSecondaryUsers = (pairIndex: number, searchQuery: string) => {
+    const currentPair = leaderPairs[pairIndex];
+    const availableUsers = getAvailableSecondaryUsers(currentPair.primaryLeaderId);
+    
+    if (!searchQuery) return [];
+    
+    return availableUsers.filter(user =>
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.userId.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  };
 
   const handleGenerateGroups = async () => {
     if (!selectedEditionId) return;
     
     setIsGenerating(true);
-    const success = await generateGroups(selectedEditionId, selectedLeaderIds);
+    const selectedLeaderIds = leaderPairs.map(pair => pair.primaryLeaderId);
+    const selectedSecondaryLeaderIds = leaderPairs.map(pair => pair.secondaryLeaderId).filter(id => id !== null) as number[];
+    
+    const success = await generateGroups(selectedEditionId, selectedLeaderIds, selectedSecondaryLeaderIds, leaderPairs);
     if (success) {
-      setSelectedLeaderIds([]);
+      setLeaderPairs([]);
     }
     setIsGenerating(false);
   };
@@ -143,14 +194,14 @@ export default function AssignGroupsPage() {
   const exportGroupsToCSV = () => {
     if (groups.length === 0) return;
 
-    // Find the maximum number of members in any group (including leader)
-    const maxMembers = Math.max(...groups.map(group => group.memberCount + 1));
+    // Find the maximum number of members in any group (including leader and secondary leader)
+    const maxMembers = Math.max(...groups.map(group => group.memberCount + 1 + (group.secondaryLeader ? 1 : 0)));
 
     // Create headers: Group 1, , , Group 2, , , etc.
     const headers = groups.flatMap(group => [group.name, '', '']).join(',');
     
-    // Create subheaders: Leader name, age, gender, Leader name, age, gender, etc.
-    const subHeaders = groups.flatMap(() => ['Leader name', 'age', 'gender']).join(',');
+    // Create subheaders: Name, age, gender, Name, age, gender, etc.
+    const subHeaders = groups.flatMap(() => ['Name', 'age', 'gender']).join(',');
 
     // Create data rows
     const rows = [];
@@ -160,13 +211,14 @@ export default function AssignGroupsPage() {
         if (i === 0) {
           // First row is always the leader
           person = group.leader;
-        } else if (i <= group.memberCount) {
+        } else if (i === 1 && group.secondaryLeader) {
+          // Second row is secondary leader if exists
+          person = group.secondaryLeader;
+        } else {
           // Subsequent rows are members (sorted by age)
           const sortedMembers = [...group.members].sort((a, b) => a.age - b.age);
-          person = sortedMembers[i - 1];
-        } else {
-          // Empty cells for groups with fewer members
-          return ['', '', ''];
+          const memberIndex = i - 1 - (group.secondaryLeader ? 1 : 0);
+          person = sortedMembers[memberIndex];
         }
         
         if (person) {
@@ -295,7 +347,7 @@ export default function AssignGroupsPage() {
                 </Badge>
                 <Badge variant="outline" className="flex items-center gap-2">
                   <Users className="h-4 w-4" />
-                  {groups.reduce((total, group) => total + group.memberCount + 1, 0)} Total Persoane Asignate
+                  {groups.reduce((total, group) => total + group.memberCount + 1 + (group.secondaryLeader ? 1 : 0), 0)} Total Persoane Asignate
                 </Badge>
                 {unassignedUsers.length > 0 && (
                   <Badge variant="outline" className="flex items-center gap-2 text-orange-600 border-orange-600">
@@ -363,7 +415,7 @@ export default function AssignGroupsPage() {
                       <CardTitle className="flex items-center justify-between">
                         <span>{group.name}</span>
                         <Badge variant="secondary">
-                          {group.memberCount + 1} membri
+                          {group.memberCount + 1 + (group.secondaryLeader ? 1 : 0)} membri
                         </Badge>
                       </CardTitle>
                     </CardHeader>
@@ -383,6 +435,24 @@ export default function AssignGroupsPage() {
                           </div>
                         </div>
                       </div>
+
+                      {/* Secondary Leader */}
+                      {group.secondaryLeader && (
+                        <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                          <Crown className="h-4 w-4 text-blue-600" />
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                              <span className="font-medium">{group.secondaryLeader.name}</span>
+                              <Badge className={`text-xs ${getGenderBadgeColor(group.secondaryLeader.gender)}`}>
+                                {getGenderIcon(group.secondaryLeader.gender)}
+                              </Badge>
+                            </div>
+                            <div className="text-sm text-gray-600">
+                              Lider Secundar • {group.secondaryLeader.age} ani
+                            </div>
+                          </div>
+                        </div>
+                      )}
 
                       {/* Members */}
                       <div className="space-y-2">
@@ -454,19 +524,24 @@ export default function AssignGroupsPage() {
                       <p className="text-sm text-gray-600">
                         Selectează cel puțin 1 lider din {(registrations || []).length} înregistrări pentru a crea grupuri.
                       </p>
-                      <Badge variant="outline">
-                        {selectedLeaderIds.length} selectați
-                      </Badge>
+                      <div className="flex gap-2">
+                        <Badge variant="outline">
+                          {leaderPairs.length} grupuri
+                        </Badge>
+                        <Badge variant="outline">
+                          {leaderPairs.filter(pair => pair.secondaryLeaderId).length} cu lideri secundari
+                        </Badge>
+                      </div>
                     </div>
 
                     {/* Search and Add Leaders */}
                     <div className="grid gap-2">
-                      <Label>Adaugă Lideri</Label>
+                      <Label>Adaugă Lider Principal</Label>
                       <div className="relative">
                         <div className="relative">
                           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                           <Input
-                            placeholder="Caută lideri..."
+                            placeholder="Caută lider principal..."
                             value={searchQuery}
                             onChange={(e) => {
                               setSearchQuery(e.target.value);
@@ -487,7 +562,7 @@ export default function AssignGroupsPage() {
                                 <div
                                   key={user.id}
                                   className="flex items-center justify-between p-3 cursor-pointer hover:bg-accent"
-                                  onClick={() => handleLeaderAdd(user)}
+                                  onClick={() => handleAddLeaderPair(user)}
                                 >
                                   <div className="flex items-center gap-3">
                                     <div>
@@ -508,40 +583,153 @@ export default function AssignGroupsPage() {
                       </div>
                     </div>
 
-                    {/* Selected Leaders List */}
-                    {selectedLeaders.length > 0 && (
+                    {/* Leader Pairs List */}
+                    {leaderPairs.length > 0 && (
                       <div className="space-y-3">
-                        <Label>Lideri Selectați ({selectedLeaders.length})</Label>
-                        <div className="space-y-2 max-h-60 overflow-y-auto">
-                          {selectedLeaders.map((leader) => (
-                            <div
-                              key={leader.id}
-                              className="flex items-center justify-between p-3 bg-blue-50 border border-blue-200 rounded-lg"
-                            >
-                              <div className="flex items-center gap-3">
-                                <Crown className="h-4 w-4 text-amber-600" />
-                                <div>
-                                  <div className="font-medium">{leader.name}</div>
-                                  <div className="text-sm text-gray-600">
-                                    {leader.age} ani
+                        <Label>Perechi de Lideri ({leaderPairs.length})</Label>
+                        <div className="space-y-3">
+                          {leaderPairs.map((pair, index) => {
+                            const primaryLeader = (registrations || []).find(user => user.id === pair.primaryLeaderId);
+                            const secondaryLeader = pair.secondaryLeaderId ? (registrations || []).find(user => user.id === pair.secondaryLeaderId) : null;
+                            const availableSecondaryUsers = getAvailableSecondaryUsers(pair.primaryLeaderId);
+                            
+                            return (
+                              <div
+                                key={index}
+                                className="border border-gray-200 rounded-lg p-3 space-y-3"
+                              >
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-sm font-medium">Grup {index + 1}</span>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() => handleRemoveLeaderPair(index)}
+                                      className="h-6 w-6 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+                                    >
+                                      <X className="h-3 w-3" />
+                                    </Button>
                                   </div>
                                 </div>
+                                
+                                {/* Primary Leader */}
+                                {primaryLeader && (
+                                  <div className="flex items-center gap-3 p-2 bg-amber-50 border border-amber-200 rounded">
+                                    <Crown className="h-4 w-4 text-amber-600" />
+                                    <div className="flex-1">
+                                      <div className="flex items-center gap-2">
+                                        <span className="font-medium">{primaryLeader.name}</span>
+                                        <Badge className={`text-xs ${getGenderBadgeColor(primaryLeader.gender)}`}>
+                                          {getGenderIcon(primaryLeader.gender)}
+                                        </Badge>
+                                      </div>
+                                      <div className="text-sm text-gray-600">
+                                        Lider Principal • {primaryLeader.age} ani
+                                      </div>
+                                    </div>
+                                    {!pair.secondaryLeaderId && (
+                                    <div className="flex items-center gap-2">
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => toggleSecondarySearch(index)}
+                                        className="justify-start text-sm"
+                                      >
+                                        <UserPlus className="h-4 w-4 mr-2" />
+                                        Adaugă lider secundar
+                                      </Button>
+                                    </div>
+                                    )}
+                                    </div>
+                                )}
+                                
+                                {/* Secondary Leader Selection */}
+                                <div className="space-y-2">
+                                  {!pair.secondaryLeaderId ? (
+                                    <div className="space-y-2">
+                                      
+                                      {showSecondarySearches[index] && (
+                                        <div className="relative">
+                                          <div className="relative">
+                                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                            <Input
+                                              id={`secondary-search-${index}`}
+                                              placeholder="Caută lider secundar..."
+                                              value={secondarySearchQueries[index] || ""}
+                                              onChange={(e) => {
+                                                setSecondarySearchQueries(prev => ({ ...prev, [index]: e.target.value }));
+                                                setShowSecondaryDropdowns(prev => ({ ...prev, [index]: true }));
+                                              }}
+                                              onFocus={() => handleSecondarySearchFocus(index)}
+                                              className="pl-10"
+                                            />
+                                          </div>
+                                          {showSecondaryDropdowns[index] && secondarySearchQueries[index] && (
+                                            <div className="absolute top-full left-0 right-0 mt-1 bg-popover border rounded-md shadow-lg max-h-[200px] overflow-auto z-[9999]">
+                                              {(() => {
+                                                const filteredUsers = getFilteredSecondaryUsers(index, secondarySearchQueries[index]);
+                                                return filteredUsers.length === 0 ? (
+                                                  <div className="p-3 text-sm text-muted-foreground">
+                                                    Nu s-au găsit utilizatori
+                                                  </div>
+                                                ) : (
+                                                  filteredUsers.map((user) => (
+                                                    <div
+                                                      key={user.id}
+                                                      className="flex items-center justify-between p-3 cursor-pointer hover:bg-accent"
+                                                      onClick={() => handleSecondaryLeaderAdd(index, user)}
+                                                    >
+                                                      <div className="flex items-center gap-3">
+                                                        <div>
+                                                          <div className="font-medium">{user.name}</div>
+                                                          <div className="text-sm text-muted-foreground">
+                                                            {user.age} ani
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                      <Badge className={getGenderBadgeColor(user.gender)}>
+                                                        {getGenderIcon(user.gender)}
+                                                      </Badge>
+                                                    </div>
+                                                  ))
+                                                );
+                                              })()}
+                                            </div>
+                                          )}
+                                        </div>
+                                      )}
+                                    </div>
+                                  ) : null}
+                                </div>
+                                
+                                {/* Secondary Leader Display */}
+                                {secondaryLeader && (
+                                  <div className="flex items-center gap-3 p-2 bg-blue-50 border border-blue-200 rounded">
+                                    <Crown className="h-4 w-4 text-blue-600" />
+                                    <div className="flex-1">
+                                      <div className="flex items-center gap-2">
+                                        <span className="font-medium">{secondaryLeader.name}</span>
+                                        <Badge className={`text-xs ${getGenderBadgeColor(secondaryLeader.gender)}`}>
+                                          {getGenderIcon(secondaryLeader.gender)}
+                                        </Badge>
+                                      </div>
+                                      <div className="text-sm text-gray-600">
+                                        Lider Secundar • {secondaryLeader.age} ani
+                                      </div>
+                                    </div>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() => handleUpdateSecondaryLeader(index, null)}
+                                      className="h-8 w-8 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+                                    >
+                                      <UserMinus className="h-4 w-4" />
+                                    </Button>
+                                  </div>
+                                )}
                               </div>
-                              <div className="flex items-center gap-2">
-                                <Badge className={getGenderBadgeColor(leader.gender)}>
-                                  {getGenderIcon(leader.gender)}
-                                </Badge>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => handleLeaderRemove(leader.id)}
-                                  className="h-8 w-8 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
-                                >
-                                  <X className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            </div>
-                          ))}
+                            );
+                          })}
                         </div>
                       </div>
                     )}
@@ -551,7 +739,7 @@ export default function AssignGroupsPage() {
                     <div className="flex justify-end">
                       <Button
                         onClick={handleGenerateGroups}
-                        disabled={selectedLeaderIds.length < 1 || isGenerating}
+                        disabled={leaderPairs.length < 1 || isGenerating}
                         className="flex items-center gap-2"
                       >
                         <Shuffle className="h-4 w-4" />

@@ -3,6 +3,7 @@ export interface Group {
   editionId: number;
   name: string;
   leaderId: string;
+  secondaryLeaderId?: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -21,6 +22,12 @@ export interface GroupWithDetails extends Group {
     age: number;
     gender: 'male' | 'female' | 'unknown';
   };
+  secondaryLeader?: {
+    userId: string;
+    name: string;
+    age: number;
+    gender: 'male' | 'female' | 'unknown';
+  } | null;
   members: Array<{
     userId: string;
     registrationId: number;
@@ -43,6 +50,8 @@ export interface UserForGroupAssignment {
 
 export interface GroupAssignmentRequest {
   selectedLeaderIds: number[]; // Now using registration IDs
+  selectedSecondaryLeaderIds?: number[]; // Optional secondary leaders using registration IDs
+  leaderPairs?: Array<{primaryLeaderId: number; secondaryLeaderId?: number | null}>; // Leader pairs for specific pairing
 }
 
 export interface GroupAssignmentResult {
