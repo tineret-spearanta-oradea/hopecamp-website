@@ -72,6 +72,7 @@ const COLUMN_LABELS: Record<string, string> = {
   amountPaid: "Plătit",
   numberOfDays: "Zile",
   transport: "Transport",
+  gender: "Gen",
   actions: "Acțiuni",
 };
 

@@ -10,6 +10,8 @@ import {
   Settings,
   Shield,
   Wallet,
+  ShoppingCart,
+  Group,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -42,9 +44,21 @@ const menuItems = [
     superAdminOnly: false,
   },
   {
+    title: "Market",
+    icon: ShoppingCart,
+    href: "/admin/market",
+    superAdminOnly: false,
+  },
+  {
     title: "Admini",
     icon: Shield,
     href: "/admin/admins",
+    superAdminOnly: true,
+  },
+  {
+    title: "Grupuri mici",
+    icon: Group,
+    href: "/admin/grupuri-mici",
     superAdminOnly: true,
   },
   {

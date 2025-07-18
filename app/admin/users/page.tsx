@@ -132,6 +132,7 @@ export default function UsersPage() {
       "phone",
       "church",
       "age",
+      "gender",
       "transport",
       "payTaxTo",
       "amountPaid",
@@ -152,6 +153,11 @@ export default function UsersPage() {
         if (value === undefined || value === null) return "";
         if (typeof value === "boolean") return value ? "Da" : "Nu";
         if (value instanceof Date) return value.toLocaleDateString("ro-RO");
+        if (field === "gender") {
+          if (value === "male") return "Masculin";
+          if (value === "female") return "Feminin";
+          return "Necunoscut";
+        }
         return String(value).replace(/,/g, "");
       });
       csvData.push(rowData.join(","));

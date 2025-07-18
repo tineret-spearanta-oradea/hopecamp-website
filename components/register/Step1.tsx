@@ -10,6 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SupabaseUploader } from "../ui/SupabaseUploader";
 import { deleteProfileImage } from "@/utils/supabaseClient";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 
 export default function Step1({
   formData,
@@ -154,6 +155,27 @@ export default function Step1({
             />
             {validationErrors.age && (
               <p className="text-destructive text-xs">{validationErrors.age}</p>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-base font-semibold">Gen *</Label>
+            <RadioGroup
+              value={formData.userData.gender}
+              onValueChange={(value) => handleChange("userData", { name: "gender", value })}
+              className="flex flex-row gap-6"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="male" id="male" />
+                <Label htmlFor="male">Masculin</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="female" id="female" />
+                <Label htmlFor="female">Feminin</Label>
+              </div>
+            </RadioGroup>
+            {validationErrors.gender && (
+              <p className="text-destructive text-xs">{validationErrors.gender}</p>
             )}
           </div>
 

@@ -11,7 +11,9 @@ import Image from "next/image";
 import { format } from "date-fns";
 import { useState, useEffect } from "react";
 import { getUserMessages } from "@/lib/supabase/database/message"; // Updated import
-import { Loader2 } from "lucide-react";
+import { Loader2, CreditCard, AlertCircle, CheckCircle2 } from "lucide-react";
+import { getCurrentDebtForRegistration } from "@/lib/supabase/database/marketTransaction";
+import { formatAmount } from "@/types/marketTransaction";
 
 import {RegistrationWithProfile} from "@/types/registrationWithProfile";
 
@@ -30,6 +32,8 @@ export function UserDetailsDialog({
   const [imageLoading, setImageLoading] = useState(true);
   const [messages, setMessages] = useState<AdminMessage[]>([]); // Use AdminMessage
   const [messagesLoading, setMessagesLoading] = useState(false);
+  const [currentDebt, setCurrentDebt] = useState<number | null>(null);
+  const [debtLoading, setDebtLoading] = useState(false);
 
   useEffect(() => {
     async function fetchMessages() {
@@ -42,6 +46,25 @@ export function UserDetailsDialog({
     }
 
     fetchMessages();
+  }, [registration]);
+
+  useEffect(() => {
+    async function fetchCurrentDebt() {
+      if (registration) {
+        setDebtLoading(true);
+        try {
+          const debt = await getCurrentDebtForRegistration(registration.id);
+          setCurrentDebt(debt);
+        } catch (error) {
+          console.error("Error fetching current debt:", error);
+          setCurrentDebt(null);
+        } finally {
+          setDebtLoading(false);
+        }
+      }
+    }
+
+    fetchCurrentDebt();
   }, [registration]);
 
   if (!registration) return null;
@@ -175,6 +198,24 @@ export function UserDetailsDialog({
                     (registration.withFamilyMember ? 1000 : 800)
                   ? "text-emerald-600"
                   : "text-yellow-500"
+              }
+            />
+            
+            <InfoItem
+              label="Datorie Market"
+              value={
+                debtLoading ? "Se încarcă..." : 
+                currentDebt !== null ? (
+                  currentDebt === 0 ? "Fără datorii" :
+                  currentDebt > 0 ? `${formatAmount(currentDebt)} RON` :
+                  `Credit: ${formatAmount(Math.abs(currentDebt))} RON`
+                ) : "N/A"
+              }
+              className={
+                currentDebt === null || debtLoading ? "text-muted-foreground" :
+                currentDebt === 0 ? "text-emerald-600" :
+                currentDebt > 0 ? "text-red-600" :
+                "text-blue-600"
               }
             />
             <InfoItem
