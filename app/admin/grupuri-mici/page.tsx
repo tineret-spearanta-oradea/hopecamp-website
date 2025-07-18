@@ -86,9 +86,9 @@ export default function AssignGroupsPage() {
     }
   };
 
-  const handleLeaderAdd = (user: UserForGroupAssignment) => {
-    if (!selectedLeaderIds.includes(user.registrationId)) {
-      setSelectedLeaderIds(prev => [...prev, user.registrationId]);
+  const handleLeaderAdd = (user: RegistrationWithProfile) => {
+    if (!selectedLeaderIds.includes(user.id)) {
+      setSelectedLeaderIds(prev => [...prev, user.id]);
       setSearchQuery("");
       setShowDropdown(false);
     }
