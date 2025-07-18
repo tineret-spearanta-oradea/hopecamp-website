@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { dateRange } from "@/lib/constants";
+import { dateRange, sumToPay } from "@/lib/constants";
 import { differenceInDays } from "date-fns";
 import { addDays, format, isSameDay, startOfDay } from "date-fns";
 import { ro } from "date-fns/locale";
@@ -432,7 +432,7 @@ export default function AdminDashboardPage() {
                   {registrations?.filter(
                     (user) =>
                       (user.amountPaid || 0) >=
-                      (user.withFamilyMember ? 1000 : 800)
+                      (sumToPay.withFamilyMember)
                   ).length || 0}{" "}
                   persoane)
                 </p>
@@ -447,7 +447,7 @@ export default function AdminDashboardPage() {
                     (user) =>
                       (user.amountPaid || 0) > 0 &&
                       (user.amountPaid || 0) <
-                        (user.withFamilyMember ? 1000 : 800)
+                        (sumToPay.withFamilyMember)
                   ).length || 0}{" "}
                   persoane)
                 </p>

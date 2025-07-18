@@ -160,7 +160,7 @@ export const columns = ({
             className={
               amount === 0
                 ? "text-red-500"
-                : amount >= sumToPay.normal
+                : amount >= sumToPay.withFamilyMember
                 ? "text-emerald-600"
                 : amount >= sumToPay.deposit
                 ? "text-yellow-500"
