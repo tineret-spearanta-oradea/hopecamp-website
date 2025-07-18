@@ -14,20 +14,29 @@ export async function GET(request: NextRequest) {
     // Get the active edition automatically
     const activeEdition = await getActiveEdition();
     if (!activeEdition) {
-      return NextResponse.json(
+      const response = NextResponse.json(
         { error: "No active edition found" },
         { status: 400 }
       );
+      response.headers.set('Cache-Control', 'no-store');
+      response.headers.delete('ETag');
+      return response;
     }
 
     const users = await getUnassignedUsers(activeEdition.id, supabaseAdmin);
     
-    return NextResponse.json({ users });
+    const response = NextResponse.json({ users });
+    response.headers.set('Cache-Control', 'no-store');
+    response.headers.delete('ETag');
+    return response;
   } catch (error) {
     console.error("Error fetching unassigned users:", error);
-    return NextResponse.json(
+    const response = NextResponse.json(
       { error: "Failed to fetch unassigned users" },
       { status: 500 }
     );
+    response.headers.set('Cache-Control', 'no-store');
+    response.headers.delete('ETag');
+    return response;
   }
 } 
