@@ -3,7 +3,6 @@ import { UserForGroupAssignment } from "@/types/group";
 export interface GroupAssignmentOptions {
   minGroupSize?: number;
   maxGroupSize?: number;
-  preferredGroupSize?: number;
   balanceGender?: boolean;
   balanceAge?: boolean;
 }
@@ -21,9 +20,6 @@ export interface AssignedGroup {
 }
 
 const DEFAULT_OPTIONS: GroupAssignmentOptions = {
-  minGroupSize: 6,
-  maxGroupSize: 12,
-  preferredGroupSize: 8,
   balanceGender: true,
   balanceAge: false
 };

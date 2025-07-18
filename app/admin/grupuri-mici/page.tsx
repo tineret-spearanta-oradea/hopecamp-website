@@ -20,7 +20,9 @@ import { GroupWithDetails, UserForGroupAssignment } from "@/types/group";
 import { useAuth } from "@/contexts/auth-context";
 import { getActiveEdition } from "@/lib/supabase/database/edition";
 import { useGroups } from "@/hooks/useGroups";
+import { useRegistrations } from "@/hooks/use-registrations";
 import { cn } from "@/lib/utils";
+import { RegistrationWithProfile } from "@/types/registrationWithProfile";
 
 export default function AssignGroupsPage() {
   const { userData } = useAuth();
@@ -33,7 +35,6 @@ export default function AssignGroupsPage() {
   
   const { 
     groups, 
-    availableUsers, 
     unassignedUsers,
     isLoading, 
     hasGroups, 
@@ -43,6 +44,8 @@ export default function AssignGroupsPage() {
     removeUserFromGroup,
     assignUserToGroup
   } = useGroups();
+  
+  const { registrations, isLoading: isLoadingRegistrations, error: registrationsError, fetchRegistrations } = useRegistrations();
 
   useEffect(() => {
     // Check if user is super admin
@@ -66,7 +69,8 @@ export default function AssignGroupsPage() {
     };
 
     initializeEdition();
-  }, [userData]);
+    fetchRegistrations(); // Fetch registrations data
+  }, [userData, fetchRegistrations]);
 
   useEffect(() => {
     if (selectedEditionId) {
@@ -99,15 +103,15 @@ export default function AssignGroupsPage() {
   };
 
   // Filter users based on search query and exclude already selected leaders
-  const filteredUsers = availableUsers.filter(user => 
-    !selectedLeaderIds.includes(user.registrationId) &&
+  const filteredUsers = (registrations || []).filter(user => 
+    !selectedLeaderIds.includes(user.id) &&
     (user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
      user.userId.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   // Get selected leaders data
-  const selectedLeaders = availableUsers.filter(user => 
-    selectedLeaderIds.includes(user.registrationId)
+  const selectedLeaders = (registrations || []).filter(user => 
+    selectedLeaderIds.includes(user.id)
   );
 
   const handleGenerateGroups = async () => {
@@ -192,6 +196,8 @@ export default function AssignGroupsPage() {
         return <span className="text-blue-600">M</span>;
       case 'female':
         return <span className="text-pink-600">F</span>;
+      case 'unknown':
+        return <span className="text-gray-500">N/A</span>;
       default:
         return <span className="text-gray-500">?</span>;
     }
@@ -203,6 +209,8 @@ export default function AssignGroupsPage() {
         return 'bg-blue-100 text-blue-800';
       case 'female':
         return 'bg-pink-100 text-pink-800';
+      case 'unknown':
+        return 'bg-gray-100 text-gray-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }
@@ -227,7 +235,7 @@ export default function AssignGroupsPage() {
         {hasGroups && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" disabled={isLoading} className="flex items-center gap-2">
+              <Button variant="outline" disabled={isLoading || isLoadingRegistrations} className="flex items-center gap-2">
                 <MoreVertical className="h-4 w-4" />
                 Acțiuni
               </Button>
@@ -264,13 +272,19 @@ export default function AssignGroupsPage() {
         )}
       </div>
 
-      {isLoading && (
+      {(isLoading || isLoadingRegistrations) && (
         <div className="flex items-center justify-center h-64">
           <LoadingSpinner />
         </div>
       )}
 
-      {!isLoading && selectedEditionId && (
+      {registrationsError && (
+        <div className="flex items-center justify-center h-64 text-red-500">
+          Error loading registrations: {registrationsError.message}
+        </div>
+      )}
+
+      {!isLoading && !isLoadingRegistrations && !registrationsError && selectedEditionId && (
         <>
           {hasGroups ? (
             <div className="space-y-6">
@@ -438,7 +452,7 @@ export default function AssignGroupsPage() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <p className="text-sm text-gray-600">
-                        Selectează cel puțin 1 lider din {availableUsers.length} înregistrări pentru a crea grupuri.
+                        Selectează cel puțin 1 lider din {(registrations || []).length} înregistrări pentru a crea grupuri.
                       </p>
                       <Badge variant="outline">
                         {selectedLeaderIds.length} selectați
@@ -471,7 +485,7 @@ export default function AssignGroupsPage() {
                             ) : (
                               filteredUsers.map((user) => (
                                 <div
-                                  key={user.registrationId}
+                                  key={user.id}
                                   className="flex items-center justify-between p-3 cursor-pointer hover:bg-accent"
                                   onClick={() => handleLeaderAdd(user)}
                                 >
@@ -501,7 +515,7 @@ export default function AssignGroupsPage() {
                         <div className="space-y-2 max-h-60 overflow-y-auto">
                           {selectedLeaders.map((leader) => (
                             <div
-                              key={leader.registrationId}
+                              key={leader.id}
                               className="flex items-center justify-between p-3 bg-blue-50 border border-blue-200 rounded-lg"
                             >
                               <div className="flex items-center gap-3">
@@ -520,7 +534,7 @@ export default function AssignGroupsPage() {
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  onClick={() => handleLeaderRemove(leader.registrationId)}
+                                  onClick={() => handleLeaderRemove(leader.id)}
                                   className="h-8 w-8 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
                                 >
                                   <X className="h-4 w-4" />

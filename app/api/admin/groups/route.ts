@@ -105,7 +105,6 @@ export async function POST(request: NextRequest) {
     const assignedGroups = generateBalancedGroups(allUsers, selectedLeaderIds, {
       minGroupSize,
       maxGroupSize,
-      preferredGroupSize: targetGroupSize,
       balanceGender: true,
       balanceAge: true // Enable age balancing for better age distribution
     });
