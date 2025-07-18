@@ -58,7 +58,14 @@ export function useGroups() {
 
   const loadUnassignedUsers = useCallback(async (editionId: number) => {
     try {
-      const response = await fetch(`/api/admin/groups/unassigned`);
+      const response = await fetch(`/api/admin/groups/unassigned`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        cache: 'no-store',
+        body: JSON.stringify({ editionId }),
+      });
       const data = await response.json();
 
       if (response.ok) {
