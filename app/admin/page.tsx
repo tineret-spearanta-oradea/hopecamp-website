@@ -12,6 +12,7 @@ import {
   Calendar,
   Timer,
   MessageSquare,
+  User,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -76,6 +77,11 @@ export default function AdminDashboardPage() {
     registrations?.reduce((sum, user) => sum + (user.amountPaid || 0), 0) || 0;
   const averageAge =
     registrations?.reduce((sum, user) => sum + (user.age || 0), 0) / totalUsers || 0;
+  
+  // Calculate gender distribution
+  const maleUsers = registrations?.filter((user) => user.gender === 'male').length || 0;
+  const femaleUsers = registrations?.filter((user) => user.gender === 'female').length || 0;
+  const unknownGenderUsers = totalUsers - maleUsers - femaleUsers;
 
   // Calculate days distribution
   const campDays = Array.from(
@@ -292,13 +298,49 @@ export default function AdminDashboardPage() {
           iconColor="text-emerald-600"
         />
 
-        <UserCard
-          title="În Așteptare"
-          value={unconfirmedUsers}
-          description="necesită confirmare"
-          icon={AlertCircle}
-          iconColor="text-orange-500"
-        />
+        <div className="rounded-lg cursor-pointer" onClick={() => router.push("/admin/users")}>
+          <Card className="group transition-all duration-300 hover:bg-accent/50 h-full">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Distribuție Gen</CardTitle>
+              <div className="flex items-center gap-2">
+                <User className="h-4 w-4 text-purple-500" />
+                <ChevronRight
+                  className={cn(
+                    "h-4 w-4 opacity-0 -ml-4 transition-all duration-300",
+                    "group-hover:opacity-100 group-hover:ml-0"
+                  )}
+                />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="flex items-center gap-1">
+                    <span className="text-blue-600">M:</span>
+                    <span className="font-medium">{maleUsers}</span>
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <span className="text-pink-600">F:</span>
+                    <span className="font-medium">{femaleUsers}</span>
+                  </span>
+                </div>
+                <div className="flex h-2 w-full bg-muted rounded-full overflow-hidden">
+                  <div 
+                    className="bg-blue-500 h-full transition-all duration-300"
+                    style={{ width: `${totalUsers > 0 ? (maleUsers / totalUsers) * 100 : 0}%` }}
+                  />
+                  <div 
+                    className="bg-pink-500 h-full transition-all duration-300"
+                    style={{ width: `${totalUsers > 0 ? (femaleUsers / totalUsers) * 100 : 0}%` }}
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {totalUsers > 0 ? `${((maleUsers / totalUsers) * 100).toFixed(1)}% M / ${((femaleUsers / totalUsers) * 100).toFixed(1)}% F` : 'No data'}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
