@@ -87,3 +87,44 @@ export async function addExpense(expenseData: NewExpense): Promise<Expense> {
 
     return processedData;
 }
+
+export async function updateExpense(expenseId: number, expenseData: Partial<Pick<NewExpense, 'title' | 'amount' | 'description' | 'category'>>): Promise<Expense> {
+    if (expenseData.amount !== undefined) {
+        const amountAsNumber = typeof expenseData.amount === 'string'
+            ? parseFloat(expenseData.amount)
+            : expenseData.amount;
+
+        if (isNaN(amountAsNumber)) {
+            throw new Error("Invalid amount provided. Amount must be a number.");
+        }
+        expenseData.amount = amountAsNumber;
+    }
+
+    const { data, error } = await supabaseBrowserClient
+        .from("expenses")
+        .update(expenseData)
+        .eq('id', expenseId)
+        .select(`
+            *,
+            creator:user_profiles ( name )
+        `)
+        .single();
+
+    if (error) {
+        console.error("Error updating expense:", error);
+        throw error;
+    }
+    if (!data) {
+        throw new Error("Failed to update expense or retrieve the updated record.");
+    }
+
+    const creatorData = data.creator as { name: string } | null;
+    const processedData: Expense = {
+        ...data,
+        amount: typeof data.amount === 'string' ? parseFloat(data.amount) : data.amount,
+        creatorName: creatorData?.name ?? 'Unknown User',
+        creator: undefined,
+    };
+
+    return processedData;
+}

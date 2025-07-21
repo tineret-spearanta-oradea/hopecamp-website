@@ -1,7 +1,8 @@
 import { useState, useCallback } from "react";
 import {
     getAllExpenses,
-    addExpense as addExpenseSupabase
+    addExpense as addExpenseSupabase,
+    updateExpense as updateExpenseSupabase
 } from "@/lib/supabase/database/expense";
 import {getActiveEdition} from "@/lib/supabase/database/edition";
 import {getRegistrationsByEditionId, updateRegistrationPayment} from "@/lib/supabase/database/registration";
@@ -212,6 +213,46 @@ export function useFinancials() {
     }
   };
 
+  // Add updateExpense function after addExpense
+  const updateExpense = async (expenseId: number, data: {
+    title?: string;
+    description?: string | null;
+    amount?: number;
+    category?: string | null;
+  }) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      // Call the updateExpense function from the database module
+      const updatedExpense = await updateExpenseSupabase(expenseId, data);
+
+      // Update local state with the returned data
+      const updatedExpenseData: Expense = {
+        id: updatedExpense.id,
+        title: updatedExpense.title,
+        amount: updatedExpense.amount,
+        description: updatedExpense.description,
+        createdBy: updatedExpense.created_by,
+        creatorName: updatedExpense.creatorName,
+        createdAt: new Date(updatedExpense.created_at),
+        category: updatedExpense.category,
+        receipt: updatedExpense.receipt,
+      };
+
+      setExpenses((prev) => 
+        prev.map(expense => 
+          expense.id === expenseId ? updatedExpenseData : expense
+        )
+      );
+
+    } catch (err) {
+      console.error("Error updating expense:", err);
+      setError(err as Error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     expenses,
     incomes,
@@ -220,6 +261,7 @@ export function useFinancials() {
     fetchExpenses,
     fetchIncomes,
     addExpense,
+    updateExpense,
     updateUserPayment,
     // Keep refetch for expenses, add one for incomes if needed
     refetchExpenses: fetchExpenses,

@@ -24,7 +24,7 @@ import {
 import { useEffect, useState } from "react";
 import { useFinancials } from "@/hooks/use-financials";
 import { AddIncomeDialog } from "@/components/admin/add-income-dialog";
-import { AddExpenseDialog } from "@/components/admin/add-expense-dialog";
+import { AddExpenseDialog, ExpenseDialog } from "@/components/admin/add-expense-dialog";
 import { cn } from "@/lib/utils";
 import { PieChart } from "@/components/ui/pie-chart";
 import { ResponsiveContainer } from "recharts";
@@ -46,6 +46,7 @@ export default function FinanciarPage() {
     fetchIncomes,
     updateUserPayment,
     addExpense,
+    updateExpense,
   } = useFinancials();
   const { userData:user } = useAuth();
   const [selectedCollector, setSelectedCollector] = useState<string | null>(
@@ -65,6 +66,14 @@ export default function FinanciarPage() {
   });
   const [isAddIncomeOpen, setIsAddIncomeOpen] = useState(false);
   const [isAddExpenseOpen, setIsAddExpenseOpen] = useState(false);
+  const [isEditExpenseOpen, setIsEditExpenseOpen] = useState(false);
+  const [editingExpense, setEditingExpense] = useState<{
+    id: number;
+    title: string;
+    description?: string;
+    amount: number;
+    category?: string;
+  } | null>(null);
 
   // Fetch data based on active tab
   useEffect(() => {
@@ -171,6 +180,32 @@ export default function FinanciarPage() {
       createdBy: user.userId,
       creatorName: user.name,
     });
+  };
+
+  const handleEditExpense = async (expenseData: {
+    title: string;
+    description?: string;
+    amount: number;
+    category?: string;
+  }) => {
+    if (!editingExpense) return;
+    await updateExpense(editingExpense.id, expenseData);
+  };
+
+  const openEditDialog = (expense: typeof expenses[0]) => {
+    setEditingExpense({
+      id: expense.id,
+      title: expense.title,
+      description: expense.description || "",
+      amount: expense.amount,
+      category: expense.category || "",
+    });
+    setIsEditExpenseOpen(true);
+  };
+
+  const closeEditDialog = () => {
+    setEditingExpense(null);
+    setIsEditExpenseOpen(false);
   };
 
   return (
@@ -390,6 +425,7 @@ export default function FinanciarPage() {
                     <TableHead>Categorie</TableHead>
                     <TableHead>Înregistrat de</TableHead>
                     <TableHead>Data</TableHead>
+                    <TableHead className="w-[100px]">Acțiuni</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -405,12 +441,21 @@ export default function FinanciarPage() {
                       <TableCell>
                         {expense.createdAt.toLocaleDateString("ro-RO")}
                       </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => openEditDialog(expense)}
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                      </TableCell>
                     </TableRow>
                   ))}
                   {expenses.length === 0 && (
                     <TableRow>
                       <TableCell
-                        colSpan={6}
+                        colSpan={7}
                         className="text-center text-muted-foreground"
                       >
                         Nu există cheltuieli înregistrate
@@ -426,6 +471,14 @@ export default function FinanciarPage() {
             open={isAddExpenseOpen}
             onOpenChange={setIsAddExpenseOpen}
             onSave={handleAddExpense}
+          />
+
+          <ExpenseDialog
+            open={isEditExpenseOpen}
+            onOpenChange={closeEditDialog}
+            onSave={handleEditExpense}
+            initialData={editingExpense}
+            mode="edit"
           />
         </TabsContent>
       </Tabs>
