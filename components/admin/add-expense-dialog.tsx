@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -14,29 +14,50 @@ import { toast } from "sonner";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { Textarea } from "@/components/ui/textarea";
 
-interface AddExpenseDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  onSave: (expense: {
-    title: string;
-    description?: string;
-    amount: number;
-    category?: string;
-  }) => Promise<void>;
+interface ExpenseData {
+  title: string;
+  description?: string;
+  amount: number;
+  category?: string;
 }
 
-export function AddExpenseDialog({
+interface ExpenseDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onSave: (expense: ExpenseData) => Promise<void>;
+  initialData?: ExpenseData | null;
+  mode?: "add" | "edit";
+}
+
+export function ExpenseDialog({
   open,
   onOpenChange,
   onSave,
-}: AddExpenseDialogProps) {
+  initialData = null,
+  mode = "add",
+}: ExpenseDialogProps) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Reset states when dialog opens/closes
+  // Reset or populate states when dialog opens/closes or initialData changes
+  useEffect(() => {
+    if (open && initialData) {
+      setTitle(initialData.title || "");
+      setDescription(initialData.description || "");
+      setAmount(initialData.amount?.toString() || "");
+      setCategory(initialData.category || "");
+    } else if (open && !initialData) {
+      setTitle("");
+      setDescription("");
+      setAmount("");
+      setCategory("");
+    }
+  }, [open, initialData]);
+
+  // Reset states when dialog closes
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       setTitle("");
@@ -70,7 +91,7 @@ export function AddExpenseDialog({
       handleOpenChange(false);
     } catch (error) {
       console.error("Error saving expense:", error);
-      toast.error("A apărut o eroare la salvarea cheltuielii");
+      toast.error(`A apărut o eroare la ${mode === "edit" ? "editarea" : "salvarea"} cheltuielii`);
     } finally {
       setIsSubmitting(false);
     }
@@ -80,7 +101,7 @@ export function AddExpenseDialog({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Adaugă Cheltuială</DialogTitle>
+          <DialogTitle>{mode === "edit" ? "Editează Cheltuială" : "Adaugă Cheltuială"}</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
@@ -130,10 +151,15 @@ export function AddExpenseDialog({
             Anulează
           </Button>
           <Button onClick={handleSave} disabled={isSubmitting}>
-            {isSubmitting ? <>Se salvează...</> : "Salvează"}
+            {isSubmitting ? (mode === "edit" ? "Se actualizează..." : "Se salvează...") : (mode === "edit" ? "Actualizează" : "Salvează")}
           </Button>
         </div>
       </DialogContent>
     </Dialog>
   );
+}
+
+// Keep the original AddExpenseDialog for backward compatibility
+export function AddExpenseDialog(props: Omit<ExpenseDialogProps, "mode">) {
+  return <ExpenseDialog {...props} mode="add" />;
 }
