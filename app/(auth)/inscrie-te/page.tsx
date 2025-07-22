@@ -13,12 +13,12 @@ const IS_REGISTRATION_DISABLED =
     ? false
     : process.env.NEXT_PUBLIC_IS_REGISTRATION_DISABLED === "true";
 
-const BYPASS_MODE = "temp";
+const BYPASS_CODE = "l3s63pa35";
 
 function RegistrationContent() {
   const searchParams = useSearchParams();
-  const mode = searchParams.get("mode");
-  const shouldShowForm = !IS_REGISTRATION_DISABLED || mode === BYPASS_MODE;
+  const code = searchParams.get("code");
+  const shouldShowForm = !IS_REGISTRATION_DISABLED || code === BYPASS_CODE;
 
   return <>{shouldShowForm ? <RegisterForm /> : <FullyBooked />}</>;
 }
