@@ -15,7 +15,11 @@ import {
   ChevronRight, 
   ChevronDown, 
   ChevronUp,
-  ExternalLink
+  ExternalLink,
+  Settings,
+  TrendingUp,
+  User,
+  Phone
 } from "lucide-react";
 import { toast } from "sonner";
 import { formatAmount } from "@/types/marketTransaction";
@@ -26,6 +30,8 @@ import { AddMarketTransactionDialog } from "@/components/admin/add-market-transa
 import { format } from "date-fns";
 import { ro } from "date-fns/locale";
 import Link from "next/link";
+import AdminProtected from "@/components/auth/AdminProtected";
+import { PERMISSIONS } from "@/types/permissions";
 
 interface MarketSummary {
   registration_id: number;
@@ -50,6 +56,8 @@ export default function MarketTransactionsPage() {
   const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const [pageSize] = useState(10);
+  const [debtThreshold, setDebtThreshold] = useState("50");
+  const [showDebtList, setShowDebtList] = useState(true);
 
   // Debounce search query
   useEffect(() => {
@@ -132,7 +140,9 @@ export default function MarketTransactionsPage() {
   const calculateStats = () => {
     const withDebt = summaries.filter(s => s.current_debt > 0).length;
     const totalDebt = summaries.reduce((sum, s) => sum + (s.current_debt > 0 ? s.current_debt : 0), 0);
-    return { withDebt, totalDebt };
+    const thresholdInCents = parseFloat(debtThreshold || "0") * 100; // Convert RON to cents
+    const withDebtAboveThreshold = summaries.filter(s => s.current_debt >= thresholdInCents);
+    return { withDebt, totalDebt, withDebtAboveThreshold };
   };
 
   const stats = calculateStats();
@@ -155,14 +165,15 @@ export default function MarketTransactionsPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-7xl">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Market</h1>
-        <Button onClick={() => setIsDialogOpen(true)}>
-          <Plus className="h-4 w-4 mr-2" />
-          Adaugă Tranzacție
-        </Button>
-      </div>
+    <AdminProtected requiredPermissions={[PERMISSIONS.MARKET_READ]}>
+      <div className="w-full max-w-[90vw] mx-auto py-6 overflow-hidden">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Market</h1>
+          <Button onClick={() => setIsDialogOpen(true)}>
+            <Plus className="h-4 w-4 mr-2" />
+            Adaugă Tranzacție
+          </Button>
+        </div>
 
       {/* Search and Statistics */}
       <div className="flex flex-col gap-4 mb-6">
@@ -178,13 +189,136 @@ export default function MarketTransactionsPage() {
           </div>
         </div>
         <div className="flex flex-col sm:flex-row gap-4">
-          <Card className="flex-1 min-w-[180px]">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Cu Datorii</CardTitle>
-              <AlertCircle className="h-4 w-4 text-muted-foreground" />
+          <Card className="flex-1 min-w-[280px]">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <div className="flex items-center gap-2">
+                <div className="p-2 bg-red-100 rounded-lg">
+                  <TrendingUp className="h-4 w-4 text-red-600" />
+                </div>
+                <CardTitle className="text-sm font-medium">Cu Datorii</CardTitle>
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.withDebt}</div>
+            <CardContent className="space-y-4">
+              {/* Toggle Button with Threshold Controls */}
+              <div className="space-y-2">
+                {/* Desktop: Threshold controls above button */}
+                <div className="hidden sm:flex items-center gap-2 p-2 bg-muted/30 rounded-lg">
+                  <Settings className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-xs font-medium">Prag:</span>
+                  <Input
+                    type="text"
+                    value={debtThreshold}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      // Allow empty string, digits, and one decimal point
+                      if (value === '' || /^\d*\.?\d*$/.test(value)) {
+                        setDebtThreshold(value);
+                      }
+                    }}
+                    onBlur={(e) => {
+                      const value = e.target.value;
+                      if (value === '' || value === '.') {
+                        setDebtThreshold('0');
+                      } else {
+                        // Ensure it's a valid number
+                        const num = parseFloat(value);
+                        if (!isNaN(num) && num >= 0) {
+                          setDebtThreshold(num.toString());
+                        } else {
+                          setDebtThreshold('0');
+                        }
+                      }
+                    }}
+                    className="h-8 w-16 text-xs"
+                    placeholder="0"
+                  />
+                  <span className="text-xs text-muted-foreground">RON</span>
+                </div>
+                
+                <Button
+                  variant={showDebtList ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setShowDebtList(!showDebtList)}
+                  className="w-full justify-between"
+                >
+                  <div className="flex items-center gap-2">
+                    <AlertCircle className="h-4 w-4" />
+                    <span>{stats.withDebtAboveThreshold.length} cu datorii ≥ {debtThreshold || '0'} RON</span>
+                  </div>
+                  {showDebtList ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                </Button>
+                
+                {/* Mobile: Threshold controls below button, only when expanded */}
+                {showDebtList && (
+                  <div className="sm:hidden flex items-center gap-2 p-2 bg-muted/30 rounded-lg">
+                    <Settings className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-xs font-medium">Prag:</span>
+                    <Input
+                      type="text"
+                      value={debtThreshold}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        // Allow empty string, digits, and one decimal point
+                        if (value === '' || /^\d*\.?\d*$/.test(value)) {
+                          setDebtThreshold(value);
+                        }
+                      }}
+                      onBlur={(e) => {
+                        const value = e.target.value;
+                        if (value === '' || value === '.') {
+                          setDebtThreshold('0');
+                        } else {
+                          // Ensure it's a valid number
+                          const num = parseFloat(value);
+                          if (!isNaN(num) && num >= 0) {
+                            setDebtThreshold(num.toString());
+                          } else {
+                            setDebtThreshold('0');
+                          }
+                        }
+                      }}
+                      className="h-8 w-16 text-xs"
+                      placeholder="0"
+                    />
+                    <span className="text-xs text-muted-foreground">RON</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Debt List */}
+              {showDebtList && (
+                <div className="space-y-2 border rounded-lg p-2 bg-red-50/50 max-h-60 overflow-y-auto">
+                  {stats.withDebtAboveThreshold.length > 0 ? (
+                    stats.withDebtAboveThreshold.map((summary) => (
+                      <div 
+                        key={summary.registration_id} 
+                        className="flex items-center gap-3 p-3 bg-white border border-red-100 rounded-lg hover:bg-red-50 transition-colors"
+                      >
+                        <div className="p-2 bg-red-100 rounded-full">
+                          <User className="h-3 w-3 text-red-600" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-sm truncate">{summary.registration_name}</p>
+                          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                            <Phone className="h-3 w-3" />
+                            <span className="truncate">{summary.registration_phone}</span>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-bold text-sm text-red-600">
+                            {formatAmount(summary.current_debt)} RON
+                          </p>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-6 text-muted-foreground">
+                      <AlertCircle className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                      <p className="text-sm">Nu există datorii ≥ {debtThreshold || '0'} RON</p>
+                    </div>
+                  )}
+                </div>
+              )}
             </CardContent>
           </Card>
           <Card className="flex-1 min-w-[180px]">
@@ -367,6 +501,7 @@ export default function MarketTransactionsPage() {
         registrations={registrations}
         onSave={handleTransactionAdded}
       />
-    </div>
+      </div>
+    </AdminProtected>
   );
 }

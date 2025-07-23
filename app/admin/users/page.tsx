@@ -6,6 +6,7 @@ import { DataTable } from "@/components/admin/users/data-table";
 import { EditUserSheet } from "@/components/admin/users/edit-user-sheet";
 import { useRegistrations } from "@/hooks/use-registrations";
 import { useAuth } from "@/contexts/auth-context";
+import { usePermissions } from "@/hooks/use-permissions";
 import { useToast } from "@/hooks/use-toast";
 import { Download } from "lucide-react";
 import { UserProfile } from "@/types/userProfile";
@@ -14,12 +15,15 @@ import { UserDetailsDialog } from "@/components/admin/users/user-details-dialog"
 import { DeleteUserDialog } from "@/components/admin/users/delete-user-dialog";
 import { Button } from "@/components/ui/button";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import AdminProtected from "@/components/auth/AdminProtected";
+import { PERMISSIONS } from "@/types/permissions";
 
 import {RegistrationWithProfile} from "@/types/registrationWithProfile";
 
 export default function UsersPage() {
   const { toast } = useToast();
   const { userData: currentUser } = useAuth();
+  const { can } = usePermissions();
   const { registrations, isLoading, error, fetchRegistrations } = useRegistrations();
   const [selectedRegistration, setSelectedRegistration] = useState<RegistrationWithProfile | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -39,12 +43,12 @@ export default function UsersPage() {
   };
 
   const handleDeleteUser = async (user: UserProfile) => {
-    if (!currentUser?.isSuperAdmin) return;
+    if (!can.deleteUsers()) return;
     setSelectedUserForDelete(user);
   };
 
   const handleConfirmDelete = async (userToDelete: UserProfile) => {
-    if (!currentUser?.isSuperAdmin) {
+    if (!can.deleteUsers()) {
        toast({
         title: "Eroare",
         description: "Nu aveți permisiunea de a șterge utilizatori.",
@@ -83,6 +87,15 @@ export default function UsersPage() {
   };
 
   const handleUpdateUser = async (updatedRegistration: RegistrationWithProfile) => {
+    if (!can.editUsers()) {
+      toast({
+        title: "Eroare",
+        description: "Nu aveți permisiunea de a edita utilizatori.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     console.log("Updating user with Supabase:", updatedRegistration);
     try {
       setIsUpdating(true);
@@ -185,18 +198,19 @@ export default function UsersPage() {
   };
 
   return (
-    <div className="w-full max-w-[90vw] mx-auto py-2 overflow-hidden">
-      <div className=" flex justify-between items-center">
-        <h1 className="text-3xl font-bold tracking-tight">Participanți</h1>
-        <Button
-          onClick={handleExportCsv}
-          className="flex  text-sm items-center gap-2"
-          variant="outline"
-        >
-          <Download className="h-4 w-4" />
-          Export CSV
-        </Button>
-      </div>
+    <AdminProtected requiredPermissions={[PERMISSIONS.USERS_READ]}>
+      <div className="w-full max-w-[90vw] mx-auto py-2 overflow-hidden">
+        <div className=" flex justify-between items-center">
+          <h1 className="text-3xl font-bold tracking-tight">Participanți</h1>
+          <Button
+            onClick={handleExportCsv}
+            className="flex  text-sm items-center gap-2"
+            variant="outline"
+          >
+            <Download className="h-4 w-4" />
+            Export CSV
+          </Button>
+        </div>
 
       {isLoading ? (
         <div className="flex h-[450px] items-center justify-center">
@@ -213,7 +227,8 @@ export default function UsersPage() {
               onEdit: handleEditUser,
               onDelete: handleDeleteUser,
               onViewDetails: handleViewDetails,
-              isSuperAdmin: currentUser?.isSuperAdmin,
+              canEdit: can.editUsers(),
+              canDelete: can.deleteUsers(),
             })}
             data={registrations || []}
           />
@@ -229,7 +244,7 @@ export default function UsersPage() {
             setSelectedRegistration(null);
           }}
           onUpdate={handleUpdateUser}
-          isSuperAdmin={currentUser?.isSuperAdmin}
+          canEdit={can.editUsers()}
           isUpdating={isUpdating}
         />
       )}
@@ -250,6 +265,7 @@ export default function UsersPage() {
           onConfirm={handleConfirmDelete}
         />
       )}
-    </div>
+      </div>
+    </AdminProtected>
   );
 }
