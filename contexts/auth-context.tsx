@@ -126,7 +126,7 @@ export function AuthProvider({children}: { children: ReactNode }) {
                 console.log("auth event", event, user);
                 if (user) {
                     // we have a user but userData was not loaded yet
-                    if (userData == null || userRegistrationData === null) {
+                    if (userData == null && userRegistrationData === null) {
                         setTimeout(async () => {
                             // load user data
                             // see https://supabase.com/docs/reference/javascript/auth-onauthstatechange for setTimeout explanation
@@ -166,7 +166,7 @@ export function AuthProvider({children}: { children: ReactNode }) {
         return () => {
             authListener.subscription.unsubscribe();
         };
-    }, [userData, userRegistrationData]);
+    }, []);
 
 
     return (

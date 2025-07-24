@@ -191,17 +191,13 @@ export default function MarketTransactionsPage() {
         <div className="flex flex-col sm:flex-row gap-4">
           <Card className="flex-1 min-w-[280px]">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-              <div className="flex items-center gap-2">
-                <div className="p-2 bg-red-100 rounded-lg">
-                  <TrendingUp className="h-4 w-4 text-red-600" />
+              <div className="flex justify-between w-full">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 bg-red-100 rounded-lg">
+                    <TrendingUp className="h-4 w-4 text-red-600" />
+                  </div>
+                  <CardTitle className="text-sm font-medium">Cu Datorii</CardTitle>
                 </div>
-                <CardTitle className="text-sm font-medium">Cu Datorii</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {/* Toggle Button with Threshold Controls */}
-              <div className="space-y-2">
-                {/* Desktop: Threshold controls above button */}
                 <div className="hidden sm:flex items-center gap-2 p-2 bg-muted/30 rounded-lg">
                   <Settings className="h-4 w-4 text-muted-foreground" />
                   <span className="text-xs font-medium">Prag:</span>
@@ -234,7 +230,13 @@ export default function MarketTransactionsPage() {
                   />
                   <span className="text-xs text-muted-foreground">RON</span>
                 </div>
-                
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {/* Toggle Button with Threshold Controls */}
+              <div className="space-y-2">
+                {/* Desktop: Threshold controls above button */}
+               
                 <Button
                   variant={showDebtList ? "default" : "outline"}
                   size="sm"
