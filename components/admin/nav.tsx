@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/auth-context";
+import { usePermissions } from "@/hooks/use-permissions";
 import { Button } from "@/components/ui/button";
 import {
   Home,
@@ -17,62 +18,63 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { useState } from "react";
+import { PermissionName } from "@/types/permissions";
 
 const menuItems = [
   {
     title: "Overview",
     icon: Home,
     href: "/admin",
-    superAdminOnly: false,
+    // No specific permissions required - all admins can access
   },
   {
     title: "Participanți",
     icon: Users,
     href: "/admin/users",
-    superAdminOnly: false,
+    requiredPermissions: ['users.read' as PermissionName],
   },
   {
     title: "Mesaje",
     icon: MessageSquare,
     href: "/admin/messages",
-    superAdminOnly: false,
+    requiredPermissions: ['messages.read' as PermissionName],
   },
   {
     title: "Financiar",
     icon: Wallet,
     href: "/admin/financiar",
-    superAdminOnly: false,
+    requiredPermissions: ['financial.read' as PermissionName],
   },
   {
     title: "Market",
     icon: ShoppingCart,
     href: "/admin/market",
-    superAdminOnly: false,
+    requiredPermissions: ['market.read' as PermissionName],
   },
   {
     title: "Admini",
     icon: Shield,
     href: "/admin/admins",
-    superAdminOnly: true,
+    requiredPermissions: ['admins.manage' as PermissionName],
   },
   {
     title: "Grupuri mici",
     icon: Group,
     href: "/admin/grupuri-mici",
-    superAdminOnly: true,
+    requiredPermissions: ['groups.manage' as PermissionName],
   },
   {
     title: "Configurații",
     icon: Settings,
     href: "/admin/settings",
-    superAdminOnly: true,
+    requiredPermissions: ['settings.manage' as PermissionName],
   },
 ];
 
 export function AdminNav() {
   const { userData:user } = useAuth();
+  const { hasAnyPermission, isSuperAdmin } = usePermissions();
   const pathname = usePathname();
-  const isSuperAdmin = user?.isSuperAdmin;
   const [imageError, setImageError] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
 
@@ -92,7 +94,12 @@ export function AdminNav() {
       <div className="flex-1 px-3 py-2">
         <nav className="space-y-1">
           {menuItems.map((item) => {
-            if (item.superAdminOnly && !isSuperAdmin) return null;
+            // Check if user has required permissions for this menu item
+            if (item.requiredPermissions && !isSuperAdmin) {
+              if (!hasAnyPermission(...item.requiredPermissions)) {
+                return null;
+              }
+            }
 
             return (
               <Link key={item.href} href={item.href}>

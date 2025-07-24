@@ -77,7 +77,7 @@ interface EditUserSheetProps {
   isOpen: boolean;
   onClose: () => void;
   onUpdate: (user: RegistrationWithProfile) => Promise<void>;
-  isSuperAdmin?: boolean;
+  canEdit?: boolean;
   isUpdating?: boolean;
 }
 
@@ -86,7 +86,7 @@ export function EditUserSheet({
   isOpen,
   onClose,
   onUpdate,
-  isSuperAdmin,
+  canEdit = false,
   isUpdating = false,
 }: EditUserSheetProps) {
   const [defaultAccordionValue] = useState(["payment"]);
@@ -522,7 +522,7 @@ export function EditUserSheet({
                 </Button>
                 <Button
                   type="submit"
-                  disabled={isUpdating || !isDirty}
+                  disabled={isUpdating || !isDirty || !canEdit}
                   className="min-w-[100px]"
                 >
                   {isUpdating ? (

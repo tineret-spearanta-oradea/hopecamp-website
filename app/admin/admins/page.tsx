@@ -18,6 +18,7 @@ import {
     ShieldCheck,
     UserMinus,
     Shield,
+    Settings,
 } from "lucide-react";
 import {useToast} from "@/hooks/use-toast";
 import {Input} from "@/components/ui/input";
@@ -34,6 +35,9 @@ import {getActiveEdition} from "@/lib/supabase/database/edition";
 import {getRegistrationsByEditionId} from "@/lib/supabase/database/registration";
 import {RegistrationWithProfile} from "@/types/registrationWithProfile";
 import {changeUserSuperAdminStatus} from "@/lib/supabase/database/user";
+import {PermissionsManager} from "@/components/admin/permissions-manager";
+import AdminProtected from "@/components/auth/AdminProtected";
+import { PERMISSIONS } from "@/types/permissions";
 
 type SuperAdminPromptData = {
     userId: string;
@@ -51,6 +55,11 @@ export default function AdminsPage() {
     const [superAdminPrompt, setSuperAdminPrompt] =
         useState<SuperAdminPromptData>(null);
     const [superAdminReason, setSuperAdminReason] = useState("");
+    const [selectedUserForPermissions, setSelectedUserForPermissions] = useState<{
+        userId: string;
+        name: string;
+        isSuperAdmin?: boolean;
+    } | null>(null);
     const {toast} = useToast();
 
     // Redirect if not super admin
@@ -216,10 +225,11 @@ export default function AdminsPage() {
     }
 
     return (
-        <div className="space-y-6">
-            <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold">Gestionare Admini</h1>
-            </div>
+        <AdminProtected requiredPermissions={[PERMISSIONS.ADMINS_MANAGE]}>
+            <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                    <h1 className="text-2xl font-bold">Gestionare Admini</h1>
+                </div>
 
             <div className="flex gap-4 items-end">
                 <div className="flex-1 space-y-2">
@@ -279,7 +289,21 @@ export default function AdminsPage() {
                                         )}
                                     </TableCell>
                                     <TableCell>
-                                        <div className="space-x-2">
+                                        <div className="space-x-2 flex flex-wrap gap-2">
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={() => setSelectedUserForPermissions({
+                                                    userId: admin.userId,
+                                                    name: admin.name,
+                                                    isSuperAdmin: admin.isSuperAdmin
+                                                })}
+                                                className="text-blue-500 hover:text-blue-600"
+                                            >
+                                                <Settings className="h-4 w-4 mr-2"/>
+                                                Permisiuni
+                                            </Button>
+                                            
                                             {!admin.isSuperAdmin && (
                                                 <Button
                                                     variant="outline"
@@ -370,6 +394,12 @@ export default function AdminsPage() {
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
-        </div>
+
+            <PermissionsManager
+                selectedUser={selectedUserForPermissions}
+                onClose={() => setSelectedUserForPermissions(null)}
+            />
+            </div>
+        </AdminProtected>
     );
 }
