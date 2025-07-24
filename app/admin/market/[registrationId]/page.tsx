@@ -18,6 +18,8 @@ import {
 import { toast } from "sonner";
 import { formatAmount } from "@/types/marketTransaction";
 import { MarketTransaction } from "@/types/marketTransaction";
+import AdminProtected from "@/components/auth/AdminProtected";
+import { PERMISSIONS } from "@/types/permissions";
 import { RegistrationWithProfile } from "@/types/registrationWithProfile";
 import { getRegistrationById } from "@/lib/supabase/database/registration";
 import { 
@@ -169,7 +171,8 @@ export default function RegistrationMarketDetailPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-7xl">
+    <AdminProtected requiredPermissions={[PERMISSIONS.MARKET_READ]}>
+      <div className="container mx-auto px-4 py-6 max-w-7xl">
       {/* Header with back button */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
         <div className="flex items-center gap-4">
@@ -286,6 +289,7 @@ export default function RegistrationMarketDetailPage() {
         defaultRegistrationId={registrationId}
         onSave={handleTransactionAdded}
       />
-    </div>
+      </div>
+    </AdminProtected>
   );
 }

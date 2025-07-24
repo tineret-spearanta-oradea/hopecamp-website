@@ -18,6 +18,8 @@ import { Users, UserCheck, Shuffle, Trash2, Crown, Users2, Check, X, Search, Mor
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { GroupWithDetails, UserForGroupAssignment } from "@/types/group";
 import { useAuth } from "@/contexts/auth-context";
+import AdminProtected from "@/components/auth/AdminProtected";
+import { PERMISSIONS } from "@/types/permissions";
 import { getActiveEdition } from "@/lib/supabase/database/edition";
 import { useGroups } from "@/hooks/useGroups";
 import { useRegistrations } from "@/hooks/use-registrations";
@@ -281,7 +283,8 @@ export default function AssignGroupsPage() {
   }
 
   return (
-    <div className="container mx-auto p-6">
+    <AdminProtected requiredPermissions={[PERMISSIONS.GROUPS_MANAGE]}>
+      <div className="container mx-auto p-6">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold">Grupuri mici</h1>
         {hasGroups && (
@@ -753,6 +756,7 @@ export default function AssignGroupsPage() {
           )}
         </>
       )}
-    </div>
+      </div>
+    </AdminProtected>
   );
 }

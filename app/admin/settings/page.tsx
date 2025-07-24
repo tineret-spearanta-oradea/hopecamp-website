@@ -6,6 +6,8 @@ import { Check, Copy, Download } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/auth-context";
+import AdminProtected from "@/components/auth/AdminProtected";
+import { PERMISSIONS } from "@/types/permissions";
 
 // Helper function to get file extension from mime type
 const getExtensionFromMimeType = (mimeType: string): string => {
@@ -104,7 +106,8 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="container py-6">
+    <AdminProtected requiredPermissions={[PERMISSIONS.SETTINGS_MANAGE]}>
+      <div className="container py-6">
       <div className="flex flex-col gap-6">
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold">Settings</h1>
@@ -157,6 +160,7 @@ export default function SettingsPage() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </AdminProtected>
   );
 }
