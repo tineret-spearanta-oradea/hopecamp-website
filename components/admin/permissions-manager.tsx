@@ -3,10 +3,16 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { 
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
 import {
   getAllPermissions,
@@ -121,102 +127,95 @@ export function PermissionsManager({ selectedUser, onClose }: PermissionsManager
     }
   };
 
-  if (!selectedUser) return null;
-
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <Card className="w-full max-w-4xl max-h-[90vh] flex flex-col">
-        <CardHeader className="flex-shrink-0">
+    <Dialog open={!!selectedUser} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
+        <DialogHeader>
           <div className="flex justify-between items-start">
             <div>
-              <CardTitle className="text-xl">
-                Gestionare permisiuni pentru {selectedUser.name}
-              </CardTitle>
-              {selectedUser.isSuperAdmin && (
+              <DialogTitle className="text-xl">
+                Gestionare permisiuni pentru {selectedUser?.name}
+              </DialogTitle>
+              {selectedUser?.isSuperAdmin && (
                 <Badge variant="secondary" className="mt-2">
                   Super Admin - Are toate permisiunile automat
                 </Badge>
               )}
             </div>
-            <Button variant="ghost" onClick={onClose}>
-              ✕
-            </Button>
           </div>
-        </CardHeader>
+        </DialogHeader>
 
-        <CardContent className="flex-1 flex flex-col min-h-0">
-          <div className="flex-1 overflow-hidden">
-            <ScrollArea className="h-full pr-4">
-              {loading ? (
-                <div className="flex items-center justify-center py-8">
-                  <span>Se încarcă permisiunile...</span>
-                </div>
-              ) : (
-                <div className="space-y-6 pb-4">
-                  {Object.entries(allPermissions).map(([category, permissions]) => (
-                    <div key={category} className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <h3 className="font-semibold text-lg">
-                          {PERMISSION_CATEGORIES[category as PermissionCategory]}
-                        </h3>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleGrantAllInCategory(category as PermissionCategory)}
-                          disabled={saving || selectedUser.isSuperAdmin}
-                        >
-                          Acordă toate
-                        </Button>
-                      </div>
-
-                      <div className="grid gap-3">
-                        {permissions.map((permission: any) => {
-                          const isGranted = userPermissions.includes(permission.name) || selectedUser.isSuperAdmin;
-                          
-                          return (
-                            <div
-                              key={permission.name}
-                              className="flex items-start space-x-3 p-3 border rounded-lg"
-                            >
-                              <Checkbox
-                                id={permission.name}
-                                checked={isGranted}
-                                disabled={saving || selectedUser.isSuperAdmin}
-                                onCheckedChange={(checked) =>
-                                  handlePermissionToggle(permission.name, checked as boolean)
-                                }
-                              />
-                              <div className="flex-1 space-y-1">
-                                <label
-                                  htmlFor={permission.name}
-                                  className="text-sm font-medium cursor-pointer"
-                                >
-                                  {PERMISSION_DESCRIPTIONS[permission.name as PermissionName]}
-                                </label>
-                                <p className="text-xs text-muted-foreground">
-                                  {permission.name}
-                                </p>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-
-                      <Separator />
+        <div className="flex-1 min-h-0">
+          <ScrollArea className="h-[60vh] pr-4">
+            {loading ? (
+              <div className="flex items-center justify-center py-8">
+                <span>Se încarcă permisiunile...</span>
+              </div>
+            ) : (
+              <div className="space-y-6 pb-4">
+                {Object.entries(allPermissions).map(([category, permissions]) => (
+                  <div key={category} className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-semibold text-lg">
+                        {PERMISSION_CATEGORIES[category as PermissionCategory]}
+                      </h3>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleGrantAllInCategory(category as PermissionCategory)}
+                        disabled={saving || selectedUser?.isSuperAdmin}
+                      >
+                        Acordă toate
+                      </Button>
                     </div>
-                  ))}
-                </div>
-              )}
-            </ScrollArea>
-          </div>
 
-          <div className="flex justify-end space-x-2 pt-4 border-t flex-shrink-0">
-            <Button variant="outline" onClick={onClose}>
-              Închide
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+                    <div className="grid gap-3">
+                      {permissions.map((permission: any) => {
+                        const isGranted = userPermissions.includes(permission.name) || selectedUser?.isSuperAdmin;
+                        
+                        return (
+                          <div
+                            key={permission.name}
+                            className="flex items-start space-x-3 p-3 border rounded-lg"
+                          >
+                            <Checkbox
+                              id={permission.name}
+                              checked={isGranted}
+                              disabled={saving || selectedUser?.isSuperAdmin}
+                              onCheckedChange={(checked) =>
+                                handlePermissionToggle(permission.name, checked as boolean)
+                              }
+                            />
+                            <div className="flex-1 space-y-1">
+                              <label
+                                htmlFor={permission.name}
+                                className="text-sm font-medium cursor-pointer"
+                              >
+                                {PERMISSION_DESCRIPTIONS[permission.name as PermissionName]}
+                              </label>
+                              <p className="text-xs text-muted-foreground">
+                                {permission.name}
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <Separator />
+                  </div>
+                ))}
+              </div>
+            )}
+          </ScrollArea>
+        </div>
+
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose}>
+            Închide
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

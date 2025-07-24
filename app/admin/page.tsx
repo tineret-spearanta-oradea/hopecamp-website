@@ -32,7 +32,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useMessages } from "@/hooks/use-messages";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { PieChart, Pie, Cell, Tooltip as RechartsTooltip } from "recharts";
 
 export default function AdminDashboardPage() {
@@ -52,12 +52,18 @@ export default function AdminDashboardPage() {
   const { userData } = useAuth();
   const router = useRouter();
 
+  // Memoize permission checks to prevent infinite loops
+  const canReadUsers = useMemo(() => can.readUsers(), [can]);
+  const canReadMessages = useMemo(() => can.readMessages(), [can]);
+
   useEffect(() => {
-    if (can.readUsers()) {
+    if (canReadUsers) {
       fetchRegistrations();
     }
-    fetchMessages();
-  }, [fetchRegistrations, fetchMessages, can]);
+    if (canReadMessages) {
+      fetchMessages();
+    }
+  }, [fetchRegistrations, fetchMessages, canReadUsers, canReadMessages]);
 
   // Show simple greeting if user doesn't have users.read permission
   if (!can.readUsers()) {
