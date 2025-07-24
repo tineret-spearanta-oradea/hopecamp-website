@@ -101,7 +101,7 @@ export function PermissionsManager({ selectedUser, onClose }: PermissionsManager
     if (!selectedUser || !currentUser) return;
 
     const categoryPermissions = allPermissions[category]?.map((p: any) => p.name as PermissionName) || [];
-    const permissionsToGrant = categoryPermissions.filter(p => !userPermissions.includes(p));
+    const permissionsToGrant = categoryPermissions.filter((p: PermissionName) => !userPermissions.includes(p));
 
     if (permissionsToGrant.length === 0) {
       toast.info("Utilizatorul are deja toate permisiunile din această categorie");

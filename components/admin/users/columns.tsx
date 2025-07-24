@@ -30,7 +30,8 @@ interface ColumnProps {
   onEdit?: (user: RegistrationWithProfile) => void;
   onDelete?: (user: RegistrationWithProfile) => void;
   onViewDetails?: (user: RegistrationWithProfile) => void;
-  isSuperAdmin?: boolean;
+  canEdit?: boolean;
+  canDelete?: boolean;
 }
 
 const SortButton = ({
@@ -65,7 +66,8 @@ export const columns = ({
   onEdit,
   onDelete,
   onViewDetails,
-  isSuperAdmin,
+  canEdit = false,
+  canDelete = false,
 }: ColumnProps): ColumnDef<RegistrationWithProfile>[] => [
   {
     accessorKey: "userId",
@@ -169,17 +171,19 @@ export const columns = ({
           >
             {amount}
           </span>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-6 w-6"
-            onClick={(e) => {
-              e.stopPropagation();
-              onEdit?.(row.original);
-            }}
-          >
-            <Pencil className="h-3 w-3 text-muted-foreground" />
-          </Button>
+          {canEdit && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6"
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit?.(row.original);
+              }}
+            >
+              <Pencil className="h-3 w-3 text-muted-foreground" />
+            </Button>
+          )}
         </div>
       );
     },
@@ -242,14 +246,16 @@ export const columns = ({
             <Eye className="mr-2 h-4 w-4" />
             Vezi detalii
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => onEdit?.(row.original)}
-            className="cursor-pointer"
-          >
-            <Pencil className="mr-2 h-4 w-4" />
-            Editează
-          </DropdownMenuItem>
-          {isSuperAdmin && (
+          {canEdit && (
+            <DropdownMenuItem
+              onClick={() => onEdit?.(row.original)}
+              className="cursor-pointer"
+            >
+              <Pencil className="mr-2 h-4 w-4" />
+              Editează
+            </DropdownMenuItem>
+          )}
+          {canDelete && (
             <>
               <DropdownMenuSeparator />
               <DropdownMenuItem
