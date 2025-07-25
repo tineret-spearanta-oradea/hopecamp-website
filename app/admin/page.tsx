@@ -2,6 +2,8 @@
 "use client";
 
 import { useRegistrations } from "@/hooks/use-registrations";
+import { usePermissions } from "@/hooks/use-permissions";
+import { useAuth } from "@/contexts/auth-context";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Loader2,
@@ -30,7 +32,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useMessages } from "@/hooks/use-messages";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { PieChart, Pie, Cell, Tooltip as RechartsTooltip } from "recharts";
 
 export default function AdminDashboardPage() {
@@ -46,12 +48,81 @@ export default function AdminDashboardPage() {
     error: messagesError,
     fetchMessages,
   } = useMessages();
+  const { can } = usePermissions();
+  const { userData } = useAuth();
   const router = useRouter();
 
+  // Memoize permission checks to prevent infinite loops
+  const canReadUsers = useMemo(() => can.readUsers(), [can]);
+  const canReadMessages = useMemo(() => can.readMessages(), [can]);
+
   useEffect(() => {
-    fetchRegistrations();
-    fetchMessages();
-  }, [fetchRegistrations, fetchMessages]);
+    if (canReadUsers) {
+      fetchRegistrations();
+    }
+    if (canReadMessages) {
+      fetchMessages();
+    }
+  }, [fetchRegistrations, fetchMessages, canReadUsers, canReadMessages]);
+
+  // Show simple greeting if user doesn't have users.read permission
+  if (!can.readUsers()) {
+    // Determine which pages the user can access
+    const accessiblePages = [];
+    
+    if (can.readMessages()) {
+      accessiblePages.push({ title: "Mesaje", href: "/admin/messages", description: "Gestionare mesaje" });
+    }
+    if (can.readMarket()) {
+      accessiblePages.push({ title: "Market", href: "/admin/market", description: "Tranzacții market" });
+    }
+    if (can.readFinancial()) {
+      accessiblePages.push({ title: "Financiar", href: "/admin/financiar", description: "Date financiare" });
+    }
+    if (can.manageAdmins()) {
+      accessiblePages.push({ title: "Admini", href: "/admin/admins", description: "Gestionare administratori" });
+    }
+    if (can.manageGroups()) {
+      accessiblePages.push({ title: "Grupuri mici", href: "/admin/grupuri-mici", description: "Gestionare grupuri" });
+    }
+    if (can.manageSettings()) {
+      accessiblePages.push({ title: "Configurații", href: "/admin/settings", description: "Configurări sistem" });
+    }
+
+    return (
+      <div className="flex h-[450px] items-center justify-center">
+        <div className="text-center">
+            <h1 className="text-2xl font-bold">Salut, {userData?.name || "Admin"}!</h1>
+            <p className="text-muted-foreground">
+              Bine ai venit în panoul de administrare.
+            </p>
+            
+            {accessiblePages.length > 0 && (
+              <div className="mt-6 text-left">
+                <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wide mb-3">
+                  Pagini disponibile:
+                </h3>
+                <div className="space-y-2">
+                  {accessiblePages.map((page) => (
+                    <div
+                      key={page.href}
+                      onClick={() => router.push(page.href)}
+                      className="flex items-center justify-between p-3 rounded-lg border hover:bg-accent cursor-pointer transition-colors"
+                    >
+                      <div>
+                        <p className="font-medium text-sm">{page.title}</p>
+                        <p className="text-xs text-muted-foreground">{page.description}</p>
+                      </div>
+                      <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+        </div>
+      </div>
+    );
+  }
 
   if (usersLoading || messagesLoading) {
     return (
@@ -247,268 +318,351 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold tracking-tight mb-1">Statistici</h1>
+      <h1 className="text-3xl font-bold tracking-tight mb-1">Salut, {userData?.name || "Admin"}!</h1>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <UserCard
-          title="Participanți"
-          value={totalUsers}
-          description="înregistrați"
-          icon={UsersIcon}
-          iconColor="text-muted-foreground"
-          isShiny={true}
-        />
-
-        <div
-          className="rounded-lg cursor-pointer"
-          onClick={() => router.push("/admin/messages")}
-        >
-          <Card className="group transition-all duration-300 hover:bg-accent/50">
+        {can.readUsers() ? (
+          <UserCard
+            title="Participanți"
+            value={totalUsers}
+            description="înregistrați"
+            icon={UsersIcon}
+            iconColor="text-muted-foreground"
+            isShiny={true}
+          />
+        ) : (
+          <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Mesaje necitite
-              </CardTitle>
-              <div className="flex items-center gap-2">
-                <MessageSquare className="h-4 w-4 text-blue-500" />
-                <ChevronRight
-                  className={cn(
-                    "h-4 w-4 opacity-0 -ml-4 transition-all duration-300",
-                    "group-hover:opacity-100 group-hover:ml-0"
-                  )}
-                />
-              </div>
+              <CardTitle className="text-sm font-medium">Participanți</CardTitle>
+              <UsersIcon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
-                {messages?.filter((msg) => !msg.isRead).length || 0}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                din {messages?.length || 0} mesaje totale
-              </p>
+              <div className="text-2xl font-bold">-</div>
+              <p className="text-xs text-muted-foreground">Acces restricționat</p>
             </CardContent>
           </Card>
-        </div>
+        )}
 
-        <UserCard
-          title="Participanți Confirmați"
-          value={confirmedUsers}
-          description={`${((confirmedUsers / totalUsers) * 100).toFixed(
-            1
-          )}% din total`}
-          icon={CheckCircle}
-          iconColor="text-emerald-600"
-        />
+        {can.readMessages() ? (
+          <div
+            className="rounded-lg cursor-pointer"
+            onClick={() => router.push("/admin/messages")}
+          >
+            <Card className="group transition-all duration-300 hover:bg-accent/50">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Mesaje necitite
+                </CardTitle>
+                <div className="flex items-center gap-2">
+                  <MessageSquare className="h-4 w-4 text-blue-500" />
+                  <ChevronRight
+                    className={cn(
+                      "h-4 w-4 opacity-0 -ml-4 transition-all duration-300",
+                      "group-hover:opacity-100 group-hover:ml-0"
+                    )}
+                  />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {messages?.filter((msg) => !msg.isRead).length || 0}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  din {messages?.length || 0} mesaje totale
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        ) : (
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Mesaje necitite</CardTitle>
+              <MessageSquare className="h-4 w-4 text-blue-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">-</div>
+              <p className="text-xs text-muted-foreground">Acces restricționat</p>
+            </CardContent>
+          </Card>
+        )}
 
-        <div className="rounded-lg cursor-pointer" onClick={() => router.push("/admin/users")}>
-          <Card className="group transition-all duration-300 hover:bg-accent/50 h-full">
+        {can.readUsers() ? (
+          <UserCard
+            title="Participanți Confirmați"
+            value={confirmedUsers}
+            description={`${((confirmedUsers / totalUsers) * 100).toFixed(
+              1
+            )}% din total`}
+            icon={CheckCircle}
+            iconColor="text-emerald-600"
+          />
+        ) : (
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Participanți Confirmați</CardTitle>
+              <CheckCircle className="h-4 w-4 text-emerald-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">-</div>
+              <p className="text-xs text-muted-foreground">Acces restricționat</p>
+            </CardContent>
+          </Card>
+        )}
+
+        {can.readUsers() ? (
+          <div className="rounded-lg cursor-pointer" onClick={() => router.push("/admin/users")}>
+            <Card className="group transition-all duration-300 hover:bg-accent/50 h-full">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Distribuție Gen</CardTitle>
+                <div className="flex items-center gap-2">
+                  <User className="h-4 w-4 text-purple-500" />
+                  <ChevronRight
+                    className={cn(
+                      "h-4 w-4 opacity-0 -ml-4 transition-all duration-300",
+                      "group-hover:opacity-100 group-hover:ml-0"
+                    )}
+                  />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="flex items-center gap-1">
+                      <span className="text-blue-600">M:</span>
+                      <span className="font-medium">{maleUsers}</span>
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <span className="text-pink-600">F:</span>
+                      <span className="font-medium">{femaleUsers}</span>
+                    </span>
+                  </div>
+                  <div className="flex h-2 w-full bg-muted rounded-full overflow-hidden">
+                    <div 
+                      className="bg-blue-500 h-full transition-all duration-300"
+                      style={{ width: `${totalUsers > 0 ? (maleUsers / totalUsers) * 100 : 0}%` }}
+                    />
+                    <div 
+                      className="bg-pink-500 h-full transition-all duration-300"
+                      style={{ width: `${totalUsers > 0 ? (femaleUsers / totalUsers) * 100 : 0}%` }}
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    {totalUsers > 0 ? `${((maleUsers / totalUsers) * 100).toFixed(1)}% M / ${((femaleUsers / totalUsers) * 100).toFixed(1)}% F` : 'No data'}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        ) : (
+          <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Distribuție Gen</CardTitle>
-              <div className="flex items-center gap-2">
-                <User className="h-4 w-4 text-purple-500" />
-                <ChevronRight
-                  className={cn(
-                    "h-4 w-4 opacity-0 -ml-4 transition-all duration-300",
-                    "group-hover:opacity-100 group-hover:ml-0"
-                  )}
-                />
-              </div>
+              <User className="h-4 w-4 text-purple-500" />
             </CardHeader>
             <CardContent>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="flex items-center gap-1">
-                    <span className="text-blue-600">M:</span>
-                    <span className="font-medium">{maleUsers}</span>
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <span className="text-pink-600">F:</span>
-                    <span className="font-medium">{femaleUsers}</span>
-                  </span>
-                </div>
-                <div className="flex h-2 w-full bg-muted rounded-full overflow-hidden">
-                  <div 
-                    className="bg-blue-500 h-full transition-all duration-300"
-                    style={{ width: `${totalUsers > 0 ? (maleUsers / totalUsers) * 100 : 0}%` }}
-                  />
-                  <div 
-                    className="bg-pink-500 h-full transition-all duration-300"
-                    style={{ width: `${totalUsers > 0 ? (femaleUsers / totalUsers) * 100 : 0}%` }}
-                  />
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  {totalUsers > 0 ? `${((maleUsers / totalUsers) * 100).toFixed(1)}% M / ${((femaleUsers / totalUsers) * 100).toFixed(1)}% F` : 'No data'}
+              <div className="text-2xl font-bold">-</div>
+              <p className="text-xs text-muted-foreground">Acces restricționat</p>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+
+      {can.readUsers() && (
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <Card>
+            <CardHeader>
+              <CardTitle>Distribuția Vârstelor</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{averageAge.toFixed(1)}</div>
+              <p className="text-sm text-muted-foreground">
+                Vârsta medie a participanților
+              </p>
+              <div className="mt-4">
+                <p className="text-sm">
+                  Sub 18:{" "}
+                  {registrations?.filter((user) => (user.age || 0) < 18).length || 0}{" "}
+                  participanți
+                </p>
+                <p className="text-sm">
+                  18-25:{" "}
+                  {registrations?.filter(
+                    (user) => (user.age || 0) >= 18 && (user.age || 0) <= 25
+                  ).length || 0}{" "}
+                  participanți
+                </p>
+                <p className="text-sm">
+                  Peste 25:{" "}
+                  {registrations?.filter((user) => (user.age || 0) > 25).length || 0}{" "}
+                  participanți
                 </p>
               </div>
             </CardContent>
           </Card>
-        </div>
-      </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card>
-          <CardHeader>
-            <CardTitle>Distribuția Vârstelor</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{averageAge.toFixed(1)}</div>
-            <p className="text-sm text-muted-foreground">
-              Vârsta medie a participanților
-            </p>
-            <div className="mt-4">
-              <p className="text-sm">
-                Sub 18:{" "}
-                {registrations?.filter((user) => (user.age || 0) < 18).length || 0}{" "}
-                participanți
-              </p>
-              <p className="text-sm">
-                18-25:{" "}
-                {registrations?.filter(
-                  (user) => (user.age || 0) >= 18 && (user.age || 0) <= 25
-                ).length || 0}{" "}
-                participanți
-              </p>
-              <p className="text-sm">
-                Peste 25:{" "}
-                {registrations?.filter((user) => (user.age || 0) > 25).length || 0}{" "}
-                participanți
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Transport</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={100} className="mb-1">
+                <PieChart>
+                  <Pie
+                    data={data}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={50}
+                    fill="#8884d8"
+                    dataKey="value"
+                  >
+                    {data.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                  <RechartsTooltip />
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="flex flex-col justify-center mt-1">
+                {data.map((entry, index) => (
+                  <div key={index} className="flex items-center mb-2">
+                    <div
+                      className="w-4 h-4"
+                      style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                    ></div>
+                    <span className="ml-2 text-sm">{entry.name}</span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Transport</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={100} className="mb-1">
-              <PieChart>
-                <Pie
-                  data={data}
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={50}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {data.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <RechartsTooltip />
-              </PieChart>
-            </ResponsiveContainer>
-            <div className="flex flex-col justify-center mt-1">
-              {data.map((entry, index) => (
-                <div key={index} className="flex items-center mb-2">
-                  <div
-                    className="w-4 h-4"
-                    style={{ backgroundColor: COLORS[index % COLORS.length] }}
-                  ></div>
-                  <span className="ml-2 text-sm">{entry.name}</span>
+          {can.readFinancial() ? (
+            <Card>
+              <CardHeader>
+                <CardTitle>Status Plată</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {totalAmountPaid.toLocaleString()} RON
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Status Plată</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {totalAmountPaid.toLocaleString()} RON
-            </div>
-            <p className="text-xs text-muted-foreground mb-4">
-              Suma totală încasată
-            </p>
-            <div className="space-y-3">
-              <div>
-                <p className="text-sm font-medium">
-                  Plătit Integral (
-                  {registrations?.filter(
-                    (user) =>
-                      (user.amountPaid || 0) >=
-                      (sumToPay.withFamilyMember)
-                  ).length || 0}{" "}
-                  persoane)
+                <p className="text-xs text-muted-foreground mb-4">
+                  Suma totală încasată
                 </p>
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-sm font-medium">
+                      Plătit Integral (
+                      {registrations?.filter(
+                        (user) =>
+                          (user.amountPaid || 0) >=
+                          (sumToPay.withFamilyMember)
+                      ).length || 0}{" "}
+                      persoane)
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Au achitat suma completă
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">
+                      Plată Parțială (
+                      {registrations?.filter(
+                        (user) =>
+                          (user.amountPaid || 0) > 0 &&
+                          (user.amountPaid || 0) <
+                            (sumToPay.withFamilyMember)
+                      ).length || 0}{" "}
+                      persoane)
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Au achitat o parte din sumă
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">
+                      Neplătit (
+                      {registrations?.filter((user) => !user.amountPaid).length || 0}{" "}
+                      persoane)
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Nu au efectuat nicio plată
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card>
+              <CardHeader>
+                <CardTitle>Status Plată</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">-</div>
                 <p className="text-xs text-muted-foreground">
-                  Au achitat suma completă
+                  Acces restricționat
                 </p>
-              </div>
-              <div>
-                <p className="text-sm font-medium">
-                  Plată Parțială (
-                  {registrations?.filter(
-                    (user) =>
-                      (user.amountPaid || 0) > 0 &&
-                      (user.amountPaid || 0) <
-                        (sumToPay.withFamilyMember)
-                  ).length || 0}{" "}
-                  persoane)
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  Au achitat o parte din sumă
-                </p>
-              </div>
-              <div>
-                <p className="text-sm font-medium">
-                  Neplătit (
-                  {registrations?.filter((user) => !user.amountPaid).length || 0}{" "}
-                  persoane)
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  Nu au efectuat nicio plată
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      )}
 
       <div className="grid gap-4 md:grid-cols-2">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Distribuția pe Zile</CardTitle>
-            <Calendar className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {usersByDay.map(({ date, count }) => {
-                const maxUsers = Math.max(...usersByDay.map((d) => d.count));
-                const percentage = maxUsers > 0 ? (count / maxUsers) * 100 : 0;
+        {can.readUsers() ? (
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>Distribuția pe Zile</CardTitle>
+              <Calendar className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {usersByDay.map(({ date, count }) => {
+                  const maxUsers = Math.max(...usersByDay.map((d) => d.count));
+                  const percentage = maxUsers > 0 ? (count / maxUsers) * 100 : 0;
 
-                return (
-                  <div key={date.toISOString()} className="space-y-1">
-                    <div className="flex justify-between items-center text-sm">
-                      <span className="font-medium">
-                        {date.toLocaleDateString("ro", {
-                          weekday: "long",
-                          day: "numeric",
-                        })}
-                      </span>
-                      <span className="text-muted-foreground">
-                        {count} participanți
-                      </span>
+                  return (
+                    <div key={date.toISOString()} className="space-y-1">
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="font-medium">
+                          {date.toLocaleDateString("ro", {
+                            weekday: "long",
+                            day: "numeric",
+                          })}
+                        </span>
+                        <span className="text-muted-foreground">
+                          {count} participanți
+                        </span>
+                      </div>
+                      <div className="relative h-2 w-full bg-muted rounded-full">
+                        <div
+                          className="absolute inset-y-0 left-0 bg-primary rounded-full transition-all duration-500 ease-out"
+                          style={{
+                            width: `${Math.max(percentage, 0)}%`,
+                          }}
+                        />
+                      </div>
                     </div>
-                    <div className="relative h-2 w-full bg-muted rounded-full">
-                      <div
-                        className="absolute inset-y-0 left-0 bg-primary rounded-full transition-all duration-500 ease-out"
-                        style={{
-                          width: `${Math.max(percentage, 0)}%`,
-                        }}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        ) : (
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>Distribuția pe Zile</CardTitle>
+              <Calendar className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">-</div>
+              <p className="text-xs text-muted-foreground">
+                Acces restricționat
+              </p>
+            </CardContent>
+          </Card>
+        )}
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
@@ -551,65 +705,67 @@ export default function AdminDashboardPage() {
         </Card>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-1">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Înscrieri pe Zile</CardTitle>
-            <Calendar className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="h-[300px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart
-                  data={registrationsByDay.map(({ date, count }) => ({
-                    date: format(date, "d MMM", { locale: ro }),
-                    count,
-                  }))}
-                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                >
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    className="stroke-muted"
-                  />
-                  <XAxis
-                    dataKey="date"
-                    className="text-sm text-muted-foreground"
-                  />
-                  <YAxis className="text-sm text-muted-foreground" />
-                  <Tooltip
-                    content={({ active, payload, label }) => {
-                      if (active && payload && payload.length) {
-                        return (
-                          <div className="rounded-lg border bg-background p-2 shadow-sm">
-                            <div className="grid grid-cols-2 gap-2">
-                              <div className="font-medium">{label}</div>
-                              <div className="font-medium text-right">
-                                {payload[0].value}{" "}
-                                {payload[0].value === 1
-                                  ? "înscriere"
-                                  : "înscrieri"}
+      {can.readUsers() && (
+        <div className="grid gap-4 md:grid-cols-1">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>Înscrieri pe Zile</CardTitle>
+              <Calendar className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="h-[300px] w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart
+                    data={registrationsByDay.map(({ date, count }) => ({
+                      date: format(date, "d MMM", { locale: ro }),
+                      count,
+                    }))}
+                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                  >
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      className="stroke-muted"
+                    />
+                    <XAxis
+                      dataKey="date"
+                      className="text-sm text-muted-foreground"
+                    />
+                    <YAxis className="text-sm text-muted-foreground" />
+                    <Tooltip
+                      content={({ active, payload, label }) => {
+                        if (active && payload && payload.length) {
+                          return (
+                            <div className="rounded-lg border bg-background p-2 shadow-sm">
+                              <div className="grid grid-cols-2 gap-2">
+                                <div className="font-medium">{label}</div>
+                                <div className="font-medium text-right">
+                                  {payload[0].value}{" "}
+                                  {payload[0].value === 1
+                                    ? "înscriere"
+                                    : "înscrieri"}
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        );
-                      }
-                      return null;
-                    }}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="count"
-                    stroke="hsl(var(--primary))"
-                    strokeWidth={2}
-                    dot={{ fill: "hsl(var(--primary))" }}
-                    activeDot={{ r: 8 }}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+                          );
+                        }
+                        return null;
+                      }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="count"
+                      stroke="hsl(var(--primary))"
+                      strokeWidth={2}
+                      dot={{ fill: "hsl(var(--primary))" }}
+                      activeDot={{ r: 8 }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }

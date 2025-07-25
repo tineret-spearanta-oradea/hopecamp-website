@@ -145,7 +145,7 @@ export function AddMarketTransactionDialog({
   };
 
   const getDebtStatusColor = (debt: number) => {
-    if (debt === 0) return 'text-green-600';
+    if (debt === 0) return 'text-primary';
     if (debt > 0) return 'text-red-600';
     return 'text-blue-600'; // overpaid
   };
@@ -220,10 +220,10 @@ export function AddMarketTransactionDialog({
                 type="button"
                 variant="outline"
                 className={cn(
-                  "transition-all duration-200 hover:bg-primary hover:text-black/50",
+                  "transition-all duration-200",
                   transactionType === 'debt' 
                     ? "bg-primary text-white border-primary" 
-                    : "bg-transparent text-black border-input"
+                    : "bg-transparent text-black border-input hover:bg-accent"
                 )}
                 onClick={() => setTransactionType('debt')}
               >
@@ -233,10 +233,10 @@ export function AddMarketTransactionDialog({
                 type="button"
                 variant="outline"
                 className={cn(
-                  "transition-all duration-200 hover:bg-primary hover:text-black/50",
+                  "transition-all duration-200",
                   transactionType === 'payment' 
                     ? "bg-primary text-white border-primary" 
-                    : "bg-transparent text-black border-input"
+                    : "bg-transparent text-black border-input hover:bg-accent"
                 )}
                 onClick={() => setTransactionType('payment')}
               >
