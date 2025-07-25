@@ -196,7 +196,7 @@ export default function MarketTransactionsPage() {
                   <div className="p-2 bg-red-100 rounded-lg">
                     <TrendingUp className="h-4 w-4 text-red-600" />
                   </div>
-                  <CardTitle className="text-sm font-medium">Cu Datorii</CardTitle>
+                  <CardTitle className="text-sm font-medium">Lista roșie (cu datorii)</CardTitle>
                 </div>
                 <div className="hidden sm:flex items-center gap-2 p-2 bg-muted/30 rounded-lg">
                   <Settings className="h-4 w-4 text-muted-foreground" />
