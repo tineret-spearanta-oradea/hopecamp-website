@@ -220,10 +220,10 @@ export function AddMarketTransactionDialog({
                 type="button"
                 variant="outline"
                 className={cn(
-                  "transition-all duration-200",
+                  "transition-all duration-200 hover:bg-primary hover:text-black/50",
                   transactionType === 'debt' 
                     ? "bg-primary text-white border-primary" 
-                    : "bg-transparent text-black border-input hover:bg-accent"
+                    : "bg-transparent text-black border-input"
                 )}
                 onClick={() => setTransactionType('debt')}
               >
@@ -233,10 +233,10 @@ export function AddMarketTransactionDialog({
                 type="button"
                 variant="outline"
                 className={cn(
-                  "transition-all duration-200",
+                  "transition-all duration-200 hover:bg-primary hover:text-black/50",
                   transactionType === 'payment' 
                     ? "bg-primary text-white border-primary" 
-                    : "bg-transparent text-black border-input hover:bg-accent"
+                    : "bg-transparent text-black border-input "
                 )}
                 onClick={() => setTransactionType('payment')}
               >
