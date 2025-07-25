@@ -46,8 +46,11 @@ This project uses Supabase for backend services. For local development:
 - Uses Supabase Auth with phone number verification
 - AuthContext provides user state management across the app
 - Row Level Security (RLS) implemented in Supabase
-- Admin roles: `isAdmin` and `isSuperAdmin` flags in user profiles
-- Protected routes use `RequireAuth` and `AdminProtected` components
+- **Permission-Based Access Control (RBAC)**: Granular permissions system with admin_permissions and user_permissions tables
+- Admin roles: `isAdmin` and `isSuperAdmin` flags in user profiles (legacy, replaced by permissions)
+- Protected routes use `RequireAuth` and `AdminProtected` components with specific permission requirements
+- Permission categories: users, market, messages, financial, admin, groups, settings
+- Super admins have all permissions by default, regular admins start with no permissions
 
 ### Database Pattern
 - Database operations are abstracted in `lib/supabase/database/` modules
@@ -57,10 +60,13 @@ This project uses Supabase for backend services. For local development:
 
 ### Key Features
 - **Registration System**: Multi-step camp registration with user profiles
-- **Admin Panel**: User management, financial tracking, message system
+- **Admin Panel**: User management, financial tracking, message system with permission-based access
+- **Market System**: Transaction tracking with debt management and configurable thresholds
+- **Permission Management**: Granular admin permissions with role-based access control
 - **File Upload**: Profile images via UploadThing/Supabase Storage
 - **Authentication**: Phone-based auth with OTP verification
 - **Responsive Design**: Mobile-first with Tailwind CSS
+- **Group Management**: Small group assignment and management system
 
 ## Branch Strategy
 - `main` - Production branch
@@ -76,3 +82,37 @@ This project uses Supabase for backend services. For local development:
 - Local development uses `.env.local` with Supabase local credentials
 - UploadThing token required for file uploads (optional for basic development)
 - SMS OTP is redirected to Mailpit in local development (http://127.0.0.1:54324/)
+
+## Recent Updates & New Features - 24 July 2025
+
+### Permission-Based Access Control System (RBAC)
+- **Database Schema**: Added `admin_permissions` and `user_permissions` tables
+- **Permission Categories**: users, market, messages, financial, admin, groups, settings
+- **Permission Service**: Centralized permission management in `lib/supabase/database/permissions.ts`
+- **Auth Context Enhancement**: Added permission state and checking functions
+- **Custom Hook**: `use-permissions.ts` provides convenient permission checking utilities
+- **UI Components**: All admin pages now use `AdminProtected` wrapper with specific permission requirements
+- **Navigation Security**: Menu items are hidden based on user permissions
+- **Admin Management**: Permission assignment interface for managing admin access
+
+### Market System Enhancements
+- **Debt Tracking**: Real-time debt calculation and display
+- **Configurable Thresholds**: Admin-settable debt thresholds for filtering
+- **Mobile-Responsive UI**: Improved mobile experience for debt management
+- **Transaction Management**: Enhanced transaction creation and editing
+
+### UI/UX Improvements
+- **Consistent Container Sizing**: Standardized admin page layouts
+- **Mobile Optimization**: Better mobile experience across all admin pages
+- **Permission-Based UI**: Dynamic UI based on user permissions
+- **Improved Forms**: Better form validation and user feedback
+
+### Database Migrations
+- `20250723000001_create_admin_permissions_system.sql` - Permission system foundation
+- `20250723000002_seed_default_permissions.sql` - Default permissions and auto-grants
+
+### Development Guidelines
+- **Permission Checking**: Always use permission-based access instead of simple admin flags
+- **UI Protection**: Use `AdminProtected` component for page-level protection
+- **Navigation**: Update navigation permissions when adding new admin features
+- **Testing**: Include permission scenarios in integration tests

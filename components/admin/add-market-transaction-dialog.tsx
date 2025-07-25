@@ -218,14 +218,26 @@ export function AddMarketTransactionDialog({
             <div className="grid grid-cols-2 gap-2">
               <Button
                 type="button"
-                variant={transactionType === 'debt' ? 'default' : 'secondary'}
+                variant="outline"
+                className={cn(
+                  "transition-all duration-200 hover:bg-primary hover:text-black/50",
+                  transactionType === 'debt' 
+                    ? "bg-primary text-white border-primary" 
+                    : "bg-transparent text-black border-input"
+                )}
                 onClick={() => setTransactionType('debt')}
               >
                 Datorie
               </Button>
               <Button
                 type="button"
-                variant={transactionType === 'payment' ? 'default' : 'secondary'}
+                variant="outline"
+                className={cn(
+                  "transition-all duration-200 hover:bg-primary hover:text-black/50",
+                  transactionType === 'payment' 
+                    ? "bg-primary text-white border-primary" 
+                    : "bg-transparent text-black border-input"
+                )}
                 onClick={() => setTransactionType('payment')}
               >
                 Plată
