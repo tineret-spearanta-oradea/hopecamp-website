@@ -45,6 +45,7 @@ interface MarketSummary {
 
 export default function MarketTransactionsPage() {
   const [summaries, setSummaries] = useState<MarketSummary[]>([]);
+  const [allSummaries, setAllSummaries] = useState<MarketSummary[]>([]);
   const [registrations, setRegistrations] = useState<RegistrationWithProfile[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -80,12 +81,14 @@ export default function MarketTransactionsPage() {
 
       const offset = (currentPage - 1) * pageSize;
       
-      const [summariesResult, registrationsData] = await Promise.all([
+      const [summariesResult, allSummariesResult, registrationsData] = await Promise.all([
         getMarketTransactionSummaries(1, debouncedSearchQuery, pageSize, offset),
+        getMarketTransactionSummaries(1, '', 1000, 0), // Get all summaries for statistics
         getRegistrationsByEditionId(1)
       ]);
 
       setSummaries(summariesResult.data);
+      setAllSummaries(allSummariesResult.data);
       setTotalCount(summariesResult.count);
       setTotalPages(Math.ceil(summariesResult.count / pageSize));
       setRegistrations(registrationsData);
@@ -138,10 +141,10 @@ export default function MarketTransactionsPage() {
   };
 
   const calculateStats = () => {
-    const withDebt = summaries.filter(s => s.current_debt > 0).length;
-    const totalDebt = summaries.reduce((sum, s) => sum + (s.current_debt > 0 ? s.current_debt : 0), 0);
+    const withDebt = allSummaries.filter(s => s.current_debt > 0).length;
+    const totalDebt = allSummaries.reduce((sum, s) => sum + (s.current_debt > 0 ? s.current_debt : 0), 0);
     const thresholdInCents = parseFloat(debtThreshold || "0") * 100; // Convert RON to cents
-    const withDebtAboveThreshold = summaries.filter(s => s.current_debt >= thresholdInCents);
+    const withDebtAboveThreshold = allSummaries.filter(s => s.current_debt >= thresholdInCents);
     return { withDebt, totalDebt, withDebtAboveThreshold };
   };
 
