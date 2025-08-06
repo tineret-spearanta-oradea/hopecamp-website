@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/popover";
 import { useEffect, useState } from "react";
 import { useFinancials } from "@/hooks/use-financials";
+import AdminProtected from "@/components/auth/AdminProtected";
+import { PERMISSIONS } from "@/types/permissions";
 import { AddIncomeDialog } from "@/components/admin/add-income-dialog";
 import { AddExpenseDialog, ExpenseDialog } from "@/components/admin/add-expense-dialog";
 import { cn } from "@/lib/utils";
@@ -209,9 +211,10 @@ export default function FinanciarPage() {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Financiar</h1>
+    <AdminProtected requiredPermissions={[PERMISSIONS.FINANCIAL_READ]}>
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold">Financiar</h1>
         {activeTab === "incasari" && (
           <div className="flex items-center gap-2">
             <Popover>
@@ -482,6 +485,7 @@ export default function FinanciarPage() {
           />
         </TabsContent>
       </Tabs>
-    </div>
+      </div>
+    </AdminProtected>
   );
 }
