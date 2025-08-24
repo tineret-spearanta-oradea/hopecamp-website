@@ -11,7 +11,7 @@ export default function Galerie() {
     "/assets/images/hopecamp/gratiadei/ELI03933.jpg",
     "/assets/images/hopecamp/gratiadei/ELI03065.jpg",
     "/assets/images/hopecamp/gratiadei/ELI02865.jpg",
-    "/assets/images/hopecamp/gratiadei/ELI02859.jpg",
+    "/assets/images/hopecamp/gratiadei/ELI03745.jpg",
     "/assets/images/hopecamp/gratiadei/ELI02036.jpg",
     "/assets/images/hopecamp/gratiadei/ELI09793.jpg",
     "/assets/images/hopecamp/gratiadei/ELI09640.jpg",
