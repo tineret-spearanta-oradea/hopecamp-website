@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import CountdownTimer from "./CountdownTimer";
 import { dateRange, editionName, location } from "@/lib/constants";
+import { useState } from "react";
 
 // Helper function to format date range
 const formatDateRange = (start: Date, end: Date): string => {
@@ -20,6 +21,12 @@ const formatDateRange = (start: Date, end: Date): string => {
 };
 
 export default function Hero() {
+  const targetDate = dateRange.endDate;
+  const [hasEnded, setHasEnded] = useState<boolean>(
+    () => +targetDate < +new Date()
+  );
+
+
   const formattedDate = formatDateRange(dateRange.startDate, dateRange.endDate);
 
   return (
@@ -71,9 +78,15 @@ export default function Hero() {
           {/* Button */}
           <Button variant="default" size="lg" asChild>
             {/* Link this button appropriately */}
-            <Link href="/inscrie-te">
-              <p className="text-lg sm:text-xl font-semibold">Înscrie-te</p>
-            </Link>
+            {hasEnded ? (
+              <Link href="#galerie">
+                <p className="text-lg sm:text-xl font-semibold">Vezi poze din tabără</p>
+              </Link>
+            ) : (
+              <Link href="/inscrie-te">
+                <p className="text-lg sm:text-xl font-semibold">Înscrie-te</p>
+              </Link>
+            )}
           </Button>
         </div>
       </section>

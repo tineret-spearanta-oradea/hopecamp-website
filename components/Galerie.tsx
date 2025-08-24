@@ -6,23 +6,22 @@ import Link from "next/link";
 
 export default function Galerie() {
   const images = [
-    "/assets/images/hopecamp/paxchristi/ZVE07821.jpg",
-    "/assets/images/hopecamp/paxchristi/ZVE07869.jpg",
-    "/assets/images/hopecamp/paxchristi/ZVE07946.jpg",
-    "/assets/images/hopecamp/paxchristi/ZVE08042.jpg",
-    "/assets/images/hopecamp/paxchristi/ZVE08798.jpg",
-    "/assets/images/hopecamp/paxchristi/ZVE08191.jpg",
-    "/assets/images/hopecamp/paxchristi/ZVE08359.jpg",
-    "/assets/images/hopecamp/paxchristi/ZVE08650.jpg",
-    "/assets/images/hopecamp/paxchristi/9.png",
-    "/assets/images/hopecamp/paxchristi/ZVE09213.jpg",
-    
+    "/assets/images/hopecamp/gratiadei/ELI00154.jpg",
+    "/assets/images/hopecamp/gratiadei/ELI05180.jpg",
+    "/assets/images/hopecamp/gratiadei/ELI03933.jpg",
+    "/assets/images/hopecamp/gratiadei/ELI03065.jpg",
+    "/assets/images/hopecamp/gratiadei/ELI02865.jpg",
+    "/assets/images/hopecamp/gratiadei/ELI02859.jpg",
+    "/assets/images/hopecamp/gratiadei/ELI02036.jpg",
+    "/assets/images/hopecamp/gratiadei/ELI09793.jpg",
+    "/assets/images/hopecamp/gratiadei/ELI09640.jpg",
+    "/assets/images/hopecamp/gratiadei/ELI00180.jpg",
   ];
 
   return (
     <>
       {/* Gallery Section - Updated background and padding */}
-      <section className="bg-secondary py-16 sm:py-24">
+      <section className="bg-secondary py-16 sm:py-24" id="galerie">
         <div className="container mx-auto px-4 text-center">
           {/* Updated title styling */}
           <h3 className="font-poppins font-bold uppercase text-foreground text-3xl tracking-wider mb-10 sm:mb-16">
@@ -49,13 +48,21 @@ export default function Galerie() {
           </div>
 
           {/* Updated Button */}
-          <Button
+          {/* <Button
             variant="default"
             size="lg"
             asChild
             className="bg-primary hover:bg-primary/90 text-primary-foreground"
           >
             <Link href="/galerie">Vezi toată galeria</Link>
+          </Button> */}
+            <Button
+            variant="default"
+            size="lg"
+            asChild
+            className="bg-primary hover:bg-primary/90 text-primary-foreground"
+          >
+            <Link href="https://princessphoto-ro.wfolio.pro/disk/hope-camp-f9tz0m">Vezi toate pozele</Link>
           </Button>
         </div>
       </section>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { dateRange } from "@/lib/constants";
+import Link from "next/link";
 
 interface TimeLeft {
   days: number;
