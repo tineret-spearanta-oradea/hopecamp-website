@@ -64,12 +64,12 @@ export default function FaqSection() {
     });
 
   return (
-    <section className="bg-primary py-16 sm:py-24">
+    <section className="bg-gradient-to-b from-primary via-primary/95 to-primary py-16 sm:py-24 border-t-4 border-white/30">
       <div className="container mx-auto px-4">
         {/* Centered Title */}
         <div className="text-center mb-10 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-poppins uppercase font-bold text-white">
-            Întrebări frecvente
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-poppins uppercase font-bold text-white drop-shadow-lg relative">
+            <span className="relative z-10">❄️ Întrebări frecvente ❄️</span>
           </h2>
         </div>
 
@@ -157,9 +157,9 @@ export default function FaqSection() {
                     key={faqId}
                     value={faqId}
                     // Style accordion items for contrast
-                    className="bg-white rounded-lg mb-3 shadow-sm overflow-hidden border-none"
+                    className="bg-white rounded-lg mb-3 shadow-xl overflow-hidden border-2 border-primary/20 ring-1 ring-primary/10 transition-all hover:shadow-2xl hover:border-primary/40 hover:scale-[1.01]"
                   >
-                    <AccordionTrigger className="text-primary hover:bg-secondary/10 px-6 py-4 text-left font-semibold text-lg hover:no-underline">
+                    <AccordionTrigger className="text-primary hover:bg-secondary/10 px-6 py-4 text-left font-semibold text-lg hover:no-underline transition-all">
                       {faq.question}
                     </AccordionTrigger>
                     <AccordionContent className="text-foreground/90 px-6 pb-4 pt-0">

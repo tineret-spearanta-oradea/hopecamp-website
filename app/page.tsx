@@ -15,7 +15,7 @@ import CampInProgressPopup from "@/components/CampInProgressPopup";
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-gradient-to-b from-blue-50/30 via-white to-blue-50/30">
       <CampInProgressPopup />
       <Navbar />
       <Hero />

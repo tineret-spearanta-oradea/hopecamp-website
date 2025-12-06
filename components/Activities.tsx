@@ -8,7 +8,7 @@ interface ActivityItemProps {
 }
 
 const ActivityItem: React.FC<ActivityItemProps> = ({ imageSrc, title }) => (
-  <div className="relative w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full overflow-hidden shadow-lg mx-auto flex-shrink-0">
+  <div className="relative w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full overflow-hidden shadow-xl mx-auto flex-shrink-0 border-4 border-white/50 ring-2 ring-primary/30 group hover:ring-4 hover:ring-white/60 transition-all duration-300 hover:scale-105">
     <Image
       loading="lazy"
       src={imageSrc}
@@ -18,10 +18,11 @@ const ActivityItem: React.FC<ActivityItemProps> = ({ imageSrc, title }) => (
       quality={75}
       className="transform group-hover:scale-110 transition-transform duration-300 ease-in-out"
     />
-    <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center p-2">
-      <span className="text-white text-center font-semibold text-sm md:text-base">
+    <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center p-2 group-hover:bg-opacity-50 transition-all duration-300">
+      <span className="text-white text-center font-semibold text-sm md:text-base drop-shadow-lg relative z-10">
         {title}
       </span>
+      <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
     </div>
   </div>
 );
@@ -57,10 +58,10 @@ export default function Activities() {
   });
 
   return (
-    <section className="bg-secondary py-16 sm:py-24">
+    <section className="bg-gradient-to-b from-secondary via-white to-secondary py-16 sm:py-24 border-y-2 border-primary/20">
       <div className="container mx-auto px-4 text-center overflow-visible">
-        <h3 className="font-jersey text-base uppercase text-foreground font-semibold tracking-wider mb-4">
-          ACTIVITĂȚI
+        <h3 className="font-jersey text-base uppercase text-primary font-semibold tracking-wider mb-4 relative">
+          <span className="relative z-10">❄️ ACTIVITĂȚI ❄️</span>
         </h3>
         <div
           {...handlers}

@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import { AuthProvider } from "@/contexts/auth-context";
 import { editionName, title } from "@/lib/constants";
+import { Snowfall } from "@/components/ui/Snowfall";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,9 +34,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AuthProvider>
-          {/* 
-        Kept here for future use (winter editions)
-        <Snowfall /> */}
+          <Snowfall color="#ffffff" snowflakeCount={150} />
           {children}
           <Toaster richColors position="top-center" />
         </AuthProvider>

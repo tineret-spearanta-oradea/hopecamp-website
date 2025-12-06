@@ -6,16 +6,16 @@ import { Instagram, Play } from "lucide-react";
 
 export default function VideoSection() {
   return (
-    <section className="bg-primary py-16 sm:py-24">
+    <section className="bg-gradient-to-b from-primary via-primary/95 to-primary py-16 sm:py-24 border-t-4 border-white/30">
       <div className="container mx-auto px-4 text-center">
         {/* Section Title */}
-        <h3 className="font-poppins font-bold uppercase text-white text-3xl tracking-wider mb-10 sm:mb-16">
-          EXPERIENȚA HOPECAMP
+        <h3 className="font-poppins font-bold uppercase text-white text-3xl tracking-wider mb-10 sm:mb-16 drop-shadow-lg relative">
+          <span className="relative z-10">🎬 EXPERIENȚA HOPECAMP 🎬</span>
         </h3>
 
         {/* YouTube Video Container */}
         <div className="max-w-4xl mx-auto mb-10 sm:mb-12">
-          <div className="relative w-full aspect-[21/9] rounded-lg overflow-hidden shadow-lg">
+          <div className="relative w-full aspect-[21/9] rounded-lg overflow-hidden shadow-2xl border-2 border-white/30 ring-1 ring-white/20">
             <iframe
               width="100%"
               height="100%"

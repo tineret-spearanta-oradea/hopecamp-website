@@ -32,7 +32,7 @@ export default function Hero() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative h-[70vh] sm:h-[80vh] md:h-[90vh] lg:h-screen w-full flex items-center justify-center text-center text-white overflow-hidden">
+      <section className="relative h-[70vh] sm:h-[80vh] md:h-[90vh] lg:h-screen w-full flex items-center justify-center text-center text-white overflow-hidden border-b-4 border-primary/30 before:absolute before:inset-0 before:bg-gradient-to-b before:from-white/5 before:via-transparent before:to-white/5 before:pointer-events-none">
         {/* Background Image */}
         <Image
           src="/assets/images/gallery/ZVE03429.jpg" // Assuming this is the desired background image
@@ -51,13 +51,14 @@ export default function Hero() {
           {/* Optional LOGO above title */}
 
           {/* Main Title */}
-          <h1 className="font-poppins font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-white leading-tight">
-            HOPECAMP #6 {editionName.toUpperCase()}
+          <h1 className="font-poppins font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-white leading-tight drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] relative">
+            <span className="relative z-10">HOPECAMP #6 {editionName.toUpperCase()}</span>
+            <span className="absolute inset-0 text-white/20 blur-sm animate-pulse">HOPECAMP #6 {editionName.toUpperCase()}</span>
           </h1>
 
           {/* Subtitle */}
           <h2 className="font-jersey text-xl sm:text-xl md:text-2xl mt-2 font-semilight">
-            Tabăra care nu se uită!
+            ✨ Împreună facem cea mai faină tabără! ✨
           </h2>
 
           {/* Countdown Timer */}

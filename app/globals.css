@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Jersey+25&family=Nunito:wght@200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap");
 @import "bootstrap-icons/font/bootstrap-icons.css";
 
 @tailwind base;
@@ -7,7 +7,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 210 40% 98%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -16,29 +16,29 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 173 79% 28%;
+    --primary: 210 50% 25%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
+    --secondary: 210 30% 95%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
-    --muted: 210 40% 96.1%;
+    --muted: 210 30% 95%;
     --muted-foreground: 215.4 16.3% 46.9%;
     --muted-foreground: 215 15% 35%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 210 50% 40%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 173 79% 28%;
+    --border: 210 30% 85%;
+    --input: 210 30% 90%;
+    --ring: 210 50% 35%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
+    --sidebar-background: 210 30% 98%;
 
     --sidebar-foreground: 240 5.3% 26.1%;
 
@@ -46,13 +46,13 @@
 
     --sidebar-primary-foreground: 0 0% 98%;
 
-    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent: 210 30% 95%;
 
     --sidebar-accent-foreground: 240 5.9% 10%;
 
-    --sidebar-border: 220 13% 91%;
+    --sidebar-border: 210 30% 90%;
 
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-ring: 210 50% 40%;
   }
 
   .dark {
@@ -101,18 +101,101 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: "Inter", sans-serif;
+    font-family: "Lora", serif;
   }
   .font-nunito {
-    font-family: "Nunito", sans-serif;
+    font-family: "Lora", serif;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
   }
 
   .font-jersey {
-    font-family: "Jersey 25", sans-serif;
-    font-weight: 400;
+    font-family: "Crimson Text", serif;
+    font-weight: 600;
     font-style: normal;
+  }
+  
+  .font-poppins {
+    font-family: "Playfair Display", serif;
+    font-weight: 700;
+  }
+}
+
+@layer utilities {
+  /* Winter/Christmas animations */
+  @keyframes twinkle {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.8); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes glow {
+    0%, 100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.3); }
+    50% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.3); }
+  }
+
+  .animate-twinkle {
+    animation: twinkle 2s ease-in-out infinite;
+  }
+
+  .animate-shimmer {
+    animation: shimmer 3s linear infinite;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    background-size: 1000px 100%;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite;
+  }
+
+  /* Festive border patterns */
+  .border-winter {
+    border-image: linear-gradient(90deg, 
+      rgba(255, 255, 255, 0.8) 0%,
+      rgba(200, 220, 255, 0.6) 25%,
+      rgba(255, 255, 255, 0.8) 50%,
+      rgba(200, 220, 255, 0.6) 75%,
+      rgba(255, 255, 255, 0.8) 100%
+    ) 1;
+  }
+
+  /* Sparkle effect for decorative elements */
+  .sparkle::before {
+    content: '✨';
+    position: absolute;
+    animation: twinkle 1.5s ease-in-out infinite;
+  }
+
+  .sparkle::after {
+    content: '❄️';
+    position: absolute;
+    animation: twinkle 2s ease-in-out infinite;
+    animation-delay: 0.5s;
+  }
+
+  /* Enhanced hover glow */
+  .hover-glow:hover {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3),
+                0 0 40px rgba(255, 255, 255, 0.2),
+                0 0 60px rgba(255, 255, 255, 0.1);
   }
 }

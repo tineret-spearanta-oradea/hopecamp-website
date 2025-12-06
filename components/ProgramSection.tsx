@@ -27,13 +27,13 @@ export default function ProgramSection() {
   const eventDays = getDatesInRange(dateRange.startDate, dateRange.endDate);
 
   return (
-    <section className="bg-secondary py-16 sm:py-24">
+    <section className="bg-gradient-to-b from-secondary via-white to-secondary py-16 sm:py-24 border-y-2 border-primary/20">
       <div className="container mx-auto px-4 text-center">
-        <h3 className="font-jersey text-base uppercase text-foreground font-semibold tracking-wider mb-4">
-          PROGRAM
+        <h3 className="font-jersey text-base uppercase text-primary font-semibold tracking-wider mb-4 relative">
+          <span className="relative z-10">❄️ PROGRAM ❄️</span>
         </h3>
-        <h2 className="font-poppins font-bold uppercase text-3xl sm:text-4xl md:text-5xl text-primary mb-10 sm:mb-16">
-          Ce vom face în tabără?
+        <h2 className="font-poppins font-bold uppercase text-3xl sm:text-4xl md:text-5xl text-primary mb-10 sm:mb-16 drop-shadow-sm relative">
+          <span className="relative z-10">Ce vom face în tabără?</span>
         </h2>
 
         <div className="max-w-xl mx-auto">

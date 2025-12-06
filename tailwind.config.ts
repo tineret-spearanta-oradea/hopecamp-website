@@ -87,9 +87,9 @@ const config: Config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontFamily: {
-        nunito: ["Nunito"],
-        jersey: ["Jersey 25"],
-        poppins: ["Poppins"],
+        nunito: ["Lora", "serif"],
+        jersey: ["Crimson Text", "serif"],
+        poppins: ["Playfair Display", "serif"],
       },
     },
   },

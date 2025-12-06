@@ -122,8 +122,10 @@ export default function Navbar() {
 
       {/* Desktop Navbar */}
       <nav
-        className={`hidden lg:block fixed w-full z-50 transition-colors duration-300 ${
-          isScrolled ? "bg-white text-primary" : "bg-primary text-white"
+        className={`hidden lg:block fixed w-full z-50 transition-colors duration-300 border-b-2 ${
+          isScrolled 
+            ? "bg-white/95 backdrop-blur-sm text-primary border-primary/20 shadow-lg" 
+            : "bg-primary text-white border-white/20"
         }`}
       >
         <div className="container mx-auto flex items-center justify-between text-lg font-inter p-5 gap-5 lg:flex">
@@ -132,9 +134,12 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="hover:text-third transition-colors"
+                className={`transition-all duration-300 hover:opacity-80 relative group ${
+                  isScrolled ? "hover:text-primary/80" : "hover:text-white/80"
+                }`}
               >
-                {link.label}
+                <span className="relative z-10">{link.label}</span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white/60 group-hover:w-full transition-all duration-300"></span>
               </Link>
             ))}
           </div>

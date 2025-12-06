@@ -5,7 +5,7 @@ import { contactInfo } from "@/lib/constants";
 
 export default function Footer() {
   return (
-    <footer className="bg-black pt-12 pb-5">
+    <footer className="bg-gradient-to-b from-primary via-primary/95 to-primary pt-12 pb-5 border-t-4 border-white/30">
       <div className="container mx-auto flex flex-col md:flex-row items-center gap-10">
         <div className="w-1/2 flex flex-col items-center">
           <Image
@@ -23,10 +23,10 @@ export default function Footer() {
 
         <div className="w-1/2 flex flex-col  items-center gap-5 ">
           <div className="flex flex-col sm:flex-row gap-3">
-            <Button variant="link" className="hover:bg-[#A2BCCB]" asChild>
+            <Button variant="link" className="text-white hover:text-white/80 hover:bg-white/10" asChild>
               <Link href="/privacy-policy">Politica de Confidențialitate</Link>
             </Button>
-            <Button variant="link" className="hover:bg-[#A2BCCB]" asChild>
+            <Button variant="link" className="text-white hover:text-white/80 hover:bg-white/10" asChild>
               <Link href="/terms-of-service">Termeni și Condiții</Link>
             </Button>
           </div>
@@ -34,7 +34,7 @@ export default function Footer() {
           <div className="flex items-center gap-2">
             <Link
               href={contactInfo.instagram}
-              className="text-white hover:text-hope-darkcyan transition-colors text-xl"
+              className="text-white hover:text-white/70 transition-colors text-xl hover:scale-110"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -48,7 +48,7 @@ export default function Footer() {
             </Link>
             <Link
               href={contactInfo.facebook}
-              className="text-white hover:text-hope-darkcyan transition-colors text-xl"
+              className="text-white hover:text-white/70 transition-colors text-xl hover:scale-110"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +62,7 @@ export default function Footer() {
             </Link>
             <Link
               href={contactInfo.whatsapp}
-              className="text-white hover:text-hope-darkcyan transition-colors text-xl"
+              className="text-white hover:text-white/70 transition-colors text-xl hover:scale-110"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -76,7 +76,7 @@ export default function Footer() {
             </Link>
             <Link
               href={contactInfo.youtube}
-              className="text-white hover:text-hope-darkcyan transition-colors text-xl"
+              className="text-white hover:text-white/70 transition-colors text-xl hover:scale-110"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

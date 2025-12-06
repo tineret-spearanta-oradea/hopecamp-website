@@ -21,11 +21,11 @@ export default function Galerie() {
   return (
     <>
       {/* Gallery Section - Updated background and padding */}
-      <section className="bg-secondary py-16 sm:py-24" id="galerie">
+      <section className="bg-gradient-to-b from-secondary via-white to-secondary py-16 sm:py-24 border-y-2 border-primary/20" id="galerie">
         <div className="container mx-auto px-4 text-center">
           {/* Updated title styling */}
-          <h3 className="font-poppins font-bold uppercase text-foreground text-3xl tracking-wider mb-10 sm:mb-16">
-            GALERIE
+          <h3 className="font-poppins font-bold uppercase text-primary text-3xl tracking-wider mb-10 sm:mb-16 drop-shadow-sm relative">
+            <span className="relative z-10">📸 GALERIE 📸</span>
           </h3>
 
           {/* Simple Image Grid */}
@@ -33,7 +33,7 @@ export default function Galerie() {
             {images.map((src, index) => (
               <div
                 key={index}
-                className="overflow-hidden rounded-lg shadow-md aspect-square"
+                className="overflow-hidden rounded-lg shadow-xl aspect-square border-2 border-primary/20 ring-1 ring-primary/10 transition-all hover:scale-105 hover:shadow-2xl hover:border-primary/40 hover:ring-2 hover:ring-primary/30 group relative"
               >
                 <Image
                   loading="lazy"
@@ -41,8 +41,9 @@ export default function Galerie() {
                   alt={`Galerie imagine ${index + 1}`}
                   width={300}
                   height={300}
-                  className="w-full h-full object-cover transition-transform hover:scale-105 duration-300 ease-in-out"
+                  className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-300 ease-in-out"
                 />
+                <div className="absolute inset-0 bg-gradient-to-br from-white/0 via-transparent to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
             ))}
           </div>
