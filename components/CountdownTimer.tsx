@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { dateRange } from "@/lib/constants";
-import Link from "next/link";
 
 interface TimeLeft {
   days: number;
@@ -26,6 +25,63 @@ const calculateTimeLeft = (targetDate: Date): TimeLeft | null => {
 
   return timeLeft;
 };
+
+// Ice crystal separator between time units
+const IceSeparator = () => (
+  <div className="flex flex-col items-center justify-center h-full px-1">
+    <div className="w-1.5 h-1.5 bg-cyan-300/60 rotate-45 animate-pulse" />
+    <div className="w-0.5 h-4 bg-gradient-to-b from-cyan-300/40 to-transparent my-1" />
+    <div className="w-1.5 h-1.5 bg-cyan-300/60 rotate-45 animate-pulse animation-delay-500" />
+  </div>
+);
+
+// Single time unit component with glassmorphism
+const TimeUnit = ({
+  value,
+  label,
+  isLast = false,
+}: {
+  value: string;
+  label: string;
+  isLast?: boolean;
+}) => (
+  <div className="flex items-center">
+    <div className="flex flex-col items-center">
+      {/* Glass card for number */}
+      <div className="glass rounded-xl px-3 sm:px-5 py-2 sm:py-3 min-w-[60px] sm:min-w-[80px] relative overflow-hidden group">
+        {/* Frost shimmer effect on hover */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+
+        {/* Number */}
+        <span className="font-poppins text-3xl sm:text-4xl md:text-5xl font-bold text-white relative z-10 tabular-nums">
+          {value}
+        </span>
+      </div>
+
+      {/* Label */}
+      <span className="font-jersey text-[10px] sm:text-xs uppercase tracking-wider mt-2 text-cyan-200/80">
+        {label}
+      </span>
+    </div>
+
+    {/* Separator (not for last item) */}
+    {!isLast && (
+      <div className="mx-1 sm:mx-2 hidden sm:block">
+        <IceSeparator />
+      </div>
+    )}
+  </div>
+);
+
+// Loading placeholder
+const LoadingTimer = () => (
+  <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-0 my-4 sm:my-6">
+    <TimeUnit value="--" label="Zile" />
+    <TimeUnit value="--" label="Ore" />
+    <TimeUnit value="--" label="Min" />
+    <TimeUnit value="--" label="Sec" isLast />
+  </div>
+);
 
 export default function CountdownTimer() {
   const targetDate = dateRange.startDate;
@@ -57,130 +113,40 @@ export default function CountdownTimer() {
     return () => clearInterval(interval);
   }, [isMounted, hasEnded, targetDate]);
 
+  // Loading state
   if (!isMounted) {
-    return (
-      <div className="grid grid-flow-col gap-3 sm:gap-5 text-center auto-cols-max justify-center my-4 sm:my-6">
-        <div className="flex flex-col items-center">
-          <span className="font-mono text-4xl sm:text-5xl md:text-6xl font-bold">
-            00
-          </span>
-          <span className="font-inter text-xs sm:text-sm uppercase tracking-wider mt-1">
-            Zile
-          </span>
-        </div>
-        <div className="flex flex-col items-center">
-          <span className="font-mono text-4xl sm:text-5xl md:text-6xl font-bold">
-            00
-          </span>
-          <span className="font-inter text-xs sm:text-sm uppercase tracking-wider mt-1">
-            Ore
-          </span>
-        </div>
-        <div className="flex flex-col items-center">
-          <span className="font-mono text-4xl sm:text-5xl md:text-6xl font-bold">
-            00
-          </span>
-          <span className="font-jersey text-xs sm:text-sm uppercase tracking-wider mt-1">
-            Min
-          </span>
-        </div>
-        <div className="flex flex-col items-center">
-          <span className="font-mono text-4xl sm:text-5xl md:text-6xl font-bold">
-            00
-          </span>
-          <span className="font-jersey text-xs sm:text-sm uppercase tracking-wider mt-1">
-            Sec
-          </span>
-        </div>
-      </div>
-    );
+    return <LoadingTimer />;
   }
 
+  // Event has ended
   if (hasEnded) {
     return (
       <div className="text-center my-6">
-        <p className="text-xl sm:text-2xl font-semibold">
-          Această ediție a avut loc. Rămâi aproape pentru ediția următoare!
-        </p>
+        <div className="glass rounded-2xl px-6 py-4 inline-block">
+          <p className="text-lg sm:text-xl font-semibold text-white/90">
+            ❄️ Această ediție a avut loc ❄️
+          </p>
+          <p className="text-sm text-cyan-200/70 mt-1">
+            Rămâi aproape pentru ediția următoare!
+          </p>
+        </div>
       </div>
     );
   }
 
+  // No time left
   if (!timeLeft) {
-    return (
-      <div className="grid grid-flow-col gap-3 sm:gap-5 text-center auto-cols-max justify-center my-4 sm:my-6">
-        <div className="flex flex-col items-center">
-          <span className="font-mono text-4xl sm:text-5xl md:text-6xl font-bold">
-            00
-          </span>
-          <span className=" text-xs sm:text-sm uppercase tracking-wider mt-1">
-            Zile
-          </span>
-        </div>
-        <div className="flex flex-col items-center">
-          <span className="font-mono text-4xl sm:text-5xl md:text-6xl font-bold">
-            00
-          </span>
-          <span className=" text-xs sm:text-sm uppercase tracking-wider mt-1">
-            Ore
-          </span>
-        </div>
-        <div className="flex flex-col items-center">
-          <span className=" text-4xl sm:text-5xl md:text-6xl font-bold">
-            00
-          </span>
-          <span className=" text-xs sm:text-sm uppercase tracking-wider mt-1">
-            Min
-          </span>
-        </div>
-        <div className="flex flex-col items-center">
-          <span className=" text-4xl sm:text-5xl md:text-6xl font-bold">
-            00
-          </span>
-          <span className=" text-xs sm:text-sm uppercase tracking-wider mt-1">
-            Sec
-          </span>
-        </div>
-      </div>
-    );
+    return <LoadingTimer />;
   }
 
   const pad = (num: number) => num.toString().padStart(2, "0");
 
   return (
-    <div className="grid grid-flow-col gap-3 sm:gap-5 text-center auto-cols-max justify-center my-4 sm:my-6">
-      <div className="flex flex-col items-center">
-        <span className="font-poppins text-4xl sm:text-5xl md:text-6xl font-bold">
-          {pad(timeLeft.days)}
-        </span>
-        <span className="font-jersey text-xs sm:text-sm uppercase tracking-wider mt-1">
-          Zile
-        </span>
-      </div>
-      <div className="flex flex-col items-center">
-        <span className="font-poppins text-4xl sm:text-5xl md:text-6xl font-bold">
-          {pad(timeLeft.hours)}
-        </span>
-        <span className="font-jersey text-xs sm:text-sm uppercase tracking-wider mt-1">
-          Ore
-        </span>
-      </div>
-      <div className="flex flex-col items-center">
-        <span className="font-poppins text-4xl sm:text-5xl md:text-6xl font-bold">
-          {pad(timeLeft.minutes)}
-        </span>
-        <span className="font-jersey text-xs sm:text-sm uppercase tracking-wider mt-1">
-          Min
-        </span>
-      </div>
-      <div className="flex flex-col items-center">
-        <span className="font-poppins text-4xl sm:text-5xl md:text-6xl font-bold">
-          {pad(timeLeft.seconds)}
-        </span>
-        <span className="font-jersey text-xs sm:text-sm uppercase tracking-wider mt-1">
-          Sec
-        </span>
-      </div>
+    <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-0 my-4 sm:my-6">
+      <TimeUnit value={pad(timeLeft.days)} label="Zile" />
+      <TimeUnit value={pad(timeLeft.hours)} label="Ore" />
+      <TimeUnit value={pad(timeLeft.minutes)} label="Min" />
+      <TimeUnit value={pad(timeLeft.seconds)} label="Sec" isLast />
     </div>
   );
 }

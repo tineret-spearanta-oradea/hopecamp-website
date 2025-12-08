@@ -12,20 +12,30 @@ import VideoSection from "@/components/VideoSection";
 import Galerie from "@/components/Galerie";
 import AboutSection from "@/components/AboutSection";
 import CampInProgressPopup from "@/components/CampInProgressPopup";
+import { IcyWaveDivider } from "@/components/ui/IcyWaveDivider";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-blue-50/30 via-white to-blue-50/30">
+    <main className="min-h-screen bg-frost-light">
       <CampInProgressPopup />
       <Navbar />
       <Hero />
       <Activities />
+      {/* Transition: Light → Dark (WhyAttend) */}
+      <IcyWaveDivider variant="top" toDark relative className="-mt-20" />
       <WhyAttend />
+      {/* WhyAttend has built-in wave transition to light */}
       <ProgramSection />
       <Locatie />
+      {/* Transition: Light → Dark (VideoSection) */}
+      <IcyWaveDivider variant="top" toDark relative className="-mt-20" />
       <VideoSection />
+      {/* VideoSection has built-in wave transition to light */}
       <Galerie />
+      {/* Transition: Light → Dark (AboutSection) */}
+      <IcyWaveDivider variant="top" toDark relative className="-mt-20" />
       <AboutSection />
+      {/* AboutSection flows directly to dark FaqSection */}
       <FaqSection />
       <Footer />
     </main>

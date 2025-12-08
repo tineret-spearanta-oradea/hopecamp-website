@@ -64,70 +64,82 @@ export default function FaqSection() {
     });
 
   return (
-    <section className="bg-gradient-to-b from-primary via-primary/95 to-primary py-16 sm:py-24 border-t-4 border-white/30">
-      <div className="container mx-auto px-4">
-        {/* Centered Title */}
-        <div className="text-center mb-10 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-poppins uppercase font-bold text-white drop-shadow-lg relative">
-            <span className="relative z-10">❄️ Întrebări frecvente ❄️</span>
+    <section className="relative bg-gradient-to-b from-[#0d2847] via-[#1a3a5c] to-[#0d2847] py-20 sm:py-28 overflow-hidden">
+      {/* Background decorations */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-1/4 w-[600px] h-[300px] bg-gradient-to-b from-cyan-500/15 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-1/4 w-[500px] h-[250px] bg-gradient-to-t from-purple-500/10 to-transparent rounded-full blur-3xl" />
+
+        {/* Ice crystals */}
+        <div className="absolute top-[15%] left-[8%] w-3 h-3 bg-white/15 rotate-45 animate-float-slow" />
+        <div className="absolute bottom-[20%] right-[10%] w-2.5 h-2.5 bg-cyan-300/20 rotate-45 animate-drift animation-delay-500" />
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Section Header */}
+        <div className="text-center mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 mb-4">
+            <span className="text-cyan-200 text-sm font-medium tracking-wider uppercase">
+              Ai întrebări?
+            </span>
+          </div>
+          <h2 className="font-poppins font-bold text-3xl sm:text-4xl md:text-5xl text-white mb-4">
+            <span className="text-ice">Întrebări</span>{" "}
+            <span className="text-white/90">frecvente</span>
           </h2>
         </div>
 
         {/* Search and Buttons Row */}
-        <div className="flex flex-col md:flex-row items-center justify-center  gap-4 mb-8">
-          <input
-            type="text"
-            placeholder="caută..."
-            value={searchTerm}
-            onChange={handleSearchChange}
-            // Adjusted styling for better contrast on primary bg
-            className="bg-white font-nunito text-primary placeholder:text-primary/60 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-white/50 w-full md:w-auto"
-          />
+        <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-8">
+          <div className="relative w-full md:w-auto">
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              type="text"
+              placeholder="Caută..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="glass font-nunito text-white placeholder:text-white/50 rounded-xl pl-10 pr-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-cyan-300/50 w-full md:w-64 transition-all"
+            />
+          </div>
           <Button
             variant="outline"
             size="lg"
-            // Adjusted styling for button on primary bg
-            className="border-white text-white hover:bg-white hover:text-primary flex items-center gap-2 whitespace-nowrap w-full md:w-auto"
+            className="glass border-white/30 text-white hover:bg-white/10 hover:border-white/50 flex items-center gap-2 whitespace-nowrap w-full md:w-auto rounded-xl transition-all"
             onClick={() =>
               window.open("/assets/documents/Regulament_HopeCamp.pdf")
             }
           >
+            <i className="bi bi-file-earmark-text"></i>
             Regulament
-            <i className="bi bi-download"></i> {/* Use Bootstrap Icon */}
           </Button>
         </div>
 
         {/* Tag Filter Buttons */}
-        <div className="flex flex-wrap justify-center gap-3 mb-10 sm:mb-12">
+        <div className="flex flex-wrap justify-center gap-2 mb-10 sm:mb-12">
           <Button
-            // Use 'default' for active, 'outline' for inactive
             variant={selectedTag === null ? "default" : "outline"}
             onClick={() => handleTagClick(null)}
-            // Adjusted styling for tags
             className={cn(
-              "rounded-full capitalize transition-colors duration-200",
+              "rounded-full capitalize transition-all duration-300",
               selectedTag === null
-                ? // Style for active 'default' button (white text on primary bg)
-                  "bg-white text-primary hover:bg-white/90"
-                : // Style for inactive 'outline' button (white text/border on primary bg)
-                  "border-white text-white hover:bg-white hover:text-primary"
+                ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white border-0 shadow-lg shadow-cyan-500/20"
+                : "glass border-white/30 text-white/80 hover:text-white hover:border-white/50"
             )}
           >
-            Toate Întrebările
+            Toate
           </Button>
           {availableTags.map((tag) => (
             <Button
               key={tag}
-              // Use 'default' for active, 'outline' for inactive
               variant={selectedTag === tag ? "default" : "outline"}
               onClick={() => handleTagClick(tag)}
               className={cn(
-                "rounded-full capitalize transition-colors duration-200",
+                "rounded-full capitalize transition-all duration-300",
                 selectedTag === tag
-                  ? // Style for active 'default' button
-                    "bg-white text-primary hover:bg-white/90"
-                  : // Style for inactive 'outline' button
-                    "border-white text-white hover:bg-white hover:text-primary"
+                  ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white border-0 shadow-lg shadow-cyan-500/20"
+                  : "glass border-white/30 text-white/80 hover:text-white hover:border-white/50"
               )}
             >
               {tag}
@@ -156,13 +168,12 @@ export default function FaqSection() {
                   <AccordionItem
                     key={faqId}
                     value={faqId}
-                    // Style accordion items for contrast
-                    className="bg-white rounded-lg mb-3 shadow-xl overflow-hidden border-2 border-primary/20 ring-1 ring-primary/10 transition-all hover:shadow-2xl hover:border-primary/40 hover:scale-[1.01]"
+                    className="glass-card rounded-2xl mb-3 overflow-hidden transition-all duration-300 hover-ice"
                   >
-                    <AccordionTrigger className="text-primary hover:bg-secondary/10 px-6 py-4 text-left font-semibold text-lg hover:no-underline transition-all">
+                    <AccordionTrigger className="text-white hover:text-cyan-200 px-6 py-4 text-left font-semibold text-base sm:text-lg hover:no-underline transition-all [&[data-state=open]>svg]:text-cyan-300">
                       {faq.question}
                     </AccordionTrigger>
-                    <AccordionContent className="text-foreground/90 px-6 pb-4 pt-0">
+                    <AccordionContent className="text-white/70 px-6 pb-4 pt-0 leading-relaxed">
                       <div
                         dangerouslySetInnerHTML={{ __html: faq.answer }}
                       ></div>

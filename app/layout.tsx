@@ -34,7 +34,25 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AuthProvider>
-          <Snowfall color="#ffffff" snowflakeCount={150} />
+          {/* Multi-layer snowfall for full winter effect */}
+          {/* Background layer - large, slow, subtle */}
+          <Snowfall
+            color="rgba(200, 230, 255, 0.4)"
+            snowflakeCount={15}
+            style={{ zIndex: 5 }}
+          />
+          {/* Mid layer - medium */}
+          <Snowfall
+            color="rgba(255, 255, 255, 0.6)"
+            snowflakeCount={60}
+            style={{ zIndex: 500 }}
+          />
+          {/* Foreground layer - small, fast, bright */}
+          <Snowfall
+            color="#ffffff"
+            snowflakeCount={80}
+            style={{ zIndex: 1000 }}
+          />
           {children}
           <Toaster richColors position="top-center" />
         </AuthProvider>
