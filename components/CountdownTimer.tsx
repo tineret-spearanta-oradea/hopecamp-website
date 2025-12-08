@@ -124,7 +124,7 @@ export default function CountdownTimer() {
       <div className="text-center my-6">
         <div className="glass rounded-2xl px-6 py-4 inline-block">
           <p className="text-lg sm:text-xl font-semibold text-white/90">
-            ❄️ Această ediție a avut loc ❄️
+            Această ediție a avut loc
           </p>
           <p className="text-sm text-cyan-200/70 mt-1">
             Rămâi aproape pentru ediția următoare!

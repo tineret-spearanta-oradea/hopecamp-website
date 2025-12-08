@@ -128,14 +128,6 @@ export default function Hero() {
       <div className="relative z-20 container mx-auto flex flex-col items-center px-4 py-20">
         {/* Glassmorphism Content Card */}
         <div className="glass-card rounded-3xl px-6 sm:px-10 md:px-16 py-10 md:py-14 max-w-4xl mx-auto ice-glow">
-          {/* Edition Badge */}
-          <div className="inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 mb-6">
-            <span className="text-cyan-200 text-sm font-medium tracking-wider uppercase">
-              Ediția #6
-            </span>
-            <span className="w-1.5 h-1.5 bg-cyan-300 rounded-full animate-pulse" />
-          </div>
-
           {/* Main Title with Ice Effect */}
           <h1 className="font-poppins font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-tight mb-2 relative">
             <span className="relative z-10 text-ice drop-shadow-[0_4px_20px_rgba(100,200,255,0.3)]">
@@ -150,7 +142,7 @@ export default function Hero() {
 
           {/* Subtitle */}
           <p className="font-jersey text-lg sm:text-xl md:text-2xl text-cyan-100/90 mb-8">
-            ❄️ Împreună facem cea mai faină tabără! ❄️
+            Împreună facem cea mai faină tabără!
           </p>
 
           {/* Countdown Timer */}

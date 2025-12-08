@@ -86,13 +86,11 @@ export default function Activities() {
     {
       imageSrc: "/assets/images/worship.jpg",
       title: "Închinare & Cuvânt",
-      description: "Momente de rugăciune, închinare și studiu biblic care îți hrănesc sufletul.",
       size: "large" as const,
     },
     {
       imageSrc: "/assets/images/ski.png",
       title: "Pârtie",
-      description: "Zile pline de adrenalină pe pârtiile de schi.",
       size: "medium" as const,
     },
     {
@@ -151,17 +149,6 @@ export default function Activities() {
           ))}
         </div>
 
-        {/* Bottom description */}
-        <div className="max-w-2xl mx-auto text-center mt-12 sm:mt-16">
-          <div className="glass-card rounded-2xl p-6 sm:p-8">
-            <p className="font-nunito text-foreground/80">
-              Unele momente-cheie fac parte din ritmul natural al taberei și ne
-              ajută să rămânem conectați unii cu alții și cu scopul ei, așa că te
-              încurajăm să le trăiești alături de noi. <span className="text-primary font-medium">Totul, fără presiune, dar
-              cu inimă deschisă.</span>
-            </p>
-          </div>
-        </div>
       </div>
     </section>
   );

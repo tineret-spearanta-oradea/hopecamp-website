@@ -25,7 +25,6 @@ export default function Home() {
       <IcyWaveDivider variant="top" toDark relative className="-mt-20" />
       <WhyAttend />
       {/* WhyAttend has built-in wave transition to light */}
-      <ProgramSection />
       <Locatie />
       {/* Transition: Light → Dark (VideoSection) */}
       <IcyWaveDivider variant="top" toDark relative className="-mt-20" />

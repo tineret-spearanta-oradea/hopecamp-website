@@ -38,19 +38,19 @@ export default function RootLayout({
           {/* Background layer - large, slow, subtle */}
           <Snowfall
             color="rgba(200, 230, 255, 0.4)"
-            snowflakeCount={15}
+            snowflakeCount={10}
             style={{ zIndex: 5 }}
           />
           {/* Mid layer - medium */}
           <Snowfall
             color="rgba(255, 255, 255, 0.6)"
-            snowflakeCount={60}
+            snowflakeCount={20}
             style={{ zIndex: 500 }}
           />
           {/* Foreground layer - small, fast, bright */}
           <Snowfall
             color="#ffffff"
-            snowflakeCount={80}
+            snowflakeCount={40}
             style={{ zIndex: 1000 }}
           />
           {children}
