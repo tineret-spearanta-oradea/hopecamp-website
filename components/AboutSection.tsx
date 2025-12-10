@@ -103,8 +103,8 @@ export default function AboutSection() {
             <p className="font-nunito text-foreground/70 leading-relaxed mb-6">
               Ai vreo întrebare legată de regulament? Sau poate vrei să afli mai
               multe despre programul taberei, cazare, transport sau orice alt
-              detaliu important? Găsești răspunsuri la secțiunea „Întrebări
-              frecvente". Dacă nu găsești ceea ce căutai, nu ezita să ne
+              detaliu important? Găsești răspunsuri la secțiunea &ldquo;Întrebări
+              frecvente&rdquo;. Dacă nu găsești ceea ce căutai, nu ezita să ne
               contactezi!
             </p>
           </div>
@@ -142,6 +142,37 @@ export default function AboutSection() {
                 </span>
               </div>
             </Link>
+
+            {/* Social Media Buttons */}
+            <div className="flex items-center gap-3 mt-2">
+              <Link
+                href={contactInfo.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-12 h-12 rounded-xl glass flex items-center justify-center text-foreground/70 hover:text-pink-500 hover:bg-white/10 transition-all duration-300"
+                aria-label="Instagram"
+              >
+                <i className="bi bi-instagram text-xl"></i>
+              </Link>
+              <Link
+                href={contactInfo.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-12 h-12 rounded-xl glass flex items-center justify-center text-foreground/70 hover:text-blue-600 hover:bg-white/10 transition-all duration-300"
+                aria-label="Facebook"
+              >
+                <i className="bi bi-facebook text-xl"></i>
+              </Link>
+              <Link
+                href={contactInfo.youtube}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-12 h-12 rounded-xl glass flex items-center justify-center text-foreground/70 hover:text-red-600 hover:bg-white/10 transition-all duration-300"
+                aria-label="YouTube"
+              >
+                <i className="bi bi-youtube text-xl"></i>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

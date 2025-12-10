@@ -29,9 +29,9 @@ const calculateTimeLeft = (targetDate: Date): TimeLeft | null => {
 // Ice crystal separator between time units
 const IceSeparator = () => (
   <div className="flex flex-col items-center justify-center h-full px-1">
-    <div className="w-1.5 h-1.5 bg-cyan-300/60 rotate-45 animate-pulse" />
-    <div className="w-0.5 h-4 bg-gradient-to-b from-cyan-300/40 to-transparent my-1" />
-    <div className="w-1.5 h-1.5 bg-cyan-300/60 rotate-45 animate-pulse animation-delay-500" />
+    <div className="w-1.5 h-1.5 bg-white rotate-45 animate-pulse" />
+    <div className="w-0.5 h-4 bg-gradient-to-b from-white to-transparent my-1" />
+    <div className="w-1.5 h-1.5 bg-white rotate-45 animate-pulse animation-delay-500" />
   </div>
 );
 

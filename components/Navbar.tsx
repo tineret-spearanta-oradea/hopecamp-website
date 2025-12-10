@@ -11,7 +11,7 @@ export default function Navbar() {
     { href: "/", label: "acasă" },
     { href: "/doneaza", label: "donează" },
     { href: "/cont", label: "contul meu" },
-    { href: "/galerie", label: "galerie" },
+    // { href: "/galerie", label: "galerie" },
   ];
 
   // Prevent scrolling when mobile menu is open
