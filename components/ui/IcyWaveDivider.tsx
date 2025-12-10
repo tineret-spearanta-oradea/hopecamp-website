@@ -23,10 +23,11 @@ export function IcyWaveDivider({
   withGlow = true,
   withParticles = false,
 }: IcyWaveDividerProps) {
-  // Apply toDark preset if no explicit colors provided
-  const resolvedFromColor = fromColor ?? (toDark ? "#f0f7ff" : "#f0f7ff");
-  const resolvedToColor = toColor ?? (toDark ? "#0d2847" : "#ffffff");
   const isTop = variant === "top";
+
+  // Apply toDark preset if no explicit colors provided
+  let resolvedFromColor = fromColor ?? "#f0f7ff"; // Always start with light
+  let resolvedToColor = toColor ?? (toDark ? "#0d2847" : "#ffffff"); // Dark if toDark, otherwise light
 
   return (
     <div
@@ -79,7 +80,7 @@ export function IcyWaveDivider({
             y2="0%"
           >
             <stop offset="0%" stopColor={resolvedFromColor} stopOpacity="0.8" />
-            <stop offset="50%" stopColor="rgba(200, 230, 255, 0.9)" />
+            {!toDark && <stop offset="50%" stopColor="rgba(200, 230, 255, 0.9)" />}
             <stop offset="100%" stopColor={resolvedFromColor} stopOpacity="0.8" />
           </linearGradient>
           <linearGradient

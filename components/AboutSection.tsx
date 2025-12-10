@@ -4,6 +4,7 @@ import { contactInfo } from "@/lib/constants";
 
 export default function AboutSection() {
   return (
+    <>
     <section className="relative bg-gradient-to-b from-[#0d2847] via-[#1a3a5c] to-[#0d2847] py-20 sm:py-28 overflow-hidden">
       {/* Background decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -54,16 +55,52 @@ export default function AboutSection() {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* --- Second Row: Contact Section --- */}
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+      {/* Wave transition to light section */}
+      <div className="absolute bottom-0 left-0 right-0 h-20 pointer-events-none">
+        <svg
+          className="absolute bottom-0 left-0 right-0 w-full h-full"
+          viewBox="0 0 1440 80"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M0,50 C360,80 720,20 1080,60 C1260,80 1380,40 1440,55 L1440,80 L0,80 Z"
+            fill="rgba(240, 247, 255, 1)"
+          />
+        </svg>
+      </div>
+    </section>
+
+    {/* Contact Section - White background */}
+    <section className="relative bg-frost-light py-20 sm:py-28 overflow-hidden">
+      {/* Background decorations */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Frost radial gradient */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-200/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-blue-200/20 rounded-full blur-3xl" />
+
+        {/* Decorative ice crystals */}
+        <div className="absolute top-20 left-[5%] w-3 h-3 bg-cyan-300/30 rotate-45 animate-float-slow" />
+        <div className="absolute bottom-32 right-[10%] w-2.5 h-2.5 bg-blue-300/30 rotate-45 animate-drift animation-delay-500" />
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Contact Section */}
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start max-w-5xl mx-auto">
           {/* Contact Text */}
           <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
-            <h2 className="font-poppins font-bold text-3xl sm:text-4xl text-white mb-4">
-              <span className="text-ice">Contactează-ne</span>
+            <div className="inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 mb-4">
+              <span className="text-primary/70 text-sm font-medium tracking-wider uppercase">
+                Contact
+              </span>
+            </div>
+
+            <h2 className="font-poppins font-bold text-3xl sm:text-4xl md:text-5xl text-primary mb-4">
+              Contactează-ne
             </h2>
 
-            <p className="font-nunito text-white/70 leading-relaxed mb-6">
+            <p className="font-nunito text-foreground/70 leading-relaxed mb-6">
               Ai vreo întrebare legată de regulament? Sau poate vrei să afli mai
               multe despre programul taberei, cazare, transport sau orice alt
               detaliu important? Găsești răspunsuri la secțiunea „Întrebări
@@ -76,14 +113,14 @@ export default function AboutSection() {
           <div className="flex flex-col gap-4 w-full">
             <Link
               href={`mailto:${contactInfo.email}`}
-              className="glass-card rounded-2xl p-5 flex items-center gap-4 transition-all duration-300 hover-ice group"
+              className="glass-card rounded-2xl p-5 flex items-center gap-4 transition-all duration-300 hover:scale-[1.02] group"
             >
-              <div className="w-12 h-12 rounded-xl glass flex items-center justify-center group-hover:ice-glow transition-all">
-                <i className="bi bi-envelope-fill text-xl text-white/80 group-hover:text-cyan-200 transition-colors"></i>
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-100 to-blue-100 flex items-center justify-center transition-all">
+                <i className="bi bi-envelope-fill text-xl text-primary transition-colors"></i>
               </div>
               <div className="flex flex-col">
-                <span className="text-xs text-white/50 uppercase tracking-wider">Email</span>
-                <span className="font-medium text-white group-hover:text-cyan-100 transition-colors">
+                <span className="text-xs text-foreground/50 uppercase tracking-wider">Email</span>
+                <span className="font-medium text-foreground transition-colors">
                   {contactInfo.email}
                 </span>
               </div>
@@ -93,14 +130,14 @@ export default function AboutSection() {
               href={`${contactInfo.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="glass-card rounded-2xl p-5 flex items-center gap-4 transition-all duration-300 hover-ice group"
+              className="glass-card rounded-2xl p-5 flex items-center gap-4 transition-all duration-300 hover:scale-[1.02] group"
             >
-              <div className="w-12 h-12 rounded-xl glass flex items-center justify-center group-hover:ice-glow transition-all">
-                <i className="bi bi-whatsapp text-xl text-white/80 group-hover:text-green-300 transition-colors"></i>
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center transition-all">
+                <i className="bi bi-whatsapp text-xl text-green-700 transition-colors"></i>
               </div>
               <div className="flex flex-col">
-                <span className="text-xs text-white/50 uppercase tracking-wider">WhatsApp</span>
-                <span className="font-medium text-white group-hover:text-cyan-100 transition-colors">
+                <span className="text-xs text-foreground/50 uppercase tracking-wider">WhatsApp</span>
+                <span className="font-medium text-foreground transition-colors">
                   {contactInfo.phone}
                 </span>
               </div>
@@ -108,9 +145,7 @@ export default function AboutSection() {
           </div>
         </div>
       </div>
-
-      {/* Subtle frost bottom edge - transitions to dark FAQ section */}
-      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-300/20 to-transparent" />
     </section>
+    </>
   );
 }

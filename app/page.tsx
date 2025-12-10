@@ -20,21 +20,28 @@ export default function Home() {
       <CampInProgressPopup />
       <Navbar />
       <Hero />
-      <Activities />
-      {/* Transition: Light → Dark (WhyAttend) */}
-      <IcyWaveDivider variant="top" toDark relative className="-mt-20" />
+      <div className="relative">
+        <Activities />
+        {/* Transition: Light → Dark (WhyAttend) */}
+        <IcyWaveDivider variant="bottom" toDark withGlow={false} className="absolute bottom-0 left-0 right-0" />
+      </div>
       <WhyAttend />
       {/* WhyAttend has built-in wave transition to light */}
-      <Locatie />
-      {/* Transition: Light → Dark (VideoSection) */}
-      <IcyWaveDivider variant="top" toDark relative className="-mt-20" />
+      <div className="relative">
+        <Locatie />
+        {/* Transition: Light → Dark (VideoSection) */}
+        <IcyWaveDivider variant="bottom" toDark withGlow={false} className="absolute bottom-0 left-0 right-0" />
+      </div>
       <VideoSection />
       {/* VideoSection has built-in wave transition to light */}
-      <Galerie />
-      {/* Transition: Light → Dark (AboutSection) */}
-      <IcyWaveDivider variant="top" toDark relative className="-mt-20" />
+      <div className="relative">
+        <Galerie />
+        {/* Transition: Light → Dark (AboutSection) */}
+        <IcyWaveDivider variant="bottom" toDark withGlow={false} className="absolute bottom-0 left-0 right-0" />
+      </div>
       <AboutSection />
-      {/* AboutSection flows directly to dark FaqSection */}
+      {/* AboutSection contains About (dark) + Contact (white), now transition to dark FAQ */}
+      <IcyWaveDivider variant="bottom" toDark withGlow={false} relative />
       <FaqSection />
       <Footer />
     </main>
