@@ -7,6 +7,7 @@ interface ActivityItemProps {
   title: string;
   description?: string;
   size?: "large" | "medium" | "small";
+  index?: number;
   className?: string;
 }
 
@@ -15,6 +16,7 @@ const ActivityItem: React.FC<ActivityItemProps> = ({
   title,
   description,
   size = "small",
+  index = 0,
   className = "",
 }) => {
   const sizeClasses = {
@@ -23,10 +25,18 @@ const ActivityItem: React.FC<ActivityItemProps> = ({
     small: "col-span-1 row-span-1",
   };
 
+  const gridPositionClasses: { [key: number]: string } = {
+    0: "", // Worship - auto placement
+    1: "sm:col-start-3 sm:row-start-1", // Ski - col 3 on tablet+
+    2: "sm:col-start-1 sm:row-start-3 lg:col-start-4 lg:row-start-1", // Grupuri Mici
+    3: "sm:col-start-2 sm:row-start-3 lg:col-start-4 lg:row-start-2", // Foc
+  };
+
   return (
     <div
       className={`
         ${sizeClasses[size]}
+        ${gridPositionClasses[index] || ""}
         ${className}
         relative rounded-2xl overflow-hidden group cursor-pointer
         glass-card hover-ice
@@ -84,7 +94,7 @@ const ActivityItem: React.FC<ActivityItemProps> = ({
 export default function Activities() {
   const activities = [
     {
-      imageSrc: "/assets/images/worship.jpg",
+      imageSrc: "/assets/images/worship.png",
       title: "Închinare & Cuvânt",
       size: "large" as const,
     },
@@ -94,13 +104,13 @@ export default function Activities() {
       size: "medium" as const,
     },
     {
-      imageSrc: "/assets/images/grupuri-mici.jpg",
+      imageSrc: "/assets/images/wintercamp/WinterCamp-13.jpg",
       title: "Grupuri Mici",
       description: "Socializare și studiu în comunitate.",
       size: "small" as const,
     },
     {
-      imageSrc: "/assets/images/foc-tabara.jpg",
+      imageSrc: "/assets/images/wintercamp/Day1-50.jpg",
       title: "Foc de Tabără",
       description: "Seri memorabile sub cerul înstelat cu muzică și povești.",
       size: "small" as const,
@@ -140,11 +150,12 @@ export default function Activities() {
 
         {/* Bento Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 max-w-5xl mx-auto">
-          {activities.map((activity, index) => (
+          {activities.map((activity, idx) => (
             <ActivityItem
-              key={index}
+              key={idx}
+              index={idx}
               {...activity}
-              className={`animation-delay-${index * 100}`}
+              className={`animation-delay-${idx * 100}`}
             />
           ))}
         </div>

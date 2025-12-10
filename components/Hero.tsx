@@ -102,7 +102,7 @@ export default function Hero() {
     <section className="relative min-h-[100svh] w-full flex items-center justify-center text-center text-white overflow-hidden">
       {/* Background Image */}
       <Image
-        src="/assets/images/wintercamp/wc1-3.png"
+        src="/assets/images/worship.jpg"
         alt="Hope Camp group photo"
         fill
         style={{ objectFit: "cover" }}

@@ -23,7 +23,7 @@ export default function VideoSection() {
         <div className="mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 mb-4">
             <span className="text-cyan-200 text-sm font-medium tracking-wider uppercase">
-              Vezi experiența
+              Vezi video
             </span>
             <Play className="w-3 h-3 text-cyan-300" />
           </div>
