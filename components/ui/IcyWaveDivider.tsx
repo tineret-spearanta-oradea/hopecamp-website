@@ -26,8 +26,8 @@ export function IcyWaveDivider({
   const isTop = variant === "top";
 
   // Apply toDark preset if no explicit colors provided
-  let resolvedFromColor = fromColor ?? "#f0f7ff"; // Always start with light
-  let resolvedToColor = toColor ?? (toDark ? "#0d2847" : "#ffffff"); // Dark if toDark, otherwise light
+  const resolvedFromColor = fromColor ?? "#f0f7ff"; // Always start with light
+  const resolvedToColor = toColor ?? (toDark ? "#0d2847" : "#ffffff"); // Dark if toDark, otherwise light
 
   return (
     <div
