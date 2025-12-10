@@ -116,38 +116,32 @@ export default function WhyAttend() {
                 <div
                   key={index}
                   className={`
-                    glass-card rounded-2xl p-6 hover-ice group
-                    transform transition-all duration-500
+                    glass-card rounded-2xl p-6 group
+                    transform transition-all duration-300 hover:scale-[1.02]
                     ${feature.offset}
                   `}
                   style={{ animationDelay: `${index * 150}ms` }}
                 >
-                  {/* Icon with ice glow */}
-                  <div className="w-14 h-14 rounded-xl glass flex items-center justify-center mb-4 group-hover:ice-glow transition-all duration-300">
+                  {/* Icon */}
+                  <div className="w-14 h-14 rounded-xl glass flex items-center justify-center mb-4 transition-all">
                     <Image
                       src={feature.icon}
                       alt={feature.title}
                       width={32}
                       height={32}
-                      className="object-contain brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity"
+                      className="object-contain brightness-0 invert opacity-80 transition-opacity"
                     />
                   </div>
 
                   {/* Title */}
-                  <h3 className="font-poppins font-bold text-lg text-white mb-2 group-hover:text-cyan-100 transition-colors">
+                  <h3 className="font-poppins font-bold text-lg text-white mb-2 transition-colors">
                     {feature.title}
                   </h3>
 
                   {/* Description */}
-                  <p className="font-nunito text-sm text-white/60 group-hover:text-white/80 transition-colors leading-relaxed">
+                  <p className="font-nunito text-sm text-white/60 transition-colors leading-relaxed">
                     {feature.description}
                   </p>
-
-                  {/* Decorative corner crystal */}
-                  <div className="absolute top-4 right-4 w-2 h-2 bg-cyan-300/0 group-hover:bg-cyan-300/40 rotate-45 transition-all duration-500 rounded-sm" />
-
-                  {/* Animated underline */}
-                  <div className="h-0.5 bg-gradient-to-r from-cyan-400/50 to-transparent rounded-full mt-4 w-0 group-hover:w-12 transition-all duration-500" />
                 </div>
               ))}
             </div>

@@ -106,7 +106,7 @@ export default function FaqSection() {
           <Button
             variant="outline"
             size="lg"
-            className="glass border-white/30 text-white hover:bg-white/10 hover:border-white/50 flex items-center gap-2 whitespace-nowrap w-full md:w-auto rounded-xl transition-all"
+            className="glass border-white/30 text-white hover:scale-[1.02] flex items-center gap-2 whitespace-nowrap w-full md:w-auto rounded-xl transition-all duration-300"
             onClick={() =>
               window.open("/assets/documents/Regulament_HopeCamp.pdf")
             }
@@ -170,7 +170,7 @@ export default function FaqSection() {
                     value={faqId}
                     className="glass-card rounded-2xl mb-3 overflow-hidden transition-all duration-300 hover-ice"
                   >
-                    <AccordionTrigger className="text-white hover:text-cyan-200 px-6 py-4 text-left font-semibold text-base sm:text-lg hover:no-underline transition-all [&[data-state=open]>svg]:text-cyan-300">
+                    <AccordionTrigger className="text-white hover:text-cyan-200 px-6 py-4 text-left font-semibold text-base sm:text-lg hover:no-underline transition-all [&[data-state=open]]:text-cyan-200 [&[data-state=open]>svg]:text-cyan-300">
                       {faq.question}
                     </AccordionTrigger>
                     <AccordionContent className="text-white/70 px-6 pb-4 pt-0 leading-relaxed">

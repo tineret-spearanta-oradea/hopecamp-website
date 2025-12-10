@@ -46,7 +46,7 @@ export default function AboutSection() {
           <div className="glass-card rounded-3xl p-3 sm:p-4 ice-glow">
             <div className="overflow-hidden rounded-2xl">
               <Image
-                src="/assets/images/gallery/ZVE08483.jpg"
+                src="/assets/images/lideri.jpg"
                 alt="Echipa Hope Camp"
                 width={600}
                 height={400}
