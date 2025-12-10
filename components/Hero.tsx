@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import CountdownTimer from "./CountdownTimer";
-import { dateRange, editionName, location } from "@/lib/constants";
+import { dateRange, editionName, location, title } from "@/lib/constants";
 import { useState } from "react";
 
 // Helper function to format date range
@@ -126,22 +126,22 @@ export default function Hero() {
 
       {/* Main Content */}
       <div className="relative z-20 container mx-auto flex flex-col items-center px-4 py-20">
-        {/* Glassmorphism Content Card */}
-        <div className="glass-card rounded-3xl px-6 sm:px-10 md:px-16 py-10 md:py-14 max-w-4xl mx-auto ice-glow">
+        {/* Content - No Card */}
+        <div className="max-w-4xl mx-auto">
           {/* Main Title with Ice Effect */}
-          <h1 className="font-poppins font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-tight mb-2 relative">
-            <span className="relative z-10 text-ice drop-shadow-[0_4px_20px_rgba(100,200,255,0.3)]">
-              HOPECAMP
+          <h1 className="font-poppins font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-tight mb-4 relative">
+            <span className="relative z-10 text-ice drop-shadow-[0_8px_32px_rgba(100,200,255,0.5)]">
+              {title.toUpperCase()}
             </span>
           </h1>
 
           {/* Edition Name */}
-          <h2 className="font-poppins font-bold text-2xl sm:text-3xl md:text-4xl text-white/90 mb-4 text-frost">
+          <h2 className="font-poppins font-bold text-2xl sm:text-3xl md:text-4xl text-white/95 mb-3 drop-shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
             {editionName.toUpperCase()}
           </h2>
 
           {/* Subtitle */}
-          <p className="font-jersey text-lg sm:text-xl md:text-2xl text-cyan-100/90 mb-8">
+          <p className="font-jersey text-lg sm:text-xl md:text-2xl text-cyan-100/95 mb-10 drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
             Împreună facem cea mai faină tabără!
           </p>
 
@@ -149,7 +149,7 @@ export default function Hero() {
           <CountdownTimer />
 
           {/* Date & Location */}
-          <p className="font-nunito text-base sm:text-lg mt-6 text-white/80 flex flex-wrap items-center justify-center gap-2">
+          <p className="font-nunito text-base sm:text-lg mt-8 text-white/90 flex flex-wrap items-center justify-center gap-2 drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]">
             <span className="inline-flex items-center gap-2">
               <svg className="w-4 h-4 text-cyan-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />

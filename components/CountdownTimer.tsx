@@ -35,7 +35,7 @@ const IceSeparator = () => (
   </div>
 );
 
-// Single time unit component with glassmorphism
+// Single time unit component without cards
 const TimeUnit = ({
   value,
   label,
@@ -47,26 +47,20 @@ const TimeUnit = ({
 }) => (
   <div className="flex items-center">
     <div className="flex flex-col items-center">
-      {/* Glass card for number */}
-      <div className="glass rounded-xl px-3 sm:px-5 py-2 sm:py-3 min-w-[60px] sm:min-w-[80px] relative overflow-hidden group">
-        {/* Frost shimmer effect on hover */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-
-        {/* Number */}
-        <span className="font-poppins text-3xl sm:text-4xl md:text-5xl font-bold text-white relative z-10 tabular-nums">
-          {value}
-        </span>
-      </div>
+      {/* Number */}
+      <span className="font-poppins text-4xl sm:text-5xl md:text-6xl font-bold text-white tabular-nums drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+        {value}
+      </span>
 
       {/* Label */}
-      <span className="font-jersey text-[10px] sm:text-xs uppercase tracking-wider mt-2 text-cyan-200/80">
+      <span className="font-jersey text-xs sm:text-sm uppercase tracking-wider mt-1 text-cyan-200/90 drop-shadow-[0_2px_6px_rgba(0,0,0,0.4)]">
         {label}
       </span>
     </div>
 
     {/* Separator (not for last item) */}
     {!isLast && (
-      <div className="mx-1 sm:mx-2 hidden sm:block">
+      <div className="mx-2 sm:mx-4 hidden sm:block">
         <IceSeparator />
       </div>
     )}
@@ -122,14 +116,12 @@ export default function CountdownTimer() {
   if (hasEnded) {
     return (
       <div className="text-center my-6">
-        <div className="glass rounded-2xl px-6 py-4 inline-block">
-          <p className="text-lg sm:text-xl font-semibold text-white/90">
-            Această ediție a avut loc
-          </p>
-          <p className="text-sm text-cyan-200/70 mt-1">
-            Rămâi aproape pentru ediția următoare!
-          </p>
-        </div>
+        <p className="text-lg sm:text-xl font-semibold text-white/95 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
+          Această ediție a avut loc
+        </p>
+        <p className="text-sm text-cyan-200/80 mt-2 drop-shadow-[0_2px_6px_rgba(0,0,0,0.4)]">
+          Rămâi aproape pentru ediția următoare!
+        </p>
       </div>
     );
   }

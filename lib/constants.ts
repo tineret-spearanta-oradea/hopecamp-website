@@ -1,5 +1,5 @@
-export const title = "Hope Camp #6";
-export const editionName = "Gratia Dei";
+export const title = "Winter Camp #3";
+export const editionName = "";
 
 export const churchOptions = [
   { value: "Speranta, Oradea", label: "Speranța, Oradea" },
@@ -34,18 +34,18 @@ export const sumToPay = {
 };
 
 export const dateRange = {
-  startDate: new Date("2025-08-04"),
-  endDate: new Date("2025-08-09"),
-  depositPaymentDueDate: new Date("2025-06-20"),
+  startDate: new Date("2026-02-19"),
+  endDate: new Date("2026-02-22"),
+  depositPaymentDueDate: new Date("2025-02-01"),
 };
 
 export const location = {
-  name: "Lacul Surduc",
-  campusName: "Precept Ministries Romania",
-  addressLine: "localitatea Fârdea din județul Timiș, lângă lacul Surduc",
-  googleMapsUrl: "https://maps.app.goo.gl/NZBCd3oL17HQe3YZ7",
+  name: "Mărișel",
+  campusName: "Campus Mărișel",
+  addressLine: "localitatea Mărișel din județul Cluj, lângă pârtia Mărișel",
+  googleMapsUrl: "https://maps.app.goo.gl/sb2k3hSbv9thUqGV8",
   iframeSrc:
-    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11134.621256157536!2d22.135968478728515!3d45.75805570813609!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x474fafec73045557%3A0x446e222c52488df1!2sPrecept%20Ministries%20Rom%C3%A2nia!5e0!3m2!1sro!2sro!4v1746890986650!5m2!1sro!2sro",
+    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2736.314485879017!2d23.183039977450164!3d46.69952925017213!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47491e408ad19e71%3A0x5ac3f5b1a6fb26a3!2zQ2FtcHVzIE3Eg3JpyJllbA!5e0!3m2!1sro!2sro!4v1765355842938!5m2!1sro!2sro",
 };
 
 export const MinimumAge = {
