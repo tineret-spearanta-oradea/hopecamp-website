@@ -174,7 +174,10 @@ export function useRegistrationForm() {
       if (exists) {
         // RETURNING USER - Send OTP
         const { error } = await supabaseBrowserClient.auth.signInWithOtp({
-          phone: normalizedPhone
+          phone: normalizedPhone,
+          options: {
+            channel: 'whatsapp'
+          }
         });
 
         if (error) {

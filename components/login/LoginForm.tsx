@@ -102,6 +102,7 @@ export default function LoginForm() {
       phone: normalizedPhone, // Use normalized phone
       options: {
         shouldCreateUser: false, // Prevent sign-up
+        channel: 'whatsapp'
       },
     });
 
