@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabaseBrowserClient } from "@/lib/supabase/client";
 import { useAuth } from "@/contexts/auth-context";
+import { getActiveEdition } from "@/lib/supabase/database/edition";
+import { Edition } from "@/types/edition";
 import PendingUser from "./PendingUser";
 import ConfirmedUser from "./ConfirmedUser";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
@@ -21,6 +23,32 @@ import {
 export default function AccountPage() {
   const { userData, loading, userRegistrationData } = useAuth();
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
+  const [edition, setEdition] = useState<Edition | null>(null);
+  const [editionLoading, setEditionLoading] = useState(true);
+
+  // Fetch edition on mount
+  useEffect(() => {
+    async function fetchEdition() {
+      try {
+        const activeEdition = await getActiveEdition();
+        setEdition(activeEdition);
+      } catch (error) {
+        console.error("Error fetching active edition:", error);
+      } finally {
+        setEditionLoading(false);
+      }
+    }
+
+    fetchEdition();
+  }, []);
+
+  // Redirect to registration if no registration for current edition
+  useEffect(() => {
+    if (!loading && !editionLoading && userData && !userRegistrationData) {
+      console.log("AccountPage - No registration found, redirecting to /inscrie-te");
+      window.location.href = "/inscrie-te";
+    }
+  }, [loading, editionLoading, userData, userRegistrationData]);
 
   const handleLogout = async () => {
     console.log("Performing logout...");
@@ -40,7 +68,7 @@ export default function AccountPage() {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-8 min-h-[300px]">
+    <div className="bg-background rounded-lg shadow-md p-8 min-h-[300px]">
       {" "}
       {/* Added min-height */}
       <div className="flex justify-between mb-6">
@@ -83,7 +111,7 @@ export default function AccountPage() {
       <div className="text-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800">Contul meu</h2>
       </div>
-      {loading ? (
+      {loading || editionLoading ? (
         <div className="flex justify-center items-center h-40">
           <LoadingSpinner />
         </div>
@@ -92,8 +120,11 @@ export default function AccountPage() {
           <p className="mb-4">Salut, {userData.name}!</p>
 
           {/* Use registration data from the hook to determine confirmation status */}
-          {userRegistrationData?.isConfirmed ? (
-            <ConfirmedUser userRegistrationData={userRegistrationData} />
+          {userRegistrationData?.isConfirmed && edition ? (
+            <ConfirmedUser
+              userRegistrationData={userRegistrationData}
+              edition={edition}
+            />
           ) : (
             // If no registration or not confirmed, show PendingUser
             <PendingUser userData={userData} />

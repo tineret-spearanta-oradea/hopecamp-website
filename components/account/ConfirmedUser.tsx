@@ -10,16 +10,19 @@ import {CheckCircle2, Circle, AlertCircle, CreditCard} from "lucide-react";
 import {getLastUserMessage, insertMessage} from "@/lib/supabase/database/message";
 import {getCurrentDebtForRegistration} from "@/lib/supabase/database/marketTransaction";
 import {formatAmount} from "@/types/marketTransaction";
-
 import {RegistrationWithProfile} from "@/types/registrationWithProfile";
+import {Edition} from "@/types/edition";
+import RegistrationDetailsCard from "./RegistrationDetailsCard";
+import RegistrationHistory from "./RegistrationHistory";
 
 type ConfirmedUserProps = {
-    userRegistrationData: RegistrationWithProfile
+    userRegistrationData: RegistrationWithProfile;
+    edition: Edition;
 };
 
 const MESSAGE_COOLDOWN_HOURS = 24;
 
-export default function ConfirmedUser({userRegistrationData}: ConfirmedUserProps) {
+export default function ConfirmedUser({userRegistrationData, edition}: ConfirmedUserProps) {
     const [message, setMessage] = useState("");
     const [isSending, setIsSending] = useState(false);
     const [lastMessageTime, setLastMessageTime] = useState<Date | null>(null);
@@ -144,7 +147,15 @@ export default function ConfirmedUser({userRegistrationData}: ConfirmedUserProps
                     📝 În curând vei primi mai multe informații despre tabără și următorii
                     pași.
                 </p>
-                
+            </div>
+
+            {/* Registration Details Card */}
+            <RegistrationDetailsCard
+                registration={userRegistrationData}
+                edition={edition}
+            />
+
+            <div className="space-y-4">
                 {/* Market Debt Section */}
                 <div className="pt-4 border-t">
                     <div className="flex items-center justify-between">
@@ -251,6 +262,12 @@ export default function ConfirmedUser({userRegistrationData}: ConfirmedUserProps
                     </div>
                 )}
             </div>
+
+            {/* Registration History */}
+            <RegistrationHistory
+                userId={userRegistrationData.userId}
+                currentEditionId={userRegistrationData.editionId}
+            />
         </div>
     );
 }

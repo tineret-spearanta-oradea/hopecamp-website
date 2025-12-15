@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FormData, ValidationErrors } from "@/types/form";
-import {validateUserFields, validateOtp, validateAuthFields} from "@/utils/validation"; // Added validateOtp
+import {validateUserFields, validateOtp, validateAuthFields} from "@/utils/validation";
 import { dateRange, payTaxToOptions } from "@/lib/constants";
 import { toast } from "sonner";
 import { supabaseBrowserClient } from "@/lib/supabase/client";
@@ -8,11 +8,18 @@ import { useRouter} from "next/navigation";
 import {getNewUserMetadata} from "@/lib/supabase/database/user";
 import {getActiveEdition} from "@/lib/supabase/database/edition";
 import { predictAndUpdateGender } from "@/lib/supabase/genderPrediction";
+import {
+  getUserMostRecentRegistration,
+  checkUserRegistrationExists,
+  createRegistrationForReturningUser
+} from "@/lib/supabase/database/registration";
+import { Edition } from "@/types/edition";
+import { useAuth } from "@/contexts/auth-context";
 
 const initialFormData: FormData = {
   authData: {
     phone: "",
-    phonePrefix: "+4", // Initialize with Romania prefix
+    phonePrefix: "+4",
   },
   userData: {
     name: "",
@@ -42,15 +49,29 @@ const initialValidationErrors: ValidationErrors = {
 };
 
 export function useRegistrationForm() {
-  const [step, setStep] = useState(1); // Start at step 1
+  const [step, setStep] = useState(0); // NOW STARTS AT 0
   const [formData, setFormData] = useState<FormData>(initialFormData);
-  const [otp, setOtp] = useState(""); // Added OTP state
+  const [phoneData, setPhoneData] = useState({
+    phone: "",
+    phonePrefix: "+4"
+  });
+  const [otpData, setOtpData] = useState({
+    otp: "",
+    isReturningUser: false,
+    otpSent: false
+  });
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
     initialValidationErrors
   );
   const [agreementChecked, setAgreementChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isReturningUser, setIsReturningUser] = useState(false);
+  const [currentEdition, setCurrentEdition] = useState<Edition | null>(null);
+  const [blockReason, setBlockReason] = useState<string | null>(null);
+  const [isInitializing, setIsInitializing] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
+  const { supabaseUser, loading: authLoading } = useAuth();
 
   const handleChange = (
     objectName: keyof FormData | "otp", // Allow 'otp'
@@ -72,15 +93,6 @@ export function useRegistrationForm() {
     }));
   };
 
-  // Specific handler for the InputOTP component
-  const handleOtpChange = (value: string) => {
-    setOtp(value);
-    // Clear OTP validation error on change
-    if (validationErrors.otp) {
-      setValidationErrors((prev) => ({ ...prev, otp: "" }));
-    }
-  };
-
   const handleDateChange = (dates: { from: Date; to: Date }) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -92,12 +104,221 @@ export function useRegistrationForm() {
     }));
   };
 
+  // Handler for phone changes in Step0
+  const handlePhoneChange = (value: string) => {
+    setPhoneData((prev) => ({ ...prev, phone: value }));
+    if (validationErrors.phone) {
+      setValidationErrors((prev) => ({ ...prev, phone: "" }));
+    }
+  };
+
+  // Handler for phone prefix changes in Step0
+  const handlePhonePrefixChange = (prefix: string) => {
+    setPhoneData((prev) => ({ ...prev, phonePrefix: prefix }));
+    if (validationErrors.phone) {
+      setValidationErrors((prev) => ({ ...prev, phone: "" }));
+    }
+  };
+
+  // Handler for OTP changes
+  const handleOtpChange = (value: string) => {
+    setOtpData((prev) => ({ ...prev, otp: value }));
+    if (validationErrors.otp) {
+      setValidationErrors((prev) => ({ ...prev, otp: "" }));
+    }
+  };
+
+  // Age calculation helper
+  const calculateUpdatedAge = (lastAge: number, lastRegistrationDate: Date): number => {
+    const yearsDiff = new Date().getFullYear() - lastRegistrationDate.getFullYear();
+    return lastAge + yearsDiff;
+  };
+
+  // Handle phone submission (Step 0 → check if user exists)
+  const handlePhoneSubmit = async () => {
+    // Validate phone
+    const phoneError = validateAuthFields({
+      phone: phoneData.phone,
+      phonePrefix: phoneData.phonePrefix
+    }).phone;
+
+    if (phoneError) {
+      setValidationErrors((prev) => ({ ...prev, phone: phoneError }));
+      toast.error("Te rugăm să completezi numărul de telefon corect");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const normalizedPhone = phoneData.phonePrefix + phoneData.phone;
+
+      // Call API to check if phone exists
+      const response = await fetch('/api/check-phone', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: normalizedPhone })
+      });
+
+      if (!response.ok) {
+        if (response.status === 429) {
+          toast.error("Prea multe încercări. Te rugăm să aștepți puțin.");
+          setIsLoading(false);
+          return;
+        }
+        throw new Error('Failed to check phone');
+      }
+
+      const { exists } = await response.json();
+
+      if (exists) {
+        // RETURNING USER - Send OTP
+        const { error } = await supabaseBrowserClient.auth.signInWithOtp({
+          phone: normalizedPhone
+        });
+
+        if (error) {
+          console.error("OTP Send Error:", error);
+          toast.error("Eroare la trimiterea codului OTP", {
+            description: error.message
+          });
+          setIsLoading(false);
+          return;
+        }
+
+        setOtpData((prev) => ({ ...prev, otpSent: true, isReturningUser: true }));
+        toast.success("Codul a fost trimis!", {
+          description: `Verifică SMS-ul primit la ${phoneData.phone}`
+        });
+      } else {
+        // NEW USER - Skip OTP, go to Step 1
+        setIsReturningUser(false);
+        setIsAuthenticated(true);
+        setStep(1);
+        toast.success("Bine ai venit! Să începem înregistrarea.");
+      }
+    } catch (error) {
+      console.error("Error checking phone:", error);
+      toast.error("A apărut o eroare neașteptată.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Handle OTP verification (for returning users)
+  const handleOtpVerify = async () => {
+    const otpError = validateOtp(otpData.otp).otp;
+
+    if (otpError) {
+      setValidationErrors((prev) => ({ ...prev, otp: otpError }));
+      toast.error("Te rugăm să introduci un cod valid de 6 cifre");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const normalizedPhone = phoneData.phonePrefix + phoneData.phone;
+
+      const { data, error } = await supabaseBrowserClient.auth.verifyOtp({
+        phone: normalizedPhone,
+        token: otpData.otp,
+        type: 'sms'
+      });
+
+      if (error) {
+        console.error("OTP Verify Error:", error);
+        toast.error("Cod incorect", {
+          description: "Verifică codul și încearcă din nou."
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      // User is now authenticated via OTP - they're a returning user
+      setIsAuthenticated(true);
+      setIsReturningUser(true); // ← SET THIS FOR ANYONE WHO USES OTP
+
+      console.log("OTP VERIFIED - Set isReturningUser to TRUE");
+      console.log("Authenticated user ID:", data.user!.id);
+
+      if (!currentEdition) {
+        toast.error("Nu am putut găsi ediția activă.");
+        setIsLoading(false);
+        return;
+      }
+
+      // Check if already registered for current edition
+      const alreadyRegistered = await checkUserRegistrationExists(
+        data.user!.id,
+        currentEdition.id
+      );
+
+      if (alreadyRegistered) {
+        setBlockReason("Ești deja înscris pentru această ediție!");
+        setIsLoading(false);
+        return;
+      }
+
+      // Fetch previous registration data
+      const lastRegistration = await getUserMostRecentRegistration(data.user!.id);
+
+      if (lastRegistration) {
+        // Pre-fill form with previous registration data
+        const calculatedAge = calculateUpdatedAge(
+          lastRegistration.age,
+          lastRegistration.createdAt
+        );
+
+        setFormData({
+          authData: {
+            phone: phoneData.phone,
+            phonePrefix: phoneData.phonePrefix
+          },
+          userData: {
+            name: lastRegistration.name,
+            age: calculatedAge.toString(),
+            gender: lastRegistration.gender,
+            imageUrl: lastRegistration.imageUrl || "",
+            church: lastRegistration.church || "",
+            churchOther: lastRegistration.churchOther || "",
+            churchContact: lastRegistration.churchContact || "",
+            preferences: lastRegistration.preferences || "",
+            // Leave blank (commonly change)
+            transport: "",
+            payTaxTo: "",
+            // Default dates
+            startDate: dateRange.startDate,
+            endDate: dateRange.endDate,
+          }
+        });
+
+        toast.success("Autentificat cu succes!", {
+          description: "Datele tale au fost precompletate."
+        });
+      } else {
+        // No previous registration - show empty form but they're still a returning user
+        toast.success("Autentificat cu succes!", {
+          description: "Completează formularul de înregistrare."
+        });
+      }
+
+      // Move to Step 1
+      setStep(1);
+
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
+      toast.error("A apărut o eroare neașteptată.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const validateStep = (step: number): boolean => {
     let errors: ValidationErrors = {};
 
     // Step 1 (Personal Details) validation
     if (step === 1) {
-      // Validate name and age from userData
       const nameError = validateUserFields({
         name: formData.userData.name,
       }).name;
@@ -108,156 +329,28 @@ export function useRegistrationForm() {
     }
     // Step 2 (Registration Details) validation
     else if (step === 2) {
-      // Validate the rest of userData fields excluding name, age, imageUrl
       const { name, age, imageUrl, ...registrationData } = formData.userData;
-      errors = validateUserFields(registrationData); // Validate remaining fields
-    }
-    // Step 3 (Phone & Confirmation) validation - only phone needed here before signup/OTP send
-    else if (step === 3) {
-      const phoneError = validateAuthFields({
-        phone: formData.authData.phone,
-        phonePrefix: formData.authData.phonePrefix,
-      }).phone;
-      if (phoneError) errors.phone = phoneError;
-      // Agreement is checked separately in handleNext
-    }
-    // Step 4 (OTP Verification) validation
-    else if (step === 4) {
-      const otpError = validateOtp(otp).otp; // Use the dedicated OTP validation
-      if (otpError) errors.otp = otpError;
+      errors = validateUserFields(registrationData);
     }
 
     setValidationErrors(errors);
+
     // Determine relevant keys for the current step's validation check
     let relevantErrorKeys: (keyof ValidationErrors)[] = [];
     if (step === 1) relevantErrorKeys = ["name", "age"];
-    // Image is optional/handled separately
     else if (step === 2)
       relevantErrorKeys = Object.keys(initialValidationErrors).filter(
         (k) => !["name", "age", "phone", "otp", "image"].includes(k)
       ) as (keyof ValidationErrors)[];
-    else if (step === 3) relevantErrorKeys = ["phone"];
-    else if (step === 4) relevantErrorKeys = ["otp"];
 
     return relevantErrorKeys.every(
       (key) => !errors[key as keyof ValidationErrors]
     );
   };
 
-  // Updated handleNext for Step 3: Direct Registration without OTP
+  // handleNext for Steps 1 & 2 (Step 0 uses handlePhoneSubmit, Step 3 uses handleSubmit)
   const handleNext = async () => {
-    // Step 3: Final step - validate phone/agreement, then call signUp
-    if (step === 3) {
-      const phoneError = validateAuthFields({
-        phone: formData.authData.phone,
-        phonePrefix: formData.authData.phonePrefix,
-      }).phone;
-      if (phoneError || !agreementChecked) {
-        setValidationErrors((prev) => ({ ...prev, phone: phoneError || "" }));
-        if (!agreementChecked) {
-          toast.error("Trebuie să fii de acord cu regulamentul", {
-            description: "Bifează căsuța de acord înainte de a continua.",
-            duration: 4000,
-          });
-        } else if (phoneError) {
-          toast.error("Te rugăm să completezi numărul de telefon corect", {
-            description: "Verifică câmpul marcat și încearcă din nou.",
-            duration: 4000,
-          });
-        }
-        return;
-      }
-
-      setIsLoading(true);
-      setValidationErrors(initialValidationErrors);
-
-      const currentEdition = await getActiveEdition();
-      if (!currentEdition) {
-        toast.error("Nu am putut găsi ediția activă a taberei.");
-        setIsLoading(false);
-        return;
-      }
-      const metaData = getNewUserMetadata(formData, currentEdition.id);
-      const randomPassword = Math.random().toString(36).slice(-12);
-
-      try {
-        const normalizedPhone =
-          formData.authData.phonePrefix + formData.authData.phone;
-
-        // Direct sign up without OTP verification
-        const { data, error } = await supabaseBrowserClient.auth.signUp({
-          phone: normalizedPhone,
-          password: randomPassword,
-          options: {
-            data: metaData,
-          },
-        });
-
-        setIsLoading(false);
-
-        if (error) {
-          console.error("Sign Up Error:", error);
-          let description =
-            error.message || "Verifică numărul de telefon și încearcă din nou.";
-          if (error.message.includes("User already registered")) {
-            description = "Acest număr de telefon este deja înregistrat.";
-          } else if (error.message.includes("rate limit")) {
-            description = "Prea multe încercări. Te rugăm să aștepți puțin.";
-          }
-          toast.error("Eroare la înregistrare", { description });
-          return;
-        }
-
-        // Since phone confirmations are disabled, we still need to sign in the user
-        // Use signInWithPassword with the same credentials
-        const { error: signInError } =
-          await supabaseBrowserClient.auth.signInWithPassword({
-            phone: normalizedPhone,
-            password: randomPassword,
-          });
-
-        if (signInError) {
-          console.error("Sign In Error:", signInError);
-          toast.error("Cont creat, dar autentificarea a eșuat", {
-            description: "Te rugăm să te autentifici manual.",
-          });
-          // Redirect to login page instead
-          setTimeout(() => {
-            router.replace("/login");
-          }, 1500);
-          return;
-        }
-
-        toast.success("Înregistrare reușită!", {
-          description:
-            "Contul tău a fost creat cu succes și ești autentificat.",
-        });
-
-        // Predict gender if it's unknown and user has provided a name
-        if (formData.userData.gender === 'unknown' && formData.userData.name && data.user?.id) {
-          predictAndUpdateGender(data.user.id, formData.userData.name)
-            .then((prediction) => {
-              if (prediction) {
-                console.log(`Gender prediction for ${formData.userData.name}:`, prediction);
-              }
-            })
-            .catch((error) => {
-              console.error('Error predicting gender:', error);
-            });
-        }
-
-        // Redirect to account page after successful registration
-        setTimeout(() => {
-          router.replace("/cont");
-        }, 1500);
-      } catch (err) {
-        setIsLoading(false);
-        console.error("Unexpected error during signUp:", err);
-        toast.error("A apărut o eroare neașteptată.");
-      }
-    }
-    // Standard validation and step progression for Steps 1 & 2
-    else if (validateStep(step)) {
+    if (validateStep(step)) {
       setStep((prev) => prev + 1);
       setValidationErrors(initialValidationErrors);
     } else {
@@ -276,121 +369,176 @@ export function useRegistrationForm() {
   const handlePrev = () => {
     setStep((prev) => prev - 1);
     setValidationErrors(initialValidationErrors);
-    // Clear OTP when going back from step 4
-    if (step === 4) {
-      setOtp("");
-    }
   };
 
-  // handleSubmit is called from Step 3: Direct Registration
+  // handleSubmit is called from Step 3: Final submission
   const handleSubmit = async () => {
-    // Validate phone/agreement
-    const phoneError = validateAuthFields({
-      phone: formData.authData.phone,
-      phonePrefix: formData.authData.phonePrefix,
-    }).phone;
-
-    if (phoneError || !agreementChecked) {
-      setValidationErrors((prev) => ({ ...prev, phone: phoneError || "" }));
-      if (!agreementChecked) {
-        toast.error("Trebuie să fii de acord cu regulamentul", {
-          description: "Bifează căsuța de acord înainte de a continua.",
-          duration: 4000,
-        });
-      } else if (phoneError) {
-        toast.error("Te rugăm să completezi numărul de telefon corect", {
-          description: "Verifică câmpul marcat și încearcă din nou.",
-          duration: 4000,
-        });
-      }
+    // Validate agreement
+    if (!agreementChecked) {
+      toast.error("Trebuie să fii de acord cu regulamentul", {
+        description: "Bifează căsuța de acord înainte de a continua.",
+        duration: 4000,
+      });
       return;
     }
 
     setIsLoading(true);
     setValidationErrors(initialValidationErrors);
 
-    const currentEdition = await getActiveEdition();
     if (!currentEdition) {
       toast.error("Nu am putut găsi ediția activă a taberei.");
       setIsLoading(false);
       return;
     }
-    const metaData = getNewUserMetadata(formData, currentEdition.id);
+
+    // Update formData to include phone info
+    const updatedFormData = {
+      ...formData,
+      authData: {
+        phone: phoneData.phone,
+        phonePrefix: phoneData.phonePrefix
+      }
+    };
+
+    const metaData = getNewUserMetadata(updatedFormData, currentEdition.id);
     const randomPassword = Math.random().toString(36).slice(-12);
 
     try {
-      const normalizedPhone =
-        formData.authData.phonePrefix + formData.authData.phone;
+      const normalizedPhone = phoneData.phonePrefix + phoneData.phone;
 
-      // Direct sign up without OTP verification
-      const { data, error } = await supabaseBrowserClient.auth.signUp({
-        phone: normalizedPhone,
-        password: randomPassword,
-        options: {
-          data: metaData,
-        },
-      });
+      // Get current user (might be more up-to-date than context)
+      const { data: { user: currentUser } } = await supabaseBrowserClient.auth.getUser();
 
-      if (error) {
-        setIsLoading(false);
-        console.error("Sign Up Error:", error);
-        let description =
-          error.message || "Verifică numărul de telefon și încearcă din nou.";
-        if (error.message.includes("User already registered")) {
-          description = "Acest număr de telefon este deja înregistrat.";
-        } else if (error.message.includes("rate limit")) {
-          description = "Prea multe încercări. Te rugăm să aștepți puțin.";
+      console.log("handleSubmit - isReturningUser:", isReturningUser);
+      console.log("handleSubmit - currentUser:", currentUser?.id);
+      console.log("handleSubmit - supabaseUser:", supabaseUser?.id);
+
+      if (isReturningUser && currentUser) {
+        // RETURNING USER - Already authenticated, need to manually create registration
+
+        // 1. Update user profile with any changes
+        const { error: profileError } = await supabaseBrowserClient
+          .from("user_profiles")
+          .update({
+            name: updatedFormData.userData.name,
+            age: parseInt(updatedFormData.userData.age),
+            gender: updatedFormData.userData.gender,
+            image_url: updatedFormData.userData.imageUrl,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("user_id", currentUser.id);
+
+        if (profileError) {
+          console.error("Error updating profile:", profileError);
+          setIsLoading(false);
+          toast.error("Eroare la actualizarea profilului");
+          return;
         }
-        toast.error("Eroare la înregistrare", { description });
-        return;
-      }
 
-      // Since phone confirmations are disabled, we still need to sign in the user
-      // Use signInWithPassword with the same credentials
-      const { error: signInError } =
-        await supabaseBrowserClient.auth.signInWithPassword({
+        // 2. Create new registration for this edition
+        const registrationResult = await createRegistrationForReturningUser(
+          currentUser.id,
+          currentEdition.id,
+          {
+            church: updatedFormData.userData.church === "alta"
+              ? updatedFormData.userData.churchOther
+              : updatedFormData.userData.church,
+            churchContact: updatedFormData.userData.churchContact || "",
+            payTaxTo: updatedFormData.userData.payTaxTo,
+            transport: updatedFormData.userData.transport,
+            preferences: updatedFormData.userData.preferences,
+            startDate: updatedFormData.userData.startDate,
+            endDate: updatedFormData.userData.endDate,
+            withFamilyMember: false,
+          }
+        );
+
+        setIsLoading(false);
+
+        if (!registrationResult.success) {
+          toast.error("Eroare la înregistrare", {
+            description: registrationResult.error || "Te rugăm să încerci din nou.",
+          });
+          return;
+        }
+
+        toast.success("Înregistrare reușită!", {
+          description: "Te-ai înregistrat cu succes pentru această ediție.",
+        });
+
+        // Redirect to account page
+        setTimeout(() => {
+          router.replace("/cont");
+        }, 1500);
+      } else {
+        // NEW USER - Create account
+        const { data, error } = await supabaseBrowserClient.auth.signUp({
           phone: normalizedPhone,
           password: randomPassword,
+          options: {
+            data: metaData,
+          },
         });
 
-      setIsLoading(false);
+        if (error) {
+          setIsLoading(false);
+          console.error("Sign Up Error:", error);
+          let description =
+            error.message || "Verifică numărul de telefon și încearcă din nou.";
+          if (error.message.includes("User already registered")) {
+            description = "Acest număr de telefon este deja înregistrat.";
+          } else if (error.message.includes("rate limit")) {
+            description = "Prea multe încercări. Te rugăm să aștepți puțin.";
+          }
+          toast.error("Eroare la înregistrare", { description });
+          return;
+        }
 
-      if (signInError) {
-        console.error("Sign In Error:", signInError);
-        toast.error("Cont creat, dar autentificarea a eșuat", {
-          description: "Te rugăm să te autentifici manual.",
-        });
-        // Redirect to login page instead
-        setTimeout(() => {
-          router.replace("/login");
-        }, 1500);
-        return;
-      }
-
-      toast.success("Înregistrare reușită!", {
-        description: "Contul tău a fost creat cu succes și ești autentificat.",
-      });
-
-      // Predict gender if it's unknown and user has provided a name
-      if (formData.userData.gender === 'unknown' && formData.userData.name && data.user?.id) {
-        predictAndUpdateGender(data.user.id, formData.userData.name)
-          .then((prediction) => {
-            if (prediction) {
-              console.log(`Gender prediction for ${formData.userData.name}:`, prediction);
-            }
-          })
-          .catch((error) => {
-            console.error('Error predicting gender:', error);
+        // Sign in the user
+        const { error: signInError } =
+          await supabaseBrowserClient.auth.signInWithPassword({
+            phone: normalizedPhone,
+            password: randomPassword,
           });
-      }
 
-      // Redirect to account page after successful registration
-      setTimeout(() => {
-        router.replace("/cont");
-      }, 1500);
+        setIsLoading(false);
+
+        if (signInError) {
+          console.error("Sign In Error:", signInError);
+          toast.error("Cont creat, dar autentificarea a eșuat", {
+            description: "Te rugăm să te autentifici manual.",
+          });
+          setTimeout(() => {
+            router.replace("/login");
+          }, 1500);
+          return;
+        }
+
+        toast.success("Înregistrare reușită!", {
+          description: "Contul tău a fost creat cu succes și ești autentificat.",
+        });
+
+        // Predict gender if unknown
+        if (formData.userData.gender === 'unknown' && formData.userData.name && data.user?.id) {
+          predictAndUpdateGender(data.user.id, formData.userData.name)
+            .then((prediction) => {
+              if (prediction) {
+                console.log(`Gender prediction for ${formData.userData.name}:`, prediction);
+              }
+            })
+            .catch((error) => {
+              console.error('Error predicting gender:', error);
+            });
+        }
+
+        // Redirect to account page
+        setTimeout(() => {
+          router.replace("/cont");
+        }, 1500);
+      }
     } catch (err) {
       setIsLoading(false);
-      console.error("Unexpected error during signUp:", err);
+      console.error("Unexpected error during registration:", err);
       toast.error("A apărut o eroare neașteptată.");
     }
   };
@@ -405,82 +553,117 @@ export function useRegistrationForm() {
     }));
   };
 
-  // Function to resend OTP
-  const resendOtp = async () => {
-    setIsLoading(true); // Indicate loading state
-    try {
-      // Normalize phone number to E.164 format
-      const normalizedPhone =
-        formData.authData.phonePrefix + formData.authData.phone;
+  // Initialization useEffect
+  useEffect(() => {
+    // Wait for auth to finish loading
+    if (authLoading) {
+      console.log("INIT - Waiting for auth to load...");
+      return;
+    }
 
-      // Call Supabase resend function
-      const { data, error } = await supabaseBrowserClient.auth.resend({
-        type: "sms", // Specify the type of OTP being resent
-        phone: normalizedPhone,
-      });
+    async function init() {
+      try {
+        // Fetch current edition
+        const edition = await getActiveEdition();
+        setCurrentEdition(edition);
 
-      setIsLoading(false);
+        console.log("INIT - authLoading complete");
+        console.log("INIT - supabaseUser:", supabaseUser?.id);
+        console.log("INIT - edition:", edition?.id);
 
-      if (error) {
-        console.error("Resend OTP Error:", error);
-        let description = error.message || "A apărut o eroare.";
-        if (error.message.includes("rate limit")) {
-          description =
-            "Prea multe încercări. Te rugăm să aștepți puțin înainte de a reîncerca.";
-        } else if (error.message.includes("valid phone number")) {
-          description =
-            "Numărul de telefon nu este valid. Te rugăm să te întorci și să îl corectezi.";
+        // Check if user is already logged in (from AuthContext)
+        if (supabaseUser) {
+          // Check if already registered for this edition
+          const alreadyRegistered = await checkUserRegistrationExists(
+            supabaseUser.id,
+            edition.id
+          );
+
+          console.log("INIT - alreadyRegistered:", alreadyRegistered);
+
+          if (alreadyRegistered) {
+            console.log("INIT - Redirecting to /cont (already registered)");
+            // Redirect to account page
+            router.replace('/cont');
+            return;
+          }
+
+          // If logged in but not registered, pre-fill their data and allow registration
+          setIsAuthenticated(true);
+
+          // Fetch previous registration data to pre-fill form
+          const lastRegistration = await getUserMostRecentRegistration(supabaseUser.id);
+
+          if (lastRegistration) {
+            // Pre-fill form with previous data
+            const calculatedAge = calculateUpdatedAge(
+              lastRegistration.age,
+              lastRegistration.createdAt
+            );
+
+            setFormData({
+              authData: {
+                phone: lastRegistration.phone,
+                phonePrefix: "+4" // Default, could be improved by storing this
+              },
+              userData: {
+                name: lastRegistration.name,
+                age: calculatedAge.toString(),
+                gender: lastRegistration.gender,
+                imageUrl: lastRegistration.imageUrl || "",
+                church: lastRegistration.church || "",
+                churchOther: lastRegistration.churchOther || "",
+                churchContact: lastRegistration.churchContact || "",
+                preferences: lastRegistration.preferences || "",
+                // Leave blank (commonly change)
+                transport: "",
+                payTaxTo: "",
+                // Default dates
+                startDate: dateRange.startDate,
+                endDate: dateRange.endDate,
+              }
+            });
+
+            setIsReturningUser(true);
+          }
+
+          setStep(1); // Skip Step 0 if already authenticated
         }
-        toast.error("Eroare la retrimiterea codului", { description });
-        throw error; // Re-throw error to be caught by the caller if needed
+      } catch (error) {
+        console.error("Initialization error:", error);
+        setBlockReason("Nu există o ediție activă momentan.");
+      } finally {
+        setIsInitializing(false);
       }
-
-      console.log("Resend OTP Response:", data);
-      toast.success("Codul de verificare a fost retrimis!", {
-        description: `Verifică SMS-ul primit la ${formData.authData.phone}.`,
-      });
-    } catch (err) {
-      setIsLoading(false);
-      console.error("Unexpected error during resend OTP:", err);
-      // Avoid duplicate toast if already handled above
-      if (!(err instanceof Error && err.message.includes("rate limit"))) {
-        toast.error("A apărut o eroare neașteptată la retrimiterea codului.");
-      }
-      throw err; // Re-throw error
     }
-  };
 
-  // Add a handler for phone prefix changes
-  const handlePhonePrefixChange = (prefix: string) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      authData: {
-        ...prevData.authData,
-        phonePrefix: prefix,
-      },
-    }));
-    // Clear phone validation error if it exists
-    if (validationErrors.phone) {
-      setValidationErrors((prev) => ({ ...prev, phone: "" }));
-    }
-  };
+    init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authLoading, supabaseUser]);
 
   return {
     step,
     formData,
-    otp, // Pass OTP state
+    phoneData,
+    otpData,
     validationErrors,
     agreementChecked,
     isLoading,
+    isInitializing,
+    isReturningUser,
+    currentEdition,
+    blockReason,
     handleChange,
     handleDateChange,
+    handlePhoneChange,
+    handlePhonePrefixChange,
+    handleOtpChange,
+    handlePhoneSubmit,
+    handleOtpVerify,
     handleNext,
     handlePrev,
-    handleSubmit, // Pass final submit handler (verifyOtp)
+    handleSubmit,
     setAgreementChecked,
     handleImageChange,
-    handleOtpChange,
-    handlePhonePrefixChange, // Add new handler to return object
-    resendOtp, // Return the resendOtp function
   };
 }

@@ -103,7 +103,7 @@ export async function updateUserGender(userId: string, gender: 'male' | 'female'
     try {
         const { error } = await supabaseBrowserClient
             .from("user_profiles")
-            .update({ 
+            .update({
                 gender: gender,
                 updated_at: new Date().toISOString()
             })
@@ -116,5 +116,37 @@ export async function updateUserGender(userId: string, gender: 'male' | 'female'
     } catch (error: any) {
         console.error("Unexpected error updating user gender:", error.message);
         throw error;
+    }
+}
+
+/**
+ * Check if a phone number exists in the database
+ * Used for determining new vs returning user flow
+ * IMPORTANT: This should be used with rate limiting
+ */
+export async function checkPhoneExists(phone: string, client?: SupabaseClient): Promise<{ exists: boolean; userId?: string }> {
+    // Use the provided client or default to the browser client
+    const supabase = client || supabaseBrowserClient;
+
+    try {
+        console.log("Checking phone:", phone);
+        const { data, error } = await supabase
+            .from("auth_users_view")
+            .select("id")
+            .eq("phone", phone)
+            .maybeSingle();
+
+        if (error) {
+            console.error("Error checking phone:", error);
+            return { exists: false };
+        }
+
+        return {
+            exists: !!data,
+            userId: data?.id
+        };
+    } catch (err) {
+        console.error("Unexpected error checking phone:", err);
+        return { exists: false };
     }
 }

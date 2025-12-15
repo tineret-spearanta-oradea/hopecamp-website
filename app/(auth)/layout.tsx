@@ -141,9 +141,7 @@ export default function AuthLayout({
 
       {/* Content Container - improved for mobile */}
       <div className="container relative max-w-md mx-auto px-4 py-8 z-10">
-        <div className="w-full overflow-hidden bg-white/90 backdrop-blur-md rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] transition-all duration-300">
-          {/* Subtle top highlight */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/70 to-transparent"></div>
+        <div className="w-full overflow-hidden rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] transition-all duration-300">
           {children}
         </div>
       </div>

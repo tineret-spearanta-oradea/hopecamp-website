@@ -2,23 +2,37 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
-import { PhoneInput } from "../ui/phone-input"; // Changed from Input to PhoneInput
+import { PhoneInput } from "../ui/phone-input";
 import { toast } from "sonner";
 import { supabaseBrowserClient } from "@/lib/supabase/client";
 import { Input } from "../ui/input";
+import { useAuth } from "@/contexts/auth-context";
+import { getActiveEdition } from "@/lib/supabase/database/edition";
+import { checkUserRegistrationExists } from "@/lib/supabase/database/registration";
 
 const RESEND_TIMEOUT_SECONDS = 60;
 
 export default function LoginForm() {
   const [phone, setPhone] = useState("");
-  const [phonePrefix, setPhonePrefix] = useState("+4"); // Add phone prefix state
+  const [phonePrefix, setPhonePrefix] = useState("+4");
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [resendDisabled, setResendDisabled] = useState(true);
   const [resendTimer, setResendTimer] = useState(RESEND_TIMEOUT_SECONDS);
-  const [phoneError, setPhoneError] = useState(""); // Add state for phone validation error
+  const [phoneError, setPhoneError] = useState("");
+  const router = useRouter();
+  const { supabaseUser, loading: authLoading } = useAuth();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (!authLoading && supabaseUser) {
+      console.log("LoginForm - User already logged in, redirecting to /cont");
+      router.replace("/cont");
+    }
+  }, [authLoading, supabaseUser, router]);
 
   // Effect for the resend timer
   useEffect(() => {
@@ -120,26 +134,25 @@ export default function LoginForm() {
 
   const handleVerifyOtp = async () => {
     if (!otp || otp.length !== 6) {
-      // Assuming OTP is 6 digits
       toast.error("Te rugăm să introduci codul OTP valid (6 cifre).");
       return;
     }
     setLoading(true);
 
     // Normalize phone number to E.164 format for Supabase
-    const normalizedPhone = phonePrefix + phone; // Use dynamic prefix
+    const normalizedPhone = phonePrefix + phone;
 
     const {
       data: { session },
       error,
     } = await supabaseBrowserClient.auth.verifyOtp({
-      phone: normalizedPhone, // Use normalized phone
+      phone: normalizedPhone,
       token: otp,
-      type: "sms", // or 'phone_change' if that's what you used, but 'sms' is typical for login
+      type: "sms",
     });
 
-    setLoading(false);
     if (error) {
+      setLoading(false);
       console.error("OTP Verify Error:", error);
       if (
         error.message.includes("expired") ||
@@ -154,12 +167,46 @@ export default function LoginForm() {
       return;
     }
 
-    if (session) {
+    if (session && session.user) {
       console.log("Login successful with OTP");
-      toast.success("Autentificare reușită!");
-      // No need to redirect here, AuthToAccountRedirect should handle it based on session change
+
+      try {
+        // Check if user has registration for current edition
+        const edition = await getActiveEdition();
+        const hasRegistration = await checkUserRegistrationExists(
+          session.user.id,
+          edition.id
+        );
+
+        console.log("Login - hasRegistration:", hasRegistration);
+
+        if (hasRegistration) {
+          // Has registration → go to /cont
+          toast.success("Autentificare reușită!");
+          setTimeout(() => {
+            router.replace("/cont");
+          }, 500);
+        } else {
+          // No registration → go to /inscrie-te (will skip Step 0)
+          toast.success("Autentificare reușită!", {
+            description: "Te rugăm să completezi înregistrarea pentru această ediție."
+          });
+          setTimeout(() => {
+            router.replace("/inscrie-te");
+          }, 500);
+        }
+      } catch (err) {
+        console.error("Error checking registration:", err);
+        // Fallback to /cont if check fails
+        toast.success("Autentificare reușită!");
+        setTimeout(() => {
+          router.replace("/cont");
+        }, 500);
+      } finally {
+        setLoading(false);
+      }
     } else {
-      // Should not happen if error is null, but good to handle
+      setLoading(false);
       toast.error("Autentificarea a eșuat. Te rugăm să încerci din nou.");
     }
   };

@@ -1,25 +1,20 @@
-import { StepProps, FormData } from "@/types/form"; // Added FormData
+import { StepProps, FormData } from "@/types/form";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
-import { Label } from "../ui/label";
-import { PhoneInput } from "../ui/phone-input"; // Changed from Input to PhoneInput
 import { StepWrapper } from "./StepWrapper";
 import { Check } from "lucide-react";
 import { sumToPay, dateRange } from "@/lib/constants";
 import { format } from "date-fns";
-import Link from "next/link"; // Added
+import Link from "next/link";
 
 export default function Step3({
   formData,
-  handleChange,
   handlePrev,
   handleSubmit,
   agreementChecked,
   setAgreementChecked,
   downloadCampRules,
   isLoading,
-  validationErrors,
-  handlePhonePrefixChange = () => {}, // Add default empty function to fix TypeScript error
 }: StepProps) {
   const retrieveNumberOfDays = () => {
     if (!formData.userData.startDate || !formData.userData.endDate) {
@@ -40,37 +35,12 @@ export default function Step3({
   const [numberOfDaysSelected, numberOfDaysCamp] = retrieveNumberOfDays();
   const isFullTime = numberOfDaysSelected === numberOfDaysCamp;
 
-  // Added handler for phone input
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    objectName: keyof FormData
-  ) => {
-    handleChange(objectName, e.target);
-  };
-
-  // Added handler for direct value change
-  const handlePhoneChange = (value: string) => {
-    handleChange("authData", { name: "phone", value });
-  };
-
   return (
-    // Changed Title
     <StepWrapper
-      title="Pasul 3/3: Autentificare & Confirmare"
+      title="Pasul 3/3: Confirmare"
       isLoading={isLoading}
     >
       <div className="space-y-8">
-        {/* Replace Phone Number Input with PhoneInput component */}
-        <PhoneInput
-          label="Număr de telefon *"
-          value={formData.authData.phone}
-          prefix={formData.authData.phonePrefix}
-          onChange={handlePhoneChange}
-          onPrefixChange={handlePhonePrefixChange}
-          error={validationErrors.phone}
-          helpText="Vom folosi acest număr pentru a te autentifica și a te contacta."
-          disabled={isLoading}
-        />
 
         {/* Kept Download Rules Button */}
         <div className="text-center mb-6">
