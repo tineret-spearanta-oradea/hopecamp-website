@@ -444,14 +444,14 @@ export function useRegistrationForm() {
           currentEdition.id,
           {
             church: updatedFormData.userData.church === "alta"
-              ? updatedFormData.userData.churchOther
-              : updatedFormData.userData.church,
+              ? updatedFormData.userData.churchOther || ""
+              : updatedFormData.userData.church || "",
             churchContact: updatedFormData.userData.churchContact || "",
             payTaxTo: updatedFormData.userData.payTaxTo,
             transport: updatedFormData.userData.transport,
-            preferences: updatedFormData.userData.preferences,
-            startDate: updatedFormData.userData.startDate,
-            endDate: updatedFormData.userData.endDate,
+            preferences: updatedFormData.userData.preferences || "",
+            startDate: updatedFormData.userData.startDate || dateRange.startDate,
+            endDate: updatedFormData.userData.endDate || dateRange.endDate,
             withFamilyMember: false,
           }
         );
