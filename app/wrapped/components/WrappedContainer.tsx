@@ -141,11 +141,15 @@ export default function WrappedContainer({
       {...handlers}
       onClick={handleTap}
       className="fixed inset-0 bg-slate-900 overflow-hidden cursor-pointer select-none"
+      style={{ WebkitTouchCallout: 'none', WebkitUserSelect: 'none' }}
       onMouseDown={() => !shouldPauseOnCurrentSlide && setIsPaused(true)}
       onMouseUp={() => !shouldPauseOnCurrentSlide && setIsPaused(false)}
       onMouseLeave={() => !shouldPauseOnCurrentSlide && setIsPaused(false)}
-      onTouchStart={() => !shouldPauseOnCurrentSlide && setIsPaused(true)}
+      onTouchStart={(e) => {
+        if (!shouldPauseOnCurrentSlide) setIsPaused(true);
+      }}
       onTouchEnd={() => !shouldPauseOnCurrentSlide && setIsPaused(false)}
+      onContextMenu={(e) => e.preventDefault()}
     >
       {/* Progress Bar */}
       <ProgressBar

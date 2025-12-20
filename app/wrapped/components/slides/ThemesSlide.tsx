@@ -225,16 +225,6 @@ export default function ThemesSlide() {
                 Remade
               </span>
             </div>
-
-            {/* Navigation hint */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1 }}
-              className="text-white/40 text-xs mt-6"
-            >
-              Apasă pentru a continua →
-            </motion.p>
           </motion.div>
         )}
       </div>
