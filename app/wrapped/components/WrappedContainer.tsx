@@ -19,6 +19,7 @@ export default function WrappedContainer({
   const [currentSlide, setCurrentSlide] = useState(0);
   const [progress, setProgress] = useState(0);
   const [direction, setDirection] = useState(1); // 1 for next, -1 for prev
+  const [isPaused, setIsPaused] = useState(false);
   const isTransitioning = useRef(false);
 
   const totalSlides = children.length;
@@ -57,8 +58,8 @@ export default function WrappedContainer({
 
   // Auto-advance timer - separate progress tracking from navigation
   useEffect(() => {
-    // Don't auto-advance if this slide should not auto-advance
-    if (shouldPauseOnCurrentSlide) return;
+    // Don't auto-advance if paused or if this slide should not auto-advance
+    if (isPaused || shouldPauseOnCurrentSlide) return;
 
     const interval = setInterval(() => {
       setProgress((prev) => {
@@ -71,14 +72,14 @@ export default function WrappedContainer({
     }, 100);
 
     return () => clearInterval(interval);
-  }, [shouldPauseOnCurrentSlide, autoAdvanceTime, currentSlide]);
+  }, [isPaused, shouldPauseOnCurrentSlide, autoAdvanceTime, currentSlide]);
 
   // Handle auto-advance when progress reaches 100
   useEffect(() => {
-    if (progress >= 100 && !shouldPauseOnCurrentSlide) {
+    if (progress >= 100 && !isPaused && !shouldPauseOnCurrentSlide) {
       goToNext();
     }
-  }, [progress, shouldPauseOnCurrentSlide, goToNext]);
+  }, [progress, isPaused, shouldPauseOnCurrentSlide, goToNext]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -140,6 +141,11 @@ export default function WrappedContainer({
       {...handlers}
       onClick={handleTap}
       className="fixed inset-0 bg-slate-900 overflow-hidden cursor-pointer select-none"
+      onMouseDown={() => !shouldPauseOnCurrentSlide && setIsPaused(true)}
+      onMouseUp={() => !shouldPauseOnCurrentSlide && setIsPaused(false)}
+      onMouseLeave={() => !shouldPauseOnCurrentSlide && setIsPaused(false)}
+      onTouchStart={() => !shouldPauseOnCurrentSlide && setIsPaused(true)}
+      onTouchEnd={() => !shouldPauseOnCurrentSlide && setIsPaused(false)}
     >
       {/* Progress Bar */}
       <ProgressBar
