@@ -81,7 +81,7 @@ export default function CommunitySlide() {
             className="bg-white/10 backdrop-blur-md rounded-2xl p-6 md:p-8 text-center border border-white/10"
           >
             <CountUp
-              end={200}
+              end={196}
               delay={0.2}
               className="font-poppins font-bold text-5xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-orange-400"
             />

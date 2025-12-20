@@ -66,23 +66,9 @@ export default function ThemesSlide() {
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900/40 to-slate-900" />
 
-      {/* Animated gradient orbs */}
-      <motion.div
-        className="absolute top-1/3 left-1/4 w-64 h-64 bg-purple-500/30 rounded-full blur-3xl"
-        animate={{
-          scale: [1, 1.3, 1],
-          x: [0, 30, 0],
-        }}
-        transition={{ duration: 6, repeat: Infinity }}
-      />
-      <motion.div
-        className="absolute bottom-1/3 right-1/4 w-48 h-48 bg-pink-500/30 rounded-full blur-3xl"
-        animate={{
-          scale: [1.2, 1, 1.2],
-          y: [0, -30, 0],
-        }}
-        transition={{ duration: 8, repeat: Infinity }}
-      />
+      {/* Static gradient orbs */}
+      <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-purple-500/30 rounded-full blur-2xl" />
+      <div className="absolute bottom-1/3 right-1/4 w-48 h-48 bg-pink-500/30 rounded-full blur-2xl" />
 
       {/* Confetti */}
       <Confetti isActive={showConfetti} />

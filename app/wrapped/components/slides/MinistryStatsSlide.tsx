@@ -76,32 +76,6 @@ export default function MinistryStatsSlide() {
         transition={{ duration: 10, repeat: Infinity }}
       />
 
-      {/* Musical notes floating */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {["🎵", "🎶", "🎤", "🎸", "🎹"].map((emoji, i) => (
-          <motion.span
-            key={i}
-            className="absolute text-2xl opacity-20"
-            style={{
-              left: `${15 + i * 18}%`,
-              top: `${20 + (i % 3) * 25}%`,
-            }}
-            animate={{
-              y: [0, -30, 0],
-              rotate: [0, 10, -10, 0],
-              opacity: [0.1, 0.3, 0.1],
-            }}
-            transition={{
-              duration: 4 + i,
-              repeat: Infinity,
-              delay: i * 0.5,
-            }}
-          >
-            {emoji}
-          </motion.span>
-        ))}
-      </div>
-
       {/* Content */}
       <motion.div
         variants={containerVariants}
