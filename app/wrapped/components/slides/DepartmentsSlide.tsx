@@ -39,14 +39,13 @@ export default function DepartmentsSlide() {
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, scale: 0 },
+    hidden: { opacity: 0, scale: 0.8 },
     visible: {
       opacity: 1,
       scale: 1,
       transition: {
-        type: "spring",
-        stiffness: 200,
-        damping: 15,
+        duration: 0.25,
+        ease: "easeOut",
       },
     },
   };
@@ -56,23 +55,9 @@ export default function DepartmentsSlide() {
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-emerald-900/30 to-slate-900" />
 
-      {/* Animated background */}
-      <motion.div
-        className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl"
-        animate={{
-          scale: [1, 1.2, 1],
-          y: [0, 50, 0],
-        }}
-        transition={{ duration: 10, repeat: Infinity }}
-      />
-      <motion.div
-        className="absolute bottom-0 right-1/4 w-80 h-80 bg-teal-500/10 rounded-full blur-3xl"
-        animate={{
-          scale: [1.2, 1, 1.2],
-          x: [0, -30, 0],
-        }}
-        transition={{ duration: 8, repeat: Infinity }}
-      />
+      {/* Static gradient orbs - no animation, reduced blur for mobile perf */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-500/15 rounded-full blur-2xl" />
+      <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-teal-500/15 rounded-full blur-2xl" />
 
       {/* Content */}
       <div className="relative z-10 h-full flex flex-col items-center justify-center px-4 py-20 pt-24 overflow-y-auto">
@@ -102,8 +87,7 @@ export default function DepartmentsSlide() {
             <motion.div
               key={dept.name}
               variants={itemVariants}
-              whileHover={{ scale: 1.02 }}
-              className="bg-white/5 backdrop-blur-sm rounded-lg px-2 py-1.5 border border-white/10 hover:border-emerald-500/30 transition-colors cursor-default"
+              className="bg-slate-800/60 rounded-lg px-2 py-1.5 border border-white/10 cursor-default"
             >
               <div className="flex items-center gap-1.5">
                 <span className="text-base">{dept.emoji}</span>

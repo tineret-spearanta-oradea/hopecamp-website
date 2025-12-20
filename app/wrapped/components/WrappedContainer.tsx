@@ -57,19 +57,21 @@ export default function WrappedContainer({
   }, [currentSlide]);
 
   // Auto-advance timer - separate progress tracking from navigation
+  // Update every 250ms instead of 100ms to reduce state updates (CSS handles smooth transition)
   useEffect(() => {
     // Don't auto-advance if paused or if this slide should not auto-advance
     if (isPaused || shouldPauseOnCurrentSlide) return;
 
+    const updateInterval = 250; // ms between updates
     const interval = setInterval(() => {
       setProgress((prev) => {
-        const newProgress = prev + (100 / (autoAdvanceTime / 100));
+        const newProgress = prev + (100 / (autoAdvanceTime / updateInterval));
         if (newProgress >= 100) {
           return 100; // Cap at 100, let the effect below handle navigation
         }
         return newProgress;
       });
-    }, 100);
+    }, updateInterval);
 
     return () => clearInterval(interval);
   }, [isPaused, shouldPauseOnCurrentSlide, autoAdvanceTime, currentSlide]);

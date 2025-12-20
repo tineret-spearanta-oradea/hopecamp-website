@@ -6,7 +6,7 @@ import Image from "next/image";
 
 const uniteImages = [
   "/assets/images/wrapped/5.png",
-  "/assets/images/wrapped/1.png",
+  "/assets/images/wrapped/8.png",
 ];
 
 export default function UniteSlide() {

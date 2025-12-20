@@ -105,12 +105,16 @@ export default function ThemesSlide() {
           {quizOptions.map((option, index) => (
             <motion.button
               key={option.id}
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 + index * 0.1 }}
+              initial={{ opacity: 0, y: 15, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{
+                delay: 0.3 + index * 0.08,
+                duration: 0.35,
+                ease: "easeOut"
+              }}
               onClick={(e) => handleSelect(e, option.id)}
               disabled={showResults}
-              className={`w-full p-4 rounded-xl border-2 transition-all duration-300 text-left flex items-center gap-3 ${getOptionStyle(option)}`}
+              className={`w-full p-4 rounded-xl border-2 transition-colors duration-200 text-left flex items-center gap-3 ${getOptionStyle(option)}`}
             >
               {/* Checkbox indicator */}
               <div className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all ${
@@ -161,7 +165,7 @@ export default function ThemesSlide() {
             transition={{ delay: 0.8 }}
             onClick={(e) => handleCheckAnswers(e)}
             disabled={selectedOptions.length === 0}
-            className={`px-8 py-3 rounded-full font-poppins font-semibold text-white transition-all ${
+            className={`px-8 py-3 rounded-full font-poppins font-semibold text-white transition-opacity duration-200 ${
               selectedOptions.length > 0
                 ? "bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90"
                 : "bg-white/20 cursor-not-allowed"
