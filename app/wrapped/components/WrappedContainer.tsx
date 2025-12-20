@@ -18,7 +18,6 @@ export default function WrappedContainer({
 }: WrappedContainerProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [progress, setProgress] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
   const [direction, setDirection] = useState(1); // 1 for next, -1 for prev
   const isTransitioning = useRef(false);
 
@@ -58,8 +57,8 @@ export default function WrappedContainer({
 
   // Auto-advance timer - separate progress tracking from navigation
   useEffect(() => {
-    // Don't auto-advance if paused or if this slide should not auto-advance
-    if (isPaused || shouldPauseOnCurrentSlide) return;
+    // Don't auto-advance if this slide should not auto-advance
+    if (shouldPauseOnCurrentSlide) return;
 
     const interval = setInterval(() => {
       setProgress((prev) => {
@@ -72,14 +71,14 @@ export default function WrappedContainer({
     }, 100);
 
     return () => clearInterval(interval);
-  }, [isPaused, shouldPauseOnCurrentSlide, autoAdvanceTime, currentSlide]);
+  }, [shouldPauseOnCurrentSlide, autoAdvanceTime, currentSlide]);
 
   // Handle auto-advance when progress reaches 100
   useEffect(() => {
-    if (progress >= 100 && !isPaused && !shouldPauseOnCurrentSlide) {
+    if (progress >= 100 && !shouldPauseOnCurrentSlide) {
       goToNext();
     }
-  }, [progress, isPaused, shouldPauseOnCurrentSlide, goToNext]);
+  }, [progress, shouldPauseOnCurrentSlide, goToNext]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -90,8 +89,6 @@ export default function WrappedContainer({
       } else if (e.key === "ArrowLeft") {
         e.preventDefault();
         goToPrev();
-      } else if (e.key === "Escape") {
-        setIsPaused((prev) => !prev);
       }
     };
 
@@ -118,12 +115,8 @@ export default function WrappedContainer({
       goToPrev();
     } else if (clientX > screenWidth - tapZone) {
       goToNext();
-    } else {
-      // Center tap - toggle pause (only if not on a pause slide)
-      if (!shouldPauseOnCurrentSlide) {
-        setIsPaused((prev) => !prev);
-      }
     }
+    // Center tap does nothing
   };
 
   // Animation variants
@@ -147,10 +140,6 @@ export default function WrappedContainer({
       {...handlers}
       onClick={handleTap}
       className="fixed inset-0 bg-slate-900 overflow-hidden cursor-pointer select-none"
-      onMouseDown={() => !shouldPauseOnCurrentSlide && setIsPaused(true)}
-      onMouseUp={() => !shouldPauseOnCurrentSlide && setIsPaused(false)}
-      onTouchStart={() => !shouldPauseOnCurrentSlide && setIsPaused(true)}
-      onTouchEnd={() => !shouldPauseOnCurrentSlide && setIsPaused(false)}
     >
       {/* Progress Bar */}
       <ProgressBar
@@ -178,27 +167,6 @@ export default function WrappedContainer({
         </motion.div>
       </AnimatePresence>
 
-      {/* Pause indicator (only show when not on a pause slide) */}
-      <AnimatePresence>
-        {isPaused && !shouldPauseOnCurrentSlide && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            className="fixed inset-0 flex items-center justify-center z-40 pointer-events-none"
-          >
-            <div className="bg-black/50 rounded-full p-6">
-              <svg
-                className="w-12 h-12 text-white"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
-              </svg>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* Navigation hint (only on first slide) */}
       {currentSlide === 0 && (

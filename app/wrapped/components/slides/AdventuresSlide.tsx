@@ -87,7 +87,7 @@ export default function AdventuresSlide() {
         {/* Header */}
         <motion.div variants={itemVariants} className="text-center mb-6">
           <h2 className="font-poppins font-bold text-3xl md:text-4xl text-white">
-            Taberele Anului
+            Taberele anului
           </h2>
         </motion.div>
 

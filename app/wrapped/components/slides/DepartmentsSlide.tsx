@@ -83,9 +83,6 @@ export default function DepartmentsSlide() {
           transition={{ duration: 0.5 }}
           className="text-center mb-6 mt-4"
         >
-          <span className="inline-block px-4 py-1 bg-emerald-500/20 rounded-full text-emerald-300 text-sm font-medium mb-4">
-            Echipa TSO
-          </span>
           <h2 className="font-poppins font-bold text-3xl md:text-4xl text-white mb-2">
             <CountUp end={20} className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400" /> departamente active
           </h2>
@@ -116,18 +113,6 @@ export default function DepartmentsSlide() {
               </div>
             </motion.div>
           ))}
-        </motion.div>
-
-        {/* Thank you message */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="mt-8 text-center"
-        >
-          <p className="font-nunito text-white/50 text-sm">
-            Mulțumim tuturor pentru dedicare! 💚
-          </p>
         </motion.div>
       </div>
     </div>
