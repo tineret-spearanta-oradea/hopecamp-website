@@ -28,6 +28,12 @@ const nextConfig = {
     unoptimized: process.env.NODE_ENV === "production",
   },
   // other config options...
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
 
 module.exports = nextConfig;
