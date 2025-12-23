@@ -10,25 +10,19 @@ const socials = [
   {
     name: "Instagram",
     icon: FaInstagram,
-    url: "https://instagram.com/tineretso",
+    url: "https://www.instagram.com/tineret_speranta_oradea/",
     color: "from-purple-500 via-pink-500 to-orange-500",
   },
   {
     name: "Facebook",
     icon: FaFacebookF,
-    url: "https://facebook.com/tineretso",
+    url: "https://www.facebook.com/tineretsperantaoradea/",
     color: "from-blue-600 to-blue-500",
-  },
-  {
-    name: "TikTok",
-    icon: FaTiktok,
-    url: "https://tiktok.com/@tineretso",
-    color: "from-gray-800 to-gray-900",
   },
   {
     name: "YouTube",
     icon: FaYoutube,
-    url: "https://youtube.com/@tineretso",
+    url: "https://www.youtube.com/@TineretSperantaOradea",
     color: "from-red-600 to-red-500",
   },
 ];

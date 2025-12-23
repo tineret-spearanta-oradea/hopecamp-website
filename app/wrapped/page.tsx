@@ -23,6 +23,7 @@ import UniteIntroSlide from "./components/slides/UniteIntroSlide";
 import MinistryIntroSlide from "./components/slides/MinistryIntroSlide";
 import DepartmentsIntroSlide from "./components/slides/DepartmentsIntroSlide";
 import SocialProjectSlide from "./components/slides/SocialProjectSlide";
+import LeadersSlide from "./components/slides/LeadersSlide";
 import AdventuresIntroSlide from "./components/slides/AdventuresIntroSlide";
 import QuizIntroSlide from "./components/slides/QuizIntroSlide";
 
@@ -37,19 +38,20 @@ import QuizIntroSlide from "./components/slides/QuizIntroSlide";
 // 7 - SocialProjectSlide
 // 8 - DepartmentsIntroSlide
 // 9 - DepartmentsSlide
-// 10 - AdventuresIntroSlide
-// 11 - AdventuresSlide
-// 12 - HopeCampSlide
-// 13 - CitiesSlide (21 cities)
-// 14 - HopeCampGallerySlideOne
-// 15 - HopeCampGallerySlideTwo
-// 16 - QuizIntroSlide
-// 17 - ThemesSlide (Quiz - should pause)
-// 18 - TopicsSlide
-// 19 - OutroSlide
+// 10 - LeadersSlide
+// 11 - AdventuresIntroSlide
+// 12 - AdventuresSlide
+// 13 - HopeCampSlide
+// 14 - CitiesSlide (21 cities)
+// 15 - HopeCampGallerySlideOne
+// 16 - HopeCampGallerySlideTwo
+// 17 - QuizIntroSlide
+// 18 - ThemesSlide (Quiz - should pause)
+// 19 - TopicsSlide
+// 20 - OutroSlide
 
 const INTRO_SLIDE_INDEX = 0;
-const QUIZ_SLIDE_INDEX = 17;
+const QUIZ_SLIDE_INDEX = 18;
 
 export default function WrappedPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -110,6 +112,7 @@ export default function WrappedPage() {
           <SocialProjectSlide />
           <DepartmentsIntroSlide />
           <DepartmentsSlide />
+          <LeadersSlide />
           <AdventuresIntroSlide />
           <AdventuresSlide />
           <HopeCampSlide />
