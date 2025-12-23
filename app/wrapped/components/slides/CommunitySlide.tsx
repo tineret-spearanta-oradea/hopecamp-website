@@ -47,7 +47,7 @@ export default function CommunitySlide() {
         className="relative z-10 h-full flex flex-col items-center justify-center px-6 py-16"
       >
         {/* Header */}
-        <motion.div variants={itemVariants} className="text-center mb-10">
+        <motion.div variants={itemVariants} className="text-center mb-2">
           <h2 className="font-poppins font-bold text-3xl md:text-5xl text-white">
             Serile Noastre de Tineret
           </h2>
@@ -61,7 +61,7 @@ export default function CommunitySlide() {
           {/* Youth Nights */}
           <motion.div
             variants={itemVariants}
-            className="bg-white/10 backdrop-blur-md rounded-2xl p-6 md:p-8 text-center border border-white/10"
+            className="bg-white/10 backdrop-blur-md rounded-2xl p-4 md:p-6 text-center border border-white/10"
           >
             <CountUp
               end={32}
@@ -78,7 +78,7 @@ export default function CommunitySlide() {
           {/* Average Attendance */}
           <motion.div
             variants={itemVariants}
-            className="bg-white/10 backdrop-blur-md rounded-2xl p-6 md:p-8 text-center border border-white/10"
+            className="bg-white/10 backdrop-blur-md rounded-2xl p-4 md:p-6 text-center border border-white/10"
           >
             <CountUp
               end={196}
@@ -93,6 +93,21 @@ export default function CommunitySlide() {
             </p>
           </motion.div>
         </div>
+
+        {/* Secondary Stats */}
+        <motion.div
+          variants={itemVariants}
+          className="flex gap-4 mt-6"
+        >
+          <div className="bg-white/10 rounded-xl px-4 py-2 border border-white/10">
+            <span className="font-poppins font-bold text-xl text-amber-400">5</span>
+            <span className="font-nunito text-white/70 text-sm ml-2">întâlniri COMBO</span>
+          </div>
+          <div className="bg-white/10 rounded-xl px-4 py-2 border border-white/10">
+            <span className="font-poppins font-bold text-xl text-cyan-400">3</span>
+            <span className="font-nunito text-white/70 text-sm ml-2">întâlniri UNITE</span>
+          </div>
+        </motion.div>
       </motion.div>
     </div>
   );
