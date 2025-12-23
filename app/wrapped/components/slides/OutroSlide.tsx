@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import Confetti from "../animations/Confetti";
-import { FaInstagram, FaFacebookF, FaTiktok, FaYoutube } from "react-icons/fa";
+import { FaInstagram, FaFacebookF, FaTiktok, FaYoutube, FaWhatsapp } from "react-icons/fa";
 
 const socials = [
   {
@@ -18,6 +18,12 @@ const socials = [
     icon: FaFacebookF,
     url: "https://www.facebook.com/tineretsperantaoradea/",
     color: "from-blue-600 to-blue-500",
+  },
+  {
+    name: "WhatsApp",
+    icon: FaWhatsapp,
+    url: "hhttps://chat.whatsapp.com/KQLxA8YnH5l5Yfk5p2Ko0W",
+    color: "from-green-600 to-green-500",
   },
   {
     name: "YouTube",

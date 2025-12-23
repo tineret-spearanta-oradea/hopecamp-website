@@ -74,6 +74,9 @@ export default function FeedbackSlide() {
         animate="visible"
         className="relative z-10 h-full flex flex-col items-center justify-center px-4 py-10 overflow-y-auto"
       >
+        <h2 className="font-poppins font-bold text-xl md:text-2xl text-white mb-1 text-center">
+          Câteva cuvinte din partea tinerilor
+        </h2>
         {/* Messages */}
         <div className="w-full max-w-sm space-y-2">
           {feedbacks.map((feedback) => (
