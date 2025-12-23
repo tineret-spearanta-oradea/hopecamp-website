@@ -49,7 +49,7 @@ export default function CommunitySlide() {
         {/* Header */}
         <motion.div variants={itemVariants} className="text-center mb-2">
           <h2 className="font-poppins font-bold text-3xl md:text-5xl text-white">
-            Serile Noastre de Tineret
+            Serile noastre de tineret
           </h2>
           <p className="font-nunito text-white/60 text-base md:text-lg mt-3 max-w-md mx-auto">
             Joi seara, locul unde ne întâlnim să creștem împreună.

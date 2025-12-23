@@ -22,6 +22,7 @@ import OutroSlide from "./components/slides/OutroSlide";
 import UniteIntroSlide from "./components/slides/UniteIntroSlide";
 import MinistryIntroSlide from "./components/slides/MinistryIntroSlide";
 import DepartmentsIntroSlide from "./components/slides/DepartmentsIntroSlide";
+import SocialProjectSlide from "./components/slides/SocialProjectSlide";
 import AdventuresIntroSlide from "./components/slides/AdventuresIntroSlide";
 import QuizIntroSlide from "./components/slides/QuizIntroSlide";
 
@@ -33,21 +34,22 @@ import QuizIntroSlide from "./components/slides/QuizIntroSlide";
 // 4 - UniteSlide
 // 5 - MinistryIntroSlide
 // 6 - MinistryStatsSlide
-// 7 - DepartmentsIntroSlide
-// 8 - DepartmentsSlide
-// 9 - AdventuresIntroSlide
-// 10 - AdventuresSlide
-// 11 - HopeCampSlide
-// 12 - CitiesSlide (21 cities)
-// 13 - HopeCampGallerySlideOne
-// 14 - HopeCampGallerySlideTwo
-// 15 - QuizIntroSlide
-// 16 - ThemesSlide (Quiz - should pause)
-// 17 - TopicsSlide
-// 18 - OutroSlide
+// 7 - SocialProjectSlide
+// 8 - DepartmentsIntroSlide
+// 9 - DepartmentsSlide
+// 10 - AdventuresIntroSlide
+// 11 - AdventuresSlide
+// 12 - HopeCampSlide
+// 13 - CitiesSlide (21 cities)
+// 14 - HopeCampGallerySlideOne
+// 15 - HopeCampGallerySlideTwo
+// 16 - QuizIntroSlide
+// 17 - ThemesSlide (Quiz - should pause)
+// 18 - TopicsSlide
+// 19 - OutroSlide
 
 const INTRO_SLIDE_INDEX = 0;
-const QUIZ_SLIDE_INDEX = 16;
+const QUIZ_SLIDE_INDEX = 17;
 
 export default function WrappedPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -105,6 +107,7 @@ export default function WrappedPage() {
           <UniteSlide />
           <MinistryIntroSlide />
           <MinistryStatsSlide />
+          <SocialProjectSlide />
           <DepartmentsIntroSlide />
           <DepartmentsSlide />
           <AdventuresIntroSlide />
