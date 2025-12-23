@@ -4,26 +4,30 @@ import { motion } from "framer-motion";
 import CountUp from "../animations/CountUp";
 
 const departments = [
+  { emoji: "🤝", name: "Welcome" },
+  { emoji: "⭐", name: "Moments" },
+  { emoji: "✉️", name: "Hope Letter" },
+  { emoji: "🕯️", name: "Făclia din noapte" },
   { emoji: "📚", name: "Club de carte" },
   { emoji: "🎨", name: "Decor" },
-  { emoji: "🖌️", name: "Design Grafic" },
-  { emoji: "💻", name: "Digitalizare" },
-  { emoji: "🎉", name: "Events" },
-  { emoji: "👧", name: "Hope Girls" },
-  { emoji: "✉️", name: "Hope Letter" },
-  { emoji: "🎓", name: "Hope Students" },
-  { emoji: "🚚", name: "Logistic" },
-  { emoji: "👕", name: "Merch" },
-  { emoji: "⭐", name: "Moments" },
-  { emoji: "📸", name: "Photo" },
-  { emoji: "🙏", name: "Rugăciune" },
-  { emoji: "🍪", name: "Snack" },
-  { emoji: "❤️", name: "Social" },
   { emoji: "📱", name: "Social Media" },
-  { emoji: "🎤", name: "Speakers" },
-  { emoji: "🎛️", name: "Tehnic Media" },
+  { emoji: "📸", name: "Photo" },
   { emoji: "🎥", name: "Video" },
-  { emoji: "🤝", name: "Welcome" },
+  { emoji: "🖌️", name: "Design Grafic" },
+  { emoji: "🎛️", name: "Tehnic Media" },
+  { emoji: "🍪", name: "Snack" },
+  { emoji: "👕", name: "Merch" },
+  { emoji: "🎤", name: "Speakers" },
+  { emoji: "🎸", name: "Worship" },
+  { emoji: "🎉", name: "Events" },
+  { emoji: "📋", name: "Planning" },
+  { emoji: "❤️", name: "Social" },
+  { emoji: "🎓", name: "Hope Students" },
+  { emoji: "🙏", name: "Rugăciune" },
+  { emoji: "💰", name: "Finanțe" },
+  { emoji: "💻", name: "Digitalizare" },
+  { emoji: "👧", name: "Hope Girls" },
+  { emoji: "🚚", name: "Logistic" },
 ];
 
 export default function DepartmentsSlide() {
@@ -60,19 +64,19 @@ export default function DepartmentsSlide() {
       <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-teal-500/15 rounded-full blur-2xl" />
 
       {/* Content */}
-      <div className="relative z-10 h-full flex flex-col items-center justify-center px-4 py-20 pt-24 overflow-y-auto">
+      <div className="relative z-10 h-full flex flex-col items-center justify-center px-3 py-12">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-6 mt-4"
+          className="text-center mb-4"
         >
-          <h2 className="font-poppins font-bold text-3xl md:text-4xl text-white mb-2">
-            <CountUp end={20} className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400" /> departamente active
+          <h2 className="font-poppins font-bold text-2xl md:text-4xl text-white mb-1">
+            <CountUp end={24} className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400" /> departamente active
           </h2>
-          <p className="font-nunito text-white/60 text-base">
-            cu peste <span className="text-emerald-400 font-semibold">60 voluntari</span> implicați
+          <p className="font-nunito text-white/60 text-sm">
+            cu peste <span className="text-emerald-400 font-semibold">70 voluntari</span> implicați
           </p>
         </motion.div>
 
@@ -81,17 +85,17 @@ export default function DepartmentsSlide() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1.5 md:gap-2 w-full max-w-2xl"
+          className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 gap-1 md:gap-1.5 w-full max-w-2xl"
         >
-          {departments.map((dept, index) => (
+          {departments.map((dept) => (
             <motion.div
               key={dept.name}
               variants={itemVariants}
-              className="bg-slate-800/60 rounded-lg px-2 py-1.5 border border-white/10 cursor-default"
+              className="bg-slate-800/60 rounded-md px-1.5 py-1 border border-white/10 cursor-default"
             >
-              <div className="flex items-center gap-1.5">
-                <span className="text-base">{dept.emoji}</span>
-                <span className="font-nunito text-white/80 text-xs truncate">
+              <div className="flex items-center gap-1">
+                <span className="text-sm">{dept.emoji}</span>
+                <span className="font-nunito text-white/80 text-[10px] truncate">
                   {dept.name}
                 </span>
               </div>
