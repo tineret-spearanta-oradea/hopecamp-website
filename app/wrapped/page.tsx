@@ -26,6 +26,7 @@ import SocialProjectSlide from "./components/slides/SocialProjectSlide";
 import LeadersSlide from "./components/slides/LeadersSlide";
 import AdventuresIntroSlide from "./components/slides/AdventuresIntroSlide";
 import QuizIntroSlide from "./components/slides/QuizIntroSlide";
+import DecisionsSlide from "./components/slides/DecisionsSlide";
 
 // Slide indices (0-based):
 // 0 - IntroSlide
@@ -48,7 +49,8 @@ import QuizIntroSlide from "./components/slides/QuizIntroSlide";
 // 17 - QuizIntroSlide
 // 18 - ThemesSlide (Quiz - should pause)
 // 19 - TopicsSlide
-// 20 - OutroSlide
+// 20 - DecisionsSlide
+// 21 - OutroSlide
 
 const INTRO_SLIDE_INDEX = 0;
 const QUIZ_SLIDE_INDEX = 18;
@@ -122,6 +124,7 @@ export default function WrappedPage() {
           <QuizIntroSlide />
           <ThemesSlide />
           <TopicsSlide />
+          <DecisionsSlide />
           <OutroSlide />
         </WrappedContainer>
       )}
