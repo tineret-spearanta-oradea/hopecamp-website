@@ -5,6 +5,8 @@ import { Toaster } from "sonner";
 import { AuthProvider } from "@/contexts/auth-context";
 import { editionName, title } from "@/lib/constants";
 import { Snowfall } from "@/components/ui/Snowfall";
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -56,6 +58,8 @@ export default function RootLayout({
           {children}
           <Toaster richColors position="top-center" />
         </AuthProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
