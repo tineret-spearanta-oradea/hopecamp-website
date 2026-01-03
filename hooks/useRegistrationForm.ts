@@ -4,7 +4,7 @@ import {validateUserFields, validateOtp, validateAuthFields} from "@/utils/valid
 import { dateRange, payTaxToOptions } from "@/lib/constants";
 import { toast } from "sonner";
 import { supabaseBrowserClient } from "@/lib/supabase/client";
-import { useRouter} from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {getNewUserMetadata} from "@/lib/supabase/database/user";
 import {getActiveEdition} from "@/lib/supabase/database/edition";
 import { predictAndUpdateGender } from "@/lib/supabase/genderPrediction";
