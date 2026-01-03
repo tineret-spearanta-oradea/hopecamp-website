@@ -179,7 +179,7 @@ export function useRegistrationForm() {
         const { error } = await supabaseBrowserClient.auth.signInWithOtp({
           phone: normalizedPhone,
           options: {
-            channel: 'whatsapp'
+            channel: 'sms'
           }
         });
 
