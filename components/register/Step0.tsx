@@ -13,8 +13,10 @@ interface Step0Props {
   handleOtpChange: (value: string) => void;
   handlePhoneSubmit: () => Promise<void>;
   handleOtpVerify: () => Promise<void>;
+  handleContinueWithoutOtp: () => void;
   validationErrors: ValidationErrors;
   isLoading: boolean;
+  otpFailed: boolean;
 }
 
 export default function Step0({
@@ -25,8 +27,10 @@ export default function Step0({
   handleOtpChange,
   handlePhoneSubmit,
   handleOtpVerify,
+  handleContinueWithoutOtp,
   validationErrors,
   isLoading,
+  otpFailed,
 }: Step0Props) {
   return (
     <StepWrapper
@@ -55,6 +59,23 @@ export default function Step0({
             >
               {isLoading ? "Se trimite codul..." : "Trimite cod OTP"}
             </Button>
+
+            {/* Show continue without OTP option when OTP sending fails */}
+            {otpFailed && !otpData.otpSent && (
+              <div className="mt-4 p-4 border border-amber-300 rounded-lg bg-amber-50 dark:bg-amber-900/20">
+                <p className="text-sm text-amber-800 dark:text-amber-200 mb-3">
+                  Nu am putut trimite codul de verificare. Poți încerca din nou sau poți continua cu înregistrarea, iar cineva din echipă te va contacta pentru verificare.
+                </p>
+                <Button
+                  variant="outline"
+                  onClick={handleContinueWithoutOtp}
+                  className="w-full border-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/40"
+                  disabled={isLoading}
+                >
+                  Continuă fără verificare
+                </Button>
+              </div>
+            )}
           </>
         ) : (
           // OTP Verification Stage

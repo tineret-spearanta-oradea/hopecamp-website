@@ -8,7 +8,7 @@ import Step3 from "./Step3";
 import EditionBanner from "./EditionBanner";
 import { useRegistrationForm } from "@/hooks/useRegistrationForm";
 import { ErrorBoundary } from "../ErrorBoundary";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, CheckCircle2 } from "lucide-react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import LoadingSpinner from "../ui/LoadingSpinner";
@@ -26,6 +26,8 @@ export default function RegisterForm() {
     isReturningUser,
     currentEdition,
     blockReason,
+    otpFailed,
+    pendingContactCreated,
     handleChange,
     handleDateChange,
     handlePhoneChange,
@@ -33,6 +35,7 @@ export default function RegisterForm() {
     handleOtpChange,
     handlePhoneSubmit,
     handleOtpVerify,
+    handleContinueWithoutOtp,
     handleNext,
     handlePrev,
     handleSubmit,
@@ -57,6 +60,26 @@ export default function RegisterForm() {
           <LoadingSpinner />
         </CardContent>
       </Card>
+    );
+  }
+
+  // Show success message for pending contact creation
+  if (pendingContactCreated) {
+    return (
+      <ErrorBoundary>
+        <Card className="bg-background shadow-lg">
+          <CardContent className="p-6 text-center">
+            <CheckCircle2 className="h-12 w-12 text-green-500 mx-auto mb-4" />
+            <h2 className="text-xl font-semibold mb-2">Datele tale au fost salvate!</h2>
+            <p className="text-muted-foreground mb-4">
+              Cineva din echipă te va contacta în curând pentru a finaliza înregistrarea.
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Dacă ai întrebări, ne poți contacta direct pe <a href="https://wa.me/40773311577" className="text-hope-darkcyan hover:underline">0773 311 577</a> sau <a href="mailto:dev@hopecamp.ro" className="text-hope-darkcyan hover:underline">dev@hopecamp.ro</a> 
+            </p>
+          </CardContent>
+        </Card>
+      </ErrorBoundary>
     );
   }
 
@@ -100,8 +123,10 @@ export default function RegisterForm() {
               handleOtpChange={handleOtpChange}
               handlePhoneSubmit={handlePhoneSubmit}
               handleOtpVerify={handleOtpVerify}
+              handleContinueWithoutOtp={handleContinueWithoutOtp}
               validationErrors={validationErrors}
               isLoading={isLoading}
+              otpFailed={otpFailed}
             />
           )}
 

@@ -13,6 +13,7 @@ import {
   Wallet,
   ShoppingCart,
   Group,
+  Clock,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -32,6 +33,12 @@ const menuItems = [
     icon: Users,
     href: "/admin/users",
     requiredPermissions: ['users.read' as PermissionName],
+  },
+  {
+    title: "Contacte în așteptare",
+    icon: Clock,
+    href: "/admin/pending-contacts",
+    requiredPermissions: ['pending_contacts.read' as PermissionName],
   },
   {
     title: "Mesaje",

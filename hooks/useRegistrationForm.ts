@@ -70,6 +70,9 @@ export function useRegistrationForm() {
   const [blockReason, setBlockReason] = useState<string | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [otpFailed, setOtpFailed] = useState(false);
+  const [pendingContactMode, setPendingContactMode] = useState(false);
+  const [pendingContactCreated, setPendingContactCreated] = useState(false);
   const router = useRouter();
   const { supabaseUser, loading: authLoading } = useAuth();
 
@@ -182,8 +185,11 @@ export function useRegistrationForm() {
 
         if (error) {
           console.error("OTP Send Error:", error);
-          toast.error("Eroare la trimiterea codului OTP", {
-            description: error.message
+          // Set otpFailed to show "continue without verification" option
+          setOtpFailed(true);
+          toast.error("Nu am putut trimite codul de verificare", {
+            description: "Poți continua cu înregistrarea, iar cineva te va contacta pentru verificare.",
+            duration: 8000,
           });
           setIsLoading(false);
           return;
@@ -317,6 +323,19 @@ export function useRegistrationForm() {
     }
   };
 
+  // Handler for continuing without OTP verification (when OTP sending fails)
+  const handleContinueWithoutOtp = () => {
+    // User chose to continue without OTP verification
+    // They will complete the form and it will be saved to pending_contacts
+    setPendingContactMode(true);
+    setIsReturningUser(true); // They are a returning user, just can't verify
+    setIsAuthenticated(false); // Not truly authenticated
+    setStep(1);
+    toast.info("Completează formularul. Te vom contacta pentru verificare.", {
+      duration: 6000,
+    });
+  };
+
   const validateStep = (step: number): boolean => {
     let errors: ValidationErrors = {};
 
@@ -403,11 +422,66 @@ export function useRegistrationForm() {
       }
     };
 
+    const normalizedPhone = phoneData.phonePrefix + phoneData.phone;
+
+    // PENDING CONTACT MODE: Save to pending_contacts instead of creating registration
+    if (pendingContactMode) {
+      try {
+        const response = await fetch('/api/pending-contacts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            phone: normalizedPhone,
+            name: updatedFormData.userData.name,
+            form_data: {
+              age: updatedFormData.userData.age,
+              gender: updatedFormData.userData.gender,
+              church: updatedFormData.userData.church,
+              churchOther: updatedFormData.userData.churchOther,
+              churchContact: updatedFormData.userData.churchContact,
+              transport: updatedFormData.userData.transport,
+              payTaxTo: updatedFormData.userData.payTaxTo,
+              preferences: updatedFormData.userData.preferences,
+              startDate: updatedFormData.userData.startDate?.toISOString(),
+              endDate: updatedFormData.userData.endDate?.toISOString(),
+              imageUrl: updatedFormData.userData.imageUrl,
+            },
+            edition_id: currentEdition.id,
+            existing_user_id: null,
+          }),
+        });
+
+        setIsLoading(false);
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          toast.error("Eroare la salvarea datelor", {
+            description: errorData.error || "Te rugăm să încerci din nou.",
+          });
+          return;
+        }
+
+        setPendingContactCreated(true);
+        toast.success("Datele tale au fost salvate!", {
+          description: "Cineva din echipă te va contacta pentru a finaliza înregistrarea.",
+          duration: 10000,
+        });
+
+        // Show success state - stay on step 3 but show confirmation
+        // or redirect to a confirmation page
+        return;
+      } catch (err) {
+        setIsLoading(false);
+        console.error("Error creating pending contact:", err);
+        toast.error("A apărut o eroare neașteptată.");
+        return;
+      }
+    }
+
     const metaData = getNewUserMetadata(updatedFormData, currentEdition.id);
     const randomPassword = Math.random().toString(36).slice(-12);
 
     try {
-      const normalizedPhone = phoneData.phonePrefix + phoneData.phone;
 
       // Get current user (might be more up-to-date than context)
       const { data: { user: currentUser } } = await supabaseBrowserClient.auth.getUser();
@@ -656,6 +730,9 @@ export function useRegistrationForm() {
     isReturningUser,
     currentEdition,
     blockReason,
+    otpFailed,
+    pendingContactMode,
+    pendingContactCreated,
     handleChange,
     handleDateChange,
     handlePhoneChange,
@@ -663,6 +740,7 @@ export function useRegistrationForm() {
     handleOtpChange,
     handlePhoneSubmit,
     handleOtpVerify,
+    handleContinueWithoutOtp,
     handleNext,
     handlePrev,
     handleSubmit,
