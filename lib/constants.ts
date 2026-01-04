@@ -27,16 +27,20 @@ export const transportOptions = [
 ];
 
 export const sumToPay = {
-  normal: 790,
-  withFamilyMember: 730,
-  deposit: 350,
+  // suma generala
+  normal: 500,
+  // in cazul in care are minim un membru de familie in tabara
+  withFamilyMember: null,
+  // suma pentru avans
+  deposit: 250,
+  // suma per zi pentru participantul care nu vine full-time
   perDay: 200,
 };
 
 export const dateRange = {
   startDate: new Date("2026-02-19"),
   endDate: new Date("2026-02-22"),
-  depositPaymentDueDate: new Date("2025-02-01"),
+  depositPaymentDueDate: new Date("2026-01-31"),
 };
 
 export const location = {
@@ -55,7 +59,7 @@ export const MinimumAge = {
 
 export const contactInfo = {
   phone: "+40 773 311 577",
-  email: "tsomediateam@gmail.com",
+  email: "dev@hopecamp.ro",
   whatsapp: "https://wa.me/40773311577",
   instagram: "https://www.instagram.com/tineret_speranta_oradea",
   facebook: "https://www.facebook.com/tineretsperantaoradea",

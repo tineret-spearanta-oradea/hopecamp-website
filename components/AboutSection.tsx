@@ -28,17 +28,13 @@ export default function AboutSection() {
             </div>
 
             <h2 className="font-poppins font-bold text-3xl sm:text-4xl md:text-5xl text-white mb-6 leading-tight">
-              <span className="text-ice">Cine e în spatele</span>
+              <span className="text-ice">Tineret Speranța</span>
               <br />
-              <span className="text-white/90">cortinei?</span>
+              <span className="text-white/90">Oradea</span>
             </h2>
 
             <p className="font-nunito text-white/70 leading-relaxed">
-              Suntem o comunitate prietenoasă cu impact în Oradea, punând
-              accentul pe conducerea tinerilor de la întâlnirea personală spre o
-              relație autentică în Hristos. Noi creăm un mediu plăcut tinerilor
-              pentru distracție și socializare, dar și un spațiu propice pentru
-              închinare și cunoașterea lui Dumnezeu!
+              Vrem o comunitate dăruită, care se închină autentic și are impact real în propria generație.
             </p>
           </div>
 

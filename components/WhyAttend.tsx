@@ -85,7 +85,7 @@ export default function WhyAttend() {
               <h2 className="font-poppins font-bold text-3xl sm:text-4xl md:text-5xl text-white mb-6 leading-tight">
                 <span className="text-ice">De ce să vii</span>
                 <br />
-                <span className="text-white/90">la HopeCamp?</span>
+                <span className="text-white/90">în HopeCamp?</span>
               </h2>
 
               <p className="font-nunito text-white/70 mb-8 leading-relaxed">

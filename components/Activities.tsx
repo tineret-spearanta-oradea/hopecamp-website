@@ -143,8 +143,7 @@ export default function Activities() {
             ❄️ Activități ❄️
           </h2>
           <p className="font-nunito text-foreground/70 max-w-2xl mx-auto">
-            Fie că vrei să le faci pe toate sau doar să-ți alegi preferatele,
-            ai o mulțime de experiențe din care să alegi.
+            O mulțime de experiențe care te așteaptă pe durata taberei.
           </p>
         </div>
 
