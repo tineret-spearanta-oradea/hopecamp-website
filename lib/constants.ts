@@ -1,5 +1,5 @@
 export const title = "Winter Camp #3";
-export const editionName = "";
+export const editionName = "Miracole";
 
 export const churchOptions = [
   { value: "Speranta, Oradea", label: "Speranța, Oradea" },
