@@ -203,13 +203,6 @@ export default function Step2({
         <p className="text-center text-sm text-muted-foreground mt-4">
           Câmpurile marcate cu * sunt obligatorii
         </p>
-        <p className="text-center text-sm text-muted-foreground mt-2">
-          Ai deja cont?{" "}
-          <Link href="/login" className="text-hope-lightcyan hover:underline">
-            Autentifică-te aici
-          </Link>
-          .
-        </p>
       </div>
     </div>
   );

@@ -5,7 +5,6 @@ import FullyBooked from "@/components/register/FullyBooked";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import AuthToAccountRedirect from "@/components/auth/AuthToAccountRedirect";
 
 // This would typically come from your environment variables or a database
 const IS_REGISTRATION_DISABLED =
@@ -24,11 +23,12 @@ function RegistrationContent() {
 }
 
 export default function RegistrationPage() {
+  // Note: We don't use AuthToAccountRedirect here because authenticated users
+  // should be able to register for new editions. The RegisterForm itself
+  // handles checking if the user is already registered for the current edition.
   return (
     <Suspense fallback={<LoadingSpinner />}>
-      <AuthToAccountRedirect>
-        <RegistrationContent />
-      </AuthToAccountRedirect>
+      <RegistrationContent />
     </Suspense>
   );
 }

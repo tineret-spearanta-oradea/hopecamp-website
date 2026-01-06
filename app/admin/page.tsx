@@ -15,6 +15,7 @@ import {
   Timer,
   MessageSquare,
   User,
+  Clock,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -32,8 +33,11 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useMessages } from "@/hooks/use-messages";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PieChart, Pie, Cell, Tooltip as RechartsTooltip } from "recharts";
+import { getPendingContactsCount } from "@/lib/supabase/database/pendingContact";
+import { getActiveEdition } from "@/lib/supabase/database/edition";
+import Link from "next/link";
 
 export default function AdminDashboardPage() {
   const {
@@ -48,13 +52,18 @@ export default function AdminDashboardPage() {
     error: messagesError,
     fetchMessages,
   } = useMessages();
-  const { can } = usePermissions();
+  const { can, hasAnyPermission, isSuperAdmin } = usePermissions();
   const { userData } = useAuth();
   const router = useRouter();
+  const [pendingContactsCount, setPendingContactsCount] = useState<{ new: number; contacted: number; total: number }>({ new: 0, contacted: 0, total: 0 });
 
   // Memoize permission checks to prevent infinite loops
   const canReadUsers = useMemo(() => can.readUsers(), [can]);
   const canReadMessages = useMemo(() => can.readMessages(), [can]);
+  const canReadPendingContacts = useMemo(
+    () => isSuperAdmin || hasAnyPermission('pending_contacts.read'),
+    [isSuperAdmin, hasAnyPermission]
+  );
 
   useEffect(() => {
     if (canReadUsers) {
@@ -63,7 +72,14 @@ export default function AdminDashboardPage() {
     if (canReadMessages) {
       fetchMessages();
     }
-  }, [fetchRegistrations, fetchMessages, canReadUsers, canReadMessages]);
+    // Fetch pending contacts count
+    if (canReadPendingContacts) {
+      getActiveEdition()
+        .then((edition) => getPendingContactsCount(edition.id))
+        .then((counts) => setPendingContactsCount(counts))
+        .catch((err) => console.error("Error fetching pending contacts count:", err));
+    }
+  }, [fetchRegistrations, fetchMessages, canReadUsers, canReadMessages, canReadPendingContacts]);
 
   // Show simple greeting if user doesn't have users.read permission
   if (!can.readUsers()) {
@@ -319,6 +335,30 @@ export default function AdminDashboardPage() {
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold tracking-tight mb-1">Salut, {userData?.name || "Admin"}!</h1>
+
+      {/* Pending Contacts Alert */}
+      {canReadPendingContacts && pendingContactsCount.new > 0 && (
+        <Card className="border-amber-300 bg-amber-50 dark:bg-amber-900/20">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg flex items-center gap-2 text-amber-800 dark:text-amber-200">
+              <Clock className="h-5 w-5" />
+              {pendingContactsCount.new} {pendingContactsCount.new === 1 ? "contact nou" : "contacte noi"} în așteptare
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-amber-700 dark:text-amber-300 mb-3">
+              Utilizatori care au încercat să se înregistreze dar nu au putut verifica telefonul.
+            </p>
+            <Link href="/admin/pending-contacts">
+              <button className="inline-flex items-center gap-2 text-sm font-medium text-amber-900 dark:text-amber-100 hover:underline">
+                Vezi contactele
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </Link>
+          </CardContent>
+        </Card>
+      )}
+
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {can.readUsers() ? (
           <UserCard

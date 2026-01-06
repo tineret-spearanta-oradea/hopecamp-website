@@ -224,3 +224,172 @@ export async function updateRegistrationPayment(registrationId: number, amountPa
         throw error;
     }
 }
+
+/**
+ * Get user's most recent registration (any edition)
+ * Used for pre-filling registration form
+ */
+export async function getUserMostRecentRegistration(userId: string): Promise<RegistrationWithProfile | null> {
+    try {
+        const { data, error } = await supabaseBrowserClient
+            .from("registrations")
+            .select(`
+                *,
+                user_registration_roles!left ( is_admin ),
+                user_profiles!inner ( user_id, name, image_url, age, gender, ...user_roles!left ( is_super_admin ), ...auth_users_view!inner ( email, phone ) )
+            `)
+            .eq("user_id", userId)
+            .order("created_at", { ascending: false })
+            .limit(1)
+            .maybeSingle();
+
+        if (error) {
+            console.error("Error fetching most recent registration:", error.message);
+            return null;
+        }
+
+        if (!data) {
+            return null;
+        }
+
+        return mapRegistrationWithProfile(data);
+    } catch (err) {
+        console.error("Unexpected error fetching most recent registration:", err);
+        return null;
+    }
+}
+
+/**
+ * Get all registrations for a user, ordered by date (newest first)
+ * Used for displaying registration history
+ * Optionally exclude a specific edition (e.g., current one)
+ */
+export async function getUserRegistrationHistory(
+    userId: string,
+    excludeEditionId?: number
+): Promise<Array<{
+    id: number;
+    editionId: number;
+    editionName: string;
+    editionTitle?: string;
+    startDate: Date;
+    endDate: Date;
+}>> {
+    try {
+        let query = supabaseBrowserClient
+            .from("registrations")
+            .select(`
+                id,
+                edition_id,
+                start_date,
+                end_date,
+                editions!inner (
+                    name,
+                    title
+                )
+            `)
+            .eq("user_id", userId)
+            .order("created_at", { ascending: false });
+
+        if (excludeEditionId !== undefined) {
+            query = query.neq("edition_id", excludeEditionId);
+        }
+
+        const { data, error } = await query;
+
+        if (error) {
+            console.error("Error fetching registration history:", error.message);
+            return [];
+        }
+
+        if (!data || data.length === 0) {
+            return [];
+        }
+
+        return data.map((row: any) => ({
+            id: row.id,
+            editionId: row.edition_id,
+            editionName: row.editions.name,
+            editionTitle: row.editions.title,
+            startDate: new Date(row.start_date),
+            endDate: new Date(row.end_date),
+        }));
+    } catch (err) {
+        console.error("Unexpected error fetching registration history:", err);
+        return [];
+    }
+}
+
+/**
+ * Check if user has an existing registration for a specific edition
+ * Used to prevent duplicate registrations
+ */
+export async function checkUserRegistrationExists(
+    userId: string,
+    editionId: number
+): Promise<boolean> {
+    try {
+        const { data, error } = await supabaseBrowserClient
+            .from("registrations")
+            .select("id")
+            .eq("user_id", userId)
+            .eq("edition_id", editionId)
+            .maybeSingle();
+
+        if (error) {
+            console.error("Error checking user registration existence:", error.message);
+            return false;
+        }
+
+        return !!data;
+    } catch (err) {
+        console.error("Unexpected error checking registration existence:", err);
+        return false;
+    }
+}
+
+/**
+ * Create a new registration for a returning user
+ * Used when a user registers for a new edition
+ */
+export async function createRegistrationForReturningUser(
+    userId: string,
+    editionId: number,
+    registrationData: {
+        church: string;
+        churchContact: string;
+        payTaxTo: string;
+        transport: string;
+        preferences: string;
+        startDate: Date;
+        endDate: Date;
+        withFamilyMember: boolean;
+    }
+): Promise<{ success: boolean; error?: string }> {
+    try {
+        const { error } = await supabaseBrowserClient
+            .from("registrations")
+            .insert({
+                user_id: userId,
+                edition_id: editionId,
+                church: registrationData.church,
+                church_contact: registrationData.churchContact,
+                pay_tax_to: registrationData.payTaxTo,
+                transport: registrationData.transport,
+                preferences: registrationData.preferences,
+                start_date: registrationData.startDate.toISOString(),
+                end_date: registrationData.endDate.toISOString(),
+                with_family_member: registrationData.withFamilyMember,
+            });
+
+        if (error) {
+            console.error("Error creating registration for returning user:", error.message);
+            return { success: false, error: error.message };
+        }
+
+        return { success: true };
+    } catch (err) {
+        console.error("Unexpected error creating registration:", err);
+        return { success: false, error: "Unexpected error" };
+    }
+}

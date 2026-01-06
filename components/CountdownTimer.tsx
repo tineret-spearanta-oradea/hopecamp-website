@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { dateRange } from "@/lib/constants";
-import Link from "next/link";
 
 interface TimeLeft {
   days: number;
@@ -26,6 +25,57 @@ const calculateTimeLeft = (targetDate: Date): TimeLeft | null => {
 
   return timeLeft;
 };
+
+// Ice crystal separator between time units
+const IceSeparator = () => (
+  <div className="flex flex-col items-center justify-center h-full px-1">
+    <div className="w-1.5 h-1.5 bg-white rotate-45 animate-pulse" />
+    <div className="w-0.5 h-4 bg-gradient-to-b from-white to-transparent my-1" />
+    <div className="w-1.5 h-1.5 bg-white rotate-45 animate-pulse animation-delay-500" />
+  </div>
+);
+
+// Single time unit component without cards
+const TimeUnit = ({
+  value,
+  label,
+  isLast = false,
+}: {
+  value: string;
+  label: string;
+  isLast?: boolean;
+}) => (
+  <div className="flex items-center">
+    <div className="flex flex-col items-center">
+      {/* Number */}
+      <span className="font-poppins text-4xl sm:text-5xl md:text-6xl font-bold text-white tabular-nums drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+        {value}
+      </span>
+
+      {/* Label */}
+      <span className="font-jersey text-xs sm:text-sm uppercase tracking-wider mt-1 text-cyan-200/90 drop-shadow-[0_2px_6px_rgba(0,0,0,0.4)]">
+        {label}
+      </span>
+    </div>
+
+    {/* Separator (not for last item) */}
+    {!isLast && (
+      <div className="mx-2 sm:mx-4 hidden sm:block">
+        <IceSeparator />
+      </div>
+    )}
+  </div>
+);
+
+// Loading placeholder
+const LoadingTimer = () => (
+  <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-0 my-4 sm:my-6">
+    <TimeUnit value="--" label="Zile" />
+    <TimeUnit value="--" label="Ore" />
+    <TimeUnit value="--" label="Min" />
+    <TimeUnit value="--" label="Sec" isLast />
+  </div>
+);
 
 export default function CountdownTimer() {
   const targetDate = dateRange.startDate;
@@ -57,130 +107,38 @@ export default function CountdownTimer() {
     return () => clearInterval(interval);
   }, [isMounted, hasEnded, targetDate]);
 
+  // Loading state
   if (!isMounted) {
-    return (
-      <div className="grid grid-flow-col gap-3 sm:gap-5 text-center auto-cols-max justify-center my-4 sm:my-6">
-        <div className="flex flex-col items-center">
-          <span className="font-mono text-4xl sm:text-5xl md:text-6xl font-bold">
-            00
-          </span>
-          <span className="font-inter text-xs sm:text-sm uppercase tracking-wider mt-1">
-            Zile
-          </span>
-        </div>
-        <div className="flex flex-col items-center">
-          <span className="font-mono text-4xl sm:text-5xl md:text-6xl font-bold">
-            00
-          </span>
-          <span className="font-inter text-xs sm:text-sm uppercase tracking-wider mt-1">
-            Ore
-          </span>
-        </div>
-        <div className="flex flex-col items-center">
-          <span className="font-mono text-4xl sm:text-5xl md:text-6xl font-bold">
-            00
-          </span>
-          <span className="font-jersey text-xs sm:text-sm uppercase tracking-wider mt-1">
-            Min
-          </span>
-        </div>
-        <div className="flex flex-col items-center">
-          <span className="font-mono text-4xl sm:text-5xl md:text-6xl font-bold">
-            00
-          </span>
-          <span className="font-jersey text-xs sm:text-sm uppercase tracking-wider mt-1">
-            Sec
-          </span>
-        </div>
-      </div>
-    );
+    return <LoadingTimer />;
   }
 
+  // Event has ended
   if (hasEnded) {
     return (
       <div className="text-center my-6">
-        <p className="text-xl sm:text-2xl font-semibold">
-          Această ediție a avut loc. Rămâi aproape pentru ediția următoare!
+        <p className="text-lg sm:text-xl font-semibold text-white/95 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
+          Această ediție a avut loc
+        </p>
+        <p className="text-sm text-cyan-200/80 mt-2 drop-shadow-[0_2px_6px_rgba(0,0,0,0.4)]">
+          Rămâi aproape pentru ediția următoare!
         </p>
       </div>
     );
   }
 
+  // No time left
   if (!timeLeft) {
-    return (
-      <div className="grid grid-flow-col gap-3 sm:gap-5 text-center auto-cols-max justify-center my-4 sm:my-6">
-        <div className="flex flex-col items-center">
-          <span className="font-mono text-4xl sm:text-5xl md:text-6xl font-bold">
-            00
-          </span>
-          <span className=" text-xs sm:text-sm uppercase tracking-wider mt-1">
-            Zile
-          </span>
-        </div>
-        <div className="flex flex-col items-center">
-          <span className="font-mono text-4xl sm:text-5xl md:text-6xl font-bold">
-            00
-          </span>
-          <span className=" text-xs sm:text-sm uppercase tracking-wider mt-1">
-            Ore
-          </span>
-        </div>
-        <div className="flex flex-col items-center">
-          <span className=" text-4xl sm:text-5xl md:text-6xl font-bold">
-            00
-          </span>
-          <span className=" text-xs sm:text-sm uppercase tracking-wider mt-1">
-            Min
-          </span>
-        </div>
-        <div className="flex flex-col items-center">
-          <span className=" text-4xl sm:text-5xl md:text-6xl font-bold">
-            00
-          </span>
-          <span className=" text-xs sm:text-sm uppercase tracking-wider mt-1">
-            Sec
-          </span>
-        </div>
-      </div>
-    );
+    return <LoadingTimer />;
   }
 
   const pad = (num: number) => num.toString().padStart(2, "0");
 
   return (
-    <div className="grid grid-flow-col gap-3 sm:gap-5 text-center auto-cols-max justify-center my-4 sm:my-6">
-      <div className="flex flex-col items-center">
-        <span className="font-poppins text-4xl sm:text-5xl md:text-6xl font-bold">
-          {pad(timeLeft.days)}
-        </span>
-        <span className="font-jersey text-xs sm:text-sm uppercase tracking-wider mt-1">
-          Zile
-        </span>
-      </div>
-      <div className="flex flex-col items-center">
-        <span className="font-poppins text-4xl sm:text-5xl md:text-6xl font-bold">
-          {pad(timeLeft.hours)}
-        </span>
-        <span className="font-jersey text-xs sm:text-sm uppercase tracking-wider mt-1">
-          Ore
-        </span>
-      </div>
-      <div className="flex flex-col items-center">
-        <span className="font-poppins text-4xl sm:text-5xl md:text-6xl font-bold">
-          {pad(timeLeft.minutes)}
-        </span>
-        <span className="font-jersey text-xs sm:text-sm uppercase tracking-wider mt-1">
-          Min
-        </span>
-      </div>
-      <div className="flex flex-col items-center">
-        <span className="font-poppins text-4xl sm:text-5xl md:text-6xl font-bold">
-          {pad(timeLeft.seconds)}
-        </span>
-        <span className="font-jersey text-xs sm:text-sm uppercase tracking-wider mt-1">
-          Sec
-        </span>
-      </div>
+    <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-0 my-4 sm:my-6">
+      <TimeUnit value={pad(timeLeft.days)} label="Zile" />
+      <TimeUnit value={pad(timeLeft.hours)} label="Ore" />
+      <TimeUnit value={pad(timeLeft.minutes)} label="Min" />
+      <TimeUnit value={pad(timeLeft.seconds)} label="Sec" isLast />
     </div>
   );
 }

@@ -39,7 +39,11 @@ export const PERMISSIONS = {
   // Administrative
   ADMINS_MANAGE: 'admins.manage',
   GROUPS_MANAGE: 'groups.manage',
-  SETTINGS_MANAGE: 'settings.manage'
+  SETTINGS_MANAGE: 'settings.manage',
+
+  // Pending Contacts (OTP failure follow-up)
+  PENDING_CONTACTS_READ: 'pending_contacts.read',
+  PENDING_CONTACTS_WRITE: 'pending_contacts.write'
 } as const;
 
 export type PermissionName = typeof PERMISSIONS[keyof typeof PERMISSIONS];
@@ -70,5 +74,7 @@ export const PERMISSION_DESCRIPTIONS = {
   [PERMISSIONS.FINANCIAL_WRITE]: 'Gestionare date financiare și cheltuieli',
   [PERMISSIONS.ADMINS_MANAGE]: 'Gestionare administratori și permisiuni',
   [PERMISSIONS.GROUPS_MANAGE]: 'Gestionare grupuri mici și atribuiri',
-  [PERMISSIONS.SETTINGS_MANAGE]: 'Gestionare configurări sistem'
+  [PERMISSIONS.SETTINGS_MANAGE]: 'Gestionare configurări sistem',
+  [PERMISSIONS.PENDING_CONTACTS_READ]: 'Vizualizare contacte în așteptare',
+  [PERMISSIONS.PENDING_CONTACTS_WRITE]: 'Gestionare contacte în așteptare'
 } as const;

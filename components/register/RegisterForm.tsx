@@ -1,27 +1,46 @@
 "use client";
 
 import { Card, CardContent } from "../ui/card";
+import Step0 from "./Step0";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
+import EditionBanner from "./EditionBanner";
 import { useRegistrationForm } from "@/hooks/useRegistrationForm";
 import { ErrorBoundary } from "../ErrorBoundary";
+import { AlertCircle, CheckCircle2 } from "lucide-react";
+import { Button } from "../ui/button";
+import Link from "next/link";
+import LoadingSpinner from "../ui/LoadingSpinner";
 
 export default function RegisterForm() {
   const {
     step,
     formData,
+    phoneData,
+    otpData,
     validationErrors,
     agreementChecked,
     isLoading,
+    isInitializing,
+    isReturningUser,
+    currentEdition,
+    blockReason,
+    otpFailed,
+    pendingContactCreated,
     handleChange,
     handleDateChange,
+    handlePhoneChange,
+    handlePhonePrefixChange,
+    handleOtpChange,
+    handlePhoneSubmit,
+    handleOtpVerify,
+    handleContinueWithoutOtp,
     handleNext,
     handlePrev,
     handleSubmit,
     setAgreementChecked,
     handleImageChange,
-    handlePhonePrefixChange,
   } = useRegistrationForm();
 
   const downloadCampRules = () => {
@@ -33,10 +52,84 @@ export default function RegisterForm() {
     document.body.removeChild(link);
   };
 
+  // Show loading during initialization
+  if (isInitializing) {
+    return (
+      <Card className="bg-background shadow-lg">
+        <CardContent className="p-6 flex justify-center items-center min-h-[400px]">
+          <LoadingSpinner />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // Show success message for pending contact creation
+  if (pendingContactCreated) {
+    return (
+      <ErrorBoundary>
+        <Card className="bg-background shadow-lg">
+          <CardContent className="p-6 text-center">
+            <CheckCircle2 className="h-12 w-12 text-green-500 mx-auto mb-4" />
+            <h2 className="text-xl font-semibold mb-2">Datele tale au fost salvate!</h2>
+            <p className="text-muted-foreground mb-4">
+              Cineva din echipă te va contacta în curând pentru a finaliza înregistrarea.
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Dacă ai întrebări, ne poți contacta direct pe <a href="https://wa.me/40773311577" className="text-hope-darkcyan hover:underline">0773 311 577</a> sau <a href="mailto:dev@hopecamp.ro" className="text-hope-darkcyan hover:underline">dev@hopecamp.ro</a> 
+            </p>
+          </CardContent>
+        </Card>
+      </ErrorBoundary>
+    );
+  }
+
+  // Show block message if any
+  if (blockReason) {
+    return (
+      <ErrorBoundary>
+        <Card className="bg-background shadow-lg">
+          <CardContent className="p-6 text-center">
+            <AlertCircle className="h-12 w-12 text-amber-500 mx-auto mb-4" />
+            <h2 className="text-xl font-semibold mb-2">Atenție</h2>
+            <p className="mb-4">{blockReason}</p>
+            <Link href="/cont">
+              <Button>Mergi la contul tău →</Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </ErrorBoundary>
+    );
+  }
+
   return (
     <ErrorBoundary>
-      <Card className="bg-white shadow-lg">
-        <CardContent className="p-6">
+      <Card className="shadow-lg">
+        <CardContent className="p-0">
+           {/* Edition Banner - show on all steps */}
+            {currentEdition && (
+              <EditionBanner
+                edition={currentEdition}
+                isReturningUser={isReturningUser}
+                phoneNumber={phoneData.phone || formData.authData.phone}
+              />
+            )}
+            <div className="p-6">
+          {step === 0 && (
+            <Step0
+              phoneData={phoneData}
+              otpData={otpData}
+              handlePhoneChange={handlePhoneChange}
+              handlePhonePrefixChange={handlePhonePrefixChange}
+              handleOtpChange={handleOtpChange}
+              handlePhoneSubmit={handlePhoneSubmit}
+              handleOtpVerify={handleOtpVerify}
+              handleContinueWithoutOtp={handleContinueWithoutOtp}
+              validationErrors={validationErrors}
+              isLoading={isLoading}
+              otpFailed={otpFailed}
+            />
+          )}
+
           {step === 1 && (
             <Step1
               formData={formData}
@@ -71,9 +164,9 @@ export default function RegisterForm() {
               downloadCampRules={downloadCampRules}
               isLoading={isLoading}
               validationErrors={validationErrors}
-              handlePhonePrefixChange={handlePhonePrefixChange}
             />
           )}
+          </div>
         </CardContent>
       </Card>
     </ErrorBoundary>

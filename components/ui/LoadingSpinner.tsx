@@ -28,11 +28,11 @@ export default function LoadingSpinner({
       >
         <div
           className={`max-w-[400px] mx-auto ${
-            !transparentBg ? "bg-white rounded-xl p-8" : ""
+            !transparentBg ? "bg-background rounded-xl p-8" : ""
           }`}
         >
           <div className="flex flex-col items-center justify-center space-y-4">
-            <div className="animate-spin rounded-full h-12 w-12 border-4 border-secondary border-t-transparent"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-4 border-hope-lightcyan border-t-transparent"></div>
             <p className="text-muted-foreground font-medium">Se încarcă...</p>
             {showPersistMessage && !transparentBg && (
               <p className="text-sm text-muted-foreground text-center">
