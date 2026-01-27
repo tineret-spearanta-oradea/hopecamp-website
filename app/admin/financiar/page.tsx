@@ -155,7 +155,9 @@ export default function FinanciarPage() {
   }).length;
 
   const fullyPaidCount = registrations.filter((user) => {
-    const shouldCount = user.amountPaid && user.amountPaid >= sumToPay.normal;
+    const shouldCount = user.amountPaid && (user.amountPaid >= sumToPay.normal
+      // special case for winter camp #3, can remove later
+      || user.amountPaid >= 500);
     if (selectedCollector) {
       return shouldCount && user.payTaxTo === selectedCollector;
     }
