@@ -17,6 +17,7 @@ interface Step0Props {
   validationErrors: ValidationErrors;
   isLoading: boolean;
   otpFailed: boolean;
+  showOtpFallback: boolean;
 }
 
 export default function Step0({
@@ -31,6 +32,7 @@ export default function Step0({
   validationErrors,
   isLoading,
   otpFailed,
+  showOtpFallback,
 }: Step0Props) {
   return (
     <StepWrapper
@@ -124,6 +126,23 @@ export default function Step0({
             >
               Schimbă numărul de telefon
             </Button>
+
+            {/* Show continue without OTP option after 10 seconds */}
+            {showOtpFallback && (
+              <div className="mt-4 p-4 border border-amber-300 rounded-lg bg-amber-50 dark:bg-amber-900/20">
+                <p className="text-sm text-amber-800 dark:text-amber-200 mb-3">
+                  Nu ai primit codul? Poți continua cu înregistrarea, iar cineva din echipă te va contacta pentru verificare.
+                </p>
+                <Button
+                  variant="outline"
+                  onClick={handleContinueWithoutOtp}
+                  className="w-full border-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/40"
+                  disabled={isLoading}
+                >
+                  Continuă fără verificare
+                </Button>
+              </div>
+            )}
           </>
         )}
       </div>

@@ -28,7 +28,7 @@ export const transportOptions = [
 
 export const sumToPay = {
   // suma generala
-  normal: 500,
+  normal: 550,
   // in cazul in care are minim un membru de familie in tabara
   withFamilyMember: null,
   // suma pentru avans

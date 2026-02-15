@@ -27,6 +27,7 @@ export default function RegisterForm() {
     currentEdition,
     blockReason,
     otpFailed,
+    showOtpFallback,
     pendingContactCreated,
     handleChange,
     handleDateChange,
@@ -127,6 +128,7 @@ export default function RegisterForm() {
               validationErrors={validationErrors}
               isLoading={isLoading}
               otpFailed={otpFailed}
+              showOtpFallback={showOtpFallback}
             />
           )}
 

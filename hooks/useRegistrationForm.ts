@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FormData, ValidationErrors } from "@/types/form";
 import {validateUserFields, validateOtp, validateAuthFields} from "@/utils/validation";
 import { dateRange, payTaxToOptions } from "@/lib/constants";
@@ -73,6 +73,8 @@ export function useRegistrationForm() {
   const [otpFailed, setOtpFailed] = useState(false);
   const [pendingContactMode, setPendingContactMode] = useState(false);
   const [pendingContactCreated, setPendingContactCreated] = useState(false);
+  const [showOtpFallback, setShowOtpFallback] = useState(false);
+  const otpFallbackTimerRef = useRef<NodeJS.Timeout | null>(null);
   const router = useRouter();
   const { supabaseUser, loading: authLoading } = useAuth();
 
@@ -196,6 +198,11 @@ export function useRegistrationForm() {
         }
 
         setOtpData((prev) => ({ ...prev, otpSent: true, isReturningUser: true }));
+        setShowOtpFallback(false); // Reset fallback state
+        // Start 7-second timer to show fallback option
+        otpFallbackTimerRef.current = setTimeout(() => {
+          setShowOtpFallback(true);
+        }, 7000);
         toast.success("Codul a fost trimis!", {
           description: `Verifică SMS-ul primit la ${phoneData.phone}`
         });
@@ -242,6 +249,12 @@ export function useRegistrationForm() {
         });
         setIsLoading(false);
         return;
+      }
+
+      // Clear the fallback timer since OTP was verified successfully
+      if (otpFallbackTimerRef.current) {
+        clearTimeout(otpFallbackTimerRef.current);
+        otpFallbackTimerRef.current = null;
       }
 
       // User is now authenticated via OTP - they're a returning user
@@ -323,8 +336,13 @@ export function useRegistrationForm() {
     }
   };
 
-  // Handler for continuing without OTP verification (when OTP sending fails)
+  // Handler for continuing without OTP verification (when OTP sending fails or times out)
   const handleContinueWithoutOtp = () => {
+    // Clear the fallback timer if running
+    if (otpFallbackTimerRef.current) {
+      clearTimeout(otpFallbackTimerRef.current);
+      otpFallbackTimerRef.current = null;
+    }
     // User chose to continue without OTP verification
     // They will complete the form and it will be saved to pending_contacts
     setPendingContactMode(true);
@@ -718,6 +736,15 @@ export function useRegistrationForm() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authLoading, supabaseUser]);
 
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (otpFallbackTimerRef.current) {
+        clearTimeout(otpFallbackTimerRef.current);
+      }
+    };
+  }, []);
+
   return {
     step,
     formData,
@@ -731,6 +758,7 @@ export function useRegistrationForm() {
     currentEdition,
     blockReason,
     otpFailed,
+    showOtpFallback,
     pendingContactMode,
     pendingContactCreated,
     handleChange,
