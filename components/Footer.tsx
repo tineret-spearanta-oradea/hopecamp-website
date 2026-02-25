@@ -84,7 +84,17 @@ export default function Footer() {
         {/* Copyright */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-white/40 text-xs">
           <p>FUNDAȚIA &quot;BUCURIA SPERANȚEI&quot;</p>
-          <p>© {new Date().getFullYear()} Tineret Speranta Oradea</p>
+          <p>
+            © {new Date().getFullYear()}{" "}
+            <Link
+              href="https://tineretsperantaoradea.ro"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-cyan-300 transition-colors"
+            >
+              Tineret Speranta Oradea
+            </Link>
+          </p>
           <p className="flex items-center gap-1">
             Made with
             <span className="text-cyan-400">❄️</span>
