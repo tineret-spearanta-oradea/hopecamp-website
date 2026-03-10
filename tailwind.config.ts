@@ -30,15 +30,15 @@ const config: Config = {
         // black: "#1D1D1D",
         // gray: "#EDF4FD",
 
-        // Hope Camp brand colors (winter theme)
-        "hope-orange": "#5279A4",
-        "hope-lightcyan": "#436B9C",
-        "hope-darkcyan": "#132C4B",
-        "hope-darkcyan-dark": "#0a1f35",
-        "hope-blackcyan": "#132C4B",
+        // Hope Camp brand colors (summer theme)
+        "hope-orange": "#FFD600",
+        "hope-lightorange": "#FFE44D",
+        "hope-darkorange": "#CCB000",
+        "hope-darkorange-dark": "#7C2D12",
+        "hope-blackorange": "#1a1a1a",
         "hope-lightgray": "#D9D9D9",
         "hope-darkgray": "#5F5F5F",
-        "hope-beige": "#A2BCCB",
+        "hope-beige": "#FEF3C7",
 
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -97,9 +97,10 @@ const config: Config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontFamily: {
-        nunito: ["Lora", "serif"],
-        jersey: ["Crimson Text", "serif"],
-        poppins: ["Playfair Display", "serif"],
+        archivo: ["Archivo Black", "sans-serif"],
+        nunito: ["Nunito", "sans-serif"],
+        jersey: ["Jersey 25", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"],
       },
     },
   },

@@ -11,64 +11,90 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative bg-gradient-to-b from-[#0a1628] to-[#060d18] pt-16 pb-8 overflow-hidden">
-      {/* Background decorations */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-[400px] h-[200px] bg-gradient-to-b from-cyan-500/10 to-transparent rounded-full blur-3xl" />
-        <div className="absolute top-0 right-1/3 w-[300px] h-[150px] bg-gradient-to-b from-purple-500/5 to-transparent rounded-full blur-3xl" />
-
-        {/* Ice crystals */}
-        <div className="absolute top-[20%] left-[10%] w-2 h-2 bg-white/10 rotate-45 animate-float-slow" />
-        <div className="absolute top-[30%] right-[15%] w-1.5 h-1.5 bg-cyan-300/15 rotate-45 animate-drift" />
-      </div>
-
-      {/* Frost top edge */}
-      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-300/30 to-transparent" />
-
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-10">
-          {/* Logo and Contact */}
-          <div className="flex flex-col items-center md:items-start">
-            <Image
-              src="/assets/images/Full_Logo_White_PNG.png"
-              alt="HopeCamp Logo"
-              width={180}
-              height={180}
-              className="w-40 h-40 opacity-90"
-            />
-            <div className="text-center md:text-left -mt-2 space-y-1">
-              <p className="text-white/70 text-sm">{contactInfo.email}</p>
-              <p className="text-white/70 text-sm">{contactInfo.phone}</p>
-            </div>
+    <footer>
+      {/* Yellow section */}
+      <div className="bg-[#FFD600] px-6 sm:px-12 py-16">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+          {/* Brand */}
+          <div>
+            <svg viewBox="0 0 28 40" width="28" height="40">
+              <rect x="12" y="0" width="4" height="40" fill="#1a1a1a" />
+              <rect x="4" y="8" width="20" height="4" fill="#1a1a1a" />
+            </svg>
+            <p className="text-sm text-[#1a1a1a]/60 mt-3 leading-relaxed">
+              Tabara de tineret a Bisericii Speranta Oradea.
+            </p>
           </div>
 
-          {/* Links and Social */}
-          <div className="flex flex-col items-center md:items-end gap-6">
-            {/* Legal Links */}
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link
-                href="/privacy-policy"
-                className="text-white/60 hover:text-white text-sm transition-colors"
-              >
-                Politica de Confidențialitate
-              </Link>
-              <Link
-                href="/terms-of-service"
-                className="text-white/60 hover:text-white text-sm transition-colors"
-              >
-                Termeni și Condiții
-              </Link>
-            </div>
+          {/* Navigare */}
+          <div>
+            <h4 className="font-archivo text-xs uppercase tracking-wider mb-4">
+              Navigare
+            </h4>
+            <Link
+              href="/"
+              className="block text-[#1a1a1a] text-sm mb-2.5 hover:opacity-60 transition-opacity"
+            >
+              Acasa
+            </Link>
+            <Link
+              href="/despre"
+              className="block text-[#1a1a1a] text-sm mb-2.5 hover:opacity-60 transition-opacity"
+            >
+              Despre
+            </Link>
+            <Link
+              href="/cont"
+              className="block text-[#1a1a1a] text-sm mb-2.5 hover:opacity-60 transition-opacity"
+            >
+              Contul meu
+            </Link>
+          </div>
 
-            {/* Social Icons */}
-            <div className="flex items-center gap-3">
+          {/* Resurse */}
+          <div>
+            <h4 className="font-archivo text-xs uppercase tracking-wider mb-4">
+              Resurse
+            </h4>
+            <Link
+              href="/regulament"
+              className="block text-[#1a1a1a] text-sm mb-2.5 hover:opacity-60 transition-opacity"
+            >
+              Regulament
+            </Link>
+            <Link
+              href="/intrebari-frecvente"
+              className="block text-[#1a1a1a] text-sm mb-2.5 hover:opacity-60 transition-opacity"
+            >
+              Intrebari frecvente
+            </Link>
+            <Link
+              href="/privacy-policy"
+              className="block text-[#1a1a1a] text-sm mb-2.5 hover:opacity-60 transition-opacity"
+            >
+              Politica de Confidentialitate
+            </Link>
+            <Link
+              href="/terms-of-service"
+              className="block text-[#1a1a1a] text-sm mb-2.5 hover:opacity-60 transition-opacity"
+            >
+              Termeni si Conditii
+            </Link>
+          </div>
+
+          {/* Social */}
+          <div>
+            <h4 className="font-archivo text-xs uppercase tracking-wider mb-4">
+              Social
+            </h4>
+            <div className="flex gap-3">
               {socialLinks.map((social) => (
                 <Link
                   key={social.icon}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-xl glass flex items-center justify-center text-white/70 hover:text-cyan-300 hover:bg-white/10 transition-all duration-300"
+                  className="w-10 h-10 bg-[#1a1a1a] text-white rounded-full flex items-center justify-center hover:bg-white hover:text-[#1a1a1a] transition-colors"
                   aria-label={social.label}
                 >
                   <i className={`bi bi-${social.icon} text-lg`}></i>
@@ -77,30 +103,26 @@ export default function Footer() {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Divider */}
-        <div className="my-8 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-
-        {/* Copyright */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-white/40 text-xs">
-          <p>FUNDAȚIA &quot;BUCURIA SPERANȚEI&quot;</p>
-          <p>
-            © {new Date().getFullYear()}{" "}
-            <Link
-              href="https://tineretsperantaoradea.ro"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-cyan-300 transition-colors"
-            >
-              Tineret Speranta Oradea
-            </Link>
-          </p>
-          <p className="flex items-center gap-1">
-            Made with
-            <span className="text-cyan-400">❄️</span>
-            for the community
-          </p>
-        </div>
+      {/* Dark bottom bar */}
+      <div className="bg-[#1a1a1a] px-6 sm:px-12 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-white/30 text-xs">
+        <p>FUNDATIA &quot;BUCURIA SPERANTEI&quot;</p>
+        <p>
+          &copy; {new Date().getFullYear()}{" "}
+          <Link
+            href="https://tineretsperantaoradea.ro"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white transition-colors"
+          >
+            Tineret Speranta Oradea
+          </Link>
+        </p>
+        <p>
+          Made with <span className="text-[#FFD600]">&hearts;</span> for the
+          community
+        </p>
       </div>
     </footer>
   );

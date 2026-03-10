@@ -16,30 +16,30 @@ export default function AuthLayout({
 
   return (
     <main className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Primary background with gradient - Winter theme */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628] via-[#0d2847] to-[#1a3a5c]"></div>
+      {/* Primary background with gradient - Summer theme */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#1a2e05] via-[#1c3d0a] to-[#2d5016]"></div>
 
       {/* Abstract Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Animated gradient blobs - Winter colors */}
+        {/* Animated gradient blobs - Summer colors */}
         <div
-          className="absolute -right-[30%] sm:-right-[35%] -top-[35%] w-[80%] sm:w-[70%] aspect-square rounded-full bg-cyan-500/20 blur-3xl animate-blob"
+          className="absolute -right-[30%] sm:-right-[35%] -top-[35%] w-[80%] sm:w-[70%] aspect-square rounded-full bg-amber-500/20 blur-3xl animate-blob"
           style={{ animationDuration: "15s" }}
         />
         <div
-          className="absolute -left-[25%] sm:-left-[15%] -bottom-[25%] w-[70%] sm:w-[50%] aspect-square rounded-full bg-blue-500/15 blur-3xl animate-blob"
+          className="absolute -left-[25%] sm:-left-[15%] -bottom-[25%] w-[70%] sm:w-[50%] aspect-square rounded-full bg-orange-500/15 blur-3xl animate-blob"
           style={{ animationDuration: "25s", animationDelay: "2s" }}
         />
         <div
-          className="absolute left-[25%] sm:left-[35%] top-[25%] sm:top-[15%] w-[40%] sm:w-[30%] aspect-square rounded-full bg-cyan-400/10 blur-3xl animate-blob"
+          className="absolute left-[25%] sm:left-[35%] top-[25%] sm:top-[15%] w-[40%] sm:w-[30%] aspect-square rounded-full bg-amber-400/10 blur-3xl animate-blob"
           style={{ animationDuration: "20s", animationDelay: "5s" }}
         />
         <div
-          className="absolute right-[10%] sm:right-[20%] bottom-[15%] sm:bottom-[20%] w-[45%] sm:w-[40%] aspect-square rounded-full bg-purple-500/10 blur-3xl animate-blob"
+          className="absolute right-[10%] sm:right-[20%] bottom-[15%] sm:bottom-[20%] w-[45%] sm:w-[40%] aspect-square rounded-full bg-rose-500/10 blur-3xl animate-blob"
           style={{ animationDuration: "18s", animationDelay: "7s" }}
         />
 
-        {/* Geometric abstract shapes - Winter theme */}
+        {/* Geometric abstract shapes - Summer theme */}
         {isClient && (
           <>
             {/* Triangle */}
@@ -48,7 +48,7 @@ export default function AuthLayout({
               style={{
                 top: "20%",
                 left: "5%",
-                background: "linear-gradient(45deg, rgba(6, 182, 212, 0.3), rgba(59, 130, 246, 0.3))",
+                background: "linear-gradient(45deg, rgba(251, 191, 36, 0.3), rgba(234, 88, 12, 0.3))",
                 clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)",
                 transform: "rotate(15deg)",
                 animationDelay: "1s",
@@ -61,7 +61,7 @@ export default function AuthLayout({
               style={{
                 bottom: "15%",
                 left: "65%",
-                background: "linear-gradient(135deg, rgba(34, 211, 238, 0.2), transparent)",
+                background: "linear-gradient(135deg, rgba(251, 191, 36, 0.2), transparent)",
                 borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%",
                 transform: "rotate(-10deg)",
                 animationDelay: "3s",
@@ -74,14 +74,14 @@ export default function AuthLayout({
               style={{
                 top: "55%",
                 right: "10%",
-                background: "linear-gradient(to right, rgba(6, 182, 212, 0.3), transparent)",
+                background: "linear-gradient(to right, rgba(251, 191, 36, 0.3), transparent)",
                 animationDelay: "2s",
               }}
             />
 
             {/* Ring */}
             <div
-              className="absolute w-32 sm:w-64 h-32 sm:h-64 border-2 sm:border-4 border-cyan-300/10 rounded-full animate-spin-slow"
+              className="absolute w-32 sm:w-64 h-32 sm:h-64 border-2 sm:border-4 border-amber-300/10 rounded-full animate-spin-slow"
               style={{
                 top: "35%",
                 right: "15%",
@@ -126,7 +126,7 @@ export default function AuthLayout({
           }}
         />
 
-        {/* Subtle wave effect at bottom - Winter theme (inverted) */}
+        {/* Subtle wave effect at bottom */}
         <div
           className="absolute bottom-0 left-0 right-0 h-24 sm:h-32 opacity-20"
           style={{

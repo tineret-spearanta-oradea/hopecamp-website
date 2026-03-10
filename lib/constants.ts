@@ -1,5 +1,5 @@
-export const title = "Winter Camp #3";
-export const editionName = "Miracole";
+export const title = "Hope Camp #7";
+export const editionName = "Integro";
 
 export const churchOptions = [
   { value: "Speranta, Oradea", label: "Speranța, Oradea" },
@@ -28,28 +28,27 @@ export const transportOptions = [
 
 export const sumToPay = {
   // suma generala
-  normal: 550,
+  normal: 0,
   // in cazul in care are minim un membru de familie in tabara
-  withFamilyMember: null,
+  withFamilyMember: 0,
   // suma pentru avans
-  deposit: 250,
+  deposit: 0,
   // suma per zi pentru participantul care nu vine full-time
   perDay: 200,
 };
 
 export const dateRange = {
-  startDate: new Date("2026-02-19"),
-  endDate: new Date("2026-02-22"),
-  depositPaymentDueDate: new Date("2026-01-31"),
+  startDate: new Date("2026-07-27"),
+  endDate: new Date("2026-08-01"),
+  depositPaymentDueDate: new Date("2026-06-20"),
 };
 
 export const location = {
-  name: "Mărișel",
-  campusName: "Campus Mărișel",
-  addressLine: "localitatea Mărișel din județul Cluj, lângă pârtia Mărișel",
-  googleMapsUrl: "https://maps.app.goo.gl/sb2k3hSbv9thUqGV8",
-  iframeSrc:
-    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2736.314485879017!2d23.183039977450164!3d46.69952925017213!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47491e408ad19e71%3A0x5ac3f5b1a6fb26a3!2zQ2FtcHVzIE3Eg3JpyJllbA!5e0!3m2!1sro!2sro!4v1765355842938!5m2!1sro!2sro",
+  name: "Integro",
+  campusName: "Integro",
+  addressLine: "județul Mureș",
+  googleMapsUrl: "https://maps.app.goo.gl/qWc73iYvcZMmVrpR7",
+  iframeSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2724.9348749168994!2d25.073952013226762!3d46.923662271014976!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x474a691f33cafb27%3A0x7ce297c0c07c92e9!2sSat%20de%20Vacanta%20Integro!5e0!3m2!1sro!2sro!4v1773126760890!5m2!1sro!2sro",
 };
 
 export const MinimumAge = {

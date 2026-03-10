@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { dateRange } from "@/lib/constants";
 
@@ -12,133 +11,65 @@ interface TimeLeft {
 
 const calculateTimeLeft = (targetDate: Date): TimeLeft | null => {
   const difference = +targetDate - +new Date();
-  let timeLeft: TimeLeft | null = null;
-
-  if (difference > 0) {
-    timeLeft = {
-      days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-      hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-      minutes: Math.floor((difference / 1000 / 60) % 60),
-      seconds: Math.floor((difference / 1000) % 60),
-    };
-  }
-
-  return timeLeft;
+  if (difference <= 0) return null;
+  return {
+    days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+    hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+    minutes: Math.floor((difference / 1000 / 60) % 60),
+    seconds: Math.floor((difference / 1000) % 60),
+  };
 };
 
-// Ice crystal separator between time units
-const IceSeparator = () => (
-  <div className="flex flex-col items-center justify-center h-full px-1">
-    <div className="w-1.5 h-1.5 bg-white rotate-45 animate-pulse" />
-    <div className="w-0.5 h-4 bg-gradient-to-b from-white to-transparent my-1" />
-    <div className="w-1.5 h-1.5 bg-white rotate-45 animate-pulse animation-delay-500" />
-  </div>
-);
+const pad = (num: number) => num.toString().padStart(2, "0");
 
-// Single time unit component without cards
-const TimeUnit = ({
-  value,
-  label,
-  isLast = false,
-}: {
-  value: string;
-  label: string;
-  isLast?: boolean;
-}) => (
-  <div className="flex items-center">
-    <div className="flex flex-col items-center">
-      {/* Number */}
-      <span className="font-poppins text-4xl sm:text-5xl md:text-6xl font-bold text-white tabular-nums drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
-        {value}
-      </span>
-
-      {/* Label */}
-      <span className="font-jersey text-xs sm:text-sm uppercase tracking-wider mt-1 text-cyan-200/90 drop-shadow-[0_2px_6px_rgba(0,0,0,0.4)]">
-        {label}
-      </span>
+const TimeBox = ({ value, label }: { value: string; label: string }) => (
+  <div className="text-center">
+    <div className="font-archivo text-4xl sm:text-5xl lg:text-6xl text-[#1a1a1a] leading-none mb-1">
+      {value}
     </div>
-
-    {/* Separator (not for last item) */}
-    {!isLast && (
-      <div className="mx-2 sm:mx-4 hidden sm:block">
-        <IceSeparator />
-      </div>
-    )}
-  </div>
-);
-
-// Loading placeholder
-const LoadingTimer = () => (
-  <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-0 my-4 sm:my-6">
-    <TimeUnit value="--" label="Zile" />
-    <TimeUnit value="--" label="Ore" />
-    <TimeUnit value="--" label="Min" />
-    <TimeUnit value="--" label="Sec" isLast />
+    <div className="text-xs sm:text-sm text-[#1a1a1a]/50 font-bold uppercase tracking-wider">
+      {label}
+    </div>
   </div>
 );
 
 export default function CountdownTimer() {
   const targetDate = dateRange.startDate;
-  const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(
-    calculateTimeLeft(targetDate)
-  );
-  const [hasEnded, setHasEnded] = useState<boolean>(
-    () => +targetDate < +new Date()
-  );
-  const [isMounted, setIsMounted] = useState<boolean>(false);
+  const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
+    setMounted(true);
+    setTimeLeft(calculateTimeLeft(targetDate));
+  }, [targetDate]);
 
   useEffect(() => {
-    if (hasEnded || !isMounted) return;
-
+    if (!mounted) return;
     const interval = setInterval(() => {
-      const newTimeLeft = calculateTimeLeft(targetDate);
-      if (newTimeLeft) {
-        setTimeLeft(newTimeLeft);
-      } else {
-        setHasEnded(true);
-        clearInterval(interval);
-      }
+      const tl = calculateTimeLeft(targetDate);
+      setTimeLeft(tl);
+      if (!tl) clearInterval(interval);
     }, 1000);
-
     return () => clearInterval(interval);
-  }, [isMounted, hasEnded, targetDate]);
+  }, [mounted, targetDate]);
 
-  // Loading state
-  if (!isMounted) {
-    return <LoadingTimer />;
+  // Camp already started — don't show countdown
+  if (mounted && !timeLeft) {
+    return null;
   }
 
-  // Event has ended
-  if (hasEnded) {
-    return (
-      <div className="text-center my-6">
-        <p className="text-lg sm:text-xl font-semibold text-white/95 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
-          Această ediție a avut loc
-        </p>
-        <p className="text-sm text-cyan-200/80 mt-2 drop-shadow-[0_2px_6px_rgba(0,0,0,0.4)]">
-          Rămâi aproape pentru ediția următoare!
-        </p>
-      </div>
-    );
-  }
-
-  // No time left
-  if (!timeLeft) {
-    return <LoadingTimer />;
-  }
-
-  const pad = (num: number) => num.toString().padStart(2, "0");
+  const display = timeLeft
+    ? { d: pad(timeLeft.days), h: pad(timeLeft.hours), m: pad(timeLeft.minutes), s: pad(timeLeft.seconds) }
+    : { d: "--", h: "--", m: "--", s: "--" };
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-0 my-4 sm:my-6">
-      <TimeUnit value={pad(timeLeft.days)} label="Zile" />
-      <TimeUnit value={pad(timeLeft.hours)} label="Ore" />
-      <TimeUnit value={pad(timeLeft.minutes)} label="Min" />
-      <TimeUnit value={pad(timeLeft.seconds)} label="Sec" isLast />
+    <div className="bg-[#FFD600] mx-4 sm:mx-12 mt-4 sm:mt-6 px-4 sm:px-12 py-8 sm:py-12">
+      <div className="max-w-3xl mx-auto grid grid-cols-4 gap-3 sm:gap-8">
+        <TimeBox value={display.d} label="Zile" />
+        <TimeBox value={display.h} label="Ore" />
+        <TimeBox value={display.m} label="Min" />
+        <TimeBox value={display.s} label="Sec" />
+      </div>
     </div>
   );
 }

@@ -42,13 +42,11 @@ export default function DonatiiPage() {
       <section className="relative bg-frost-light py-20 sm:py-28 overflow-hidden">
         {/* Background decorations */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {/* Frost radial gradient */}
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-200/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-blue-200/20 rounded-full blur-3xl" />
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-amber-200/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-orange-200/20 rounded-full blur-3xl" />
 
-          {/* Decorative ice crystals */}
-          <div className="absolute top-20 left-[5%] w-3 h-3 bg-cyan-300/30 rotate-45 animate-float-slow" />
-          <div className="absolute bottom-32 right-[10%] w-2.5 h-2.5 bg-blue-300/30 rotate-45 animate-drift animation-delay-500" />
+          <div className="absolute top-20 left-[5%] w-3 h-3 bg-amber-300/30 rounded-full animate-float-slow" />
+          <div className="absolute bottom-32 right-[10%] w-2.5 h-2.5 bg-orange-300/30 rounded-full animate-drift animation-delay-500" />
         </div>
 
         <div className="container mx-auto px-4 relative z-10 max-w-4xl">
@@ -202,7 +200,7 @@ export default function DonatiiPage() {
                 href={`mailto:${contactInfo.email}`}
                 className="glass-card rounded-xl p-4 flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.02] group"
               >
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-100 to-blue-100 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center">
                   <i className="bi bi-envelope-fill text-lg text-primary"></i>
                 </div>
                 <span className="font-medium text-foreground">

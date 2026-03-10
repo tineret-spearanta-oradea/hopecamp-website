@@ -4,7 +4,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import { AuthProvider } from "@/contexts/auth-context";
 import { editionName, title } from "@/lib/constants";
-import { Snowfall } from "@/components/ui/Snowfall";
+
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
@@ -36,25 +36,6 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AuthProvider>
-          {/* Multi-layer snowfall for full winter effect */}
-          {/* Background layer - large, slow, subtle */}
-          <Snowfall
-            color="rgba(200, 230, 255, 0.4)"
-            snowflakeCount={10}
-            style={{ zIndex: 5 }}
-          />
-          {/* Mid layer - medium */}
-          <Snowfall
-            color="rgba(255, 255, 255, 0.6)"
-            snowflakeCount={20}
-            style={{ zIndex: 500 }}
-          />
-          {/* Foreground layer - small, fast, bright */}
-          <Snowfall
-            color="#ffffff"
-            snowflakeCount={40}
-            style={{ zIndex: 1000 }}
-          />
           {children}
           <Toaster richColors position="top-center" />
         </AuthProvider>
