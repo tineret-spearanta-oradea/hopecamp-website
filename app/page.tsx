@@ -12,31 +12,31 @@ import Galerie from "@/components/Galerie";
 import AboutSection from "@/components/AboutSection";
 import CampInProgressPopup from "@/components/CampInProgressPopup";
 import CountdownTimer from "@/components/CountdownTimer";
+import TemporaryHero from "@/components/TemporaryHero";
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-white">
       <CampInProgressPopup />
       <Navbar />
-      <Hero />
-      {/* Yellow stats bar right after hero photos */}
+
+      {/* Can be commented when content/data is ready: */}
+      <TemporaryHero />
+      
+      {/* Commented out until content/data is ready:
+      <Hero /> 
       <CountdownTimer />
-      {/* White: Why cards */}
       <WhyAttend />
-      {/* Dark: Activity photo cards */}
       <Activities />
-      {/* Light gray: Location */}
       <Locatie />
-      {/* Off-white: Video */}
       <VideoSection />
-      {/* White: Gallery */}
       <Galerie />
-      {/* White + gray: About & Contact */}
       <AboutSection />
-      {/* Dark: FAQ */}
       <FaqSection />
-      {/* Yellow + dark: Footer */}
+      */}
+
       <Footer />
+
     </main>
   );
 }
