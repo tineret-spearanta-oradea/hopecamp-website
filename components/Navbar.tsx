@@ -8,6 +8,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
 
   const navLinks = [
+    { href: "https://tineretsperantaoradea.ro", label: "TSO.RO", external: true },
     { href: "/", label: "acasa" },
     { href: "/doneaza", label: "doneaza" },
     { href: "/cont", label: "contul meu" },
@@ -60,6 +61,7 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
+              {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
               className={`
                 text-[13px] font-bold uppercase tracking-wide text-[#1a1a1a]
                 hover:text-gray-500 transition-colors
@@ -146,6 +148,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
+                {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 className={`
                   text-[15px] font-bold uppercase tracking-wide text-[#1a1a1a]
                   hover:text-gray-500 transition-colors
