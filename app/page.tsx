@@ -21,9 +21,9 @@ export default function Home() {
       <Navbar />
 
       {/* Can be commented when content/data is ready: */}
-      {/* <TemporaryHero /> */}
+      <TemporaryHero />
       
-      {/* Commented out until content/data is ready: */}
+      {/* Commented out until content/data is ready:
       <Hero /> 
       <CountdownTimer />
       <WhyAttend />
@@ -32,7 +32,7 @@ export default function Home() {
       <VideoSection />
       <Galerie />
       <AboutSection />
-      <FaqSection />
+      <FaqSection /> */}
      
 
       <Footer />
