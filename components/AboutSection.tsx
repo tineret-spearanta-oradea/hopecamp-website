@@ -33,7 +33,7 @@ export default function AboutSection() {
             <div className="border-2 border-black rounded-xl p-3">
               <div className="overflow-hidden rounded-lg">
                 <Image
-                  src="/assets/images/lideri.jpg"
+                  src="/assets/images/hopecamp/gratiadei/DSCF1214.jpg"
                   alt="Echipa Hope Camp"
                   width={600}
                   height={400}

@@ -8,25 +8,25 @@ export default function WhyAttend() {
       icon: "🤝",
       title: "Relatii Autentice",
       description: "Leaga relatii autentice, care tin o viata intreaga.",
-      image: "/assets/images/hopecamp/gratiadei/ELI03745.jpg",
+      image: "/assets/images/hopecamp/gratiadei/compressed/gratiadei-1.jpg",
     },
     {
       icon: "📵",
       title: "Deconectare Digitala",
       description: "Ia o pauza de la ecrane, bucura-te de natura.",
-      image: "/assets/images/hopecamp/paxchristi/ZVE08191.jpg",
+      image: "/assets/images/hopecamp/gratiadei/compressed/gratiadei-15.jpg",
     },
     {
       icon: "🙏",
       title: "Apropiere Spirituala",
       description: "Intareste-ti relatia cu Dumnezeu si descopera-ti darurile.",
-      image: "/assets/images/hopecamp/paxchristi/ZVE07946.jpg",
+      image: "/assets/images/hopecamp/gratiadei/compressed/gratiadei-8.jpg",
     },
     {
       icon: "🎉",
       title: "Voie Buna",
       description: "Distractie, voie buna si amintiri de neuitat.",
-      image: "/assets/images/hopecamp/gratiadei/ELI09640.jpg",
+      image: "/assets/images/hopecamp/gratiadei/compressed/gratiadei-16.jpg",
     },
   ];
 

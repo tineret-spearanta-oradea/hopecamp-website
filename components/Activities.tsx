@@ -7,22 +7,22 @@ export default function Activities() {
     {
       title: "Inchinare & Cuvant",
       time: "Dimineata",
-      image: "/assets/images/worship.png",
+      image: "/assets/images/hopecamp/gratiadei/compressed/gratiadei-11.jpg",
     },
     {
       title: "Sport & Aventura",
       time: "Dupa-amiaza",
-      image: "/assets/images/activitati-sportive.jpg",
+      image: "/assets/images/hopecamp/aprins/DSC09892.jpg",
     },
     {
       title: "Grupuri Mici",
       time: "Tot timpul",
-      image: "/assets/images/grupuri-mici.jpg",
+      image: "/assets/images/hopecamp/gratiadei/compressed/gratiadei-6.jpg",
     },
     {
       title: "Foc de Tabara",
       time: "Seara",
-      image: "/assets/images/foc-tabara.jpg",
+      image: "/assets/images/hopecamp/gratiadei/compressed/gratiadei-3.jpg",
     },
   ];
 

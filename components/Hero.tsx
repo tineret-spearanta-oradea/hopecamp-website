@@ -25,10 +25,10 @@ export default function Hero() {
   const formattedDate = formatDateRange(dateRange.startDate, dateRange.endDate);
 
   const heroPhotos = [
-    "/assets/images/hopecamp/gratiadei/ELI00154.jpg",
-    "/assets/images/hopecamp/paxchristi/ZVE07869.jpg",
-    "/assets/images/worship.jpg",
-    "/assets/images/hopecamp/gratiadei/ELI03065.jpg",
+    "/assets/images/hopecamp/gratiadei/compressed/gratiadei-5.jpg",
+    "/assets/images/hopecamp/gratiadei/compressed/gratiadei-2.jpg",
+    "/assets/images/hopecamp/gratiadei/compressed/gratiadei-4.jpg",
+    "/assets/images/hopecamp/gratiadei/compressed/gratiadei-17.jpg",
   ];
 
   return (

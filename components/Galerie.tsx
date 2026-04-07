@@ -5,12 +5,12 @@ import Link from "next/link";
 
 export default function Galerie() {
   const images = [
-    "/assets/images/hopecamp/gratiadei/ELI00154.jpg",
-    "/assets/images/hopecamp/gratiadei/ELI03065.jpg",
-    "/assets/images/hopecamp/gratiadei/ELI03745.jpg",
-    "/assets/images/hopecamp/gratiadei/ELI09640.jpg",
-    "/assets/images/gallery/ZVE03429.jpg",
-    "/assets/images/worship.jpg",
+    "/assets/images/hopecamp/gratiadei/compressed/gratiadei-7.jpg",
+    "/assets/images/hopecamp/gratiadei/compressed/gratiadei-9.jpg",
+    "/assets/images/hopecamp/gratiadei/compressed/gratiadei-12.jpg",
+    "/assets/images/hopecamp/gratiadei/compressed/gratiadei-10.jpg",
+    "/assets/images/hopecamp/gratiadei/compressed/gratiadei-14.jpg",
+    "/assets/images/hopecamp/gratiadei/compressed/gratiadei-18.jpg",
   ];
 
   return (
