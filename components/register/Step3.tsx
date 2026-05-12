@@ -16,25 +16,6 @@ export default function Step3({
   downloadCampRules,
   isLoading,
 }: StepProps) {
-  const retrieveNumberOfDays = () => {
-    if (!formData.userData.startDate || !formData.userData.endDate) {
-      return [0, 0];
-    }
-    const numberOfDaysSelected = Math.ceil(
-      (formData.userData.endDate.getTime() -
-        formData.userData.startDate.getTime()) /
-        (1000 * 60 * 60 * 24)
-    );
-    const numberOfDaysCamp = Math.ceil(
-      (dateRange.endDate.getTime() - dateRange.startDate.getTime()) /
-        (1000 * 60 * 60 * 24)
-    );
-    return [numberOfDaysSelected, numberOfDaysCamp];
-  };
-
-  const [numberOfDaysSelected, numberOfDaysCamp] = retrieveNumberOfDays();
-  const isFullTime = numberOfDaysSelected === numberOfDaysCamp;
-
   return (
     <StepWrapper
       title="Pasul 3/3: Confirmare"
@@ -80,38 +61,35 @@ export default function Step3({
             taberei.
           </p>
 
-          {isFullTime ? (
-            <>
-              <p>
-                - Taxa de înscriere pentru persoanele care vin full-time este de{" "}
-                <strong>{sumToPay.normal} RON</strong> (cazare + mâncare).
-                {sumToPay.withFamilyMember && (
-                  <>
-                    {" "}
-                    Pentru persoanele care au <strong>
-                      membru de familie
-                    </strong>{" "}
-                    (frați, surori, soț, soție) în tabără taxa este de{" "}
-                    <strong>{sumToPay.withFamilyMember} RON</strong>.
-                  </>
-                )}
-              </p>
-              <p>
-                - Voi plăti avansul de {sumToPay.deposit} RON până la data de{" "}
-                <strong>
-                  {format(dateRange.depositPaymentDueDate, "d MMM yyyy")}
-                </strong>
-                .
-              </p>
-            </>
-          ) : (
-            <p>
-              - Taxa de înscriere pentru persoanele care NU vin full-time este
-              de {sumToPay.perDay} lei/zi (cazare + mâncare). Totalul tău este
-              de <strong>{sumToPay.perDay * numberOfDaysSelected} RON</strong>{" "}
-              (pentru {numberOfDaysSelected} zile).
-            </p>
-          )}
+          <p>
+            - Taxa de înscriere este de{" "}
+            <strong>{sumToPay.normal} RON</strong> (cazare + mâncare), cu
+            opțiunea să donezi mai mult sau să primești reducere în anumite
+            cazuri.
+            {sumToPay.student && (
+              <>
+                {" "}
+                Pentru <strong>studenți/elevi</strong> taxa este de{" "}
+                <strong>{sumToPay.student} RON</strong>.
+              </>
+            )}
+            {sumToPay.withFamilyMember && (
+              <>
+                {" "}
+                Pentru <strong>frați</strong> (surori, soț, soție) în tabără
+                taxa este de{" "}
+                <strong>{sumToPay.withFamilyMember} RON</strong> (dacă unul
+                din frați lucrează, va trebui să plătească integral).
+              </>
+            )}
+          </p>
+          <p>
+            - Voi plăti avansul de {sumToPay.deposit} RON până la data de{" "}
+            <strong>
+              {format(dateRange.depositPaymentDueDate, "d MMM yyyy")}
+            </strong>
+            .
+          </p>
 
           {parseInt(formData.userData.age) < 18 && (
             <p className="text-hope-orange">

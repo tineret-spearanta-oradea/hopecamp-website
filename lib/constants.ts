@@ -27,14 +27,14 @@ export const transportOptions = [
 ];
 
 export const sumToPay = {
-  // suma generala
-  normal: 0,
-  // in cazul in care are minim un membru de familie in tabara
-  withFamilyMember: 0,
+  // pretul intreg al taberei (cu optiunea de a dona mai mult sau a primi reducere in anumite cazuri)
+  normal: 1200,
+  // varianta redusa pentru studenti/elevi
+  student: 990,
+  // varianta redusa pentru frati (daca unul din frati lucreaza, va trebui sa plateasca integral)
+  withFamilyMember: 890,
   // suma pentru avans
-  deposit: 0,
-  // suma per zi pentru participantul care nu vine full-time
-  perDay: 200,
+  deposit: 500,
 };
 
 export const dateRange = {
@@ -87,13 +87,17 @@ export const faqData = [
   },
   {
     question: "Care este taxa taberei și ce include aceasta?",
-    answer: `Taxa taberei este de <strong>${
+    answer: `Prețul întreg al taberei este de <strong>${
       sumToPay.normal
-    } RON</strong>.<br/> ${
-      sumToPay.withFamilyMember !== null
-        ? `Pentru persoanele care au <strong><i>membru de familie</i></strong> în tabără (soț sau frate/soră) suma este de <strong>${sumToPay.withFamilyMember} RON</strong>.`
+    } RON</strong>, cu opțiunea să donezi mai mult sau să primești reducere în anumite cazuri.<br/>${
+      sumToPay.student
+        ? `Pentru <strong><i>studenți/elevi</i></strong> taxa este de <strong>${sumToPay.student} RON</strong>.<br/>`
         : ""
-    }<br/>Taxa include cazarea, mesele, materialele și toate activitățile din programul taberei pe cele ${
+    }${
+      sumToPay.withFamilyMember
+        ? `Pentru <strong><i>frați</i></strong> taxa este de <strong>${sumToPay.withFamilyMember} RON</strong> (dacă unul din frați lucrează, va trebui să plătească integral).<br/>`
+        : ""
+    }Taxa include cazarea, mesele, materialele și toate activitățile din programul taberei pe cele ${
       dateRange.endDate.getDate() - dateRange.startDate.getDate() + 1
     } zile si ${
       dateRange.endDate.getDate() - dateRange.startDate.getDate()

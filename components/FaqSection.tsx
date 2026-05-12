@@ -40,7 +40,12 @@ export default function FaqSection() {
 
   const filteredFaqData = (faqData as FaqItem[])
     .filter((faq) => {
-      if (selectedTag && !faq.tags.includes(selectedTag)) {
+      if (
+        selectedTag &&
+        !faq.tags.some(
+          (tag) => removeDiacritics(tag.toLowerCase()) === selectedTag
+        )
+      ) {
         return false;
       }
       return true;
