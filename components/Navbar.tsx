@@ -2,17 +2,35 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showUnavailable, setShowUnavailable] = useState(false);
 
-  const navLinks = [
+  const navLinks: {
+    href: string;
+    label: string;
+    external?: boolean;
+    unavailable?: boolean;
+  }[] = [
     { href: "https://tineretsperantaoradea.ro", label: "TSO.RO", external: true },
     { href: "/", label: "acasa" },
     { href: "/doneaza", label: "doneaza" },
-    { href: "/cont", label: "contul meu" },
+    { href: "#cont", label: "contul meu", unavailable: true },
   ];
+
+  const openUnavailable = () => {
+    setIsOpen(false);
+    setShowUnavailable(true);
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -57,28 +75,38 @@ export default function Navbar() {
 
         {/* Desktop nav links */}
         <div className="hidden lg:flex items-center gap-6">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-              className={`
-                text-[13px] font-bold uppercase tracking-wide text-[#1a1a1a]
-                hover:text-gray-500 transition-colors
-                ${link.label === "doneaza" ? "border-2 border-[#1a1a1a] px-3.5 py-1.5" : ""}
-              `}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) =>
+            link.unavailable ? (
+              <button
+                key={link.href}
+                onClick={openUnavailable}
+                className="text-[13px] font-bold uppercase tracking-wide text-[#1a1a1a] hover:text-gray-500 transition-colors"
+              >
+                {link.label}
+              </button>
+            ) : (
+              <Link
+                key={link.href}
+                href={link.href}
+                {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                className={`
+                  text-[13px] font-bold uppercase tracking-wide text-[#1a1a1a]
+                  hover:text-gray-500 transition-colors
+                  ${link.label === "doneaza" ? "border-2 border-[#1a1a1a] px-3.5 py-1.5" : ""}
+                `}
+              >
+                {link.label}
+              </Link>
+            )
+          )}
 
           {/* CTA button */}
-          <Link
-            href="/inscrie-te"
+          <button
+            onClick={openUnavailable}
             className="bg-[#FFD600] border-2 border-[#1a1a1a] px-4 py-2 text-[12px] font-bold uppercase tracking-wide text-[#1a1a1a] hover:opacity-80 transition-opacity"
           >
             Inscrie-te acum
-          </Link>
+          </button>
         </div>
 
         {/* Mobile hamburger button */}
@@ -144,33 +172,53 @@ export default function Navbar() {
 
           {/* Centered navigation links */}
           <div className="flex-1 flex flex-col items-center justify-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                className={`
-                  text-[15px] font-bold uppercase tracking-wide text-[#1a1a1a]
-                  hover:text-gray-500 transition-colors
-                  ${link.label === "doneaza" ? "border-2 border-[#1a1a1a] px-3.5 py-1.5" : ""}
-                `}
-                onClick={() => setIsOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) =>
+              link.unavailable ? (
+                <button
+                  key={link.href}
+                  onClick={openUnavailable}
+                  className="text-[15px] font-bold uppercase tracking-wide text-[#1a1a1a] hover:text-gray-500 transition-colors"
+                >
+                  {link.label}
+                </button>
+              ) : (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  className={`
+                    text-[15px] font-bold uppercase tracking-wide text-[#1a1a1a]
+                    hover:text-gray-500 transition-colors
+                    ${link.label === "doneaza" ? "border-2 border-[#1a1a1a] px-3.5 py-1.5" : ""}
+                  `}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              )
+            )}
 
             {/* CTA button */}
-            <Link
-              href="/inscrie-te"
+            <button
+              onClick={openUnavailable}
               className="bg-[#FFD600] border-2 border-[#1a1a1a] px-5 py-3 text-[13px] font-bold uppercase tracking-wide text-[#1a1a1a] hover:opacity-80 transition-opacity"
-              onClick={() => setIsOpen(false)}
             >
               Inscrie-te acum
-            </Link>
+            </button>
           </div>
         </div>
       )}
+
+      <Dialog open={showUnavailable} onOpenChange={setShowUnavailable}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Înscrierea nu e disponibilă încă</DialogTitle>
+            <DialogDescription>
+              Revino mai târziu — vom anunța când se deschid înscrierile.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
