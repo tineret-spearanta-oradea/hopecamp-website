@@ -11,6 +11,9 @@ export default function AboutSection() {
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             {/* About Text */}
             <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
+              <span className="font-archivo text-xs uppercase tracking-[0.2em] text-yellow-600 mb-3">
+                Viziunea lucrarii de tineret
+              </span>
               <h2 className="font-archivo uppercase font-bold text-3xl sm:text-4xl md:text-5xl text-black mb-6 leading-tight">
                 Tineret Speranta Oradea
               </h2>
@@ -30,17 +33,20 @@ export default function AboutSection() {
             </div>
 
             {/* Team Image */}
-            <div className="border-2 border-black rounded-xl p-3">
+            <figure className="border-2 border-black rounded-xl p-3">
               <div className="overflow-hidden rounded-lg">
                 <Image
                   src="/assets/images/hopecamp/gratiadei/compressed/gratiadei-13.jpg"
-                  alt="Echipa Hope Camp"
+                  alt="Liderii taberei Hope Camp"
                   width={600}
                   height={400}
                   className="w-full h-auto object-cover"
                 />
               </div>
-            </div>
+              <figcaption className="font-archivo text-xs uppercase tracking-[0.2em] text-neutral-500 text-center mt-3">
+                Liderii taberei
+              </figcaption>
+            </figure>
           </div>
         </div>
       </section>
