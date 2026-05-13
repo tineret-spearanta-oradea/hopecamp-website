@@ -1,14 +1,30 @@
-import Image from "next/image";
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 import { contactInfo } from "@/lib/constants";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export default function Footer() {
+  const [showUnavailable, setShowUnavailable] = useState(false);
+
   const socialLinks = [
     { href: contactInfo.instagram, icon: "instagram", label: "Instagram" },
     { href: contactInfo.facebook, icon: "facebook", label: "Facebook" },
     { href: contactInfo.whatsapp, icon: "whatsapp", label: "WhatsApp" },
     { href: contactInfo.youtube, icon: "youtube", label: "YouTube" },
   ];
+
+  const openUnavailable = () => setShowUnavailable(true);
+
+  const unavailableLinkClass =
+    "block text-[#1a1a1a] text-sm mb-2.5 hover:opacity-60 transition-opacity text-left";
 
   return (
     <footer>
@@ -37,18 +53,20 @@ export default function Footer() {
             >
               Acasa
             </Link>
-            <Link
-              href="/despre"
-              className="block text-[#1a1a1a] text-sm mb-2.5 hover:opacity-60 transition-opacity"
+            <button
+              type="button"
+              onClick={openUnavailable}
+              className={unavailableLinkClass}
             >
               Despre
-            </Link>
-            <Link
-              href="/cont"
-              className="block text-[#1a1a1a] text-sm mb-2.5 hover:opacity-60 transition-opacity"
+            </button>
+            <button
+              type="button"
+              onClick={openUnavailable}
+              className={unavailableLinkClass}
             >
               Contul meu
-            </Link>
+            </button>
           </div>
 
           {/* Resurse */}
@@ -56,18 +74,20 @@ export default function Footer() {
             <h4 className="font-archivo text-xs uppercase tracking-wider mb-4">
               Resurse
             </h4>
-            <Link
-              href="/regulament"
-              className="block text-[#1a1a1a] text-sm mb-2.5 hover:opacity-60 transition-opacity"
+            <button
+              type="button"
+              onClick={openUnavailable}
+              className={unavailableLinkClass}
             >
               Regulament
-            </Link>
-            <Link
-              href="/intrebari-frecvente"
-              className="block text-[#1a1a1a] text-sm mb-2.5 hover:opacity-60 transition-opacity"
+            </button>
+            <button
+              type="button"
+              onClick={openUnavailable}
+              className={unavailableLinkClass}
             >
               Intrebari frecvente
-            </Link>
+            </button>
             <Link
               href="/privacy-policy"
               className="block text-[#1a1a1a] text-sm mb-2.5 hover:opacity-60 transition-opacity"
@@ -124,6 +144,17 @@ export default function Footer() {
           community
         </p>
       </div>
+
+      <Dialog open={showUnavailable} onOpenChange={setShowUnavailable}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Momentan indisponibil</DialogTitle>
+            <DialogDescription>
+              Revino mai târziu — această secțiune va fi disponibilă în curând.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </footer>
   );
 }
