@@ -89,15 +89,15 @@ export const faqData = [
     question: "Care este taxa taberei și ce include aceasta?",
     answer: `Prețul întreg al taberei este de <strong>${
       sumToPay.normal
-    } RON</strong>, cu opțiunea să donezi mai mult sau să primești reducere în anumite cazuri.<br/>${
+    } RON</strong>.<br/><br/>Ai opțiunea să <strong>donezi mai mult</strong> pentru a ajuta un alt tânăr care nu își permite să participe.<br/><br/><strong>Reduceri</strong> disponibile <strong>pentru cei care nu își permit prețul integral</strong>:<ul class="list-disc pl-10 my-2 ml-4">${
       sumToPay.student
-        ? `Pentru <strong><i>studenți/elevi</i></strong> taxa este de <strong>${sumToPay.student} RON</strong>.<br/>`
+        ? `<li>Pentru <strong><i>studenți/elevi</i></strong> taxa este de <strong>${sumToPay.student} RON</strong>.</li>`
         : ""
     }${
       sumToPay.withFamilyMember
-        ? `Pentru <strong><i>frați</i></strong> taxa este de <strong>${sumToPay.withFamilyMember} RON</strong> (dacă unul din frați lucrează, va trebui să plătească integral).<br/>`
+        ? `<li>Pentru <strong><i>frați</i></strong> taxa este de <strong>${sumToPay.withFamilyMember} RON</strong> (dacă unul din frați lucrează, va trebui să plătească integral).</li>`
         : ""
-    }Taxa include cazarea, mesele, materialele și toate activitățile din programul taberei pe cele ${
+    }</ul>Taxa include cazarea, mesele, materialele și toate activitățile din programul taberei pe cele ${
       dateRange.endDate.getDate() - dateRange.startDate.getDate() + 1
     } zile si ${
       dateRange.endDate.getDate() - dateRange.startDate.getDate()
