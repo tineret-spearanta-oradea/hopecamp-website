@@ -50,7 +50,7 @@ export default function Galerie() {
         {/* CTA Button */}
         <div className="text-center mt-12 sm:mt-16">
           <Link
-            href="https://princessphoto-ro.wfolio.pro/disk/hope-camp-f9tz0m"
+            href="https://drive.google.com/drive/folders/1IciNY7hsz2PV0Na-uhtpwJzDttEKcr-c?usp=sharing"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block px-8 py-3.5 bg-[#1a1a1a] text-white text-sm font-bold uppercase tracking-wider hover:bg-[#333] transition-colors"
