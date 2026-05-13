@@ -106,7 +106,7 @@ export const faqData = [
   },
   {
     question: "Care sunt modalitățile de plată?",
-    answer: `Poți achita la <ol><li><strong>${payTaxToOptions[0].label}</strong> pe telefon ${payTaxToOptions[0].phone}</li><li><strong>${payTaxToOptions[1].label}</strong> pe telefon ${payTaxToOptions[1].phone}</li></ol>Pentru alte variante sau ajutor te rugăm să ne scrii pe WhatsApp la <strong> <a href="${contactInfo.whatsapp}" target="_blank" rel="noopener noreferrer">${contactInfo.phone}</a></strong>`,
+    answer: `Poți achita la <ol><li><strong>${payTaxToOptions[0].value}</strong>, telefon <a href="https://wa.me/${payTaxToOptions[0].phone.replace(/[^0-9]/g, "")}" target="_blank" rel="noopener noreferrer" class="underline hover:text-[#FFD600]">${payTaxToOptions[0].phone}</a></li><li><strong>${payTaxToOptions[1].value}</strong>, telefon <a href="https://wa.me/${payTaxToOptions[1].phone.replace(/[^0-9]/g, "")}" target="_blank" rel="noopener noreferrer" class="underline hover:text-[#FFD600]">${payTaxToOptions[1].phone}</a></li></ol><em>De preferat ca plățile să fie făcute <strong>cash</strong>. <strong>Revolut</strong> sau <strong>BT Pay</strong> se pot folosi în cazuri în care nu este posibilă plata cash.</em><br/><br/>Pentru alte variante sau ajutor te rugăm să ne scrii pe WhatsApp la <strong> <a href="${contactInfo.whatsapp}" target="_blank" rel="noopener noreferrer">${contactInfo.phone}</a></strong>`,
     tags: ["financiar"],
   },
   {
