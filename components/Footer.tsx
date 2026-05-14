@@ -60,13 +60,14 @@ export default function Footer() {
             >
               Despre
             </button>
-            <button
-              type="button"
-              onClick={openUnavailable}
-              className={unavailableLinkClass}
+            <Link
+              href="https://app.camppromax.com/r/tso/hope-camp-7"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block text-[#1a1a1a] text-sm mb-2.5 hover:opacity-60 transition-opacity"
             >
               Contul meu
-            </button>
+            </Link>
           </div>
 
           {/* Resurse */}

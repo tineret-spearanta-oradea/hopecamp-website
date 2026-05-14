@@ -34,6 +34,60 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  async redirects() {
+    return [
+      {
+        source: "/inscrie-te",
+        destination: "https://app.camppromax.com/r/tso/hope-camp-7",
+        permanent: true,
+      },
+      {
+        source: "/inscrie-te/:path*",
+        destination: "https://app.camppromax.com/r/tso/hope-camp-7",
+        permanent: true,
+      },
+      {
+        source: "/cont",
+        destination: "https://app.camppromax.com/r/tso/hope-camp-7",
+        permanent: true,
+      },
+      {
+        source: "/cont/:path*",
+        destination: "https://app.camppromax.com/r/tso/hope-camp-7",
+        permanent: true,
+      },
+      {
+        source: "/admin",
+        destination: "https://app.camppromax.com/r/tso/hope-camp-7",
+        permanent: true,
+      },
+      {
+        source: "/admin/:path*",
+        destination: "https://app.camppromax.com/r/tso/hope-camp-7",
+        permanent: true,
+      },
+      {
+        source: "/login",
+        destination: "https://app.camppromax.com/r/tso/hope-camp-7",
+        permanent: true,
+      },
+      {
+        source: "/login/:path*",
+        destination: "https://app.camppromax.com/r/tso/hope-camp-7",
+        permanent: true,
+      },
+      {
+        source: "/reset-password",
+        destination: "https://app.camppromax.com/r/tso/hope-camp-7",
+        permanent: true,
+      },
+      {
+        source: "/reset-password/:path*",
+        destination: "https://app.camppromax.com/r/tso/hope-camp-7",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;

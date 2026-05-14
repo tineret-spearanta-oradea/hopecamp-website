@@ -83,7 +83,9 @@ export default function Hero() {
                 </Link>
               ) : (
                 <Link
-                  href="/inscrie-te"
+                  href="https://app.camppromax.com/r/tso/hope-camp-7"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex-1 sm:flex-none inline-block px-6 sm:px-8 py-3 sm:py-3.5 border-2 border-[#FFD600] bg-transparent text-[#1a1a1a] text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-[#FFD600] transition-colors text-center"
                 >
                   INSCRIE-TE

@@ -24,8 +24,10 @@ export default function Navbar() {
     { href: "https://tineretsperantaoradea.ro", label: "TSO.RO", external: true },
     { href: "/", label: "acasa" },
     { href: "/doneaza", label: "doneaza" },
-    { href: "#cont", label: "contul meu", unavailable: true },
+    { href: "https://app.camppromax.com/r/tso/hope-camp-7", label: "contul meu", external: true },
   ];
+
+  const registrationUrl = "https://app.camppromax.com/r/tso/hope-camp-7";
 
   const openUnavailable = () => {
     setIsOpen(false);
@@ -101,12 +103,14 @@ export default function Navbar() {
           )}
 
           {/* CTA button */}
-          <button
-            onClick={openUnavailable}
+          <Link
+            href={registrationUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             className="bg-[#FFD600] border-2 border-[#1a1a1a] px-4 py-2 text-[12px] font-bold uppercase tracking-wide text-[#1a1a1a] hover:opacity-80 transition-opacity"
           >
             Inscrie-te acum
-          </button>
+          </Link>
         </div>
 
         {/* Mobile hamburger button */}
@@ -199,12 +203,15 @@ export default function Navbar() {
             )}
 
             {/* CTA button */}
-            <button
-              onClick={openUnavailable}
+            <Link
+              href={registrationUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsOpen(false)}
               className="bg-[#FFD600] border-2 border-[#1a1a1a] px-5 py-3 text-[13px] font-bold uppercase tracking-wide text-[#1a1a1a] hover:opacity-80 transition-opacity"
             >
               Inscrie-te acum
-            </button>
+            </Link>
           </div>
         </div>
       )}
