@@ -98,9 +98,15 @@ export const faqData = [
         ? `<li>Pentru <strong><i>frați</i></strong> taxa este de <strong>${sumToPay.withFamilyMember} RON</strong> (dacă unul din frați lucrează, va trebui să plătească integral).</li>`
         : ""
     }</ul>Taxa include cazarea, mesele, materialele și toate activitățile din programul taberei pe cele ${
-      dateRange.endDate.getDate() - dateRange.startDate.getDate() + 1
+      Math.round(
+        (dateRange.endDate.getTime() - dateRange.startDate.getTime()) /
+          (1000 * 60 * 60 * 24)
+      ) + 1
     } zile si ${
-      dateRange.endDate.getDate() - dateRange.startDate.getDate()
+      Math.round(
+        (dateRange.endDate.getTime() - dateRange.startDate.getTime()) /
+          (1000 * 60 * 60 * 24)
+      )
     } nopti.`,
     tags: ["financiar"],
   },
