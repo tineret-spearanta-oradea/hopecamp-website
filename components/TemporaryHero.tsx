@@ -85,7 +85,7 @@ export default function Hero() {
             </Link>
           ) : (
             <Link
-              href="https://app.camppromax.com/r/tso/hope-camp-7"
+              href="https://app.inrola.com/r/tso/hope-camp-7"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block px-8 sm:px-10 py-3.5 sm:py-4 border-2 border-[#FFD600] bg-[#FFD600] text-[#1a1a1a] text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-transparent transition-colors"

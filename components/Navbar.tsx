@@ -24,10 +24,10 @@ export default function Navbar() {
     { href: "https://tineretsperantaoradea.ro", label: "TSO.RO", external: true },
     { href: "/", label: "acasa" },
     { href: "/doneaza", label: "doneaza" },
-    { href: "https://app.camppromax.com/r/tso/hope-camp-7", label: "contul meu", external: true },
+    { href: "https://app.inrola.com/r/tso/hope-camp-7", label: "contul meu", external: true },
   ];
 
-  const registrationUrl = "https://app.camppromax.com/r/tso/hope-camp-7";
+  const registrationUrl = "https://app.inrola.com/r/tso/hope-camp-7";
 
   const openUnavailable = () => {
     setIsOpen(false);
